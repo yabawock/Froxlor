@@ -13,22 +13,14 @@
  * @author     Andreas Burchert <scarya@froxlor.org>
  * @license    GPLv2 http://files.froxlor.org/misc/COPYING.txt
  * @package    Cron
- * @version    $Id$
  */
 
 /**
- * This will be the base class for all dms.
- * All subclasses have to create their queries.
+ * 
+ * This class is intended to act as a remote api to the dms.
+ * Registrar -> Froxlor
  */
-interface dms
+class eventListener
 {
-	public function handleCreate();
-	public function handleDelete();
-	public function handleAlter();
-	public function handleList();
 	
-	public function domainCheck($domain);
-	public function domainRegister();
-	
-	public function eventListener();
 }
