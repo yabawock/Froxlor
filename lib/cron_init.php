@@ -14,7 +14,7 @@
  * @author     Froxlor team <team@froxlor.org> (2010-)
  * @license    GPLv2 http://files.froxlor.org/misc/COPYING.txt
  * @package    Cron
- * @version    $Id$
+ *
  */
 
 if(@php_sapi_name() != 'cli'
@@ -171,7 +171,7 @@ fwrite($debugHandler, 'Froxlor settings have been loaded from the database' . "\
  * if settings['system']['mod_fcgid_ownvhost'] is set, we have to check
  * whether the permission of the files are still correct
  */
-if((int)$settings['system']['mod_fcgid_ownvhost'] == 1)
+if((int)$settings['system']['mod_fcgid'] == 1 && (int)$settings['system']['mod_fcgid_ownvhost'] == 1)
 {
 	fwrite($debugHandler, 'Checking froxlor file permissions');
 	$mypath = makeCorrectDir(dirname(dirname(__FILE__))); // /var/www/froxlor, needed for chown

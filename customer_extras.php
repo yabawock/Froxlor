@@ -14,7 +14,7 @@
  * @author     Froxlor team <team@froxlor.org> (2010-)
  * @license    GPLv2 http://files.froxlor.org/misc/COPYING.txt
  * @package    Panel
- * @version    $Id$
+ *
  */
 
 define('AREA', 'customer');
@@ -38,6 +38,31 @@ if($page == 'overview')
 {
 	$log->logAction(USR_ACTION, LOG_NOTICE, "viewed customer_extras");
 	eval("echo \"" . getTemplate("extras/extras") . "\";");
+}
+elseif($page == 'backup')
+{
+    $log->logAction(USR_ACTION, LOG_NOTICE, "viewed customer_extras_backup");
+
+    $result = $db->query("SELECT `backup_enabled` FROM `" . TABLE_PANEL_CUSTOMERS . "` WHERE `customerid`='" . (int)$userinfo['customerid'] . "'");
+    $row = $db->fetch_array($result);
+
+    $backup_enabled = makeyesno('backup_enabled', '1', '0', $row['backup_enabled']);
+
+    if(isset($_POST['send']) && $_POST['send'] == 'send'){
+	$backup_enabled = ($_POST['backup_enabled'] == '1' ? '1' : '0');
+	$backup_ftp_enabled = ($_POST['backup_ftp_enabled'] == '1' ? '1' : '0');
+	
+        $db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `backup_enabled`='" . $backup_enabled . "' WHERE `customerid`='" . (int)$userinfo['customerid'] . "'");
+	redirectTo($filename, Array('page' => $page, 's' => $s));
+    }
+
+    $backup_data = include_once dirname(__FILE__).'/lib/formfields/customer/extras/formfield.backup.php';
+	$backup_form = htmlform::genHTMLForm($backup_data);
+
+	$title = $backup_data['backup']['title'];
+	$image = $backup_data['backup']['image'];
+    
+    eval("echo \"" . getTemplate("extras/backup") . "\";");
 }
 elseif($page == 'htpasswds')
 {

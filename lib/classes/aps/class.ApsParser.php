@@ -17,7 +17,7 @@
  * @author     Froxlor team <team@froxlor.org> (2010-)
  * @license    GPLv2 http://files.froxlor.org/misc/COPYING.txt
  * @package    APS
- * @version    $Id$
+ *
  * @todo		implement charset validation
  *				reconfigure
  *				patch- and versionmanagement
@@ -3300,7 +3300,7 @@ class ApsParser
 					eval("\$Data.=\"" . getTemplate("aps/data") . "\";");
 				}
 
-				$Temp = '<input name="license" type="checkbox" value="true" /> ' . $lng['aps']['error_license'];
+				$Temp = '<label><input name="license" type="checkbox" value="true" /> ' . $lng['aps']['error_license'] . '</label>';
 
 				if(in_array('license', $WrongData))
 				{

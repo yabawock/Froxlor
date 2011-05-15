@@ -14,7 +14,7 @@
  * @author     Froxlor team <team@froxlor.org> (2010-)
  * @license    GPLv2 http://files.froxlor.org/misc/COPYING.txt
  * @package    Navigation
- * @version    $Id$
+ *
  */
 
 return array (
@@ -129,6 +129,11 @@ return array (
 					'url' => 'customer_extras.php?page=htaccess',
 					'label' => $lng['menue']['extras']['pathoptions'],
 				),
+				array (
+					'url' => 'customer_extras.php?page=backup',
+					'label' => $lng['backup'],
+					'required_resources' => 'backup_allowed',
+				),
 			),
 		),
 		'traffic' => array (
@@ -186,6 +191,17 @@ return array (
 					'url' => 'admin_admins.php?page=admins',
 					'label' => $lng['admin']['admins'],
 					'required_resources' => 'change_serversettings',
+				),
+			),
+		),
+		'traffic' => array (
+			'label' => $lng['admin']['traffic'],
+			'required_resources' => 'customers',
+			'elements' => array (
+				array (
+					'url' => 'admin_traffic.php?page=customers',
+					'label' => $lng['admin']['customertraffic'],
+					'required_resources' => 'customers',
 				),
 			),
 		),

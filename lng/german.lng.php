@@ -14,7 +14,7 @@
  * @author     Froxlor team <team@froxlor.org> (2010-)
  * @license    GPLv2 http://files.froxlor.org/misc/COPYING.txt
  * @package    Language
- * @version    $Id$
+ *
  */
 
 /**
@@ -1563,3 +1563,46 @@ $lng['serversettings']['validate_domain'] = 'Validiere Domainnamen';
 $lng['login']['combination_not_found'] = 'Kombination von Benutzer und E-Mail Adresse nicht gefunden.';
 $lng['customer']['generated_pwd'] = 'Passwortvorschlag';
 $lng['customer']['usedmax'] = 'Benutzt / Max.';
+$lng['admin']['traffic'] = 'Datentransfer';
+$lng['admin']['customertraffic'] = 'Kunden';
+$lng['traffic']['customer'] = 'Kunde';
+$lng['traffic']['trafficoverview'] = '&Uuml;bersicht Datenvolumen je';
+$lng['traffic']['months']['jan'] = 'Jan';
+$lng['traffic']['months']['feb'] = 'Feb';
+$lng['traffic']['months']['mar'] = 'M&auml;r';
+$lng['traffic']['months']['apr'] = 'Apr';
+$lng['traffic']['months']['may'] = 'Mai';
+$lng['traffic']['months']['jun'] = 'Jun';
+$lng['traffic']['months']['jul'] = 'Jul';
+$lng['traffic']['months']['aug'] = 'Aug';
+$lng['traffic']['months']['sep'] = 'Sep';
+$lng['traffic']['months']['oct'] = 'Okt';
+$lng['traffic']['months']['nov'] = 'Nov';
+$lng['traffic']['months']['dec'] = 'Dez';
+$lng['traffic']['months']['total'] = 'Gesamt';
+$lng['traffic']['details'] = 'Details';
+$lng['menue']['traffic']['table'] = '&Uuml;bersicht';
+$lng['error']['admin_domain_emailsystemhostname'] = 'Der System - Hostname kann leider nicht als Kundendomain verwendet werden.';
+$lng['backup'] = 'Backup';
+$lng['backup_allowed'] = 'Backup erlaubt';
+$lng['extras']['backup_create'] = 'Backup erstellen?';
+$lng['extras']['backup_info'] = 'Das Backup wird einmal t&auml;glich im Ordner "' . $settings['system']['backup_dir'] . '" gespeichert.';
+$lng['extras']['backup_info_sep'] = 'Es sind komprimierte Archive von HTML Dateien und Datenbanken enthalten.';
+$lng['extras']['backup_info_big'] = 'Es ist ein komprimiertes Archiv von HTML Dateien und Datenbanken enthalten.';
+$lng['extras']['backup_count_info'] = '<br /><br />Beachten Sie bitte, dass das Backup den verf&uuml;gbaren Speicherplatz belastet!';
+$lng['serversettings']['backup_count'] = 'Soll die Gr&ouml;&szlig;e des Backups vom verf&uuml;gbaren Webspace abgezogen werden?';
+$lng['serversettings']['backup_enabled'] = 'Backup aktivieren?';
+$lng['serversettings']['backup_ftp_enabled'] = 'FTP Upload aktivieren?';
+$lng['serversettings']['backup_ftp_server'] = 'FTP Server:';
+$lng['serversettings']['backup_ftp_user'] = 'FTP Benutzer:';
+$lng['serversettings']['backup_ftp_pass'] = 'FTP Passwort:';
+$lng['serversettings']['backupdir']['description'] = 'Welchen Namen soll das Backup Verzeichnis des Kunden haben?';
+$lng['serversettings']['mysqldump_path']['description'] = 'Pfad zum mysqldump kommando?';
+$lng['serversettings']['backup_count'] = 'Soll die Gr&ouml;&amp;e des Backups vom verf&uuml;gbaren Webspace abgezogen werden?';
+$lng['crondesc']['cron_backup'] = 'Backup cronjob';
+
+// ADDED IN FROXLOR 0.9.21
+$lng['gender']['title'] = 'Geschlecht';
+$lng['gender']['male'] = 'm&auml;nnlich';
+$lng['gender']['female'] = 'weiblich';
+$lng['gender']['undef'] = 'keine Angabe';

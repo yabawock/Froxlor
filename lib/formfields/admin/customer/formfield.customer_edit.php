@@ -12,7 +12,7 @@
  * @author     Froxlor team <team@froxlor.org> (2010-)
  * @license    GPLv2 http://files.froxlor.org/misc/COPYING.txt
  * @package    Formfields
- * @version    $Id: formfield.customer_edit.php 100 2010-12-07 12:20:17Z d00p $
+ *
  */
 
 return array(
@@ -81,6 +81,11 @@ return array(
 						'type' => 'text',
 						'mandatory_ex' => true,
 						'value' => $result['firstname']
+					),
+					'gender' => array(
+						'label' => $lng['gender']['title'],
+						'type' => 'select',
+						'select_var' => $gender_options
 					),
 					'company' => array(
 						'label' => $lng['customer']['company'],
@@ -251,6 +256,11 @@ return array(
 										array ('label' => $lng['panel']['yes'], 'value' => '1')
 									),
 						'value' => array($result['perlenabled'])
+					),
+					'backup_allowed' => array(
+						'label' => $lng['backup_allowed'].'?',
+						'type' => 'yesno',
+						'yesno_var' => $backup_allowed
 					),
 					'number_of_aps_packages' => array(
 						'label' => $lng['aps']['numberofapspackages'],

@@ -12,7 +12,7 @@
  * @author     Froxlor team <team@froxlor.org> (2010-)
  * @license    GPLv2 http://files.froxlor.org/misc/COPYING.txt
  * @package    Install
- * @version    $Id$
+ *
  */
 
 if(isFroxlorVersion('0.9-r0'))
@@ -1498,6 +1498,103 @@ if(isFroxlorVersion('0.9.19'))
 	
 	showUpdateStep("Adding new setting for domain validation");
 	$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('system', 'validate_domain', '1')");
+	lastStepStatus(0);
 	
 	updateToVersion('0.9.20-svn1');
+}
+
+
+if(isFroxlorVersion('0.9.20-svn1'))
+{
+	showUpdateStep("Updating from 0.9.20-svn1 to 0.9.20-svn2");
+
+	// adding backup stuff
+
+	$db->query("ALTER TABLE `" . TABLE_PANEL_CUSTOMERS . "` ADD `backup_allowed` TINYINT( 1 ) NOT NULL DEFAULT '1'");
+	$db->query("ALTER TABLE `" . TABLE_PANEL_CUSTOMERS . "` ADD `backup_enabled` TINYINT( 1 ) NOT NULL DEFAULT '0'");
+	$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('system', 'backup_enabled', '1')");
+	$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('system', 'backup_dir', '#froxlor_backup')");
+	$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('system', 'backup_mysqldump_path', '/usr/bin/mysqldump')");
+	$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('system', 'backup_count', '1')");
+	$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('system', 'backup_bigfile', '1')");
+	$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('system', 'backup_ftp_enabled', '0')");
+	$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('system', 'backup_ftp_server', '')");
+	$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('system', 'backup_ftp_user', '')");
+	$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('system', 'backup_ftp_pass', '')");
+	$db->query("INSERT INTO `" . TABLE_PANEL_CRONRUNS . "` (`module`, `cronfile`, `interval`, `isactive`, `desc_lng_key`) VALUES ('froxlor/backup', 'cron_backup.php', '1 Day', '1', 'cron_backup');");
+	lastStepStatus(0);
+
+	updateToVersion('0.9.20-svn2');
+}
+
+if(isFroxlorVersion('0.9.20-svn2'))
+{
+	showUpdateStep("Updating from 0.9.20-svn2 to 0.9.20");
+	lastStepStatus(0);
+
+	updateToVersion('0.9.20');
+}
+
+if(isFroxlorVersion('0.9.20'))
+{
+	showUpdateStep("Updating from 0.9.20 to 0.9.20.1");
+	lastStepStatus(0);
+
+	updateToVersion('0.9.20.1');
+}
+
+if(isFroxlorVersion('0.9.20.1'))
+{
+	showUpdateStep("Updating from 0.9.20.1 to 0.9.20.1-svn1");
+	lastStepStatus(0);
+
+	showUpdateStep("Fixing possible broken tables");
+	
+	// The customer-table may miss the columns, if installed a fresh 0.9.20 or 0.9.20.1 - add them
+	$result = $db->query("DESCRIBE `" . TABLE_PANEL_CUSTOMERS . "`");
+	$columnfound = 0;
+        while($row = $db->fetch_array($result))
+	{
+		if($row['Field'] == 'backup_allowed')
+		{
+			$columnfound = 1;
+		}
+	}
+	if (!$columnfound)
+	{
+		$db->query("ALTER TABLE `" . TABLE_PANEL_CUSTOMERS . "` ADD `backup_allowed` TINYINT( 1 ) NOT NULL DEFAULT '1'");
+		$db->query("ALTER TABLE `" . TABLE_PANEL_CUSTOMERS . "` ADD `backup_enabled` TINYINT( 1 ) NOT NULL DEFAULT '0'");
+	}
+
+	// The admin-table may have the columns, if installed a fresh 0.9.20.1 - remove them
+	$result = $db->query("DESCRIBE `" . TABLE_PANEL_ADMINS . "`");
+	$columnfound = 0;
+	while($row = $db->fetch_array($result))
+	{
+		if($row['Field'] == 'backup_allowed')
+		{
+			$columnfound = 1;
+		}
+	}
+	if ($columnfound)
+	{
+		$db->query("ALTER TABLE `" . TABLE_PANEL_ADMINS . "` DROP `backup_allowed`;");
+		$db->query("ALTER TABLE `" . TABLE_PANEL_ADMINS . "` DROP `backup_enabled`;");
+	}
+	lastStepStatus(0);
+
+	updateToVersion('0.9.20.1-svn1');
+}
+
+if(isFroxlorVersion('0.9.20.1-svn1') || isFroxlorVersion('0.9.20.2-svn1'))
+{
+	showUpdateStep("Updating from 0.9.20.1-svn1 to 0.9.21-svn1");
+	lastStepStatus(0);
+
+	// add table column for gender
+	$db->query("ALTER TABLE `" . TABLE_PANEL_CUSTOMERS . "` ADD `gender` INT( 1 ) NOT NULL DEFAULT '0' AFTER `firstname`");
+	
+	lastStepStatus(0);
+
+	updateToVersion('0.9.21-svn1');
 }

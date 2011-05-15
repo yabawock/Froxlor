@@ -14,7 +14,7 @@
  * @author     Froxlor team <team@froxlor.org> (2010-)
  * @license    GPLv2 http://files.froxlor.org/misc/COPYING.txt
  * @package    System
- * @version    $Id$
+ *
  */
 
 define('TABLE_FTP_GROUPS', 'ftp_groups');
@@ -73,6 +73,6 @@ define('PACKAGE_ENABLED', 2);
 
 // VERSION INFO
 
-$version = '0.9.20-svn1';
+$version = '0.9.21-svn1';
 $dbversion = '2';
 $branding = '';

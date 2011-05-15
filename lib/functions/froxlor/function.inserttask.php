@@ -14,7 +14,7 @@
  * @author     Froxlor team <team@froxlor.org> (2010-)
  * @license    GPLv2 http://files.froxlor.org/misc/COPYING.txt
  * @package    Functions
- * @version    $Id$
+ *
  */
 
 /**
@@ -34,7 +34,8 @@ function inserttask($type, $param1 = '', $param2 = '', $param3 = '', $param4 = '
 	if($type == '1'
 	   || $type == '3'
 	   || $type == '4'
-	   || $type == '5')
+	   || $type == '5'
+	   || $type == '9')
 	{
 		$db->query('DELETE FROM `' . TABLE_PANEL_TASKS . '` WHERE `type`="' . $type . '"');
 		$db->query('INSERT INTO `' . TABLE_PANEL_TASKS . '` (`type`) VALUES ("' . $type . '")');
