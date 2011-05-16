@@ -28,7 +28,7 @@ class countrycode
 		$output = '';
 		
 		foreach($lng['country'] as $key=>$val) {
-			if (asOptions) {
+			if ($asOptions) {
 				$out .= '<option value="'. $key .'">'. $val .'</option>';
 			}
 			else {
@@ -36,7 +36,7 @@ class countrycode
 			}
 		}
 		
-		if (asOptions) return $out;
+		if ($asOptions) return $out;
 		return $cc;
 	}
 }
