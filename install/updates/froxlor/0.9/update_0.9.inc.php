@@ -1726,3 +1726,21 @@ if(isFroxlorVersion('0.9.21'))
 	
 	updateToVersion('0.9.22-rrp1');
 }
+
+if(isFroxlorVersion('0.9.22-rrp1'))
+{
+	showUpdateStep("Updating from 0.9.22-rrp1 to 0.9.22-rrp2");
+	lastStepStatus(0);
+	
+	// fix structure
+	$db->query("ALTER TABLE `users ADD `isadmin` TINYINT( 1 ) NOT NULL DEFAULT '0' AFTER `password`");
+	$db->query("ALTER TABLE `users ADD `act_key` VARCHAR( 32 ) NOT NULL DEFAULT '0' AFTER `password`");
+	$db->query("ALTER TABLE `user_adresses DROP `def_language`");
+	
+	// fix spelling
+	$db->query("ALTER TABLE `user_adresses` RENAME `user_addresses`");
+	
+	
+	lastStepStatus(0);
+	updateToVersion('0.9.22-rrp2');
+}
