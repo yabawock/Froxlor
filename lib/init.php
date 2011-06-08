@@ -121,6 +121,11 @@ if(!isset($need_root_db_sql_data) || $need_root_db_sql_data !== true)
 $idna_convert = new idna_convert_wrapper();
 
 /**
+ * Include class.user.php
+ */
+require './lib/classes/user/class.user.php';
+
+/**
  * disable magic_quotes_runtime if enabled
  */
 if(get_magic_quotes_runtime())
