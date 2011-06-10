@@ -151,6 +151,11 @@ class user {
 	 */
 	private function fetchGeneralData() {
 		$sql = "SELECT * FROM ". TABLE_USERS ." WHERE id = '".$this->getId()."'";
+		
+		$row = $this->_db->query_first($sql);
+		if ($row) {
+			$this->_data['general'] = $row;
+		}
 	}
 	
 	/**
@@ -158,6 +163,11 @@ class user {
 	 */
 	private function fetchUserAddress() {
 		$sql = "SELECT * FROM ". TABLE_USER_ADDRESSES ." WHERE id = '".$this->getId()."'";
+		
+		$row = $this->_db->query_first($sql);
+		if ($row) {
+			$this->_data['address'] = $row;
+		}
 	}
 	
 	/**
@@ -171,6 +181,11 @@ class user {
 		}
 		
 		$sql = "SELECT * FROM ". $table ." WHERE id = '".$this->getId()."'";
+		
+		$row = $this->_db->query_first($sql);
+		if ($row) {
+			$this->_data['resources'] = $row;
+		}
 	}
 	
 	/**
@@ -213,10 +228,11 @@ class user {
 	/**
 	 * Updates the data (in database too).
 	 *
-	 * @param string $key
-	 * @param string $value
+	 * @param string $area  area like general, address, resource
+	 * @param string $key   key
+	 * @param string $value value
 	 */
-	public function setData($key, $value) {
+	public function setData($area, $key, $value) {
 		
 	}
 }
