@@ -98,7 +98,9 @@ class user {
 	 * This function initializes all data.
 	 */
 	private function init() {
-		
+		$this->fetchGeneralData();
+		$this->fetchUserAddress();
+		$this->fetchUserResources();
 	}
 	
 	/**
