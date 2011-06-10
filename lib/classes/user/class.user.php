@@ -69,7 +69,14 @@ class user {
 	 * @param int $id
 	 */
 	public function __construct($id) {
+		global $db;
+		$this->_db = $db;
 		
+		if (ctype_digit($id)) {
+			$this->_id = $id;
+		
+			$this->init();
+		}
 	}
 	
 	/**
@@ -79,7 +86,12 @@ class user {
 	 * @param string $password
 	 */
 	public function __construct($loginname, $password) {
+		global $db;
+		$this->_db = $db;
 		
+		if ($this->performLogin($loginname, $password)) {
+			$this->init();
+		}
 	}
 	
 	/**
@@ -98,32 +110,65 @@ class user {
 	 * @return true on success, else false
 	 */
 	private function performLogin($loginname, $password) {
-		// try a normal login
+		$success = false;
+		$row = $this->_db->query_first("SELECT `loginname`, `isadmin` FROM `" . TABLE_USERS . "` WHERE `loginname`='" . $db->escape($loginname) . "'");
+
+		if($row['loginname'] == $loginname) {
+			// check if the user is an admin
+			if ($row['isadmin']) {
+				$this->_isAdmin = true;
+			}
+			
+			$success = true;
+		}
+		else if((int)$settings['login']['domain_login'] == 1) {
+			/**
+			 * check if the customer tries to login with a domain, #374
+			 */
+			$domainname = $idna_convert->encode(preg_replace(Array('/\:(\d)+$/', '/^https?\:\/\//'), '', $loginname));
+			
+			$sql = "SELECT a.`customerid`, b.`isadmin`, b.`loginname`
+					FROM `". TABLE_PANEL_DOMAINS ."` a, `". TABLE_USERS ."` b
+					WHERE a.`domain` = '' && a.`customerid` = b.`id`";
+			
+			$row = $this->_db->query_first($sql);
+			if ($row) {
+				$this->_loginname = $tow['loginname'];
+				$this->_id = $row['id'];
+				$this->_isAdmin = $row['isadmin'];
+				
+				$success = true;
+			}
+		}
 		
-		// check if loginname is a domain name
-		
-		return false;
+		return $success;
 	}
 	
 	/**
 	 * Loads general data from database.
 	 */
 	private function fetchGeneralData() {
-		
+		$sql = "SELECT * FROM ". TABLE_USERS ." WHERE id = '".$this->getId()."'";
 	}
 	
 	/**
 	 * Loads address data from database.
 	 */
 	private function fetchUserAddress() {
-		
+		$sql = "SELECT * FROM ". TABLE_USER_ADDRESSES ." WHERE id = '".$this->getId()."'";
 	}
 	
 	/**
 	 * Loads ressource data from database.
 	 */
 	private function fetchUserResources() {
+		$table = TABLE_USER_RESOURCES;
 		
+		if ($this->isAdmin()) {
+			$table = TABLE_ADMIN_RESOURCES;
+		}
+		
+		$sql = "SELECT * FROM ". $table ." WHERE id = '".$this->getId()."'";
 	}
 	
 	/**
