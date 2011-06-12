@@ -77,6 +77,6 @@ define('PACKAGE_ENABLED', 2);
 
 // VERSION INFO
 
-$version = '0.9.22-rrp2';
+$version = '0.9.22-rrp3';
 $dbversion = '2';
 $branding = '';

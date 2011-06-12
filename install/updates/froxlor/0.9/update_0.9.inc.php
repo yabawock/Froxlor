@@ -1382,7 +1382,7 @@ if(isFroxlorVersion('0.9.16'))
 	}
 	$check = $db->query_first("SELECT `varname` FROM `" . TABLE_PANEL_TEMPLATES . "` WHERE `varname`='trafficninetypercent_mailbody';");
 	if(isset($check['varname']) && $check['varname'] == 'trafficninetypercent_mailbody')
-	{	
+	{
 		$db->query("UPDATE `" . TABLE_PANEL_TEMPLATES . "` SET `varname` = 'trafficmaxpercent_mailbody' WHERE `varname`='trafficninetypercent_mailbody';");
 	}
 	lastStepStatus(0);
@@ -1400,7 +1400,7 @@ if(isFroxlorVersion('0.9.17-svn1'))
   `fid` int(11) NOT NULL,
   `docrootsettings` text NOT NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM;");	
+) ENGINE=MyISAM;");
 	$db->query("CREATE TABLE IF NOT EXISTS `domain_docrootsettings` (
   `id` int(5) NOT NULL auto_increment,
   `fid` int(11) NOT NULL,
@@ -1743,4 +1743,19 @@ if(isFroxlorVersion('0.9.22-rrp1'))
 	
 	lastStepStatus(0);
 	updateToVersion('0.9.22-rrp2');
+}
+
+if(isFroxlorVersion('0.9.22-rrp2'))
+{
+	showUpdateStep("Updating from 0.9.22-rrp2 to 0.9.22-rrp3");
+	lastStepStatus(0);
+	
+	// fix structure
+	showUpdateStep("Fix in database structure.");
+	$db->query("ALTER TABLE `user_resources_admin` CHANGE `adminid` `id` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT");
+	$db->query("ALTER TABLE `user_resources` CHANGE `customerid` `id` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT;");
+	$db->query("ALTER TABLE `user_addresses` CHANGE `userid` `id` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT;");
+	
+	lastStepStatus(0);
+	updateToVersion('0.9.22-rrp3');
 }
