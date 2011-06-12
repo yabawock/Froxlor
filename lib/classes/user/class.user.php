@@ -210,12 +210,13 @@ class user {
 	}
 	
 	/**
-	 * @param string $key index
+	 * @param string $area area
+	 * @param string $key  index
 	 *
 	 * @return data set for given $key
 	 */
-	public function getData($key) {
-		return $this->_data[$key];
+	public function getData($area, $key) {
+		return $this->_data[$area][$key];
 	}
 	
 	/**
@@ -226,13 +227,74 @@ class user {
 	}
 	
 	/**
-	 * Updates the data (in database too).
+	 * Updates the user data (in database too).
 	 *
 	 * @param string $area  area like general, address, resource
 	 * @param string $key   key
 	 * @param string $value value
 	 */
 	public function setData($area, $key, $value) {
+		$this->_data[$area][$key] = $value;
 		
+		$this->sync($area, $key);
+	}
+	
+	/**
+	 * Updates the user data.
+	 *
+	 * @param string $area   area
+	 * @param array  $values mixed array
+	 */
+	public function setAllData($area, $values) {
+		$this->_data[$area] = $values;
+	}
+	
+	/**
+	 * Updates the database resource.
+	 *
+	 * @param string $area
+	 * @param string $key
+	 *
+	 * @return string RessourceId
+	 */
+	private function sync($area, $key) {
+		$sql = "UPDATE ". $this->area2table($area) ." SET `". $key ."` = `". $this->getData($area, $key) ."`";
+		
+		return $this->_db->query($sql);
+	}
+	
+	private function syncAll() {
+		
+	}
+	
+	/**
+	 * Converts the area to database table name.
+	 *
+	 * @param string $area
+	 *
+	 * @return string table name
+	 */
+	private function area2table($area) {
+		$table = "does_not_exist";
+		
+		switch ($area) {
+			case "general":
+				$table = TABLE_USERS;
+			break;
+			
+			case "resources":
+				if ($this->isAdmin()) {
+					$table = TABLE_ADMIN_RESOURCES;
+				} else {
+					$table = TABLE_USER_RESOURCES;
+				}
+			break;
+			
+			case "address":
+				$table = TABLE_USER_ADDRESSES;
+			break;
+		}
+		
+		return $table;
 	}
 }
