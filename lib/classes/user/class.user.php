@@ -64,11 +64,29 @@ class user {
 	private $_db;
 	
 	/**
+	 * Constructor.<br />
+	 * You can use to types of initializing:
+	 * 1. login by (int) id
+	 * 2. login by name/domain and password
+	 */
+	public function __construct() {
+		$num = func_num_args();
+		
+		if ($num == 1) {
+			// this must be id based login
+			$this->createById(func_get_arg(0));
+		} else if ($num == 2) {
+			// loginname based
+			$this->createByName(func_get_arg(0), func_get_arg(1));
+		}
+	}
+	
+	/**
 	 * Creates a user object based on the user id.
 	 *
 	 * @param int $id
 	 */
-	public function __construct($id) {
+	private function createById($id) {
 		global $db;
 		$this->_db = $db;
 		
@@ -85,7 +103,7 @@ class user {
 	 * @param string $loginname
 	 * @param string $password
 	 */
-	public function __construct($loginname, $password) {
+	private function createByName($loginname, $password) {
 		global $db;
 		$this->_db = $db;
 		
