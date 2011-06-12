@@ -154,6 +154,7 @@ class user {
 		
 		$row = $this->_db->query_first($sql);
 		if ($row) {
+			// @TODO maybe unset password or update query to not fetch it?
 			$this->_data['general'] = $row;
 		}
 	}
@@ -250,7 +251,7 @@ class user {
 	}
 	
 	/**
-	 * Updates the database resource.
+	 * Updates the database record.
 	 *
 	 * @param string $area
 	 * @param string $key
@@ -258,13 +259,36 @@ class user {
 	 * @return string RessourceId
 	 */
 	private function sync($area, $key) {
-		$sql = "UPDATE ". $this->area2table($area) ." SET `". $key ."` = `". $this->getData($area, $key) ."`";
+		$sql = "UPDATE ". $this->area2table($area) ." SET `". $key ."` = `". $this->getData($area, $key) ."` WHERE id = `". $this->getId() ."`;";
 		
 		return $this->_db->query($sql);
 	}
 	
+	/**
+	 * Updates all database records for this user.
+	 */
 	private function syncAll() {
+		// TABLE_USERS
+		$data = $this->_db->array2update($this->_data['general']);
+		$sql = "UPDATE ". TABLE_USERS ." SET ". $data ." WHERE `id` = `". $this->getId() ."`";
+		$this->_db->query($sql);
 		
+		// TABLE_USER_ADDRESSES
+		$data = $this->_db->array2update($this->_data['address']);
+		$sql = "UPDATE ". TABLE_USER_ADDRESSES ." SET ". $data ." WHERE `id` = `". $this->getId() ."`";
+		$this->_db->query($sql);
+		
+		if ($this->isAdmin()) {
+			// TABLE_ADMIN_RESOURCES
+			$data = $this->_db->array2update($this->_data['resources']);
+			$sql = "UPDATE ". TABLE_ADMIN_RESOURCES ." SET ". $data ." WHERE `id` = `". $this->getId() ."`";
+			$this->_db->query($sql);
+		} else {
+			// TABLE_USER_RESOURCES
+			$data = $this->_db->array2update($this->_data['resources']);
+			$sql = "UPDATE ". TABLE_USER_RESOURCES ." SET ". $data ." WHERE `id` = `". $this->getId() ."`";
+			$this->_db->query($sql);
+		}
 	}
 	
 	/**

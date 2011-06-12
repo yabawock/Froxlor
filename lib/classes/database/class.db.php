@@ -135,7 +135,7 @@ class db
 			}
 		}
 		/*
-		 * this is not for 0.9.x 
+		 * this is not for 0.9.x
 		 */
 		//mysql_query("SET NAMES utf8", $this->link_id);
 		//mysql_query("SET CHARACTER SET utf8", $this->link_id);
@@ -360,6 +360,31 @@ class db
 		{
 			$errormsg.= 'Script: -- Cronscript --' . "\n";
 			die($errormsg);
+		}
+	}
+	
+	/**
+	 * Converts an array to an sql update string
+	 *
+	 * @param arrray $array
+	 *
+	 * @return sql
+	 */
+	public function array2update($array) {
+		$data = array();
+		foreach ($array as $key => $value) {
+			$data[] = "`".$key."` = `". $value ."`";;
+		}
+		
+		$num = count($data);
+		
+		$sql = "";
+		for ($i = 0; $i < $num; $i++) {
+			$sql .= $data[$i];
+			
+			if (($i+1) < $num) {
+				$sql .= ", ";
+			}
 		}
 	}
 }
