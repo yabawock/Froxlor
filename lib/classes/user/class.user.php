@@ -139,7 +139,7 @@ class user {
 	 */
 	private function performLogin($loginname, $password) {
 		$success = false;
-		$row = $this->_db->query_first("SELECT `id`,`loginname`, `password`, isadmin` FROM `" . TABLE_USERS . "` WHERE `loginname`='" . $db->escape($loginname) . "'");
+		$row = $this->_db->query_first("SELECT `id`,`loginname`, `password`, isadmin` FROM `" . TABLE_USERS . "` WHERE `loginname`='" . $this->_db->escape($loginname) . "'");
 
 		if($row['loginname'] == $loginname) {
 			$this->_id = $row['id'];
