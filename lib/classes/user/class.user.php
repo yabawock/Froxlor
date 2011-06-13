@@ -181,7 +181,7 @@ class user {
 	 * Loads address data from database.
 	 */
 	private function fetchUserAddress() {
-		$sql = "SELECT * FROM ". TABLE_USER_ADDRESSES ." WHERE id = '".$this->getId()."'";
+		$sql = "SELECT * FROM ". TABLE_USER_ADDRESSES ." WHERE id = '".$this->getData("general", "contactid")."'";
 		
 		$row = $this->_db->query_first($sql);
 		if ($row) {

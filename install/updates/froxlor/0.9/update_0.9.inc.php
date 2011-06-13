@@ -1772,3 +1772,16 @@ if(isFroxlorVersion('0.9.22-rrp3'))
 	lastStepStatus(0);
 	updateToVersion('0.9.22-rrp4');
 }
+
+if(isFroxlorVersion('0.9.22-rrp4'))
+{
+	showUpdateStep("Updating from 0.9.22-rrp4 to 0.9.22-rrp5");
+	lastStepStatus(0);
+	
+	// fix structure
+	showUpdateStep("Fix in database structure.");
+	$db->query("ALTER TABLE `users` ADD `contactid` INT( 11 ) NOT NULL AFTER `isadmin` ");
+	
+	lastStepStatus(0);
+	updateToVersion('0.9.22-rrp5');
+}
