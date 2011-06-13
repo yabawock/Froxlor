@@ -1759,3 +1759,16 @@ if(isFroxlorVersion('0.9.22-rrp2'))
 	lastStepStatus(0);
 	updateToVersion('0.9.22-rrp3');
 }
+
+if(isFroxlorVersion('0.9.22-rrp3'))
+{
+	showUpdateStep("Updating from 0.9.22-rrp3 to 0.9.22-rrp4");
+	lastStepStatus(0);
+	
+	// fix structure
+	showUpdateStep("Fix in database structure.");
+	$db->query("ALTER TABLE `user_addresses` ADD `country` VARCHAR( 7 ) NOT NULL AFTER `city` ");
+	
+	lastStepStatus(0);
+	updateToVersion('0.9.22-rrp4');
+}
