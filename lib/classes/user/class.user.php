@@ -85,6 +85,8 @@ class user {
 	 * Creates a user object based on the user id.
 	 *
 	 * @param int $id
+	 *
+	 * @throws Exception
 	 */
 	private function createById($id) {
 		global $db;
@@ -94,6 +96,8 @@ class user {
 			$this->_id = $id;
 		
 			$this->init();
+		} else {
+			throw new InvalidArgumentException("Provided id is not valid!", "101");
 		}
 	}
 	
@@ -102,6 +106,8 @@ class user {
 	 *
 	 * @param string $loginname
 	 * @param string $password
+	 *
+	 * @throws Exception on failed login
 	 */
 	private function createByName($loginname, $password) {
 		global $db;
@@ -109,6 +115,8 @@ class user {
 		
 		if ($this->performLogin($loginname, $password)) {
 			$this->init();
+		} else {
+			throw new Exception("Login failed!", "100");
 		}
 	}
 	

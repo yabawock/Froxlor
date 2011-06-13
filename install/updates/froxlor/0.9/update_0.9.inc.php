@@ -1785,3 +1785,19 @@ if(isFroxlorVersion('0.9.22-rrp4'))
 	lastStepStatus(0);
 	updateToVersion('0.9.22-rrp5');
 }
+
+/* @TODO update durchjagen, wenn mehr ansteht
+ * ist bei nem user nen salt nicht gesetzt - muss er nach dem n?chsten login sein passwort ?ndern
+if(isFroxlorVersion('0.9.22-rrp5'))
+{
+	showUpdateStep("Updating from 0.9.22-rrp4 to 0.9.22-rrp5");
+	lastStepStatus(0);
+	
+	// fix structure
+	showUpdateStep("Fix in database structure.");
+	$db->query("ALTER TABLE `users` ADD `salt` VARCHAR( 32 ) NOT NULL AFTER `password` ");
+	
+	lastStepStatus(0);
+	updateToVersion('0.9.22-rrp6');
+}
+ */
