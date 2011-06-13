@@ -385,6 +385,11 @@ if($page == 'customers'
 				$def_language = validate($_POST['def_language'], 'default language');
 				$diskspace = intval_ressource($_POST['diskspace']);
 				$gender = intval_ressource($_POST['gender']);
+				
+				$ccode = "";
+				if(isset($_POST['countrycode'])) {
+					$ccode = $_POST['countrycode'];
+				}
 
 				if(isset($_POST['diskspace_ul']))
 				{
