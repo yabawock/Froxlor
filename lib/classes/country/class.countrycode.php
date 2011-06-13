@@ -19,17 +19,21 @@ class countrycode
 {
 	/**
 	 * This will return an array with the full list of countries.
-	 * 
+	 *
 	 * @param boolean $asOptions shall this be returned as a <option> list
 	 */
-	public static function get($asOptions = false) {
+	public static function get($asOptions = false, $select = null) {
 		global $lng;
 		$cc = array();
 		$output = '';
 		
 		foreach($lng['country'] as $key=>$val) {
+			$append = "";
 			if ($asOptions) {
-				$out .= '<option value="'. $key .'">'. $val .'</option>';
+				if (!empty($select)) {
+					$append = ' selected="selected"';
+				}
+				$out .= '<option value="'. $key .'"'. $append .'>'. $val .'</option>';
 			}
 			else {
 				$cc[$key] = $val;
