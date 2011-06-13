@@ -127,9 +127,6 @@ class user {
 		$this->fetchGeneralData();
 		$this->fetchUserAddress();
 		$this->fetchUserResources();
-		
-		// update DB
-		$this->_db->query("UPDATE ". TABLE_USERS ." SET `lastlogin_succ`='" . time() . "', `loginfail_count`='0' WHERE `id`='" . $this->getId() . "'");
 	}
 	
 	/**
