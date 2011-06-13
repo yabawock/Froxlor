@@ -139,7 +139,7 @@ class user {
 	 */
 	private function performLogin($loginname, $password) {
 		$success = false;
-		$row = $this->_db->query_first("SELECT `id`,`loginname`, `password`, isadmin` FROM `" . TABLE_USERS . "` WHERE `loginname`='" . $this->_db->escape($loginname) . "'");
+		$row = $this->_db->query_first("SELECT `id`,`loginname`, `password`, `isadmin` FROM `" . TABLE_USERS . "` WHERE `loginname` = '" . $this->_db->escape($loginname) . "'");
 
 		if($row['loginname'] == $loginname) {
 			$this->_id = $row['id'];
@@ -183,7 +183,7 @@ class user {
 	 * Loads general data from database.
 	 */
 	private function fetchGeneralData() {
-		$sql = "SELECT * FROM ". TABLE_USERS ." WHERE id = '".$this->getId()."'";
+		$sql = "SELECT * FROM ". TABLE_USERS ." WHERE `id` = '".$this->getId()."'";
 		
 		$row = $this->_db->query_first($sql);
 		if ($row) {
@@ -196,7 +196,7 @@ class user {
 	 * Loads address data from database.
 	 */
 	private function fetchUserAddress() {
-		$sql = "SELECT * FROM ". TABLE_USER_ADDRESSES ." WHERE id = '".$this->getData("general", "contactid")."'";
+		$sql = "SELECT * FROM ". TABLE_USER_ADDRESSES ." WHERE `id` = '".$this->getData("general", "contactid")."'";
 		
 		$row = $this->_db->query_first($sql);
 		if ($row) {
@@ -214,7 +214,7 @@ class user {
 			$table = TABLE_ADMIN_RESOURCES;
 		}
 		
-		$sql = "SELECT * FROM ". $table ." WHERE id = '".$this->getId()."'";
+		$sql = "SELECT * FROM ". $table ." WHERE `id` = '".$this->getId()."'";
 		
 		$row = $this->_db->query_first($sql);
 		if ($row) {
@@ -292,7 +292,7 @@ class user {
 	 * @return string RessourceId
 	 */
 	private function sync($area, $key) {
-		$sql = "UPDATE ". $this->area2table($area) ." SET `". $key ."` = `". $this->getData($area, $key) ."` WHERE id = `". $this->getId() ."`;";
+		$sql = "UPDATE ". $this->area2table($area) ." SET `". $key ."` = '". $this->getData($area, $key) ."' WHERE `id` = '". $this->getId() ."';";
 		
 		return $this->_db->query($sql);
 	}
@@ -303,23 +303,23 @@ class user {
 	private function syncAll() {
 		// TABLE_USERS
 		$data = $this->_db->array2update($this->_data['general']);
-		$sql = "UPDATE ". TABLE_USERS ." SET ". $data ." WHERE `id` = `". $this->getId() ."`";
+		$sql = "UPDATE ". TABLE_USERS ." SET ". $data ." WHERE `id` = '". $this->getId() ."'";
 		$this->_db->query($sql);
 		
 		// TABLE_USER_ADDRESSES
 		$data = $this->_db->array2update($this->_data['address']);
-		$sql = "UPDATE ". TABLE_USER_ADDRESSES ." SET ". $data ." WHERE `id` = `". $this->getId() ."`";
+		$sql = "UPDATE ". TABLE_USER_ADDRESSES ." SET ". $data ." WHERE `id` = '". $this->getId() ."'";
 		$this->_db->query($sql);
 		
 		if ($this->isAdmin()) {
 			// TABLE_ADMIN_RESOURCES
 			$data = $this->_db->array2update($this->_data['resources']);
-			$sql = "UPDATE ". TABLE_ADMIN_RESOURCES ." SET ". $data ." WHERE `id` = `". $this->getId() ."`";
+			$sql = "UPDATE ". TABLE_ADMIN_RESOURCES ." SET ". $data ." WHERE `id` = '". $this->getId() ."'";
 			$this->_db->query($sql);
 		} else {
 			// TABLE_USER_RESOURCES
 			$data = $this->_db->array2update($this->_data['resources']);
-			$sql = "UPDATE ". TABLE_USER_RESOURCES ." SET ". $data ." WHERE `id` = `". $this->getId() ."`";
+			$sql = "UPDATE ". TABLE_USER_RESOURCES ." SET ". $data ." WHERE `id` = '". $this->getId() ."'";
 			$this->_db->query($sql);
 		}
 	}
