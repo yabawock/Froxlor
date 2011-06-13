@@ -38,196 +38,90 @@ if($action == 'login')
 		$loginname = validate($_POST['loginname'], 'loginname');
 		$password = validate($_POST['password'], 'password');
 
-		$row = $db->query_first("SELECT `loginname` AS `customer` FROM `" . TABLE_PANEL_CUSTOMERS . "` WHERE `loginname`='" . $db->escape($loginname) . "'");
-
-		if($row['customer'] == $loginname)
-		{
-			$table = "`" . TABLE_PANEL_CUSTOMERS . "`";
-			$uid = 'customerid';
-			$adminsession = '0';
-			$is_admin = false;
+		try {
+			$user = new user($loginname, $password);
+			
+			$user->setData("general", "lastlogin_succ", time());
+			$user->setData("general", "loginfail_count", 0);
 		}
-		else
-		{
-			if((int)$settings['login']['domain_login'] == 1)
-			{
-				/**
-				 * check if the customer tries to login with a domain, #374
-				 */
-				$domainname = $idna_convert->encode(preg_replace(Array('/\:(\d)+$/', '/^https?\:\/\//'), '', $loginname));
-				$row2 = $db->query_first("SELECT `customerid` FROM `".TABLE_PANEL_DOMAINS."` WHERE `domain` = '".$db->escape($domainname)."'");
-	
-				if(isset($row2['customerid']) && $row2['customerid'] > 0)
-				{
-					$loginname = getCustomerDetail($row2['customerid'], 'loginname');
-					
-					if($loginname !== false)
-					{
-						$row3 = $db->query_first("SELECT `loginname` AS `customer` FROM `" . TABLE_PANEL_CUSTOMERS . "` WHERE `loginname`='" . $db->escape($loginname) . "'");
+		catch(Exception $e) {
+			// login incorrect
+			$user->setData("general", "lastlogin_fail", time());
+			$user->setData("general", "loginfail_count", $user->getData("general", "loginfail_count")+1);
+			
+			redirectTo('index.php', Array('showmessage' => '2'), true);
+			exit;
+		}
 		
-						if($row3['customer'] == $loginname)
-						{
-							$table = "`" . TABLE_PANEL_CUSTOMERS . "`";
-							$uid = 'customerid';
-							$adminsession = '0';
-							$is_admin = false;
-						}
-					}
-					else
-					{
-						$is_admin = true;
-					}
-				}
-				else
-				{
-					$is_admin = true;
-				}
-			}
-			else
-			{
-				$is_admin = true;
-			}
-		}
-
-		if(hasUpdates($version) && $is_admin == false)
+		// udpate available but not an admin?
+		if(hasUpdates($version) && !$user->isAdmin()
+			// or update available, is admin but has not the right to do the update
+			|| hasUpdates($version) && $user->isAdmin() && !$user->getData("resources", "change_serversettings"))
 		{
 			redirectTo('index.php');
 			exit;
 		}
 
-		if($is_admin)
-		{
-			if(hasUpdates($version))
-			{
-				$row = $db->query_first("SELECT `loginname` AS `admin` FROM `" . TABLE_PANEL_ADMINS . "` WHERE `loginname`='" . $db->escape($loginname) . "' AND `change_serversettings` = '1'");
-				/*
-				 * not an admin who can see updates
-				 */
-				if(!isset($row['admin']))
-				{
-					redirectTo('index.php');
-					exit;
-				}
-			}
-			else
-			{
-				$row = $db->query_first("SELECT `loginname` AS `admin` FROM `" . TABLE_PANEL_ADMINS . "` WHERE `loginname`='" . $db->escape($loginname) . "'");
-			}
-
-			if($row['admin'] == $loginname)
-			{
-				$table = "`" . TABLE_PANEL_ADMINS . "`";
-				$uid = 'adminid';
-				$adminsession = '1';
-			}
-			else
-			{
-				redirectTo('index.php', Array('showmessage' => '2'), true);
-				exit;
-			}
-		}
-
-		$userinfo = $db->query_first("SELECT * FROM $table WHERE `loginname`='" . $db->escape($loginname) . "'");
-
-		if($userinfo['loginfail_count'] >= $settings['login']['maxloginattempts']
-		&& $userinfo['lastlogin_fail'] > (time() - $settings['login']['deactivatetime']))
+		// too many attempts or temporary disabled?
+		if($user->getData("general", "loginfail_count") >= $settings['login']['maxloginattempts']
+			&& $user->getData("general", "lastlogin_fail") > (time() - $settings['login']['deactivatetime']))
 		{
 			redirectTo('index.php', Array('showmessage' => '3'), true);
 			exit;
 		}
-		elseif($userinfo['password'] == md5($password))
+
+		// create session id
+		$s = md5(uniqid(microtime(), 1));
+
+		// panel language
+		if(isset($_POST['language']))
 		{
-			// login correct
-			// reset loginfail_counter, set lastlogin_succ
+			$language = validate($_POST['language'], 'language');
 
-			$db->query("UPDATE $table SET `lastlogin_succ`='" . time() . "', `loginfail_count`='0' WHERE `$uid`='" . (int)$userinfo[$uid] . "'");
-			$userinfo['userid'] = $userinfo[$uid];
-			$userinfo['adminsession'] = $adminsession;
-		}
-		else
-		{
-			// login incorrect
-
-			$db->query("UPDATE $table SET `lastlogin_fail`='" . time() . "', `loginfail_count`=`loginfail_count`+1 WHERE `$uid`='" . (int)$userinfo[$uid] . "'");
-			unset($userinfo);
-			redirectTo('index.php', Array('showmessage' => '2'), true);
-			exit;
-		}
-
-		if(isset($userinfo['userid'])
-		&& $userinfo['userid'] != '')
-		{
-			$s = md5(uniqid(microtime(), 1));
-
-			if(isset($_POST['language']))
+			if($language == 'profile')
 			{
-				$language = validate($_POST['language'], 'language');
-
-				if($language == 'profile')
-				{
-					$language = $userinfo['def_language'];
-				}
-				elseif(!isset($languages[$language]))
-				{
-					$language = $settings['panel']['standardlanguage'];
-				}
+				$language =  $user->getData("general", "def_language");
 			}
-			else
+			elseif(!isset($languages[$language]))
 			{
 				$language = $settings['panel']['standardlanguage'];
 			}
-
-			if(isset($userinfo['theme']) && $userinfo['theme'] != '') {
-				$theme = $userinfo['theme'];
-			}
-			else
-			{
-				$theme = $settings['panel']['default_theme'];
-			}
-
-			if($settings['session']['allow_multiple_login'] != '1')
-			{
-				$db->query("DELETE FROM `" . TABLE_PANEL_SESSIONS . "` WHERE `userid` = '" . (int)$userinfo['userid'] . "' AND `adminsession` = '" . $db->escape($userinfo['adminsession']) . "'");
-			}
-
-			// check for field 'theme' in session-table, refs #607
-			$fields = mysql_list_fields($db->getDbName(), TABLE_PANEL_SESSIONS);
-			$columns = mysql_num_fields($fields);
-			$field_array = array();
-			for ($i = 0; $i < $columns; $i++) {
-    			$field_array[] = mysql_field_name($fields, $i);
-			}
-
-    		if (!in_array('theme', $field_array)) {
-				$db->query("INSERT INTO `" . TABLE_PANEL_SESSIONS . "` (`hash`, `userid`, `ipaddress`, `useragent`, `lastactivity`, `language`, `adminsession`) VALUES ('" . $db->escape($s) . "', '" . (int)$userinfo['userid'] . "', '" . $db->escape($remote_addr) . "', '" . $db->escape($http_user_agent) . "', '" . time() . "', '" . $db->escape($language) . "', '" . $db->escape($userinfo['adminsession']) . "')");
-    		} else {
-    			$db->query("INSERT INTO `" . TABLE_PANEL_SESSIONS . "` (`hash`, `userid`, `ipaddress`, `useragent`, `lastactivity`, `language`, `adminsession`, `theme`) VALUES ('" . $db->escape($s) . "', '" . (int)$userinfo['userid'] . "', '" . $db->escape($remote_addr) . "', '" . $db->escape($http_user_agent) . "', '" . time() . "', '" . $db->escape($language) . "', '" . $db->escape($userinfo['adminsession']) . "', '" . $db->escape($theme) . "')");
-    		}
-
-			if($userinfo['adminsession'] == '1')
-			{
-				if(hasUpdates($version))
-				{
-					redirectTo('admin_updates.php', Array('s' => $s), true);
-					exit;
-				}
-				else
-				{
-					redirectTo('admin_index.php', Array('s' => $s), true);
-					exit;
-				}
-			}
-			else
-			{
-				redirectTo('customer_index.php', Array('s' => $s), true);
-				exit;
-			}
 		}
 		else
 		{
-			redirectTo('index.php', Array('showmessage' => '2'), true);
-			exit;
+			$language = $settings['panel']['standardlanguage'];
 		}
+
+		// theme selection
+		$theme = $settings['panel']['default_theme'];
+		if($user->getData("general", "theme") != '') {
+			$theme = $user->getData("general", "theme");
+		}
+
+		if($settings['session']['allow_multiple_login'] != '1')
+		{
+			$db->query("DELETE FROM `" . TABLE_PANEL_SESSIONS . "` WHERE `userid` = '" . $user->getId() . "' AND `adminsession` = '" . $user->isAdmin() . "'");
+		}
+		
+		$db->query("INSERT INTO `" . TABLE_PANEL_SESSIONS . "` (`hash`, `userid`, `ipaddress`, `useragent`, `lastactivity`, `language`, `adminsession`, `theme`) VALUES ('" . $db->escape($s) . "', '" . $user->getId(). "', '" . $db->escape($remote_addr) . "', '" . $db->escape($http_user_agent) . "', '" . time() . "', '" . $db->escape($language) . "', '" . $db->escape($user->isAdmin()) . "', '" . $db->escape($theme) . "')");
+		
+
+		if($user->isAdmin())
+		{
+			if(hasUpdates($version))
+			{
+				redirectTo('admin_updates.php', Array('s' => $s), true);
+				exit;
+			}
+			else
+			{
+				redirectTo('admin_index.php', Array('s' => $s), true);
+				exit;
+			}
+		}
+		
+		redirectTo('customer_index.php', Array('s' => $s), true);
+		exit;
 	}
 	else
 	{
