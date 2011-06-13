@@ -127,6 +127,9 @@ class user {
 		$this->fetchGeneralData();
 		$this->fetchUserAddress();
 		$this->fetchUserResources();
+		
+		// update DB
+		$this->_db->query("UPDATE ". TABLE_USERS ." SET `lastlogin_succ`='" . time() . "', `loginfail_count`='0' WHERE `id`='" . $this->getId() . "'");
 	}
 	
 	/**
@@ -139,9 +142,11 @@ class user {
 	 */
 	private function performLogin($loginname, $password) {
 		$success = false;
-		$row = $this->_db->query_first("SELECT `loginname`, `isadmin` FROM `" . TABLE_USERS . "` WHERE `loginname`='" . $db->escape($loginname) . "'");
+		$row = $this->_db->query_first("SELECT `id`,`loginname`, `password`, isadmin` FROM `" . TABLE_USERS . "` WHERE `loginname`='" . $db->escape($loginname) . "'");
 
 		if($row['loginname'] == $loginname) {
+			$this->_id = $row['id'];
+			
 			// check if the user is an admin
 			if ($row['isadmin']) {
 				$this->_isAdmin = true;
@@ -155,18 +160,23 @@ class user {
 			 */
 			$domainname = $idna_convert->encode(preg_replace(Array('/\:(\d)+$/', '/^https?\:\/\//'), '', $loginname));
 			
-			$sql = "SELECT a.`customerid`, b.`isadmin`, b.`loginname`
+			$sql = "SELECT a.`customerid`, b.`isadmin`, b.`loginname`, b.`password`
 					FROM `". TABLE_PANEL_DOMAINS ."` a, `". TABLE_USERS ."` b
 					WHERE a.`domain` = '' && a.`customerid` = b.`id`";
 			
 			$row = $this->_db->query_first($sql);
 			if ($row) {
-				$this->_loginname = $tow['loginname'];
+				$this->_loginname = $row['loginname'];
 				$this->_id = $row['id'];
 				$this->_isAdmin = $row['isadmin'];
 				
 				$success = true;
 			}
+		}
+		
+		// check password
+		if (md5($password) != $row['password']) {
+			$success = false;
 		}
 		
 		return $success;
