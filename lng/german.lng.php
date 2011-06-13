@@ -1610,4 +1610,4 @@ $lng['serversettings']['backup_ftp_passive_mode'] = 'Passiven &Uuml;bertragungsm
 $lng['serversettings']['backup_bigfile'] = 'Backup von Kundenverzeichnissen und Datenbanken in eine Datei speichern, statt zu splitten?';
 
 // Country code (ISO-3166-2)
-$lng['country']['countrycode'] = 'L&auml;ndercode';
+$lng['countrycode'] = 'Land';

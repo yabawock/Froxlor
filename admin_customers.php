@@ -87,7 +87,7 @@ if($page == 'customers'
 		if($settings['autoresponder']['autoresponder_active'] == 1)
 		{
 			$fields['c.email_autoresponder'] = $lng['customer']['autoresponder'];
-			$fields['c.email_autoresponder_used'] = $lng['customer']['autoresponder'] . ' (' . $lng['panel']['used'] . ')';			
+			$fields['c.email_autoresponder_used'] = $lng['customer']['autoresponder'] . ' (' . $lng['panel']['used'] . ')';
 		}
 */
 
@@ -175,11 +175,11 @@ if($page == 'customers'
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
-				$result = $db->query("UPDATE 
-					`" . TABLE_PANEL_CUSTOMERS . "` 
-				SET 
-					`loginfail_count` = '0' 
-				WHERE 
+				$result = $db->query("UPDATE
+					`" . TABLE_PANEL_CUSTOMERS . "`
+				SET
+					`loginfail_count` = '0'
+				WHERE
 					`customerid`= '" . (int)$id . "'"
 				);
 				redirectTo($filename, Array('page' => $page, 's' => $s));
@@ -259,7 +259,7 @@ if($page == 'customers'
 					// remove all package related settings
 					$db->query("DELETE FROM `".TABLE_APS_SETTINGS."` WHERE `InstanceID` = '".(int)$apsrow['ID']."'");
 					// maybe some leftovers in the tasks
-					$db->query("DELETE FROM `".TABLE_APS_TASKS."` WHERE `InstanceID` = '".(int)$apsrow['ID']."'"); 
+					$db->query("DELETE FROM `".TABLE_APS_TASKS."` WHERE `InstanceID` = '".(int)$apsrow['ID']."'");
 				}
 				// now remove all user instances
 				$db->query("DELETE FROM `".TABLE_APS_INSTANCES."` WHERE `CustomerID`='".(int)$id."'");
@@ -354,7 +354,7 @@ if($page == 'customers'
 						$mainticket->Archive();
 						$log->logAction(ADM_ACTION, LOG_NOTICE, "archived ticket '" . $mainticket->Get('subject') . "'");
 					}
-				}				
+				}
 				
 				redirectTo($filename, Array('page' => $page, 's' => $s));
 			}
@@ -455,11 +455,11 @@ if($page == 'customers'
 				}
 
 				$email_imap = 0;
-				if(isset($_POST['email_imap'])) 
+				if(isset($_POST['email_imap']))
 					$email_imap = intval_ressource($_POST['email_imap']);
 				
 				$email_pop3 = 0;
-				if(isset($_POST['email_pop3'])) 
+				if(isset($_POST['email_pop3']))
 					$email_pop3 = intval_ressource($_POST['email_pop3']);
 				
 				$ftps = 0;
@@ -658,40 +658,40 @@ if($page == 'customers'
 					$_theme = $settings['panel']['default_theme'];
 
 					$result = $db->query(
-						"INSERT INTO `" . TABLE_PANEL_CUSTOMERS . "` SET 
-						`adminid` = '" . (int)$userinfo['adminid'] . "', 
-						`loginname` = '" . $db->escape($loginname) . "', 
-						`password` = '" . md5($password) . "', 
-						`name` = '" . $db->escape($name) . "', 
-						`firstname` = '" . $db->escape($firstname) . "', 
+						"INSERT INTO `" . TABLE_PANEL_CUSTOMERS . "` SET
+						`adminid` = '" . (int)$userinfo['adminid'] . "',
+						`loginname` = '" . $db->escape($loginname) . "',
+						`password` = '" . md5($password) . "',
+						`name` = '" . $db->escape($name) . "',
+						`firstname` = '" . $db->escape($firstname) . "',
 						`gender` = '" . (int)$gender . "',
-						`company` = '" . $db->escape($company) . "', 
-						`street` = '" . $db->escape($street) . "', 
-						`zipcode` = '" . $db->escape($zipcode) . "', 
-						`city` = '" . $db->escape($city) . "', 
-						`phone` = '" . $db->escape($phone) . "', 
-						`fax` = '" . $db->escape($fax) . "', 
-						`email` = '" . $db->escape($email) . "', 
-						`customernumber` = '" . $db->escape($customernumber) . "', 
-						`def_language` = '" . $db->escape($def_language) . "', 
-						`documentroot` = '" . $db->escape($documentroot) . "', 
-						`guid` = '" . $db->escape($guid) . "', 
-						`diskspace` = '" . $db->escape($diskspace) . "', 
-						`traffic` = '" . $db->escape($traffic) . "', 
-						`subdomains` = '" . $db->escape($subdomains) . "', 
-						`emails` = '" . $db->escape($emails) . "', 
-						`email_accounts` = '" . $db->escape($email_accounts) . "', 
-						`email_forwarders` = '" . $db->escape($email_forwarders) . "', 
-						`email_quota` = '" . $db->escape($email_quota) . "', 
-						`ftps` = '" . $db->escape($ftps) . "', 
-						`tickets` = '" . $db->escape($tickets) . "', 
-						`mysqls` = '" . $db->escape($mysqls) . "', 
-						`standardsubdomain` = '0', 
-						`phpenabled` = '" . $db->escape($phpenabled) . "', 
-						`imap` = '" . $db->escape($email_imap) . "', 
-						`pop3` = '" . $db->escape($email_pop3) . "', 
-						`aps_packages` = '" . (int)$number_of_aps_packages . "', 
-						`perlenabled` = '" . $db->escape($perlenabled) . "', 
+						`company` = '" . $db->escape($company) . "',
+						`street` = '" . $db->escape($street) . "',
+						`zipcode` = '" . $db->escape($zipcode) . "',
+						`city` = '" . $db->escape($city) . "',
+						`phone` = '" . $db->escape($phone) . "',
+						`fax` = '" . $db->escape($fax) . "',
+						`email` = '" . $db->escape($email) . "',
+						`customernumber` = '" . $db->escape($customernumber) . "',
+						`def_language` = '" . $db->escape($def_language) . "',
+						`documentroot` = '" . $db->escape($documentroot) . "',
+						`guid` = '" . $db->escape($guid) . "',
+						`diskspace` = '" . $db->escape($diskspace) . "',
+						`traffic` = '" . $db->escape($traffic) . "',
+						`subdomains` = '" . $db->escape($subdomains) . "',
+						`emails` = '" . $db->escape($emails) . "',
+						`email_accounts` = '" . $db->escape($email_accounts) . "',
+						`email_forwarders` = '" . $db->escape($email_forwarders) . "',
+						`email_quota` = '" . $db->escape($email_quota) . "',
+						`ftps` = '" . $db->escape($ftps) . "',
+						`tickets` = '" . $db->escape($tickets) . "',
+						`mysqls` = '" . $db->escape($mysqls) . "',
+						`standardsubdomain` = '0',
+						`phpenabled` = '" . $db->escape($phpenabled) . "',
+						`imap` = '" . $db->escape($email_imap) . "',
+						`pop3` = '" . $db->escape($email_pop3) . "',
+						`aps_packages` = '" . (int)$number_of_aps_packages . "',
+						`perlenabled` = '" . $db->escape($perlenabled) . "',
 						`email_autoresponder` = '" . $db->escape($email_autoresponder) . "',
 						`backup_allowed` = '" . $db->escape($backup_allowed) . "',
 						`theme` = '" . $db->escape($_theme) . "'"
@@ -809,16 +809,16 @@ if($page == 'customers'
 							$_stdsubdomain = $loginname . '.' . $settings['system']['hostname'];
 						}
 
-						$db->query("INSERT INTO `" . TABLE_PANEL_DOMAINS . "` SET " . 
+						$db->query("INSERT INTO `" . TABLE_PANEL_DOMAINS . "` SET " .
 							"`domain` = '". $db->escape($_stdsubdomain) . "', " .
 							"`customerid` = '" . (int)$customerid . "', " .
-							"`adminid` = '" . (int)$userinfo['adminid'] . "', " . 
+							"`adminid` = '" . (int)$userinfo['adminid'] . "', " .
 							"`parentdomainid` = '-1', " .
-							"`ipandport` = '" . $db->escape($settings['system']['defaultip']) . "', " . 
-							"`documentroot` = '" . $db->escape($documentroot) . "', " . 
+							"`ipandport` = '" . $db->escape($settings['system']['defaultip']) . "', " .
+							"`documentroot` = '" . $db->escape($documentroot) . "', " .
 							"`zonefile` = '', " .
 							"`isemaildomain` = '0', " .
-							"`caneditdomain` = '0', " . 
+							"`caneditdomain` = '0', " .
 							"`openbasedir` = '1', " .
 							"`safemode` = '1', " .
 							"`speciallogfile` = '0', " .
@@ -883,6 +883,8 @@ if($page == 'customers'
 				{
 					$language_options.= makeoption($language_name, $language_file, $settings['panel']['standardlanguage'], true);
 				}
+				
+				$countrycode = countrycode::get(true);
 
 				$diskspace_ul = makecheckbox('diskspace_ul', $lng['customer']['unlimited'], '-1', false, '0', true, true);
 				$traffic_ul = makecheckbox('traffic_ul', $lng['customer']['unlimited'], '-1', false, '0', true, true);
@@ -1010,14 +1012,14 @@ if($page == 'customers'
 				else
 				{
 					$email_autoresponder = 0;
-				}				
+				}
 
 				$email_imap = 0;
-				if(isset($_POST['email_imap'])) 
+				if(isset($_POST['email_imap']))
 					$email_imap = intval_ressource($_POST['email_imap']);
 				
 				$email_pop3 = 0;
-				if(isset($_POST['email_pop3'])) 
+				if(isset($_POST['email_pop3']))
 					$email_pop3 = intval_ressource($_POST['email_pop3']);
 				
 				$ftps = 0;
@@ -1060,7 +1062,7 @@ if($page == 'customers'
 				}
 
 				if($settings['aps']['aps_active'] == '1')
-				{				
+				{
 					$number_of_aps_packages = intval_ressource($_POST['number_of_aps_packages']);
 
 					if(isset($_POST['number_of_aps_packages_ul']))
@@ -1240,7 +1242,7 @@ if($page == 'customers'
 									$db_root->query('REVOKE ALL PRIVILEGES ON `' . str_replace('_', '\_', $db_root->escape($row_database['databasename'])) . '` . * FROM `' . $db_root->escape($row_database['databasename']) . '`@`' . $db_root->escape($mysql_access_host) . '`');
 								}
 								else /* Otherwise grant access */
-								{					
+								{
 									$db_root->query('GRANT ALL PRIVILEGES ON `' . $db_root->escape($row_database['databasename']) .'`.* TO `' . $db_root->escape($row_database['databasename']) . '`@`' . $db_root->escape($mysql_access_host) . '`');
 									$db_root->query('GRANT ALL PRIVILEGES ON `' . str_replace('_', '\_', $db_root->escape($row_database['databasename'])) . '` . * TO `' . $db_root->escape($row_database['databasename']) . '`@`' . $db_root->escape($mysql_access_host) . '`');
 								}
@@ -1568,6 +1570,8 @@ if($page == 'customers'
 				$gender_options = makeoption($lng['gender']['undef'], 0, ($result['gender'] == '0' ? true : false), true, true);
 				$gender_options .= makeoption($lng['gender']['male'], 1, ($result['gender'] == '1' ? true : false), true, true);
 				$gender_options .= makeoption($lng['gender']['female'], 2, ($result['gender'] == '2' ? true : false), true, true);
+				
+				$countrycode = countrycode::get(true);
 				
 				$customer_edit_data = include_once dirname(__FILE__).'/lib/formfields/admin/customer/formfield.customer_edit.php';
 				$customer_edit_form = htmlform::genHTMLForm($customer_edit_data);
