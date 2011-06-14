@@ -92,7 +92,7 @@ class user {
 		global $db;
 		$this->_db = $db;
 		
-		if (ctype_digit($id)) {
+		if (is_int($id)) {
 			$this->_id = $id;
 		
 			$this->init();
