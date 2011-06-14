@@ -25,7 +25,7 @@ function storeSettingDefaultIp($fieldname, $fielddata, $newfieldvalue)
 	{
 		global $db;
 		
-		$customerstddomains_result = $db->query('SELECT `standardsubdomain` FROM `' . TABLE_PANEL_CUSTOMERS . '` WHERE `standardsubdomain` <> \'0\'');
+		$customerstddomains_result = $db->query('SELECT `standardsubdomain` FROM `' . TABLE_USER_RESOURCES . '` WHERE `standardsubdomain` <> \'0\'');
 		$ids = array();
 
 		while($customerstddomains_row = $db->fetch_array($customerstddomains_result))
