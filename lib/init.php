@@ -313,6 +313,10 @@ if($language != 'English')
 	}
 }
 
+// Initialize our new link - class
+
+$linker = new linker('index.php', $s);
+
 /**
  * global Theme-variable
  */
@@ -436,7 +440,7 @@ elseif(isset($_GET['action']))
 else
 {
 	$action = '';
-	
+
 	// clear request data
 	if (isset($_SESSION)) {
 		unset($_SESSION['requestData']);

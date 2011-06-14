@@ -9,7 +9,7 @@ $header
 
 		<section>
 			
-			<form action="$filename" method="post" enctype="application/x-www-form-urlencoded">
+			<form action="{$linker->getLink(array('section' => 'tickets'))}" method="post" enctype="application/x-www-form-urlencoded">
 
 			<div class="overviewsearch">
 				{$searchcode}
@@ -18,7 +18,7 @@ $header
 			<if ($userinfo['tickets_used'] < $userinfo['tickets'] || $userinfo['tickets'] == '-1') && 15 < $tickets_count >
 			<div class="overviewadd">
 				<img src="images/Froxlor/icons/ticket_add.png" alt="" />&nbsp;
-				<a href="$filename?page=tickets&amp;action=new&amp;s=$s">{$lng['ticket']['ticket_new']}</a>
+				<a href="{$linker->getLink(array('section' => 'tickets', 'page' => 'tickets', 'action' => 'new'))}">{$lng['ticket']['ticket_new']}</a>
 			</div>
 			</if>
 
@@ -57,7 +57,7 @@ $header
 			<if ($userinfo['tickets_used'] < $userinfo['tickets'] || $userinfo['tickets'] == '-1') && $countcustomers !=0 >
 			<div class="overviewadd">
 				<img src="images/Froxlor/icons/ticket_add.png" alt="" />&nbsp;
-				<a href="$filename?page=tickets&amp;action=new&amp;s=$s">{$lng['ticket']['ticket_new']}</a>
+				<a href="{$linker->getLink(array('section' => 'tickets', 'page' => 'tickets', 'action' => 'new'))}">{$lng['ticket']['ticket_new']}</a>
 			</div>
 			</if>
 
@@ -65,7 +65,7 @@ $header
 				<div class="warningcontainer bradius">
 					<div class="warningtitle">{$lng['admin']['warning']}</div>
 					<div class="warning">
-						<a href="admin_customers.php?s=$s&amp;page=customers&amp;action=add">{$lng['admin']['ticket_nocustomeraddingavailable']}</a>
+						<a href="{$linker->getLink(array('section' => 'customers', 'page' => 'customers', 'action' => 'add'))}">{$lng['admin']['ticket_nocustomeraddingavailable']}</a>
 					</div>
 				</div>
 			</if>
