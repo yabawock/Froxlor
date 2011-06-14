@@ -19,13 +19,13 @@
 
 function getAdmins($limit_resource = '')
 {
-	global $db;
+	global $db, $user;
 
 	$additional_conditions = '';
 	$additional_conditions_array = array();
 	if(getSessionUserDetail('customers_see_all') != true)
 	{
-		$additional_conditions_array[] = '`adminid` = \'' . (int)getSessionUserDetail('adminid') . '\'';
+		$additional_conditions_array[] = '`id` = \'' . $user->getId() . '\'';
 	}
 	if($limit_resource != '')
 	{
@@ -33,16 +33,16 @@ function getAdmins($limit_resource = '')
 	}
 	if(!empty($additional_conditions_array))
 	{
-		$additional_conditions = ' WHERE ' . implode(' AND ', $additional_conditions_array) . ' ';
+		$additional_conditions =  implode(' AND ', $additional_conditions_array) . ' ';
 	}
 
-	$query = 'SELECT `adminid`, `loginname`, `name`, `firstname`, `company` FROM `' . TABLE_PANEL_ADMINS . '` ' . $additional_conditions  . ' ORDER BY `name` ASC';
+	$query = 'SELECT a.`id`, a.`loginname`, `name`, `firstname`, `company` FROM `' . TABLE_USERS . '` a, `'. TABLE_USER_ADDRESSES .'` b WHERE `isadmin`=\'1\' AND a.`id` = b.`id` ' . $additional_conditions  . ' ORDER BY `name` ASC';
 	$result = $db->query($query);
 	$admins_array = array();
 
 	while($row = $db->fetch_array($result))
 	{
-		$admins_array[$row['adminid']] = getCorrectFullUserDetails($row) . ' (' . $row['loginname'] . ')';
+		$admins_array[$row['id']] = getCorrectFullUserDetails($row) . ' (' . $row['loginname'] . ')';
 	}
 
 	return $admins_array;

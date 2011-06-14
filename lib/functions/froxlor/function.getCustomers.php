@@ -25,7 +25,7 @@ function getCustomers($limit_resource = '')
 	$additional_conditions_array = array();
 	if(getSessionUserDetail('customers_see_all') != true)
 	{
-		$additional_conditions_array[] = '`adminid` = \'' . (int)getSessionUserDetail('adminid') . '\'';
+		$additional_conditions_array[] = '`id` = \'' . $user->getId() . '\'';
 	}
 	if($limit_resource != '')
 	{
@@ -33,16 +33,16 @@ function getCustomers($limit_resource = '')
 	}
 	if(!empty($additional_conditions_array))
 	{
-		$additional_conditions = ' WHERE ' . implode(' AND ', $additional_conditions_array) . ' ';
+		$additional_conditions = implode(' AND ', $additional_conditions_array) . ' ';
 	}
 
-	$query = 'SELECT `customerid`, `loginname`, `name`, `firstname`, `company` FROM `' . TABLE_PANEL_CUSTOMERS . '` ' . $additional_conditions  . ' ORDER BY `name` ASC';
+	$query = 'SELECT a.`id`, a.`loginname`, `name`, `firstname`, `company` FROM `' . TABLE_USERS . '` a, `'. TABLE_USER_ADDRESSES .'` b WHERE `isadmin`=\'0\' AND a.`id` = b.`id` ' . $additional_conditions  . ' ORDER BY `name` ASC';
 	$result = $db->query($query);
 	$customers_array = array();
 
 	while($row = $db->fetch_array($result))
 	{
-		$customers_array[$row['customerid']] = getCorrectFullUserDetails($row) . ' (' . $row['loginname'] . ')';
+		$customers_array[$row['id']] = getCorrectFullUserDetails($row) . ' (' . $row['loginname'] . ')';
 	}
 
 	return $customers_array;

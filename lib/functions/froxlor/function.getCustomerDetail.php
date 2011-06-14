@@ -17,7 +17,7 @@
  *
  */
 
-function getCustomerDetail($customerid, $varname)
+function getCustomerDetail($customerid, $varname) // @XXX check where this function is used and replace it!
 {
 	global $db;
 
