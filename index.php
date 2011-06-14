@@ -177,27 +177,10 @@ if($action == 'forgotpwd')
 	{
 		$loginname = validate($_POST['loginname'], 'loginname');
 		$email = validateEmail($_POST['loginemail'], 'email');
-		$sql = "SELECT `adminid`, `customerid`, `firstname`, `name`, `company`, `email`, `loginname`, `def_language`, `deactivated` FROM `" . TABLE_PANEL_CUSTOMERS . "`
+		$sql = "SELECT `adminid`, `customerid`, `isadmin`, `firstname`, `name`, `company`, `email`, `loginname`, `def_language`, `deactivated` FROM `" . TABLE_USERS . "`
 				WHERE `loginname`='" . $db->escape($loginname) . "'
 				AND `email`='" . $db->escape($email) . "'";
 		$result = $db->query($sql);
-
-		if($db->num_rows() == 0)
-		{
-			$sql = "SELECT `adminid`, `name`, `email`, `loginname`, `def_language` FROM `" . TABLE_PANEL_ADMINS . "`
-				WHERE `loginname`='" . $db->escape($loginname) . "'
-				AND `email`='" . $db->escape($email) . "'";
-			$result = $db->query($sql);
-				
-			if($db->num_rows() > 0)
-			{
-				$adminchecked = true;
-			}
-			else
-			{
-				$result = null;
-			}
-		}
 
 		if($result !== null)
 		{
@@ -210,8 +193,8 @@ if($action == 'forgotpwd')
 				redirectTo('index.php', Array('showmessage' => '5'), true);
 			}
 
-			if(($adminchecked && $settings['panel']['allow_preset_admin'] == '1')
-			|| $adminchecked == false)
+			if(($row['isadmin'] && $settings['panel']['allow_preset_admin'] == '1')
+				|| $row['isadmin'] == false)
 			{
 				if($user !== false)
 				{
@@ -228,18 +211,9 @@ if($action == 'forgotpwd')
 						$password = substr($rnd, (int)($minlength / 2), $minlength);
 					}
 
-					if($adminchecked)
-					{
-						$db->query("UPDATE `" . TABLE_PANEL_ADMINS . "` SET `password`='" . md5($password) . "'
-								WHERE `loginname`='" . $user['loginname'] . "'
-								AND `email`='" . $user['email'] . "'");
-					}
-					else
-					{
-						$db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `password`='" . md5($password) . "'
-								WHERE `loginname`='" . $user['loginname'] . "'
-								AND `email`='" . $user['email'] . "'");
-					}
+					$db->query("UPDATE `" . TABLE_USERS . "` SET `password`='" . md5($password) . "'
+							WHERE `loginname`='" . $user['loginname'] . "'
+							AND `email`='" . $user['email'] . "'");
 
 					$rstlog = FroxlorLogger::getInstanceOf(array('loginname' => 'password_reset'), $db, $settings);
 					$rstlog->logAction(USR_ACTION, LOG_WARNING, "Password for user '" . $user['loginname'] . "' has been reset!");
