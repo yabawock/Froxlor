@@ -1786,8 +1786,7 @@ if(isFroxlorVersion('0.9.22-rrp4'))
 	updateToVersion('0.9.22-rrp5');
 }
 
-/* @TODO update durchjagen, wenn mehr ansteht
- * ist bei nem user nen salt nicht gesetzt - muss er nach dem n?chsten login sein passwort ?ndern
+
 if(isFroxlorVersion('0.9.22-rrp5'))
 {
 	showUpdateStep("Updating from 0.9.22-rrp4 to 0.9.22-rrp5");
@@ -1796,8 +1795,21 @@ if(isFroxlorVersion('0.9.22-rrp5'))
 	// fix structure
 	showUpdateStep("Fix in database structure.");
 	$db->query("ALTER TABLE `users` ADD `salt` VARCHAR( 32 ) NOT NULL AFTER `password` ");
+	lastStepStatus(0);
+	
+	
+	// create new table
+	showUpdateStep("Create new table: user2admin");
+	$db->query("CREATE TABLE `user2admin` (
+				`userid` INT( 11 ) NOT NULL ,
+				`adminid` INT( 11 ) NOT NULL
+				) ENGINE = MYISAM ;");
+	
+	$db->query("ALTER TABLE `user2admin` ADD UNIQUE (
+				`userid` ,
+				`adminid`
+				)");
 	
 	lastStepStatus(0);
 	updateToVersion('0.9.22-rrp6');
 }
- */
