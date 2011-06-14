@@ -216,10 +216,10 @@ if(isset($s)
 
 	$query.= TABLE_USERS . '` `u` ON (`s`.`userid` = `u`.`id`)';
 
-	$query.= 'WHERE `s`.`hash`="' . $db->escape($s) . '" AND `s`.`ipaddress`="' . $db->escape($remote_addr) . '" AND `s`.`useragent`="' . $db->escape($http_user_agent) . '" AND `s`.`lastactivity` > "' . (int)$timediff . '" AND `s`.`adminsession` = "' . $db->escape($adminsession) . '"';
+	$query.= 'WHERE `s`.`hash`="' . $db->escape($s) . '" AND `s`.`ipaddress`="' . $db->escape($remote_addr) . '" AND `s`.`useragent`="' . $db->escape($http_user_agent) . '" AND `s`.`lastactivity` > "' . (int)$timediff . '"';
 	$userinfo = $db->query_first($query);
 	$userinfo['customerid'] = $userinfo['id']; // @TODO this is a workaround until $userinfo is removed!
-	$user = new user($userinfo['id']);
+	$user = new user((int)$userinfo['id']);
 
 	if((($userinfo['adminsession'] == '1' && AREA == 'admin' && isset($userinfo['adminid'])) || ($userinfo['adminsession'] == '0' && (AREA == 'customer' || AREA == 'login') && isset($userinfo['customerid'])))
 	   && (!isset($userinfo['deactivated']) || $userinfo['deactivated'] != '1'))
