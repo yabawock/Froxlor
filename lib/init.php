@@ -221,7 +221,7 @@ if(isset($s)
 	$userinfo['customerid'] = $userinfo['id']; // @TODO this is a workaround until $userinfo is removed!
 	$user = new user((int)$userinfo['id']);
 
-	if((($userinfo['adminsession'] == '1' && AREA == 'admin' && isset($userinfo['adminid'])) || ($userinfo['adminsession'] == '0' && (AREA == 'customer' || AREA == 'login') && isset($userinfo['customerid'])))
+	if((($user->isAdmin() == '1' && AREA == 'admin') || ($user->isAdmin() == '0' && (AREA == 'customer' || AREA == 'login')))
 	   && (!isset($userinfo['deactivated']) || $userinfo['deactivated'] != '1'))
 	{
 		$userinfo['newformtoken'] = strtolower(md5(uniqid(microtime(), 1)));
