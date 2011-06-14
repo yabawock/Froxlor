@@ -214,19 +214,12 @@ if(isset($s)
 	session_start();
 	$query = 'SELECT `s`.*, `u`.* FROM `' . TABLE_PANEL_SESSIONS . '` `s` LEFT JOIN `';
 
-	if(AREA == 'admin')
-	{
-		$query.= TABLE_PANEL_ADMINS . '` `u` ON (`s`.`userid` = `u`.`adminid`)';
-		$adminsession = '1';
-	}
-	else
-	{
-		$query.= TABLE_PANEL_CUSTOMERS . '` `u` ON (`s`.`userid` = `u`.`customerid`)';
-		$adminsession = '0';
-	}
+	$query.= TABLE_USERS . '` `u` ON (`s`.`userid` = `u`.`id`)';
 
 	$query.= 'WHERE `s`.`hash`="' . $db->escape($s) . '" AND `s`.`ipaddress`="' . $db->escape($remote_addr) . '" AND `s`.`useragent`="' . $db->escape($http_user_agent) . '" AND `s`.`lastactivity` > "' . (int)$timediff . '" AND `s`.`adminsession` = "' . $db->escape($adminsession) . '"';
 	$userinfo = $db->query_first($query);
+	$userinfo['customerid'] = $userinfo['id']; // @TODO this is a workaround until $userinfo is removed!
+	$user = new user($userinfo['id']);
 
 	if((($userinfo['adminsession'] == '1' && AREA == 'admin' && isset($userinfo['adminid'])) || ($userinfo['adminsession'] == '0' && (AREA == 'customer' || AREA == 'login') && isset($userinfo['customerid'])))
 	   && (!isset($userinfo['deactivated']) || $userinfo['deactivated'] != '1'))
