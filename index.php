@@ -177,24 +177,20 @@ if($action == 'forgotpwd')
 	{
 		$loginname = validate($_POST['loginname'], 'loginname');
 		$email = validateEmail($_POST['loginemail'], 'email');
-		$sql = "SELECT `adminid`, `customerid`, `isadmin`, `firstname`, `name`, `company`, `email`, `loginname`, `def_language`, `deactivated` FROM `" . TABLE_USERS . "`
-				WHERE `loginname`='" . $db->escape($loginname) . "'
-				AND `email`='" . $db->escape($email) . "'";
-		$result = $db->query($sql);
 
-		if($result !== null)
+		try
 		{
-			$user = $db->fetch_array($result);
+			$user = new user(true, $loginname, $email);
 			
 			/* Check whether user is banned */
-			if($user['deactivated'])
+			if($user->isDeactivated())
 			{
 				$message = $lng['pwdreminder']['notallowed'];
 				redirectTo('index.php', Array('showmessage' => '5'), true);
 			}
 
-			if(($row['isadmin'] && $settings['panel']['allow_preset_admin'] == '1')
-				|| $row['isadmin'] == false)
+			if(($user->isAdmin() && $settings['panel']['allow_preset_admin'] == '1')
+				|| $user->isAdmin() == false)
 			{
 				if($user !== false)
 				{
@@ -211,25 +207,23 @@ if($action == 'forgotpwd')
 						$password = substr($rnd, (int)($minlength / 2), $minlength);
 					}
 
-					$db->query("UPDATE `" . TABLE_USERS . "` SET `password`='" . md5($password) . "'
-							WHERE `loginname`='" . $user['loginname'] . "'
-							AND `email`='" . $user['email'] . "'");
+					$user->setData("general", "password", md5($password));
 
 					$rstlog = FroxlorLogger::getInstanceOf(array('loginname' => 'password_reset'), $db, $settings);
-					$rstlog->logAction(USR_ACTION, LOG_WARNING, "Password for user '" . $user['loginname'] . "' has been reset!");
+					$rstlog->logAction(USR_ACTION, LOG_WARNING, "Password for user '" . $user->getData("general", "loginname") . "' has been reset!");
 
 					$replace_arr = array(
 						'SALUTATION' => getCorrectUserSalutation($user),
-						'USERNAME' => $user['loginname'],
+						'USERNAME' => $user->getData("general", "loginname"),
 						'PASSWORD' => $password
 					);
 
-					$body = strtr($lng['pwdreminder']['body'], array('%s' => $user['firstname'] . ' ' . $user['name'], '%p' => $password));
+					$body = strtr($lng['pwdreminder']['body'], array('%s' => $user->getData("address", "firstname") . ' ' . $user->getData("address", "name"), '%p' => $password));
 
-					$def_language = ($user['def_language'] != '') ? $user['def_language'] : $settings['panel']['standardlanguage'];
-					$result = $db->query_first('SELECT `value` FROM `' . TABLE_PANEL_TEMPLATES . '` WHERE `adminid`=\'' . (int)$user['adminid'] . '\' AND `language`=\'' . $db->escape($def_language) . '\' AND `templategroup`=\'mails\' AND `varname`=\'password_reset_subject\'');
+					$def_language = ($user->getData("general", "def_language")!= '') ? $user->getData("general", "def_language") : $settings['panel']['standardlanguage'];
+					$result = $db->query_first('SELECT `value` FROM `' . TABLE_PANEL_TEMPLATES . '` WHERE `adminid`=\'' . (int)$user->getId() . '\' AND `language`=\'' . $db->escape($def_language) . '\' AND `templategroup`=\'mails\' AND `varname`=\'password_reset_subject\'');
 					$mail_subject = html_entity_decode(replace_variables((($result['value'] != '') ? $result['value'] : $lng['pwdreminder']['subject']), $replace_arr));
-					$result = $db->query_first('SELECT `value` FROM `' . TABLE_PANEL_TEMPLATES . '` WHERE `adminid`=\'' . (int)$user['adminid'] . '\' AND `language`=\'' . $db->escape($def_language) . '\' AND `templategroup`=\'mails\' AND `varname`=\'password_reset_mailbody\'');
+					$result = $db->query_first('SELECT `value` FROM `' . TABLE_PANEL_TEMPLATES . '` WHERE `adminid`=\'' . (int)$user->getId()  . '\' AND `language`=\'' . $db->escape($def_language) . '\' AND `templategroup`=\'mails\' AND `varname`=\'password_reset_mailbody\'');
 					$mail_body = html_entity_decode(replace_variables((($result['value'] != '') ? $result['value'] : $body), $replace_arr));
 						
 					$_mailerror = false;
@@ -237,7 +231,7 @@ if($action == 'forgotpwd')
 						$mail->Subject = $mail_subject;
 						$mail->AltBody = $mail_body;
 						$mail->MsgHTML(str_replace("\n", "<br />", $mail_body));
-						$mail->AddAddress($user['email'], $user['firstname'] . ' ' . $user['name']);
+						$mail->AddAddress($user->getData("address", "email"), $user->getData("address", "firstname") . ' ' . $user->getData("address", "name"));
 						$mail->Send();
 					} catch(phpmailerException $e) {
 						$mailerr_msg = $e->errorMessage();
@@ -250,7 +244,7 @@ if($action == 'forgotpwd')
 					if ($_mailerror) {
 						$rstlog = FroxlorLogger::getInstanceOf(array('loginname' => 'password_reset'), $db, $settings);
 						$rstlog->logAction(ADM_ACTION, LOG_ERR, "Error sending mail: " . $mailerr_msg);
-						redirectTo('index.php', Array('showmessage' => '4', 'customermail' => $user['email']), true);
+						redirectTo('index.php', Array('showmessage' => '4', 'customermail' => $user->getData("address", "email")), true);
 						exit;
 					}
 
@@ -268,7 +262,7 @@ if($action == 'forgotpwd')
 				unset($user);
 			}
 		}
-		else
+		catch(Exception $e)
 		{
 			$message = $lng['login']['usernotfound'];
 		}
