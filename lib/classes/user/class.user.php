@@ -306,9 +306,11 @@ class user {
 	 * @param string $value value
 	 */
 	public function setData($area, $key, $value) {
-		$this->_data[$area][$key] = $value;
-		
-		$this->sync($area, $key);
+		if (isset($this->_data[$area]) && is_array($this->_data[$area])) {
+			$this->_data[$area][$key] = $value;
+			
+			$this->sync($area, $key);
+		}
 	}
 	
 	/**
@@ -318,7 +320,9 @@ class user {
 	 * @param array  $values mixed array
 	 */
 	public function setAllData($area, $values) {
-		$this->_data[$area] = $values;
+		if (isset($this->_data[$area]) && is_array($this->_data[$area])) {
+			$this->_data[$area] = $values;
+		}
 	}
 	
 	/**
