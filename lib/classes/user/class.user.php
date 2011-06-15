@@ -46,10 +46,10 @@ class user {
 	private $_sessionId = null;
 	
 	/**
-	 * This is true if a login was successful
+	 * True if the user is deactivated.
 	 * @var boolean
 	 */
-	private $_logedIn = false;
+	private $_isDeactivated = true;
 	
 	/**
 	 * Contains all data.
@@ -227,6 +227,7 @@ class user {
 			$this->_data['general'] = $row;
 			$this->_loginname = $row['loginname'];
 			$this->_isAdmin = $row['isadmin'];
+			$this->_isDeactivated = $row['deactivated'];
 		}
 	}
 	
@@ -296,6 +297,13 @@ class user {
 	 */
 	public function isAdmin() {
 		return $this->_isAdmin;
+	}
+	
+	/**
+	 * @return true if the user is deactivated
+	 */
+	public function isDeactivated() {
+		return $this->_isDeactivated;
 	}
 	
 	/**
