@@ -219,7 +219,9 @@ if(isset($s)
 	$query.= 'WHERE `s`.`hash`="' . $db->escape($s) . '" AND `s`.`ipaddress`="' . $db->escape($remote_addr) . '" AND `s`.`useragent`="' . $db->escape($http_user_agent) . '" AND `s`.`lastactivity` > "' . (int)$timediff . '"';
 	$userinfo = $db->query_first($query);
 	$userinfo['customerid'] = $userinfo['id']; // @TODO this is a workaround until $userinfo is removed!
+	
 	$user = new user((int)$userinfo['id']);
+	$adminsession = $user->isAdmin(); // @TODO remove this
 
 	if((($user->isAdmin() == '1' && AREA == 'admin') || ($user->isAdmin() == '0' && (AREA == 'customer' || AREA == 'login')))
 	   && (!isset($userinfo['deactivated']) || $userinfo['deactivated'] != '1'))

@@ -190,7 +190,7 @@ class user {
 			// @TODO maybe unset password or update query to not fetch it?
 			$this->_data['general'] = $row;
 			$this->_loginname = $row['loginname'];
-			$this->_isadmin = $row['isadmin'];
+			$this->_isAdmin = $row['isadmin'];
 		}
 	}
 	
