@@ -206,9 +206,9 @@ class phpinterface_fcgid
 
 	/**
 	 * fcgid-config directory
-	 * 
+	 *
 	 * @param boolean $createifnotexists create the directory if it does not exist
-	 * 
+	 *
 	 * @return string the directory
 	 */
 	public function getConfigDir($createifnotexists = true)
@@ -226,9 +226,9 @@ class phpinterface_fcgid
 
 	/**
 	 * fcgid-temp directory
-	 * 
+	 *
 	 * @param boolean $createifnotexists create the directory if it does not exist
-	 * 
+	 *
 	 * @return string the directory
 	 */
 	public function getTempDir($createifnotexists = true)
@@ -247,7 +247,7 @@ class phpinterface_fcgid
 
 	/**
 	 * return path of php-starter file
-	 * 
+	 *
 	 * @return string the directory
 	 */
 	public function getStarterFile()
@@ -258,7 +258,7 @@ class phpinterface_fcgid
 
 	/**
 	 * return path of php.ini file
-	 * 
+	 *
 	 * @return string full with path file-name
 	 */
 	public function getIniFile()
@@ -269,9 +269,9 @@ class phpinterface_fcgid
 
 	/**
 	 * return the admin-data of a specific admin
-	 * 
+	 *
 	 * @param int $adminid id of the admin-user
-	 * 
+	 *
 	 * @return array
 	 */
 	private function _getAdminData($adminid)
@@ -280,10 +280,11 @@ class phpinterface_fcgid
 
 		if(!isset($this->_admin_cache[$adminid]))
 		{
-			$this->_admin_cache[$adminid] = $this->_db->query_first(
-				"SELECT `email`, `loginname` FROM `" . TABLE_PANEL_ADMINS . "` 
-				WHERE `adminid` = " . (int)$adminid
-			);
+			$query = 'SELECT `u`.`loginname`, `a`.`email`
+			FROM `' . TABLE_USERS . '` `u`, `'. TABLE_USER_ADDRESSES .'` `a`
+			WHERE `u`.`isadmin`=\'1\' AND `u`.`contactid` = `a`.`id` AND `u`.`id` = "'. (int)$adminid .'"';
+	
+			$this->_admin_cache[$adminid] = $this->_db->query_first($query);
 		}
 
 		return $this->_admin_cache[$adminid];
