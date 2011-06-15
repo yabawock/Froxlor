@@ -212,13 +212,21 @@ if(isset($s)
 	ini_set("session.use_cookies", false);
 	session_id($s);
 	session_start();
-	$query = 'SELECT `s`.*, `u`.* FROM `' . TABLE_PANEL_SESSIONS . '` `s` LEFT JOIN `';
+	$query = 'SELECT `s`.*, `u`.*, `r`.* FROM `' . TABLE_PANEL_SESSIONS . '` `s` LEFT JOIN `';
 
 	$query.= TABLE_USERS . '` `u` ON (`s`.`userid` = `u`.`id`)';
+	
+	if (AREA == 'admin') {
+		$resTable = TABLE_ADMIN_RESOURCES;
+	} else {
+		$resTable = TABLE_USER_RESOURCES;
+	}
+	$query .= " LEFT JOIN `". $resTable ."` `r` ON (`u`.`id` = `r`.`id`)";
 
 	$query.= 'WHERE `s`.`hash`="' . $db->escape($s) . '" AND `s`.`ipaddress`="' . $db->escape($remote_addr) . '" AND `s`.`useragent`="' . $db->escape($http_user_agent) . '" AND `s`.`lastactivity` > "' . (int)$timediff . '"';
 	$userinfo = $db->query_first($query);
 	$userinfo['customerid'] = $userinfo['id']; // @TODO this is a workaround until $userinfo is removed!
+	$userinfo['adminid'] = $userinfo['id'];
 	
 	$user = new user((int)$userinfo['id']);
 	$adminsession = $user->isAdmin(); // @TODO remove this
