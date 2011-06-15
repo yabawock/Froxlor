@@ -141,7 +141,7 @@ class user {
 		$result = $db->query($sql);
 		
 		if ($result !== null) {
-			$user = $db->fetch_array($result);
+			$row = $db->fetch_array($result);
 			
 			if(isset($row['id'])) {
 				$this->_id = $row['id'];
