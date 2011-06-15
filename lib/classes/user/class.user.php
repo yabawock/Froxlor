@@ -148,6 +148,7 @@ class user {
 			
 				// fetch only general data
 				$this->fetchGeneralData();
+				$this->fetchUserAddress();
 				
 				return;
 			}
