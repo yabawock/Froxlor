@@ -59,15 +59,16 @@ class user {
 	
 	/**
 	 * Contains the database handle.
-	 * @var
+	 * @var db
 	 */
 	private $_db;
 	
 	/**
 	 * Constructor.<br />
 	 * You can use to types of initializing:
-	 * 1. login by (int) id
-	 * 2. login by name/domain and password
+	 * 1 login by (int) id
+	 * 2 login by name/domain and password
+	 * 3 forgot password, login with name and email (minimal data)
 	 */
 	public function __construct() {
 		$num = func_num_args();
@@ -78,6 +79,9 @@ class user {
 		} else if ($num == 2) {
 			// loginname based
 			$this->createByName(func_get_arg(0), func_get_arg(1));
+		} elseif ($num == 3) {
+			// forgot password, initialize with minimal data
+			$this->createByNameEmail(func_get_arg(1), func_get_arg(2));
 		}
 	}
 	
@@ -97,7 +101,7 @@ class user {
 		
 			$this->init();
 		} else {
-			throw new InvalidArgumentException("Provided id is not valid!", "101");
+			throw new InvalidArgumentException("Provided id is not valid!");
 		}
 	}
 	
@@ -116,8 +120,40 @@ class user {
 		if ($this->performLogin($loginname, $password)) {
 			$this->init();
 		} else {
-			throw new Exception("Login failed!", "100");
+			throw new Exception("Login failed!");
 		}
+	}
+	
+	/**
+	 * Performs a login based on loginname and email address.
+	 *
+	 * @param string $loginname
+	 * @param string $email
+	 *
+	 * @throws Exception if no record is found
+	 */
+	private function createByNameEmail($loginname, $email) {
+		global $db;
+		$this->_db = $db;
+		
+		$sql = "SELECT `u`.`id` FROM `". TABLE_USERS ."` `u`, `". TABLE_USER_ADDRESSES ."` `a`
+		 WHERE `u`.`loginname` = '". $loginname ."' AND `u`.`contactid` = `a`.`id` AND `a`.`email` = '". $email ."'";
+		$result = $db->query($sql);
+		
+		if ($result !== null) {
+			$user = $db->fetch_array($result);
+			
+			if(isset($row['id'])) {
+				$this->_id = $row['id'];
+			
+				// fetch only general data
+				$this->fetchGeneralData();
+				
+				return;
+			}
+		}
+		
+		throw new Exception("User not found.");
 	}
 	
 	/**
