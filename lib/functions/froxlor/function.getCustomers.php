@@ -36,7 +36,7 @@ function getCustomers($limit_resource = '')
 		$additional_conditions = implode(' AND ', $additional_conditions_array) . ' ';
 	}
 
-	$query = 'SELECT a.`id`, a.`loginname`, `name`, `firstname`, `company` FROM `' . TABLE_USERS . '` a, `'. TABLE_USER_ADDRESSES .'` b WHERE `isadmin`=\'0\' AND a.`id` = b.`id` ' . $additional_conditions  . ' ORDER BY `name` ASC';
+	$query = 'SELECT `u`.`id`, `u`.`loginname`, `a`.`name`, `a`.`firstname`, `a`.`company` FROM `' . TABLE_USERS . '` `u`, `'. TABLE_USER_ADDRESSES .'` `a` WHERE `u`.`isadmin`=\'0\' AND `u`.`contactid` = `a`.`id` ' . $additional_conditions  . ' ORDER BY `name` ASC';
 	$result = $db->query($query);
 	$customers_array = array();
 
