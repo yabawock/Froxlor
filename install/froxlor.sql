@@ -632,6 +632,11 @@ INSERT INTO `panel_settings` (`settinggroup`, `varname`, `value`) VALUES ('syste
 INSERT INTO `panel_settings` (`settinggroup`, `varname`, `value`) VALUES ('system', 'backup_ftp_user', '');
 INSERT INTO `panel_settings` (`settinggroup`, `varname`, `value`) VALUES ('system', 'backup_ftp_pass', '');
 INSERT INTO `panel_settings` (`settinggroup`, `varname`, `value`) VALUES ('system', 'backup_ftp_passive', '1');
+INSERT INTO `panel_settings` (`settinggroup`, `varname`, `value`) VALUES ('system', 'diskquota_enabled', '0');
+INSERT INTO `panel_settings` (`settinggroup`, `varname`, `value`) VALUES ('system', 'diskquota_repquota_path', '/usr/sbin/repquota');
+INSERT INTO `panel_settings` (`settinggroup`, `varname`, `value`) VALUES ('system', 'diskquota_quotatool_path', '/usr/bin/quotatool');
+INSERT INTO `panel_settings` (`settinggroup`, `varname`, `value`) VALUES ('system', 'diskquota_customer_partition', '/dev/root');
+
 # --------------------------------------------------------
 
 #
@@ -1019,7 +1024,7 @@ CREATE TABLE IF NOT EXISTS `aps_temp_settings` (
 DROP TABLE IF EXISTS `cronjobs_run`;
 CREATE TABLE IF NOT EXISTS `cronjobs_run` (
   `id` bigint(20) NOT NULL auto_increment,
-  `module` varchar(250) NOT NULL,  
+  `module` varchar(250) NOT NULL,
   `cronfile` varchar(250) NOT NULL,
   `lastrun` int(15) NOT NULL DEFAULT '0',
   `interval` varchar(100) NOT NULL DEFAULT '5 MINUTE',

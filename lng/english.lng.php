@@ -243,7 +243,7 @@ $lng['error']['domainname'] = $lng['domains']['domainname'];
 $lng['question']['question'] = 'Security question';
 $lng['question']['admin_customer_reallydelete'] = 'Do you really want to delete the customer %s? This cannot be undone!';
 $lng['question']['admin_domain_reallydelete'] = 'Do you really want to delete the domain %s?';
-$lng['question']['admin_domain_reallydisablesecuritysetting'] = 'Do you really want to disable these security settings (OpenBasedir and/or SafeMode)?';
+$lng['question']['admin_domain_reallydisablesecuritysetting'] = 'Do you really want to disable these security setting (OpenBasedir)?';
 $lng['question']['admin_admin_reallydelete'] = 'Do you really want to delete the admin %s? Every customer and domain will be reassigned to your account.';
 $lng['question']['admin_template_reallydelete'] = 'Do you really want to delete the template \'%s\'?';
 $lng['question']['domains_reallydelete'] = 'Do you really want to delete the domain %s?';
@@ -1878,3 +1878,11 @@ $lng['country']['EH'] = "Western Sahara";
 $lng['country']['YE'] = "Yemen";
 $lng['country']['ZM'] = "Zambia";
 $lng['country']['ZW'] = "Zimbabwe";
+
+// ADDED IN FROXLOR 0.9.22-svn1
+$lng['diskquota'] = 'Quota';
+$lng['serversettings']['diskquota_enabled'] = 'Quota activated?';
+$lng['serversettings']['diskquota_repquota_path']['description'] = 'Path to repquota';
+$lng['serversettings']['diskquota_quotatool_path']['description'] = 'Path to quotatool';
+$lng['serversettings']['diskquota_customer_partition']['description'] = 'Partition, on which the customer files are stored';
+$lng['tasks']['diskspace_set_quota'] = 'Set quota on filesystem';

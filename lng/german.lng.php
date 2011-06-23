@@ -243,7 +243,7 @@ $lng['error']['domainname'] = $lng['domains']['domainname'];
 $lng['question']['question'] = 'Sicherheitsabfrage';
 $lng['question']['admin_customer_reallydelete'] = 'Wollen Sie den Kunden %s wirklich l&ouml;schen?<br />ACHTUNG! Alle Daten gehen unwiderruflich verloren! Nach dem Vorgang m&uuml;ssen Sie die Daten aus dem Dateisystem noch manuell entfernen.';
 $lng['question']['admin_domain_reallydelete'] = 'Wollen Sie die Domain %s wirklich l&ouml;schen?';
-$lng['question']['admin_domain_reallydisablesecuritysetting'] = 'Wollen Sie diese wichtigen Sicherheitseinstellungen (OpenBasedir und/oder SafeMode) wirklich deaktivieren?';
+$lng['question']['admin_domain_reallydisablesecuritysetting'] = 'Wollen Sie diese wichtigen Sicherheitseinstellung (OpenBasedir) wirklich deaktivieren?';
 $lng['question']['admin_admin_reallydelete'] = 'Wollen Sie den Admin %s wirklich l&ouml;schen?<br />Alle Kunden und Domains werden Ihrem Account zugeteilt.';
 $lng['question']['admin_template_reallydelete'] = 'Wollen Sie die Vorlage \'%s\' wirklich l&ouml;schen?';
 $lng['question']['domains_reallydelete'] = 'Wollen Sie die Domain %s wirklich l&ouml;schen?';
@@ -1608,6 +1608,12 @@ $lng['gender']['female'] = 'Frau';
 $lng['gender']['undef'] = '';
 $lng['serversettings']['backup_ftp_passive_mode'] = 'Passiven &Uuml;bertragungsmodus verwenden';
 $lng['serversettings']['backup_bigfile'] = 'Backup von Kundenverzeichnissen und Datenbanken in eine Datei speichern, statt zu splitten?';
+
+$lng['serversettings']['diskquota_enabled'] = 'Quota aktiviert?';
+$lng['serversettings']['diskquota_repquota_path']['description'] = 'Pfad zu repquota';
+$lng['serversettings']['diskquota_quotatool_path']['description'] = 'Pfad zu quotatool';
+$lng['serversettings']['diskquota_customer_partition']['description'] = 'Partition, auf welcher die Kundendaten liegen';
+$lng['tasks']['diskspace_set_quota'] = 'Quota auf dem Dateisystem setzen';
 
 // Country code (ISO-3166-2)
 $lng['countrycode'] = 'Land';
