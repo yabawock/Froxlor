@@ -51,8 +51,29 @@ class rrp implements dms
 		
 	}
 	
+	/**
+	 * (non-PHPdoc)
+	 * @see dms::handleList()
+	 */
 	public function handleList() {
+		$response = $this->_request->send(array("command" => "QueryContactList", "wide" => "1"));
+		$handles = array();
 		
-		$response = $this->_request->send(array("command" => "QueryContactList"));
+		// check status code
+		if ($response->code == 200) {
+			$arr = $response->getList();
+			
+			// create all handles
+			foreach ($arr as $vars) {
+				$handle = new handle($vars);
+				// and sync them
+				$handle->sync();
+				
+				// add it to the list
+				$handles[] = $handle;
+			}
+		}
+		
+		return $handles;
 	}
 }

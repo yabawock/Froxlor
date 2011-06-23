@@ -29,10 +29,20 @@ class handle {
 	
 	private $_db;
 
-	public function __construct() {
+	public function __construct($data = array()) {
 		global $db;
 		
 		$this->_db = $db;
+		
+		// check if data is provided
+		if (count($data) > 0) {
+			$this->setName($data['contact_lastname'], $data['contact_firstname']);
+			$this->setCompany($data['contact_organization']);
+			$this->setAddress($data['contact_street'], $data['contact_zip'], $data['contact_country']);
+			$this->setContactData($data['contact_phone'], $data['contact_email'], $data['contact_fax']);
+			
+			$this->_handleId = $data['contact'];
+		}
 	}
 
 	public function setName($name, $firstname) {

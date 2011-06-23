@@ -25,10 +25,19 @@ interface dms
 	public function handleCreate($handle);
 	public function handleDelete($handle);
 	public function handleAlter($handle);
+	
+	/**
+	 * This will get all handles, sync them and
+	 * return an array with all handles.
+	 *
+	 * @return array with handle
+	 */
 	public function handleList();
 	
+	/*
 	public function domainCheck($domain);
 	public function domainRegister();
 	
 	public function eventListener();
+	*/
 }
