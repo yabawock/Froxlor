@@ -19,6 +19,9 @@ gettext("Password");
 /* templates/Froxlor/login/login_ftp.tpl */
 gettext("Login");
 
+/* templates/Froxlor/index.tpl */
+gettext("the Froxlor Team");
+
 /* templates/Froxlor/webftp/webftp_edit.tpl */
 gettext("Editing");
 
@@ -51,57 +54,6 @@ gettext("Save file");
 
 /* templates/Froxlor/webftp/webftp_edit_new.tpl */
 gettext("Cancel");
-
-/* templates/Froxlor/webftp/webftp_main_dir_row.tpl */
-gettext("Delete");
-
-/* templates/Froxlor/webftp/webftp_main_dir_row.tpl */
-gettext("Rename");
-
-/* templates/Froxlor/webftp/webftp_main_link_row.tpl */
-gettext("Delete");
-
-/* templates/Froxlor/webftp/webftp_main_link_row.tpl */
-gettext("Rename");
-
-/* templates/Froxlor/webftp/webftp_main_link_row.tpl */
-gettext("Symbolic link to");
-
-/* templates/Froxlor/webftp/webftp_main_file_row.tpl */
-gettext("Delete");
-
-/* templates/Froxlor/webftp/webftp_main_file_row.tpl */
-gettext("Rename");
-
-/* templates/Froxlor/webftp/webftp_main_file_row.tpl */
-gettext("Edit");
-
-/* templates/Froxlor/webftp/webftp_main_header.tpl */
-gettext("Success");
-
-/* templates/Froxlor/webftp/webftp_main_header.tpl */
-gettext("Error");
-
-/* templates/Froxlor/webftp/webftp_main_additional.tpl */
-gettext("Basic operations");
-
-/* templates/Froxlor/webftp/webftp_main_additional.tpl */
-gettext("Change dir");
-
-/* templates/Froxlor/webftp/webftp_main_additional.tpl */
-gettext("Create dir");
-
-/* templates/Froxlor/webftp/webftp_main_additional.tpl */
-gettext("Create new file in current directory");
-
-/* templates/Froxlor/webftp/webftp_main_additional.tpl */
-gettext("Upload files");
-
-/* templates/Froxlor/webftp/webftp_main_additional.tpl */
-gettext("Upload file(s)");
-
-/* templates/Froxlor/webftp/webftp_main_rename.tpl */
-gettext("Rename / Move");
 
 /* templates/Froxlor/webftp/webftp_main.tpl */
 gettext("Filename");
@@ -139,6 +91,54 @@ gettext("Directories");
 /* templates/Froxlor/webftp/webftp_main.tpl */
 gettext("Complete directorysize");
 
+/* templates/Froxlor/webftp/webftp_main_additional.tpl */
+gettext("Basic operations");
+
+/* templates/Froxlor/webftp/webftp_main_additional.tpl */
+gettext("Change dir");
+
+/* templates/Froxlor/webftp/webftp_main_additional.tpl */
+gettext("Create dir");
+
+/* templates/Froxlor/webftp/webftp_main_additional.tpl */
+gettext("Create new file in current directory");
+
+/* templates/Froxlor/webftp/webftp_main_additional.tpl */
+gettext("Upload files");
+
+/* templates/Froxlor/webftp/webftp_main_additional.tpl */
+gettext("Upload file(s)");
+
+/* templates/Froxlor/webftp/webftp_main_dir_row.tpl */
+gettext("Delete");
+
+/* templates/Froxlor/webftp/webftp_main_dir_row.tpl */
+gettext("Rename");
+
+/* templates/Froxlor/webftp/webftp_main_file_row.tpl */
+gettext("Delete");
+
+/* templates/Froxlor/webftp/webftp_main_file_row.tpl */
+gettext("Rename");
+
+/* templates/Froxlor/webftp/webftp_main_file_row.tpl */
+gettext("Edit");
+
+/* templates/Froxlor/webftp/webftp_main_header.tpl */
+gettext("Success");
+
+/* templates/Froxlor/webftp/webftp_main_header.tpl */
+gettext("Error");
+
+/* templates/Froxlor/webftp/webftp_main_link_row.tpl */
+gettext("Delete");
+
+/* templates/Froxlor/webftp/webftp_main_link_row.tpl */
+gettext("Rename");
+
+/* templates/Froxlor/webftp/webftp_main_link_row.tpl */
+gettext("Symbolic link to");
+
 /* templates/Froxlor/webftp/webftp_main_multiple.tpl */
 gettext("Selected file(s)");
 
@@ -154,6 +154,12 @@ gettext("Move to");
 /* templates/Froxlor/webftp/webftp_main_multiple.tpl */
 gettext("Do it");
 
-/* templates/Froxlor/index.tpl */
-gettext("the Froxlor Team");
+/* templates/Froxlor/webftp/webftp_main_prompt.tpl */
+gettext("Yes");
+
+/* templates/Froxlor/webftp/webftp_main_prompt.tpl */
+gettext("No");
+
+/* templates/Froxlor/webftp/webftp_main_rename.tpl */
+gettext("Rename / Move");
 
