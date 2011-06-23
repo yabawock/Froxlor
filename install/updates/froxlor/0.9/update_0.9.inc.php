@@ -1846,8 +1846,9 @@ if(isFroxlorVersion('0.9.22-rrp6'))
 	$db->query("CREATE TABLE IF NOT EXISTS `domain_handle` (
 			  `id` int(11) NOT NULL,
 			  `handleid` varchar(16) NOT NULL,
-			  `name` varchar(255) NOT NULL,
-			  `firstname` varchar(255) NOT NULL,
+			  `company` varchar(255) NULL,
+			  `name` varchar(255) NULL,
+			  `firstname` varchar(255) NULL,
 			  `street` varchar(255) NOT NULL,
 			  `zip` varchar(15) NOT NULL,
 			  `city` varchar(255) NOT NULL,
