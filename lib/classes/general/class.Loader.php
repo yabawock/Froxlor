@@ -93,6 +93,8 @@ class Loader
 		$settings_data = loadConfigArrayDir('./actions/admin/settings/');
 		$settings = loadSettings($settings_data, Froxlor::getDb());
 
+		Froxlor::addObject('settings', $settings);
+		Froxlor::addObject('version', $version);
 		$remote_addr = $_SERVER['REMOTE_ADDR'];
 
 		if (empty($_SERVER['HTTP_USER_AGENT'])) {
@@ -315,7 +317,7 @@ class Loader
 			else
 			{
 				$navigation_data = loadConfigArrayDir('./lib/navigation/');
-				$navigation = buildNavigation($navigation_data[AREA], $userinfo);
+				$navigation = buildNavigation($navigation_data[($user->isAdmin() ? 'admin' : 'customer')], $userinfo);
 			}
 			unset($navigation_data);
 			Froxlor::getSmarty()->assign('navigation', $navigation);

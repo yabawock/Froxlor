@@ -91,7 +91,7 @@ class login
 			Froxlor::getLinker()->add('s', $s);
 			if($user->isAdmin())
 			{
-				if(hasUpdates($version))
+				if(hasUpdates(Froxlor::getVersion()))
 				{
 					redirectTo(Froxlor::getLinker()->getLink(array('area' => 'admin', 'section' => 'updates', 'action' => 'index')));
 					exit;
@@ -140,7 +140,7 @@ class login
 					break;
 			}
 
-			if(hasUpdates($version))
+			if(hasUpdates(Froxlor::getVersion()))
 			{
 				Froxlor::getSmarty()->assign('update_in_progress', _('A newer version of Froxlor has been installed but not yet set up.<br />Only the administrator can log in and finish the update.'));
 			}
