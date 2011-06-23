@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Froxlor\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-23 20:21+0100\n"
-"PO-Revision-Date: 2011-06-23 20:21+0100\n"
+"POT-Creation-Date: 2011-06-24 00:46+0100\n"
+"PO-Revision-Date: 2011-06-24 00:50+0100\n"
 "Last-Translator: Florian Aders <eleras@froxlor.org>\n"
 "Language-Team: The Froxlor team <team@froxlor.org>\n"
 "Language: \n"
@@ -17,180 +17,208 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 
 #: smarty.c:2
-msgid "Froxlor Server Management Panel"
-msgstr "Froxlor Server Management Panel"
+msgid "Update"
+msgstr "Update"
 
 #: smarty.c:5
-#: smarty.c:29
-#: smarty.c:44
-#: smarty.c:128
-msgid "Success"
-msgstr "Erfolgreich"
+msgid "Proceed"
+msgstr "Fortfahren"
 
 #: smarty.c:8
-#: smarty.c:32
-#: smarty.c:47
-#: smarty.c:131
+msgid "Information"
+msgstr "Information"
+
+#: smarty.c:11
+#: smarty.c:38
+#: smarty.c:62
+#: smarty.c:77
+#: smarty.c:161
 msgid "Error"
 msgstr "Fehler"
 
-#: smarty.c:11
-msgid "Froxlor - WebFTP - Login"
-msgstr "Froxlor - WebFTP - Login"
-
 #: smarty.c:14
+msgid "Froxlor - Login"
+msgstr "Froxlor - Login"
+
+#: smarty.c:17
+#: smarty.c:44
 msgid "Username"
 msgstr "Benutzername"
 
-#: smarty.c:17
+#: smarty.c:20
+#: smarty.c:47
 msgid "Password"
 msgstr "Passwort"
 
-#: smarty.c:20
+#: smarty.c:23
+msgid "Language"
+msgstr "Sprache"
+
+#: smarty.c:26
+#: smarty.c:50
 msgid "Login"
 msgstr "Login"
 
-#: smarty.c:23
+#: smarty.c:29
+msgid "Forgot password"
+msgstr "Passwort vergessen"
+
+#: smarty.c:32
+msgid "Froxlor Server Management Panel"
+msgstr "Froxlor Server Management Panel"
+
+#: smarty.c:35
+#: smarty.c:59
+#: smarty.c:74
+#: smarty.c:158
+msgid "Success"
+msgstr "Erfolgreich"
+
+#: smarty.c:41
+msgid "Froxlor - WebFTP - Login"
+msgstr "Froxlor - WebFTP - Login"
+
+#: smarty.c:53
 msgid "the Froxlor Team"
 msgstr "das Froxlor Team"
 
-#: smarty.c:26
+#: smarty.c:56
 msgid "Editing"
 msgstr "Bearbeiten"
 
-#: smarty.c:35
-#: smarty.c:53
+#: smarty.c:65
+#: smarty.c:83
 msgid "Save file"
 msgstr "Datei speichern"
 
-#: smarty.c:38
-#: smarty.c:56
+#: smarty.c:68
+#: smarty.c:86
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: smarty.c:41
+#: smarty.c:71
 msgid "Creating a file in"
 msgstr "Erstellt eine Datei in"
 
-#: smarty.c:50
-#: smarty.c:59
+#: smarty.c:80
+#: smarty.c:89
 msgid "Filename"
 msgstr "Dateiname"
 
-#: smarty.c:62
+#: smarty.c:92
 msgid "Size"
 msgstr "Größe"
 
-#: smarty.c:65
+#: smarty.c:95
 msgid "Date"
 msgstr "Datum"
 
-#: smarty.c:68
+#: smarty.c:98
 msgid "Permissions"
 msgstr "Berechtigungen"
 
-#: smarty.c:71
+#: smarty.c:101
 msgid "User"
 msgstr "Benutzer"
 
-#: smarty.c:74
+#: smarty.c:104
 msgid "Group"
 msgstr "Gruppe"
 
-#: smarty.c:77
+#: smarty.c:107
 msgid "Options"
 msgstr "Optionen"
 
-#: smarty.c:80
+#: smarty.c:110
 msgid "Files"
 msgstr "Dateien"
 
-#: smarty.c:83
+#: smarty.c:113
 msgid "Complete filesize"
 msgstr "Komplette Dateigröße"
 
-#: smarty.c:86
+#: smarty.c:116
 msgid "Symlinks"
 msgstr "Symlinks"
 
-#: smarty.c:89
+#: smarty.c:119
 msgid "Directories"
 msgstr "Verzeichnisse"
 
-#: smarty.c:92
+#: smarty.c:122
 msgid "Complete directorysize"
 msgstr "Komplette Verzeichnisgröße"
 
-#: smarty.c:95
+#: smarty.c:125
 msgid "Basic operations"
 msgstr "Standard Operationen"
 
-#: smarty.c:98
+#: smarty.c:128
 msgid "Change dir"
 msgstr "Verzeichnis wechseln"
 
-#: smarty.c:101
+#: smarty.c:131
 msgid "Create dir"
 msgstr "Verzeichnis erstellen"
 
-#: smarty.c:104
+#: smarty.c:134
 msgid "Create new file in current directory"
 msgstr "Neue Datei in aktuellem Verzeichnis erstellen"
 
-#: smarty.c:107
+#: smarty.c:137
 msgid "Upload files"
 msgstr "Dateien hochladen"
 
-#: smarty.c:110
+#: smarty.c:140
 msgid "Upload file(s)"
 msgstr "Datei(en) hochladen"
 
-#: smarty.c:113
-#: smarty.c:119
-#: smarty.c:134
-#: smarty.c:146
+#: smarty.c:143
+#: smarty.c:149
+#: smarty.c:164
+#: smarty.c:176
 msgid "Delete"
 msgstr "Löschen"
 
-#: smarty.c:116
-#: smarty.c:122
-#: smarty.c:137
+#: smarty.c:146
+#: smarty.c:152
+#: smarty.c:167
 msgid "Rename"
 msgstr "Umbenennen"
 
-#: smarty.c:125
+#: smarty.c:155
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: smarty.c:140
+#: smarty.c:170
 msgid "Symbolic link to"
 msgstr "Symlink nach"
 
-#: smarty.c:143
+#: smarty.c:173
 msgid "Selected file(s)"
 msgstr "Markierte Datei(en)"
 
-#: smarty.c:149
+#: smarty.c:179
 msgid "Change permission to"
 msgstr "Berechtigungen ändern zu"
 
-#: smarty.c:152
+#: smarty.c:182
 msgid "Move to"
 msgstr "Verschieben nach"
 
-#: smarty.c:155
+#: smarty.c:185
 msgid "Do it"
 msgstr "Tu es"
 
-#: smarty.c:158
+#: smarty.c:188
 msgid "Yes"
 msgstr "Ja"
 
-#: smarty.c:161
+#: smarty.c:191
 msgid "No"
 msgstr "Nein"
 
-#: smarty.c:164
+#: smarty.c:194
 msgid "Rename / Move"
 msgstr "Umbenennen / Verschieben"
 
@@ -370,4 +398,50 @@ msgstr "Hauptmenü"
 #: webftp.php:906
 msgid "Login failed, please try again"
 msgstr "Login fehlgeschlagen, bitte erneut versuchen"
+
+#: lib/classes/general/class.Loader.php:299
+msgid "Overview"
+msgstr "Übersicht"
+
+#: lib/classes/general/class.Loader.php:302
+#, php-format
+msgid "Logged in as: %s"
+msgstr "Angemeldet als: %s"
+
+#: lib/classes/general/class.Loader.php:311
+msgid "Server"
+msgstr "Server"
+
+#: lib/classes/general/class.Loader.php:316
+msgid "Froxlor update"
+msgstr "Froxlor Update"
+
+#: modules/login/class.login.php:112
+msgid "Profile language"
+msgstr "Profilsprache"
+
+#: modules/login/class.login.php:126
+msgid "Password reset successfully.<br />You now should receive an email with your new password."
+msgstr "Passwort erfolgreich zurückgesetzt.<br />Sie sollten eine E-Mail mit Ihrem neuen Passwort erhalten haben."
+
+#: modules/login/class.login.php:129
+msgid "The username or password you typed in is wrong. Please try it again!"
+msgstr "Der eingegebene Benutzername oder das Passwort ist falsch. Bitte versuchen Sie es erneut!"
+
+#: modules/login/class.login.php:132
+msgid "This account has been suspended because of too many login errors. <br />Please try again in "
+msgstr "Dieser Account wurde wegen zuvieler falscher Loginversuche deaktiviert.<br />Bitte versuchen Sie es später erneut."
+
+#: modules/login/class.login.php:136
+#, php-format
+msgid "The message to &quot;%s&quot; failed"
+msgstr "Die Meldung konnte nicht an &quot;%s&quot; versendet werden"
+
+#: modules/login/class.login.php:139
+msgid "Your account has been locked. Please contact your administrator for further information."
+msgstr "Ihr Account wurde gesperrt. Bitte kontaktieren Sie Ihren Administrator für nähere Informationen."
+
+#: modules/login/class.login.php:145
+msgid "A newer version of Froxlor has been installed but not yet set up.<br />Only the administrator can log in and finish the update."
+msgstr "Eine neuere Version von Froxlor wurde installiert, aber noch nicht eingerichtet.<br />Nur der Administrator kann sich anmelden und die Aktualisierung abschließen."
 

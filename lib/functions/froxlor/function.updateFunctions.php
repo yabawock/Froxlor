@@ -27,7 +27,8 @@
  */
 function updateToVersion($new_version = null)
 {
-	global $db, $settings;
+	$settings = Froxlor::getSettings();
+	$db = Froxlor::getDb();
 
 	if($new_version !== null && $new_version != '')
 	{
@@ -48,8 +49,7 @@ function updateToVersion($new_version = null)
  */
 function isFroxlor()
 {
-	global $settings;
-
+	$settings = Froxlor::getSettings();
 	if(isset($settings['panel']['frontend'])
 	&& $settings['panel']['frontend'] == 'froxlor')
 	{
@@ -70,7 +70,7 @@ function isFroxlor()
  */
 function isFroxlorVersion($to_check = null)
 {
-	global $settings;
+	$settings = Froxlor::getSettings();
 
 	if($settings['panel']['frontend'] == 'froxlor'
 	&& $settings['panel']['version'] == $to_check)
@@ -92,7 +92,7 @@ function isFroxlorVersion($to_check = null)
  */
 function hasUpdates($to_check = null)
 {
-	global $settings;
+	$settings = Froxlor::getSettings();
 
 	if(!isset($settings['panel']['version'])
 	|| $settings['panel']['version'] != $to_check)
@@ -116,33 +116,33 @@ function hasUpdates($to_check = null)
 function showUpdateStep($task = null, $needs_status = true)
 {
 	global $updatelog, $filelog;
-	
+
 	// output
 	echo $task;
-	
+
 	if(!$needs_status)
 	{
 		echo "<br />";
 	}
-	
+
 	$updatelog->logAction(ADM_ACTION, LOG_WARNING, $task);
 	$filelog->logAction(ADM_ACTION, LOG_WARNING, $task);
 }
 
 /*
  * Function lastStepStatus
- * 
+ *
  * outputs [OK] (success), [??] (warning) or [!!] (failure)
  * of the last update-step
- * 
+ *
  * @param	int			status	(0 = success, 1 = warning, 2 = failure)
- * 
+ *
  * @return	string		formatted output and log-entry
  */
 function lastStepStatus($status = -1, $message = '')
 {
 	global $updatelog, $filelog;
-	
+
 	switch($status)
 	{
 		case 0:
@@ -151,20 +151,20 @@ function lastStepStatus($status = -1, $message = '')
 			break;
 		case 1:
 			$status_sign = ($message != '') ? '['.$message.']' : '[??]';
-			$status_color = 'db7100';			
+			$status_color = 'db7100';
 			break;
 		case 2:
 			$status_sign = ($message != '') ? '['.$message.']' : '[!!]';
-			$status_color = 'ff0000';			
+			$status_color = 'ff0000';
 			break;
 		default:
 			$status_sign = '[unknown]';
-			$status_color = '000000';			
+			$status_color = '000000';
 			break;
 	}
 	// output
 	echo "<span style=\"margin-left: 5em; font-weight: bold; color: #".$status_color."\">".$status_sign."</span><br />";
-	
+
 	if($status == -1 || $status == 2)
 	{
 		$updatelog->logAction(ADM_ACTION, LOG_WARNING, 'Attention - last update task failed!!!');
@@ -179,9 +179,9 @@ function lastStepStatus($status = -1, $message = '')
 /**
  * validate if full path to update.log is sane
  * if not, the update.log is created in /tmp/
- *  
+ *
  * @param string $filename the file name to validate
- * 
+ *
  * @return string the full path with filename (can differ if not writeable => /tmp)
  */
 function validateUpdateLogFile($filename)

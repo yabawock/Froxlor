@@ -1,61 +1,59 @@
-$header
 	<article class="login bradius">
 		<header class="dark">
 			<img src="{$header_logo}" alt="Froxlor Server Management Panel" />
 		</header>
 
-		<if $update_in_progress !== ''>
+		{if isset($update_in_progress)}
 			<div class="warningcontainer bradius">
 				<div class="warning">{$update_in_progress}</div>
 			</div>
-		</if>
+		{/if}
 
-		<if $successmessage != ''>
+		{if isset($successmessage)}
 			<div class="successcontainer bradius">
-				<div class="successtitle">{$lng['success']['success']}</div>
-				<div class="success">$successmessage</div>
+				<div class="successtitle">{t}Information{/t}</div>
+				<div class="success">{$successmessage}</div>
 			</div>
-		</if>
+		{/if}
 
-		<if $message != ''>
+		{if isset($message)}
 			<div class="errorcontainer bradius">
-				<div class="errortitle">{$lng['error']['error']}</div>
-				<div class="error">$message</div>
+				<div class="errortitle">{t}Error{/t}</div>
+				<div class="error">{$message}</div>
 			</div>
-		</if>
+		{/if}
 
 		<section class="loginsec">
-			<form method="post" action="$filename" enctype="application/x-www-form-urlencoded">
+			<form method="post" action="{link}" enctype="application/x-www-form-urlencoded">
 				<fieldset>
-				<legend>Froxlor&nbsp;-&nbsp;Login</legend>
+				<legend>{t}Froxlor - Login{/t}</legend>
 				<p>
-					<label for="loginname">{$lng['login']['username']}:</label>&nbsp;
+					<label for="loginname">{t}Username{/t}:</label>&nbsp;
 					<input type="text" name="loginname" id="loginname" value="" required/>
 				</p>
 				<p>
-					<label for="password">{$lng['login']['password']}:</label>&nbsp;
+					<label for="password">{t}Password{/t}:</label>&nbsp;
 					<input type="password" name="password" id="password" required/>
 				</p>
 				<p>
-					<label for="language">{$lng['login']['language']}:</label>&nbsp;
-					<select name="language" id="language">$language_options</select>
+					<label for="language">{t}Language{/t}:</label>&nbsp;
+					<select name="language" id="language">{$language_options}</select>
 				</p>
 				<p class="submit">
 					<input type="hidden" name="send" value="send" />
-					<input type="submit" value="{$lng['login']['login']}" />
+					<input type="submit" value="{t}Login{/t}" />
 				</p>
 				</fieldset>
 			</form>
 
 			<aside>
-				<if $settings['panel']['allow_preset'] == '1'>
-					<a href="$filename?action=forgotpwd">{$lng['login']['forgotpwd']}</a>
-				<else>
+				{if $settings.panel.allow_preset == '1'}
+					<a href="{link area="login" section="login" action="forgotpwd"}">{t}Forgot password{/t}</a>
+				{else}
 					&nbsp;
-				</if>
+				{/if}
 			</aside>
 
 		</section>
 
 	</article>
-$footer

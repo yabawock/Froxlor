@@ -36,9 +36,9 @@
 </div>
 <footer>
 	<span>Froxlor
-		{if ($settings.admin.show_version_login == '1' && $loggedin == 0) || ($settings.admin.show_version_footer == '1' && $loggedin == 1)}
+		{* {if ($settings.admin.show_version_login == '1' && $loggedin == 0) || ($settings.admin.show_version_footer == '1' && $loggedin == 1)}
 			{$version}{$branding}
-		{/if}
+		{/if} *}
 		&copy; 2009-{$current_year} by <a href="http://www.froxlor.org/" rel="external">{t}the Froxlor Team{/t}</a>
 	</span>
 </footer>
