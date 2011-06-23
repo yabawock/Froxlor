@@ -6,3 +6,4 @@ temp/*
 .project
 .settings/
 .gitignore
+*unit*
