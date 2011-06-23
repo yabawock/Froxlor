@@ -22,6 +22,11 @@
  */
 interface dms
 {
+	/**
+	 * Creates a new handle.
+	 *
+	 * @param handle $handle
+	 */
 	public function handleCreate($handle);
 	public function handleDelete($handle);
 	public function handleAlter($handle);

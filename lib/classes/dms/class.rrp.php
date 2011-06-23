@@ -15,6 +15,10 @@
  * @package    DMS
  */
 
+/**
+ *
+ * @todo listing in rrp do only support 1k response entries. work with first/limit
+ */
 class rrp implements dms
 {
 	private $_user;
@@ -39,8 +43,38 @@ class rrp implements dms
 		$this->_request = new MREG_RequestHttp($this->_config);
 	}
 	
+	/**
+	 * (non-PHPdoc)
+	 * @see dms::handleCreate()
+	 */
 	public function handleCreate($handle) {
+		$command = array(
+			"command" => "AddContact",
+			"firstname" => $handle->getFirstname(),
+			"lastname" => $handle->getName(),
+			"organization" => $handle->getCompany(),
+			"street" => $handle->getStree(),
+			"zip" => $handle->getZip(),
+			"city" => $handle->getCity(),
+			"country" => $handle->getCountrycode(),
+			"phone" => $handle->getPhone(),
+			"fax" => $handle->getFax(),
+			"email" => $handle->getEmail()
+		);
 		
+		$response = $this->_reqeust->send($command);
+		
+		if ($response->code == 200) {
+			$data = $response->getList();
+			
+			$id = $data['0']['contact'];
+			$handle->setHandleId($id);
+			$handle->sync();
+			
+			return $handle;
+		}
+		
+		return false;
 	}
 	
 	public function handleDelete($handle) {
