@@ -22,9 +22,9 @@
  */
 interface dms
 {
-	public function handleCreate();
-	public function handleDelete();
-	public function handleAlter();
+	public function handleCreate($handle);
+	public function handleDelete($handle);
+	public function handleAlter($handle);
 	public function handleList();
 	
 	public function domainCheck($domain);
