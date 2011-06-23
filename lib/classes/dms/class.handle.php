@@ -26,9 +26,13 @@ class handle {
 	private $_phone;
 	private $_fax;
 	private $_email;
+	
+	private $_db;
 
 	public function __construct() {
-		/* nothing */
+		global $db;
+		
+		$this->_db = $db;
 	}
 
 	public function setName($name, $firstname) {
@@ -90,5 +94,9 @@ class handle {
 	
 	public function getEmail() {
 		return $this->_email;
+	}
+	
+	public function sync() {
+		
 	}
 }

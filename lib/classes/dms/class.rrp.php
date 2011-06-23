@@ -23,9 +23,10 @@ class rrp implements dms
 	private $_socket;
 	
 	private $_config = array();
+	private $_reqeust;
 	
 	public function __construct($user, $password, $opmode = "ote", $socket = "http://api-ote.rrpproxy.net/call?") {
-		$this->config = array("username" => $user,
+		$this->_config = array("username" => $user,
 						"password" => $password,
 						"opmode" => $opmode,
 						"socket" => $socket);
@@ -34,6 +35,8 @@ class rrp implements dms
 		$this->_password = $password;
 		$this->_opmode = $opmode;
 		$this->_socket = $socket;
+		
+		$this->_request = new MREG_RequestHttp($this->_config);
 	}
 	
 	public function handleCreate($handle) {
@@ -49,7 +52,7 @@ class rrp implements dms
 	}
 	
 	public function handleList() {
-		$request = new MREG_RequestHttp($this->config);
-		$response = $request->send(array("command" => "QueryContactList"));
+		
+		$response = $this->_request->send(array("command" => "QueryContactList"));
 	}
 }
