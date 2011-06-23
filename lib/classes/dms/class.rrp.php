@@ -102,9 +102,9 @@ class rrp implements dms
 	
 	/**
 	 * (non-PHPdoc)
-	 * @see dms::handleAlter()
+	 * @see dms::handleModify()
 	 */
-	public function handleAlter($handle) {
+	public function handleModify($handle) {
 		$command = array(
 			"command" => "ModifyContact",
 			"contact" => $handle->getHandleId(),

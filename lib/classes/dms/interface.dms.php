@@ -45,7 +45,7 @@ interface dms
 	 *
 	 * @return boolean
 	 */
-	public function handleAlter($handle);
+	public function handleModify($handle);
 	
 	/**
 	 * This will get all handles, sync them and
