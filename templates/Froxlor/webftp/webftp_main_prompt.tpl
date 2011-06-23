@@ -19,7 +19,7 @@ font-weight: bold;
 		</td>
 	</tr>
 	<tr>
-	<td colspan="10" align="left"><input type="submit" NAME="yes" VALUE="$language[temp_prompt_yes]"><input type="submit" NAME="no" VALUE="$language[temp_prompt_no]">
+	<td colspan="10" align="left"><input type="submit" name="yes" value="{t}Yes{/t}"><input type="submit" name="no" value="{t}No{/t}">
 	</td>
 	</tr>
 	</tr>

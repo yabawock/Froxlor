@@ -1,5 +1,5 @@
 <table border="0" cellspacing="2" cellpadding="2">
-	<form name="rename" method="post" action="webftp.php">
+	<form name="rename" method="post" action="{link}">
 		<tr>
 			<td>
 				<input type="hidden" name="op" value="do" />

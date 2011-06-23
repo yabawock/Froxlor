@@ -112,9 +112,14 @@ else
 
 # Initialize Smarty
 Froxlor::addObject('smarty', new Smarty());
+Froxlor::addObject('linker', new linker('webftp.php'));
+Froxlor::getSmarty()->assign('linker', Froxlor::getLinker());
 Froxlor::getSmarty()->template_dir = './templates/' . $settings['panel']['default_theme'] . '/';
 Froxlor::getSmarty()->compile_dir  = './templates_c/';
 Froxlor::getSmarty()->cache_dir    = './cache/';
+Froxlor::getSmarty()->plugin_dir   = './lib/functions/smarty_plugins/';
+include_once('./lib/functions/smarty_plugins/function.create_link.php');
+Froxlor::getSmarty()->registerPlugin("function", "link", "smarty_function_create_link");
 
 # Set the language
 Froxlor::addObject('language', new languageSelect());
@@ -923,6 +928,7 @@ function killslashes($input)
 
 function parse_ftp_rawlist($list, $type = "UNIX")
 {
+	$files = array();
 	if ($type == "UNIX")
 	{
 		$regexp = "/([-ldrswx]{10})[ ]+([0-9]+)[ ]+([-A-Z0-9_]+)[ ]+([-A-Z0-9_]+)[ ]+([0-9]+)[ ]+([A-Z]{3}[ ]+[0-9]{1,2}[ ]+[0-9:]{4,5})[ ]+(.*)/i";
@@ -996,7 +1002,7 @@ function parse_ftp_rawlist($list, $type = "UNIX")
 		}
 	}
 
-	if ( is_array($files)  AND count($files) > 0)
+	if (is_array($files) && count($files) > 0)
 	{
 		asort($files);
 		//natcasesort($files);

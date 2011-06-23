@@ -1,4 +1,4 @@
-		<form name="putmForm" method="POST" action="webftp.php">
+		<form name="putmForm" method="POST" action="{link}">
 			<input type="hidden" name="op" value="delete"/>
 			<input type="hidden" name="action" value="multiple" />
 			<input type="hidden" name="currentDir" value="{$currentDir}" />
@@ -21,10 +21,10 @@
 					<tr>
 						<td>&nbsp;</td>
 						<td>
-							<a href="webftp.php?action=cd&amp;file=..&amp;currentDir={$currentDir}"><img src="{$image_folder}/icons/parent.gif" height="20" width="20" align="top" border="0"></a>
+							<a href="{link action="cd" file=".." currentDir=$currentDir}"><img src="{$image_folder}/icons/parent.gif" height="20" width="20" align="top" border="0"></a>
 						</td>
 						<td align="left" colspan="10">
-							<a href="webftp.php?action=cd&amp;file=..&amp;currentDir={$currentDir}">..</a>
+							<a href="{link action="cd" file=".." currentDir=$currentDir}">..</a>
 						</td>
 					</tr>
 					{$output_dir}

@@ -2,7 +2,7 @@
 		<header>
 			<h2>
 				<img src="images/Froxlor/icons/group_edit.png" alt="" />&nbsp;
-				{t}Creating a file in{/t}: <a href="webftp.php?action=cd&amp;file={$currentDir}">{$currentDir}</a> ({$mode})
+				{t}Creating a file in{/t}: <a href="{link action="cd" file=$currentDir}">{$currentDir}</a> ({$mode})
 			</h2>
 		</header>
 		{if isset($successmessage)}
@@ -18,7 +18,7 @@
 			</div>
 		{/if}
 		<section >
-			<form name="editForm" method="POST" action="webftp.php">
+			<form name="editForm" method="POST" action="{link}">
 				<input type="hidden" name="action" value="edit" />
 				<input type="hidden" name="op" value="save" />
 				<input type="hidden" name="currentDir" value="{$currentDir}">
@@ -28,7 +28,7 @@
 				<legend for="filename">{t}Filename{/t}:</legend>
 				<input type="text" id="filename" name="file" value="{$file}" />
 				<input type="submit" name="Submit" value="{t}Save file{/t}" />
-				<input type="button" name="Submit2" value="{t}Cancel{/t}" onClick="javascript:document.location.href='webftp.php?action=cd&amp;file={$currentDir}'" />
+				<input type="button" name="Submit2" value="{t}Cancel{/t}" onClick="javascript:document.location.href='{link action="cd" file=$currentDir}'" />
 			</form>
 		</section>
 	</article>

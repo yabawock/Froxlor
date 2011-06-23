@@ -4,7 +4,7 @@
 			<table>
 				<tr>
 					<td>
-						<form name="cdDirect" method="POST" action="webftp.php">
+						<form name="cdDirect" method="POST" action="{link}">
 							<input type="hidden" name="action" value="cddirect" />
 							<input type="hidden" name="currentDir" value="{$currentDir}" />
 							<input type="text" name="file" value="" style="width:170px;" />
@@ -14,7 +14,7 @@
 				</tr>
 				<tr>
 					<td>
-						<form name="dirinput" method="POST" action="webftp.php">
+						<form name="dirinput" method="POST" action="{link}">
 							<input type="hidden" name="action" value="createdir" />
 							<input type="hidden" name="currentDir" value="{$currentDir}" style="width=150;" />
 							<input type="hidden" name="mode" value="{$mode}" />
@@ -25,7 +25,7 @@
 				</tr>
 				<tr>
 					<td>
-						<form name="newfile" method="POST" action="webftp.php">
+						<form name="newfile" method="POST" action="{link}">
 							<input type="hidden" name="currentDir" value="{$currentDir}" />
 							<input type="hidden" name="action" value="edit" />
 							<input type="hidden" name="op" value="new" />
@@ -38,7 +38,7 @@
 		</section>
 		<section class="dboarditem bradiusodd">
 			<h2>{t}Upload files{/t}</h2>
-			<form name="putForm" envtype="multipart/form-data" method="POST" action="webftp.php">
+			<form name="putForm" envtype="multipart/form-data" method="POST" action="{link}">
 				<input type="hidden" name="action" value="put" />
 				<input type="hidden" name="currentDir" value="{$currentDir}" />
 				<input type="hidden" name="mode" value="{$mode}" />

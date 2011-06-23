@@ -18,7 +18,7 @@
 		{/if}
 
 		<section class="loginsec">
-			<form method="post" action="webftp.php" enctype="application/x-www-form-urlencoded">
+			<form method="post" action="{$linker->getLink()}" enctype="application/x-www-form-urlencoded">
 				<fieldset>
 				<legend>{t}Froxlor - WebFTP - Login{/t}</legend>
 				<p>
