@@ -88,7 +88,7 @@ if(!function_exists("ftp_connect"))
 	die('No FTP support');
 }
 
-require('./lib/classes/general/class.Froxlor.php');
+require('./lib/classes/general/class.Autoload.php');
 
 // Create the database - connection
 Froxlor::addObject('db', new mysqli($sql['host'], $sql['user'], $sql['password'], $sql['db']));
@@ -111,14 +111,12 @@ else
 }
 
 # Initialize Smarty
-include('./lib/classes/Smarty/Smarty.class.php');
 Froxlor::addObject('smarty', new Smarty());
 Froxlor::getSmarty()->template_dir = './templates/' . $settings['panel']['default_theme'] . '/';
 Froxlor::getSmarty()->compile_dir  = './templates_c/';
 Froxlor::getSmarty()->cache_dir    = './cache/';
 
 # Set the language
-require('./lib/classes/output/class.languageSelect.php');
 Froxlor::addObject('language', new languageSelect());
 Froxlor::getLanguage()->useBrowser = true;
 Froxlor::getLanguage()->setLanguage();
