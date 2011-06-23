@@ -340,27 +340,26 @@ class db
 	{
 		global $filename;
 
+		$text = 'MySQL - Error: ' . str_replace("\n", "\t", $errormsg);
 		if($mysqlActive)
 		{
 			$this->geterrdescno();
-			$errormsg.= "\n";
-			$errormsg.= 'mysql error number: ' . $this->errno . "\n";
-			$errormsg.= 'mysql error desc: ' . $this->errdesc . "\n";
+			$text .= "; ErrNo: " . $this->errno . "; Desc: " . $this->errdesc;
 		}
-
-		$errormsg.= 'Time/date: ' . date('d/m/Y h:i A') . "\n";
 
 		if($filename != 'cronscript.php')
 		{
-			$errormsg.= 'Script: ' . htmlspecialchars(getenv('REQUEST_URI')) . "\n";
-			$errormsg.= 'Referer: ' . htmlspecialchars(getenv('HTTP_REFERER')) . "\n";
-			die(nl2br($errormsg));
+			$text .= "; Script: " . getenv('REQUEST_URI') . "; Ref: " . getenv('HTTP_REFERER');
 		}
 		else
 		{
-			$errormsg.= 'Script: -- Cronscript --' . "\n";
-			die($errormsg);
+			$text .= "; Script: cronscript";
 		}
+		$md5 = md5($text . time());
+		openlog("Froxlor", LOG_NDELAY, LOG_USER);
+		syslog(LOG_ERR, $text . "; $md5");
+		closelog();
+		die("We are sorry, but a MySQL - error occurred. The administrator may find more information in syslog with the ID $md5");
 	}
 	
 	/**
