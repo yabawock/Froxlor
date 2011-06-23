@@ -37,7 +37,7 @@
 				</p>
 				<p>
 					<label for="language">{t}Language{/t}:</label>&nbsp;
-					<select name="language" id="language">$language_options</select>
+					<select name="language" id="language">{$language_options}</select>
 				</p>
 				<p class="submit">
 					<input type="hidden" name="send" value="send" />

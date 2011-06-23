@@ -80,6 +80,7 @@ class Loader
 		}
 
 		require ('./lib/tables.inc.php');
+
 		Froxlor::addObject('db', new db($sql['host'], $sql['user'], $sql['password'], $sql['db']));
 		unset($sql['password']);
 		unset(Froxlor::getDb()->password);

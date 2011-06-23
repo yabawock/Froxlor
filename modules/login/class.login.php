@@ -106,6 +106,47 @@ class login
 			redirectTo(Froxlor::getLinker()->getLink(array('area' => 'customer', 'section' => 'index')));
 			exit;
 		}
+		else
+		{
+			$language_options = '';
+			$language_options.= makeoption(_('Profile language'), 'profile', 'profile', true, true);
+
+			$langs = Froxlor::getLanguage()->getWorkingLanguages();
+			while(list($language_file, $language_name) = each($langs))
+			{
+				$language_options.= makeoption($language_name, $language_file, 'profile', true);
+			}
+			Froxlor::getSmarty()->assign('language_options', $language_options);
+
+			$smessage = isset($_GET['showmessage']) ? (int)$_GET['showmessage'] : 0;
+
+			switch($smessage)
+			{
+				case 1:
+					Froxlor::getSmarty()->assign('successmessage', _('Password reset successfully.<br />You now should receive an email with your new password.'));
+					break;
+				case 2:
+					Froxlor::getSmarty()->assign('message', _('The username or password you typed in is wrong. Please try it again!'));
+					break;
+				case 3:
+					Froxlor::getSmarty()->assign('message', _('This account has been suspended because of too many login errors. <br />Please try again in ' . $settings['login']['deactivatetime'] . ' seconds.'));
+					break;
+				case 4:
+					$cmail = isset($_GET['customermail']) ? $_GET['customermail'] : 'unknown';
+					Froxlor::getSmarty()->assign('message', sprintf(_('The message to &quot;%s&quot; failed'), $cmail));
+					break;
+				case 5:
+					Froxlor::getSmarty()->assign('message', _('Your account has been locked. Please contact your administrator for further information.'));
+					break;
+			}
+
+			if(hasUpdates($version))
+			{
+				Froxlor::getSmarty()->assign('update_in_progress', _('A newer version of Froxlor has been installed but not yet set up.<br />Only the administrator can log in and finish the update.'));
+			}
+
+			return Froxlor::getSmarty()->fetch('login/login.tpl');
+		}
 
 		return Froxlor::getSmarty()->fetch('login/login.tpl');
 	}
