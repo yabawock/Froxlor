@@ -26,10 +26,6 @@
  		ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  		FITNESS FOR A PARTICULAR PURPOSE.
 */
-
-	Froxlor::getSmarty()->registerFilter('pre', 'smarty_prefilter_t');
-	Froxlor::getSmarty()->registerFilter('post', 'smarty_postfilter_t');
-
 	function smarty_prefilter_t($tpl_source, &$smarty) {
 		/* find all {t} ... {/t} uses regex */
 		$tpl_source = preg_replace_callback(

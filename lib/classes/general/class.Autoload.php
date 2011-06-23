@@ -44,3 +44,29 @@ class classAutoload
 }
 
 spl_autoload_register(array('classAutoload', 'autoload'));
+
+/**
+ * This is just for backword compability
+ */
+includeFunctions(dirname(__FILE__) . '/../../functions/');
+
+function includeFunctions($dirname)
+{
+	$dirhandle = opendir($dirname);
+	while(false !== ($filename = readdir($dirhandle)))
+	{
+		if($filename != '.' && $filename != '..' && $filename != '')
+		{
+			if((substr($filename, 0, 9) == 'function.' || substr($filename, 0, 9) == 'constant.') && substr($filename, -4 ) == '.php')
+			{
+				include($dirname . $filename);
+			}
+
+			if(is_dir($dirname . $filename))
+			{
+				includeFunctions($dirname . $filename . '/');
+			}
+		}
+	}
+	closedir($dirhandle);
+}

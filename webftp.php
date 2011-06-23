@@ -117,9 +117,9 @@ Froxlor::getSmarty()->assign('linker', Froxlor::getLinker());
 Froxlor::getSmarty()->template_dir = './templates/' . $settings['panel']['default_theme'] . '/';
 Froxlor::getSmarty()->compile_dir  = './templates_c/';
 Froxlor::getSmarty()->cache_dir    = './cache/';
-Froxlor::getSmarty()->plugin_dir   = './lib/functions/smarty_plugins/';
-include_once('./lib/functions/smarty_plugins/function.create_link.php');
 Froxlor::getSmarty()->registerPlugin("function", "link", "smarty_function_create_link");
+Froxlor::getSmarty()->registerFilter('pre', 'smarty_prefilter_t');
+Froxlor::getSmarty()->registerFilter('post', 'smarty_postfilter_t');
 
 # Set the language
 Froxlor::addObject('language', new languageSelect());
@@ -128,7 +128,6 @@ Froxlor::getLanguage()->setLanguage();
 
 # Activate gettext for smarty;
 define('HAVE_GETTEXT', true);
-require ('./lib/functions/smarty_plugins/gettext-prefilter.php');
 
 $settings['admin']['show_version_login'] = 0;
 if ($result = Froxlor::getDb()->query("SELECT `value` FROM `panel_settings` WHERE `settinggroup` = 'admin' AND `varname` = 'show_version_login'"))
