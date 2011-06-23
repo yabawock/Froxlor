@@ -1639,6 +1639,25 @@ if(isFroxlorVersion('0.9.22-svn1'))
 {
 	showUpdateStep("Updating from 0.9.21 to 0.9.22-rrp1");
 	
+	$db->query("CREATE TABLE IF NOT EXISTS `users` (
+		  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+		  `loginname` varchar(50) NOT NULL DEFAULT '',
+		  `password` varchar(50) NOT NULL DEFAULT '',
+		  `salt` varchar(32) NOT NULL,
+		  `act_key` varchar(32) NOT NULL DEFAULT '0',
+		  `isadmin` tinyint(1) NOT NULL DEFAULT '0',
+		  `contactid` int(11) NOT NULL,
+		  `def_language` varchar(255) NOT NULL DEFAULT '',
+		  `guid` int(5) NOT NULL DEFAULT '0',
+		  `deactivated` tinyint(1) NOT NULL DEFAULT '0',
+		  `lastlogin_succ` int(11) unsigned NOT NULL DEFAULT '0',
+		  `lastlogin_fail` int(11) unsigned NOT NULL DEFAULT '0',
+		  `loginfail_count` int(11) unsigned NOT NULL DEFAULT '0',
+		  `theme` varchar(255) NOT NULL DEFAULT 'Froxlor',
+		  PRIMARY KEY (`id`),
+		  UNIQUE KEY `loginname` (`loginname`)
+		) ENGINE=MyISAM");
+	
 	$db->query("CREATE TABLE IF NOT EXISTS `user_adresses` (
   `userid` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL DEFAULT '',
