@@ -28,6 +28,14 @@ interface dms
 	 * @param handle $handle
 	 */
 	public function handleCreate($handle);
+	
+	/**
+	 * Deletes a handle if no resources are associated to it.
+	 *
+	 * @param handle $handle
+	 *
+	 * @return boolean
+	 */
 	public function handleDelete($handle);
 	public function handleAlter($handle);
 	

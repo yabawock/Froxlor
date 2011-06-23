@@ -29,6 +29,14 @@ class rrp implements dms
 	private $_config = array();
 	private $_reqeust;
 	
+	/**
+	 * Contructor.
+	 *
+	 * @param string $user
+	 * @param string $password
+	 * @param string $opmode
+	 * @param string $socket
+	 */
 	public function __construct($user, $password, $opmode = "ote", $socket = "http://api-ote.rrpproxy.net/call?") {
 		$this->_config = array("username" => $user,
 						"password" => $password,
@@ -77,8 +85,19 @@ class rrp implements dms
 		return false;
 	}
 	
+	/**
+	 * (non-PHPdoc)
+	 * @see dms::handleDelete()
+	 */
 	public function handleDelete($handle) {
+		$command = array("command" => "DeleteContact", "contact" => $handle->getHandleId());
+		$response = $this->_reqeust->send($command);
 		
+		if ($response->code == 200) {
+			return true;
+		}
+		
+		return false;
 	}
 	
 	public function handleAlter($handle) {
