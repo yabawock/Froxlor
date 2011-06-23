@@ -235,6 +235,14 @@ class Loader
 				unset($_SESSION['requestData']);
 			}
 		}
+
+		if (($this->area == 'admin' && !$user->isAdmin()) || ($this->area == 'customer' && $user->isAdmin()))
+		{
+			$this->area = 'login';
+			$this->section = 'login';
+			$this->action = '';
+		}
+
 		/**
 		 * Logic moved out of lng-file
 		 */
