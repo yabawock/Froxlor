@@ -1634,3 +1634,229 @@ if(isFroxlorVersion('0.9.21'))
 
 	updateToVersion('0.9.22-svn1');
 }
+
+if(isFroxlorVersion('0.9.22-svn1'))
+{
+	showUpdateStep("Updating from 0.9.21 to 0.9.22-rrp1");
+	
+	$db->query("CREATE TABLE IF NOT EXISTS `user_adresses` (
+  `userid` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL DEFAULT '',
+  `firstname` varchar(255) NOT NULL DEFAULT '',
+  `gender` int(1) NOT NULL DEFAULT '0',
+  `company` varchar(255) NOT NULL DEFAULT '',
+  `street` varchar(255) NOT NULL DEFAULT '',
+  `zipcode` varchar(255) NOT NULL DEFAULT '',
+  `city` varchar(255) NOT NULL DEFAULT '',
+  `phone` varchar(255) NOT NULL DEFAULT '',
+  `fax` varchar(255) NOT NULL DEFAULT '',
+  `email` varchar(255) NOT NULL DEFAULT '',
+  `def_language` varchar(255) NOT NULL DEFAULT '',
+  PRIMARY KEY (`userid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;");
+	
+	$db->query("CREATE TABLE IF NOT EXISTS `user_resources` (
+  `customerid` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `diskspace` bigint(30) NOT NULL DEFAULT '0',
+  `diskspace_used` bigint(30) NOT NULL DEFAULT '0',
+  `mysqls` int(15) NOT NULL DEFAULT '0',
+  `mysqls_used` int(15) NOT NULL DEFAULT '0',
+  `emails` int(15) NOT NULL DEFAULT '0',
+  `emails_used` int(15) NOT NULL DEFAULT '0',
+  `email_accounts` int(15) NOT NULL DEFAULT '0',
+  `email_accounts_used` int(15) NOT NULL DEFAULT '0',
+  `email_forwarders` int(15) NOT NULL DEFAULT '0',
+  `email_forwarders_used` int(15) NOT NULL DEFAULT '0',
+  `email_quota` bigint(13) NOT NULL DEFAULT '0',
+  `email_quota_used` bigint(13) NOT NULL DEFAULT '0',
+  `ftps` int(15) NOT NULL DEFAULT '0',
+  `ftps_used` int(15) NOT NULL DEFAULT '0',
+  `tickets` int(15) NOT NULL DEFAULT '0',
+  `tickets_used` int(15) NOT NULL DEFAULT '0',
+  `subdomains` int(15) NOT NULL DEFAULT '0',
+  `subdomains_used` int(15) NOT NULL DEFAULT '0',
+  `traffic` bigint(30) NOT NULL DEFAULT '0',
+  `traffic_used` bigint(30) NOT NULL DEFAULT '0',
+  `documentroot` varchar(255) NOT NULL DEFAULT '',
+  `standardsubdomain` int(11) NOT NULL DEFAULT '0',
+  `ftp_lastaccountnumber` int(11) NOT NULL DEFAULT '0',
+  `mysql_lastaccountnumber` int(11) NOT NULL DEFAULT '0',
+  `phpenabled` tinyint(1) NOT NULL DEFAULT '1',
+  `reportsent` tinyint(4) unsigned NOT NULL DEFAULT '0',
+  `pop3` tinyint(1) NOT NULL DEFAULT '1',
+  `imap` tinyint(1) NOT NULL DEFAULT '1',
+  `aps_packages` int(5) NOT NULL DEFAULT '0',
+  `aps_packages_used` int(5) NOT NULL DEFAULT '0',
+  `perlenabled` tinyint(1) NOT NULL DEFAULT '0',
+  `email_autoresponder` int(5) NOT NULL DEFAULT '0',
+  `email_autoresponder_used` int(5) NOT NULL DEFAULT '0',
+  `backup_allowed` tinyint(1) NOT NULL DEFAULT '1',
+  `backup_enabled` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`customerid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;");
+	
+	$db->query("CREATE TABLE IF NOT EXISTS `user_resources_admin` (
+  `adminid` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `ip` tinyint(4) NOT NULL DEFAULT '-1',
+  `customers` int(15) NOT NULL DEFAULT '0',
+  `customers_used` int(15) NOT NULL DEFAULT '0',
+  `customers_see_all` tinyint(1) NOT NULL DEFAULT '0',
+  `domains` int(15) NOT NULL DEFAULT '0',
+  `domains_used` int(15) NOT NULL DEFAULT '0',
+  `domains_see_all` tinyint(1) NOT NULL DEFAULT '0',
+  `caneditphpsettings` tinyint(1) NOT NULL DEFAULT '0',
+  `change_serversettings` tinyint(1) NOT NULL DEFAULT '0',
+  `edit_billingdata` tinyint(1) NOT NULL DEFAULT '0',
+  `diskspace` int(15) NOT NULL DEFAULT '0',
+  `diskspace_used` int(15) NOT NULL DEFAULT '0',
+  `mysqls` int(15) NOT NULL DEFAULT '0',
+  `mysqls_used` int(15) NOT NULL DEFAULT '0',
+  `emails` int(15) NOT NULL DEFAULT '0',
+  `emails_used` int(15) NOT NULL DEFAULT '0',
+  `email_accounts` int(15) NOT NULL DEFAULT '0',
+  `email_accounts_used` int(15) NOT NULL DEFAULT '0',
+  `email_forwarders` int(15) NOT NULL DEFAULT '0',
+  `email_forwarders_used` int(15) NOT NULL DEFAULT '0',
+  `email_quota` bigint(13) NOT NULL DEFAULT '0',
+  `email_quota_used` bigint(13) NOT NULL DEFAULT '0',
+  `ftps` int(15) NOT NULL DEFAULT '0',
+  `ftps_used` int(15) NOT NULL DEFAULT '0',
+  `tickets` int(15) NOT NULL DEFAULT '-1',
+  `tickets_used` int(15) NOT NULL DEFAULT '0',
+  `subdomains` int(15) NOT NULL DEFAULT '0',
+  `subdomains_used` int(15) NOT NULL DEFAULT '0',
+  `traffic` bigint(30) NOT NULL DEFAULT '0',
+  `traffic_used` bigint(30) NOT NULL DEFAULT '0',
+  `reportsent` tinyint(4) unsigned NOT NULL DEFAULT '0',
+  `can_manage_aps_packages` tinyint(1) NOT NULL DEFAULT '1',
+  `aps_packages` int(5) NOT NULL DEFAULT '0',
+  `aps_packages_used` int(5) NOT NULL DEFAULT '0',
+  `email_autoresponder` int(5) NOT NULL DEFAULT '0',
+  `email_autoresponder_used` int(5) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`adminid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;");
+	
+	lastStepStatus(0);
+	
+	updateToVersion('0.9.22-rrp1');
+}
+
+if(isFroxlorVersion('0.9.22-rrp1'))
+{
+	showUpdateStep("Updating from 0.9.22-rrp1 to 0.9.22-rrp2");
+	lastStepStatus(0);
+	
+	// fix structure
+	$db->query("ALTER TABLE `users` ADD `isadmin` TINYINT( 1 ) NOT NULL DEFAULT '0' AFTER `password`");
+	$db->query("ALTER TABLE `users` ADD `act_key` VARCHAR( 32 ) NOT NULL DEFAULT '0' AFTER `password`");
+	$db->query("ALTER TABLE `user_adresses` DROP `def_language`");
+	
+	// fix spelling
+	$db->query("ALTER TABLE `user_adresses` RENAME `user_addresses`");
+	
+	
+	lastStepStatus(0);
+	updateToVersion('0.9.22-rrp2');
+}
+
+if(isFroxlorVersion('0.9.22-rrp2'))
+{
+	showUpdateStep("Updating from 0.9.22-rrp2 to 0.9.22-rrp3");
+	lastStepStatus(0);
+	
+	// fix structure
+	showUpdateStep("Fix in database structure.");
+	$db->query("ALTER TABLE `user_resources_admin` CHANGE `adminid` `id` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT");
+	$db->query("ALTER TABLE `user_resources` CHANGE `customerid` `id` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT;");
+	$db->query("ALTER TABLE `user_addresses` CHANGE `userid` `id` INT( 11 ) UNSIGNED NOT NULL AUTO_INCREMENT;");
+	
+	lastStepStatus(0);
+	updateToVersion('0.9.22-rrp3');
+}
+
+if(isFroxlorVersion('0.9.22-rrp3'))
+{
+	showUpdateStep("Updating from 0.9.22-rrp3 to 0.9.22-rrp4");
+	lastStepStatus(0);
+	
+	// fix structure
+	showUpdateStep("Fix in database structure.");
+	$db->query("ALTER TABLE `user_addresses` ADD `country` VARCHAR( 7 ) NOT NULL AFTER `city` ");
+	
+	lastStepStatus(0);
+	updateToVersion('0.9.22-rrp4');
+}
+
+if(isFroxlorVersion('0.9.22-rrp4'))
+{
+	showUpdateStep("Updating from 0.9.22-rrp4 to 0.9.22-rrp5");
+	lastStepStatus(0);
+	
+	// fix structure
+	showUpdateStep("Fix in database structure.");
+	$db->query("ALTER TABLE `users` ADD `contactid` INT( 11 ) NOT NULL AFTER `isadmin` ");
+	
+	lastStepStatus(0);
+	updateToVersion('0.9.22-rrp5');
+}
+
+
+if(isFroxlorVersion('0.9.22-rrp5'))
+{
+	showUpdateStep("Updating from 0.9.22-rrp4 to 0.9.22-rrp5");
+	lastStepStatus(0);
+	
+	// fix structure
+	showUpdateStep("Fix in database structure.");
+	$db->query("ALTER TABLE `users` ADD `salt` VARCHAR( 32 ) NOT NULL AFTER `password` ");
+	lastStepStatus(0);
+	
+	
+	// create new table
+	showUpdateStep("Create new table: user2admin");
+	$db->query("CREATE TABLE `user2admin` (
+				`userid` INT( 11 ) NOT NULL ,
+				`adminid` INT( 11 ) NOT NULL
+				) ENGINE = MYISAM ;");
+	
+	$db->query("ALTER TABLE `user2admin` ADD UNIQUE (
+				`userid` ,
+				`adminid`
+				)");
+	
+	lastStepStatus(0);
+	updateToVersion('0.9.22-rrp6');
+}
+
+if(isFroxlorVersion('0.9.22-rrp6'))
+{
+	showUpdateStep("Updating from 0.9.22-rrp6 to 0.9.22-rrp7");
+	lastStepStatus(0);
+
+	
+	// create new table
+	showUpdateStep("Create new table: user2handle");
+	$db->query("CREATE TABLE `user2handle` (
+				`userid` INT NOT NULL ,
+				`handleid` INT NOT NULL
+				) ENGINE = MYISAM ;");
+	lastStepStatus(0);
+	
+	showUpdateStep("Create new table: domain_handle");
+	$db->query("CREATE TABLE IF NOT EXISTS `domain_handle` (
+			  `id` int(11) NOT NULL,
+			  `handleid` varchar(16) NOT NULL,
+			  `company` varchar(255) NULL,
+			  `name` varchar(255) NULL,
+			  `firstname` varchar(255) NULL,
+			  `street` varchar(255) NOT NULL,
+			  `zip` varchar(15) NOT NULL,
+			  `city` varchar(255) NOT NULL,
+			  `countrycode` varchar(4) NOT NULL,
+			  `phone` varchar(55) NOT NULL,
+			  `email` varchar(255) NOT NULL
+			) ENGINE=MyISAM;");
+	
+	lastStepStatus(0);
+	updateToVersion('0.9.22-rrp7');
+}

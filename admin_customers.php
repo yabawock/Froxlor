@@ -361,7 +361,7 @@ if($page == 'customers'
 						$log->logAction(ADM_ACTION, LOG_NOTICE, "archived ticket '" . $mainticket->Get('subject') . "'");
 					}
 				}
-
+				
 				redirectTo($filename, Array('page' => $page, 's' => $s));
 			}
 			else
@@ -391,6 +391,11 @@ if($page == 'customers'
 				$def_language = validate($_POST['def_language'], 'default language');
 				$diskspace = intval_ressource($_POST['diskspace']);
 				$gender = intval_ressource($_POST['gender']);
+				
+				$ccode = "";
+				if(isset($_POST['countrycode'])) {
+					$ccode = $_POST['countrycode'];
+				}
 
 				if(isset($_POST['diskspace_ul']))
 				{
@@ -894,6 +899,8 @@ if($page == 'customers'
 				{
 					$language_options.= makeoption($language_name, $language_file, $settings['panel']['standardlanguage'], true);
 				}
+				
+				$countrycode = countrycode::get(true);
 
 				$diskspace_ul = makecheckbox('diskspace_ul', $lng['customer']['unlimited'], '-1', false, '0', true, true);
 				$traffic_ul = makecheckbox('traffic_ul', $lng['customer']['unlimited'], '-1', false, '0', true, true);
@@ -1586,6 +1593,8 @@ if($page == 'customers'
 				$gender_options .= makeoption($lng['gender']['male'], 1, ($result['gender'] == '1' ? true : false), true, true);
 				$gender_options .= makeoption($lng['gender']['female'], 2, ($result['gender'] == '2' ? true : false), true, true);
 
+				$countrycode = countrycode::get(true);
+				
 				$customer_edit_data = include_once dirname(__FILE__).'/lib/formfields/admin/customer/formfield.customer_edit.php';
 				$customer_edit_form = htmlform::genHTMLForm($customer_edit_data);
 

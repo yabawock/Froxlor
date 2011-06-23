@@ -45,7 +45,7 @@ function checkLastGuid()
 	$update_to_guid = 0;
 	
 	$froxlor_guid = 0;
-	$result = $db->query_first("SELECT MAX(`guid`) as `fguid` FROM `".TABLE_PANEL_CUSTOMERS."`");
+	$result = $db->query_first("SELECT MAX(`guid`) as `fguid` FROM `".TABLE_USERS."`");
 	$froxlor_guid = $result['fguid'];
 
 	$g_file = '/etc/group';

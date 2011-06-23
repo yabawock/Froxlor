@@ -1629,6 +1629,7 @@ $lng['gender']['undef'] = '';
 $lng['serversettings']['backup_ftp_passive_mode'] = 'Use passive mode';
 
 // Country code (ISO-3166-2)
+$lng['countrycode'] = 'Country';
 $lng['country']['AF'] = "Afghanistan";
 $lng['country']['AX'] = "Aland Islands";
 $lng['country']['AL'] = "Albania";

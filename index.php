@@ -38,196 +38,90 @@ if($action == 'login')
 		$loginname = validate($_POST['loginname'], 'loginname');
 		$password = validate($_POST['password'], 'password');
 
-		$row = $db->query_first("SELECT `loginname` AS `customer` FROM `" . TABLE_PANEL_CUSTOMERS . "` WHERE `loginname`='" . $db->escape($loginname) . "'");
-
-		if($row['customer'] == $loginname)
-		{
-			$table = "`" . TABLE_PANEL_CUSTOMERS . "`";
-			$uid = 'customerid';
-			$adminsession = '0';
-			$is_admin = false;
+		try {
+			$user = new user($loginname, $password);
+			
+			$user->setData("general", "lastlogin_succ", time());
+			$user->setData("general", "loginfail_count", 0);
 		}
-		else
-		{
-			if((int)$settings['login']['domain_login'] == 1)
-			{
-				/**
-				 * check if the customer tries to login with a domain, #374
-				 */
-				$domainname = $idna_convert->encode(preg_replace(Array('/\:(\d)+$/', '/^https?\:\/\//'), '', $loginname));
-				$row2 = $db->query_first("SELECT `customerid` FROM `".TABLE_PANEL_DOMAINS."` WHERE `domain` = '".$db->escape($domainname)."'");
-	
-				if(isset($row2['customerid']) && $row2['customerid'] > 0)
-				{
-					$loginname = getCustomerDetail($row2['customerid'], 'loginname');
-					
-					if($loginname !== false)
-					{
-						$row3 = $db->query_first("SELECT `loginname` AS `customer` FROM `" . TABLE_PANEL_CUSTOMERS . "` WHERE `loginname`='" . $db->escape($loginname) . "'");
+		catch(Exception $e) {
+			// login incorrect
+			$user->setData("general", "lastlogin_fail", time());
+			$user->setData("general", "loginfail_count", $user->getData("general", "loginfail_count")+1);
+			
+			redirectTo('index.php', Array('showmessage' => '2'), true);
+			exit;
+		}
 		
-						if($row3['customer'] == $loginname)
-						{
-							$table = "`" . TABLE_PANEL_CUSTOMERS . "`";
-							$uid = 'customerid';
-							$adminsession = '0';
-							$is_admin = false;
-						}
-					}
-					else
-					{
-						$is_admin = true;
-					}
-				}
-				else
-				{
-					$is_admin = true;
-				}
-			}
-			else
-			{
-				$is_admin = true;
-			}
-		}
-
-		if(hasUpdates($version) && $is_admin == false)
+		// udpate available but not an admin?
+		if(hasUpdates($version) && !$user->isAdmin()
+			// or update available, is admin but has not the right to do the update
+			|| hasUpdates($version) && $user->isAdmin() && !$user->getData("resources", "change_serversettings"))
 		{
 			redirectTo('index.php');
 			exit;
 		}
 
-		if($is_admin)
-		{
-			if(hasUpdates($version))
-			{
-				$row = $db->query_first("SELECT `loginname` AS `admin` FROM `" . TABLE_PANEL_ADMINS . "` WHERE `loginname`='" . $db->escape($loginname) . "' AND `change_serversettings` = '1'");
-				/*
-				 * not an admin who can see updates
-				 */
-				if(!isset($row['admin']))
-				{
-					redirectTo('index.php');
-					exit;
-				}
-			}
-			else
-			{
-				$row = $db->query_first("SELECT `loginname` AS `admin` FROM `" . TABLE_PANEL_ADMINS . "` WHERE `loginname`='" . $db->escape($loginname) . "'");
-			}
-
-			if($row['admin'] == $loginname)
-			{
-				$table = "`" . TABLE_PANEL_ADMINS . "`";
-				$uid = 'adminid';
-				$adminsession = '1';
-			}
-			else
-			{
-				redirectTo('index.php', Array('showmessage' => '2'), true);
-				exit;
-			}
-		}
-
-		$userinfo = $db->query_first("SELECT * FROM $table WHERE `loginname`='" . $db->escape($loginname) . "'");
-
-		if($userinfo['loginfail_count'] >= $settings['login']['maxloginattempts']
-		&& $userinfo['lastlogin_fail'] > (time() - $settings['login']['deactivatetime']))
+		// too many attempts or temporary disabled?
+		if($user->getData("general", "loginfail_count") >= $settings['login']['maxloginattempts']
+			&& $user->getData("general", "lastlogin_fail") > (time() - $settings['login']['deactivatetime']))
 		{
 			redirectTo('index.php', Array('showmessage' => '3'), true);
 			exit;
 		}
-		elseif($userinfo['password'] == md5($password))
+
+		// create session id
+		$s = md5(uniqid(microtime(), 1));
+
+		// panel language
+		if(isset($_POST['language']))
 		{
-			// login correct
-			// reset loginfail_counter, set lastlogin_succ
+			$language = validate($_POST['language'], 'language');
 
-			$db->query("UPDATE $table SET `lastlogin_succ`='" . time() . "', `loginfail_count`='0' WHERE `$uid`='" . (int)$userinfo[$uid] . "'");
-			$userinfo['userid'] = $userinfo[$uid];
-			$userinfo['adminsession'] = $adminsession;
-		}
-		else
-		{
-			// login incorrect
-
-			$db->query("UPDATE $table SET `lastlogin_fail`='" . time() . "', `loginfail_count`=`loginfail_count`+1 WHERE `$uid`='" . (int)$userinfo[$uid] . "'");
-			unset($userinfo);
-			redirectTo('index.php', Array('showmessage' => '2'), true);
-			exit;
-		}
-
-		if(isset($userinfo['userid'])
-		&& $userinfo['userid'] != '')
-		{
-			$s = md5(uniqid(microtime(), 1));
-
-			if(isset($_POST['language']))
+			if($language == 'profile')
 			{
-				$language = validate($_POST['language'], 'language');
-
-				if($language == 'profile')
-				{
-					$language = $userinfo['def_language'];
-				}
-				elseif(!isset($languages[$language]))
-				{
-					$language = $settings['panel']['standardlanguage'];
-				}
+				$language =  $user->getData("general", "def_language");
 			}
-			else
+			elseif(!isset($languages[$language]))
 			{
 				$language = $settings['panel']['standardlanguage'];
 			}
-
-			if(isset($userinfo['theme']) && $userinfo['theme'] != '') {
-				$theme = $userinfo['theme'];
-			}
-			else
-			{
-				$theme = $settings['panel']['default_theme'];
-			}
-
-			if($settings['session']['allow_multiple_login'] != '1')
-			{
-				$db->query("DELETE FROM `" . TABLE_PANEL_SESSIONS . "` WHERE `userid` = '" . (int)$userinfo['userid'] . "' AND `adminsession` = '" . $db->escape($userinfo['adminsession']) . "'");
-			}
-
-			// check for field 'theme' in session-table, refs #607
-			$fields = mysql_list_fields($db->getDbName(), TABLE_PANEL_SESSIONS);
-			$columns = mysql_num_fields($fields);
-			$field_array = array();
-			for ($i = 0; $i < $columns; $i++) {
-    			$field_array[] = mysql_field_name($fields, $i);
-			}
-
-    		if (!in_array('theme', $field_array)) {
-				$db->query("INSERT INTO `" . TABLE_PANEL_SESSIONS . "` (`hash`, `userid`, `ipaddress`, `useragent`, `lastactivity`, `language`, `adminsession`) VALUES ('" . $db->escape($s) . "', '" . (int)$userinfo['userid'] . "', '" . $db->escape($remote_addr) . "', '" . $db->escape($http_user_agent) . "', '" . time() . "', '" . $db->escape($language) . "', '" . $db->escape($userinfo['adminsession']) . "')");
-    		} else {
-    			$db->query("INSERT INTO `" . TABLE_PANEL_SESSIONS . "` (`hash`, `userid`, `ipaddress`, `useragent`, `lastactivity`, `language`, `adminsession`, `theme`) VALUES ('" . $db->escape($s) . "', '" . (int)$userinfo['userid'] . "', '" . $db->escape($remote_addr) . "', '" . $db->escape($http_user_agent) . "', '" . time() . "', '" . $db->escape($language) . "', '" . $db->escape($userinfo['adminsession']) . "', '" . $db->escape($theme) . "')");
-    		}
-
-			if($userinfo['adminsession'] == '1')
-			{
-				if(hasUpdates($version))
-				{
-					redirectTo('admin_updates.php', Array('s' => $s), true);
-					exit;
-				}
-				else
-				{
-					redirectTo('admin_index.php', Array('s' => $s), true);
-					exit;
-				}
-			}
-			else
-			{
-				redirectTo('customer_index.php', Array('s' => $s), true);
-				exit;
-			}
 		}
 		else
 		{
-			redirectTo('index.php', Array('showmessage' => '2'), true);
-			exit;
+			$language = $settings['panel']['standardlanguage'];
 		}
+
+		// theme selection
+		$theme = $settings['panel']['default_theme'];
+		if($user->getData("general", "theme") != '') {
+			$theme = $user->getData("general", "theme");
+		}
+
+		if($settings['session']['allow_multiple_login'] != '1')
+		{
+			$db->query("DELETE FROM `" . TABLE_PANEL_SESSIONS . "` WHERE `userid` = '" . $user->getId() . "' AND `adminsession` = '" . $user->isAdmin() . "'");
+		}
+		
+		$db->query("INSERT INTO `" . TABLE_PANEL_SESSIONS . "` (`hash`, `userid`, `ipaddress`, `useragent`, `lastactivity`, `language`, `adminsession`, `theme`) VALUES ('" . $db->escape($s) . "', '" . $user->getId(). "', '" . $db->escape($remote_addr) . "', '" . $db->escape($http_user_agent) . "', '" . time() . "', '" . $db->escape($language) . "', '" . $db->escape($user->isAdmin()) . "', '" . $db->escape($theme) . "')");
+		
+
+		if($user->isAdmin())
+		{
+			if(hasUpdates($version))
+			{
+				redirectTo('admin_updates.php', Array('s' => $s), true);
+				exit;
+			}
+			else
+			{
+				redirectTo('admin_index.php', Array('s' => $s), true);
+				exit;
+			}
+		}
+		
+		redirectTo('customer_index.php', Array('s' => $s), true);
+		exit;
 	}
 	else
 	{
@@ -283,41 +177,20 @@ if($action == 'forgotpwd')
 	{
 		$loginname = validate($_POST['loginname'], 'loginname');
 		$email = validateEmail($_POST['loginemail'], 'email');
-		$sql = "SELECT `adminid`, `customerid`, `firstname`, `name`, `company`, `email`, `loginname`, `def_language`, `deactivated` FROM `" . TABLE_PANEL_CUSTOMERS . "`
-				WHERE `loginname`='" . $db->escape($loginname) . "'
-				AND `email`='" . $db->escape($email) . "'";
-		$result = $db->query($sql);
 
-		if($db->num_rows() == 0)
+		try
 		{
-			$sql = "SELECT `adminid`, `name`, `email`, `loginname`, `def_language` FROM `" . TABLE_PANEL_ADMINS . "`
-				WHERE `loginname`='" . $db->escape($loginname) . "'
-				AND `email`='" . $db->escape($email) . "'";
-			$result = $db->query($sql);
-				
-			if($db->num_rows() > 0)
-			{
-				$adminchecked = true;
-			}
-			else
-			{
-				$result = null;
-			}
-		}
-
-		if($result !== null)
-		{
-			$user = $db->fetch_array($result);
+			$user = new user(true, $loginname, $email);
 			
 			/* Check whether user is banned */
-			if($user['deactivated'])
+			if($user->isDeactivated())
 			{
 				$message = $lng['pwdreminder']['notallowed'];
 				redirectTo('index.php', Array('showmessage' => '5'), true);
 			}
 
-			if(($adminchecked && $settings['panel']['allow_preset_admin'] == '1')
-			|| $adminchecked == false)
+			if(($user->isAdmin() && $settings['panel']['allow_preset_admin'] == '1')
+				|| $user->isAdmin() == false)
 			{
 				if($user !== false)
 				{
@@ -334,34 +207,23 @@ if($action == 'forgotpwd')
 						$password = substr($rnd, (int)($minlength / 2), $minlength);
 					}
 
-					if($adminchecked)
-					{
-						$db->query("UPDATE `" . TABLE_PANEL_ADMINS . "` SET `password`='" . md5($password) . "'
-								WHERE `loginname`='" . $user['loginname'] . "'
-								AND `email`='" . $user['email'] . "'");
-					}
-					else
-					{
-						$db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `password`='" . md5($password) . "'
-								WHERE `loginname`='" . $user['loginname'] . "'
-								AND `email`='" . $user['email'] . "'");
-					}
+					$user->setData("general", "password", md5($password));
 
 					$rstlog = FroxlorLogger::getInstanceOf(array('loginname' => 'password_reset'), $db, $settings);
-					$rstlog->logAction(USR_ACTION, LOG_WARNING, "Password for user '" . $user['loginname'] . "' has been reset!");
+					$rstlog->logAction(USR_ACTION, LOG_WARNING, "Password for user '" . $user->getData("general", "loginname") . "' has been reset!");
 
 					$replace_arr = array(
 						'SALUTATION' => getCorrectUserSalutation($user),
-						'USERNAME' => $user['loginname'],
+						'USERNAME' => $user->getData("general", "loginname"),
 						'PASSWORD' => $password
 					);
 
-					$body = strtr($lng['pwdreminder']['body'], array('%s' => $user['firstname'] . ' ' . $user['name'], '%p' => $password));
+					$body = strtr($lng['pwdreminder']['body'], array('%s' => $user->getData("address", "firstname") . ' ' . $user->getData("address", "name"), '%p' => $password));
 
-					$def_language = ($user['def_language'] != '') ? $user['def_language'] : $settings['panel']['standardlanguage'];
-					$result = $db->query_first('SELECT `value` FROM `' . TABLE_PANEL_TEMPLATES . '` WHERE `adminid`=\'' . (int)$user['adminid'] . '\' AND `language`=\'' . $db->escape($def_language) . '\' AND `templategroup`=\'mails\' AND `varname`=\'password_reset_subject\'');
+					$def_language = ($user->getData("general", "def_language")!= '') ? $user->getData("general", "def_language") : $settings['panel']['standardlanguage'];
+					$result = $db->query_first('SELECT `value` FROM `' . TABLE_PANEL_TEMPLATES . '` WHERE `adminid`=\'' . (int)$user->getId() . '\' AND `language`=\'' . $db->escape($def_language) . '\' AND `templategroup`=\'mails\' AND `varname`=\'password_reset_subject\'');
 					$mail_subject = html_entity_decode(replace_variables((($result['value'] != '') ? $result['value'] : $lng['pwdreminder']['subject']), $replace_arr));
-					$result = $db->query_first('SELECT `value` FROM `' . TABLE_PANEL_TEMPLATES . '` WHERE `adminid`=\'' . (int)$user['adminid'] . '\' AND `language`=\'' . $db->escape($def_language) . '\' AND `templategroup`=\'mails\' AND `varname`=\'password_reset_mailbody\'');
+					$result = $db->query_first('SELECT `value` FROM `' . TABLE_PANEL_TEMPLATES . '` WHERE `adminid`=\'' . (int)$user->getId()  . '\' AND `language`=\'' . $db->escape($def_language) . '\' AND `templategroup`=\'mails\' AND `varname`=\'password_reset_mailbody\'');
 					$mail_body = html_entity_decode(replace_variables((($result['value'] != '') ? $result['value'] : $body), $replace_arr));
 						
 					$_mailerror = false;
@@ -369,7 +231,7 @@ if($action == 'forgotpwd')
 						$mail->Subject = $mail_subject;
 						$mail->AltBody = $mail_body;
 						$mail->MsgHTML(str_replace("\n", "<br />", $mail_body));
-						$mail->AddAddress($user['email'], $user['firstname'] . ' ' . $user['name']);
+						$mail->AddAddress($user->getData("address", "email"), $user->getData("address", "firstname") . ' ' . $user->getData("address", "name"));
 						$mail->Send();
 					} catch(phpmailerException $e) {
 						$mailerr_msg = $e->errorMessage();
@@ -382,7 +244,7 @@ if($action == 'forgotpwd')
 					if ($_mailerror) {
 						$rstlog = FroxlorLogger::getInstanceOf(array('loginname' => 'password_reset'), $db, $settings);
 						$rstlog->logAction(ADM_ACTION, LOG_ERR, "Error sending mail: " . $mailerr_msg);
-						redirectTo('index.php', Array('showmessage' => '4', 'customermail' => $user['email']), true);
+						redirectTo('index.php', Array('showmessage' => '4', 'customermail' => $user->getData("address", "email")), true);
 						exit;
 					}
 
@@ -400,7 +262,7 @@ if($action == 'forgotpwd')
 				unset($user);
 			}
 		}
-		else
+		catch(Exception $e)
 		{
 			$message = $lng['login']['usernotfound'];
 		}

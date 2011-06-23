@@ -31,11 +31,11 @@ if($action == 'logout')
 
 	if($settings['session']['allow_multiple_login'] == '1')
 	{
-		$db->query("DELETE FROM `" . TABLE_PANEL_SESSIONS . "` WHERE `userid` = '" . (int)$userinfo['adminid'] . "' AND `adminsession` = '1' AND `hash` = '" . $s . "'");
+		$db->query("DELETE FROM `" . TABLE_PANEL_SESSIONS . "` WHERE `userid` = '" . $user->getId() . "' AND `adminsession` = '1' AND `hash` = '" . $s . "'");
 	}
 	else
 	{
-		$db->query("DELETE FROM `" . TABLE_PANEL_SESSIONS . "` WHERE `userid` = '" . (int)$userinfo['adminid'] . "' AND `adminsession` = '1'");
+		$db->query("DELETE FROM `" . TABLE_PANEL_SESSIONS . "` WHERE `userid` = '" . $user->getId() . "' AND `adminsession` = '1'");
 	}
 
 	redirectTo('index.php');
@@ -67,10 +67,10 @@ if($page == 'overview')
 				SUM(`subdomains_used`) AS `subdomains_used`,
 				SUM(`traffic_used`) AS `traffic_used`,
 				SUM(`aps_packages_used`) AS `aps_packages_used`
-				FROM `" . TABLE_PANEL_CUSTOMERS . "`" . ($userinfo['customers_see_all'] ? '' : " WHERE `adminid` = '" . (int)$userinfo['adminid'] . "' "));
+				FROM `" . TABLE_PANEL_CUSTOMERS . "`" . ($user->getData("resources", "customers_see_all") ? '' : " WHERE `adminid` = '" . $user->getId() . "' "));
 	$overview['traffic_used'] = round($overview['traffic_used'] / (1024 * 1024), $settings['panel']['decimal_places']);
 	$overview['diskspace_used'] = round($overview['diskspace_used'] / 1024, $settings['panel']['decimal_places']);
-	$number_domains = $db->query_first("SELECT COUNT(*) AS `number_domains` FROM `" . TABLE_PANEL_DOMAINS . "` WHERE `parentdomainid`='0'" . ($userinfo['customers_see_all'] ? '' : " AND `adminid` = '" . (int)$userinfo['adminid'] . "' "));
+	$number_domains = $db->query_first("SELECT COUNT(*) AS `number_domains` FROM `" . TABLE_PANEL_DOMAINS . "` WHERE `parentdomainid`='0'" . ($user->getData("resources", "customers_see_all") ? '' : " AND `adminid` = '" . $user->getId() . "' "));
 	$overview['number_domains'] = $number_domains['number_domains'];
 	$phpversion = phpversion();
 	$phpmemorylimit = @ini_get("memory_limit");
@@ -136,11 +136,11 @@ if($page == 'overview')
 		$lookfornewversion_addinfo = '';
 		$isnewerversion = 0;
 	}
-
-	$userinfo['diskspace'] = round($userinfo['diskspace'] / 1024, $settings['panel']['decimal_places']);
-	$userinfo['diskspace_used'] = round($userinfo['diskspace_used'] / 1024, $settings['panel']['decimal_places']);
-	$userinfo['traffic'] = round($userinfo['traffic'] / (1024 * 1024), $settings['panel']['decimal_places']);
-	$userinfo['traffic_used'] = round($userinfo['traffic_used'] / (1024 * 1024), $settings['panel']['decimal_places']);
+	
+	$userinfo['diskspace'] = round($user->getData("resources", "diskspace") / 1024, $settings['panel']['decimal_places']);
+	$userinfo['diskspace_used'] = round($user->getData("resources", "diskspace_used") / 1024, $settings['panel']['decimal_places']);
+	$userinfo['traffic'] = round($user->getData("resources", "traffic") / (1024 * 1024), $settings['panel']['decimal_places']);
+	$userinfo['traffic_used'] = round($user->getData("resources", "traffic_used") / (1024 * 1024), $settings['panel']['decimal_places']);
 	$userinfo = str_replace_array('-1', $lng['customer']['unlimited'], $userinfo, 'customers domains diskspace traffic mysqls emails email_accounts email_forwarders email_quota email_autoresponder ftps tickets subdomains aps_packages');
 
 	$cron_last_runs = getCronjobsLastRun();
@@ -149,7 +149,7 @@ if($page == 'overview')
 	$opentickets = 0;
 	$opentickets = $db->query_first('SELECT COUNT(`id`) as `count` FROM `' . TABLE_PANEL_TICKETS . '`
                                    WHERE `answerto` = "0" AND (`status` = "0" OR `status` = "1")
-                                   AND `lastreplier`="0" AND `adminid` = "' . $userinfo['adminid'] . '"');
+                                   AND `lastreplier`="0" AND `adminid` = "' . $user->getId() . '"');
 	$awaitingtickets = $opentickets['count'];
 	$awaitingtickets_text = '';
 
@@ -225,7 +225,7 @@ elseif($page == 'change_password')
 	{
 		$old_password = validate($_POST['old_password'], 'old password');
 
-		if(md5($old_password) != $userinfo['password'])
+		if(md5($old_password) != $user->getData("general", "password"))
 		{
 			standard_error('oldpasswordnotcorrect');
 			exit;
@@ -252,7 +252,7 @@ elseif($page == 'change_password')
 		}
 		else
 		{
-			$db->query("UPDATE `" . TABLE_PANEL_ADMINS . "` SET `password`='" . md5($new_password) . "' WHERE `adminid`='" . (int)$userinfo['adminid'] . "' AND `password`='" . md5($old_password) . "'");
+			$db->query("UPDATE `" . TABLE_PANEL_ADMINS . "` SET `password`='" . md5($new_password) . "' WHERE `adminid`='" . (int)$user->getId() . "' AND `password`='" . md5($old_password) . "'");
 			$log->logAction(ADM_ACTION, LOG_NOTICE, 'changed password');
 			redirectTo($filename, Array('s' => $s));
 		}
@@ -271,7 +271,7 @@ elseif($page == 'change_language')
 
 		if(isset($languages[$def_language]))
 		{
-			$db->query("UPDATE `" . TABLE_PANEL_ADMINS . "` SET `def_language`='" . $db->escape($def_language) . "' WHERE `adminid`='" . (int)$userinfo['adminid'] . "'");
+			$db->query("UPDATE `" . TABLE_PANEL_ADMINS . "` SET `def_language`='" . $db->escape($def_language) . "' WHERE `adminid`='" . (int)$user->getId() . "'");
 			$db->query("UPDATE `" . TABLE_PANEL_SESSIONS . "` SET `language`='" . $db->escape($def_language) . "' WHERE `hash`='" . $db->escape($s) . "'");
 		}
 
@@ -283,8 +283,8 @@ elseif($page == 'change_language')
 		$language_options = '';
 
 		$default_lang = $settings['panel']['standardlanguage'];
-		if($userinfo['def_language'] != '') {
-			$default_lang = $userinfo['def_language'];
+		if($user->getData("general", "def_language") != '') {
+			$default_lang = $user->getData("general", "def_language");
 		}
 
 		while(list($language_file, $language_name) = each($languages))
@@ -302,7 +302,7 @@ elseif($page == 'change_theme')
 	) {
 		$theme = validate($_POST['theme'], 'theme');
 
-		$db->query("UPDATE `" . TABLE_PANEL_ADMINS . "` SET `theme`='" . $db->escape($theme) . "' WHERE `adminid`='" . (int)$userinfo['adminid'] . "'");
+		$db->query("UPDATE `" . TABLE_PANEL_ADMINS . "` SET `theme`='" . $db->escape($theme) . "' WHERE `adminid`='" . (int)$user->getId() . "'");
 		$db->query("UPDATE `" . TABLE_PANEL_SESSIONS . "` SET `theme`='" . $db->escape($theme) . "' WHERE `hash`='" . $db->escape($s) . "'");
 
 		$log->logAction(ADM_ACTION, LOG_NOTICE, "changed his/her theme to '" . $theme . "'");
@@ -313,8 +313,8 @@ elseif($page == 'change_theme')
 		$theme_options = '';
 
 		$default_theme = $settings['panel']['default_theme'];
-		if($userinfo['theme'] != '') {
-			$default_theme = $userinfo['theme'];
+		if($user->getData("general", "theme") != '') {
+			$default_theme = $user->getData("general", "theme");
 		}
 
 		$themes_avail = getThemes();

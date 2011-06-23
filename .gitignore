@@ -2,3 +2,8 @@ templates_c/*
 cache/*
 packages/*
 temp/*
+.buildpath
+.project
+.settings/
+.gitignore
+*unit*

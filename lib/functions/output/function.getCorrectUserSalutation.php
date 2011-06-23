@@ -30,6 +30,15 @@ function getCorrectUserSalutation($userinfo)
 {
 	$returnval = '';
 	
+	if(!is_array($userinfo)) {
+		$user = $userinfo;
+		$userinfo = array(
+			'firstname' => $user->getData("address", "firstname"),
+			'name' => $user->getData("address", "name"),
+			'company' => $user->getData("address", "company")
+		);
+	}
+	
 	if(isset($userinfo['firstname']) && isset($userinfo['name']) && isset($userinfo['company']))
 	{
 		// Always prefer firstname name

@@ -174,29 +174,29 @@ class ticket
 	public function Insert()
 	{
 		$this->db->query("INSERT INTO `" . TABLE_PANEL_TICKETS . "`
-                (`customerid`,  
+                (`customerid`,
                  `adminid`,
-                 `category`, 
-                 `priority`, 
-                 `subject`, 
-                 `message`, 
-                 `dt`, 
-                 `lastchange`, 
-                 `ip`, 
-                 `status`, 
-                 `lastreplier`, 
+                 `category`,
+                 `priority`,
+                 `subject`,
+                 `message`,
+                 `dt`,
+                 `lastchange`,
+                 `ip`,
+                 `status`,
+                 `lastreplier`,
                  `by`,
-                 `answerto`) 
-                  VALUES 
-                  ('" . (int)$this->Get('customer') . "', 
+                 `answerto`)
+                  VALUES
+                  ('" . (int)$this->Get('customer') . "',
                    '" . (int)$this->Get('admin') . "',
-                   '" . (int)$this->Get('category') . "', 
-                   '" . (int)$this->Get('priority') . "', 
-                   '" . $this->db->escape($this->Get('subject')) . "', 
-                   '" . $this->db->escape($this->Get('message')) . "', 
-                   '" . (int)$this->Get('dt') . "', 
-                   '" . (int)$this->Get('lastchange') . "', 
-                   '" . $this->db->escape($this->Get('ip')) . "', 
+                   '" . (int)$this->Get('category') . "',
+                   '" . (int)$this->Get('priority') . "',
+                   '" . $this->db->escape($this->Get('subject')) . "',
+                   '" . $this->db->escape($this->Get('message')) . "',
+                   '" . (int)$this->Get('dt') . "',
+                   '" . (int)$this->Get('lastchange') . "',
+                   '" . $this->db->escape($this->Get('ip')) . "',
                    '" . (int)$this->Get('status') . "',
                    '" . (int)$this->Get('lastreplier') . "',
                    '" . (int)$this->Get('by') . "',
@@ -214,9 +214,9 @@ class ticket
 		// Update "main" ticket
 
 		$this->db->query('UPDATE `' . TABLE_PANEL_TICKETS . '` SET
-                `priority` = "' . (int)$this->Get('priority') . '",  
-                `lastchange` = "' . (int)$this->Get('lastchange') . '", 
-                `status` = "' . (int)$this->Get('status') . '", 
+                `priority` = "' . (int)$this->Get('priority') . '",
+                `lastchange` = "' . (int)$this->Get('lastchange') . '",
+                `status` = "' . (int)$this->Get('status') . '",
                 `lastreplier` = "' . (int)$this->Get('lastreplier') . '"
                 WHERE `id` = "' . (int)$this->tid . '";');
 		return true;
@@ -267,10 +267,13 @@ class ticket
 		if($customerid != - 1)
 		{
 			// Get e-mail message for customer
-
-			$usr = $this->db->query_first('SELECT `name`, `firstname`, `company`, `email`
-                               FROM `' . TABLE_PANEL_CUSTOMERS . '` 
-                               WHERE `customerid` = "' . (int)$customerid . '"');
+			$query = 'SELECT `u`.`id`, `u`.`loginname`, `a`.`name`, `a`.`firstname`, `a`.`company`, `a`.`email`
+						FROM `' . TABLE_USERS . '` `u`, `'. TABLE_USER_ADDRESSES .'` `a`
+						WHERE `u`.`isadmin`=\'0\' AND `u`.`contactid` = `a`.`id` AND `id`.id` = "' . (int)$customerid . '"';
+			
+			$usr = $this->db->query_first($query);
+			
+	
 			$replace_arr = array(
 				'FIRSTNAME' => $usr['firstname'],
 				'NAME' => $usr['name'],
@@ -287,15 +290,15 @@ class ticket
 		}
 
 		$result = $this->db->query_first('SELECT `value` FROM `' . TABLE_PANEL_TEMPLATES . '`
-                                WHERE `adminid`=\'' . (int)$this->userinfo['adminid'] . '\' 
-                                AND `language`=\'' . $this->db->escape($this->userinfo['def_language']) . '\' 
-                                AND `templategroup`=\'mails\' 
+                                WHERE `adminid`=\'' . (int)$this->userinfo['adminid'] . '\'
+                                AND `language`=\'' . $this->db->escape($this->userinfo['def_language']) . '\'
+                                AND `templategroup`=\'mails\'
                                 AND `varname`=\'' . $template_subject . '\'');
 		$mail_subject = html_entity_decode(replace_variables((($result['value'] != '') ? $result['value'] : $default_subject), $replace_arr));
 		$result = $this->db->query_first('SELECT `value` FROM `' . TABLE_PANEL_TEMPLATES . '`
-                                WHERE `adminid`=\'' . (int)$this->userinfo['adminid'] . '\' 
-                                AND `language`=\'' . $this->db->escape($this->userinfo['def_language']) . '\' 
-                                AND `templategroup`=\'mails\' 
+                                WHERE `adminid`=\'' . (int)$this->userinfo['adminid'] . '\'
+                                AND `language`=\'' . $this->db->escape($this->userinfo['def_language']) . '\'
+                                AND `templategroup`=\'mails\'
                                 AND `varname`=\'' . $template_body . '\'');
 		$mail_body = html_entity_decode(replace_variables((($result['value'] != '') ? $result['value'] : $default_body), $replace_arr));
 
@@ -327,7 +330,10 @@ class ticket
 		}
 		else
 		{
-			$admin = $this->db->query_first("SELECT `name`, `email` FROM `" . TABLE_PANEL_ADMINS . "` WHERE `adminid`='" . (int)$this->userinfo['adminid'] . "'");
+			$query = 'SELECT `u`.`id`, `u`.`loginname`, `a`.`name`, `a`.`firstname`, `a`.`company`, `a`.`email`
+						FROM `' . TABLE_USERS . '` `u`, `'. TABLE_USER_ADDRESSES .'` `a`
+						WHERE `u`.`isadmin`=\'1\' AND `u`.`contactid` = `a`.`id` AND `id`.id` = "' . (int)$this->userinfo['adminid'] . '"';
+			$admin = $this->db->query_first($query);
 
 			$_mailerror = false;
 			try {
@@ -369,8 +375,8 @@ class ticket
 			}
 
 			$_db->query('INSERT INTO `' . TABLE_PANEL_TICKET_CATS . '` SET
-						`name` = "' . $_db->escape($_category) . '", 
-						`adminid` = "' . (int)$_admin . '", 
+						`name` = "' . $_db->escape($_category) . '",
+						`adminid` = "' . (int)$_admin . '",
 						`logicalorder` = "' . (int)$_order . '"');
 			return true;
 		}
@@ -444,9 +450,9 @@ class ticket
 
 	/**
 	 * get the highest order number
-	 * 
+	 *
 	 * @param object $_db database-object
-	 * 
+	 *
 	 * @return int highest order number
 	 */
 	static public function getHighestOrderNumber($_db = null)
@@ -467,12 +473,12 @@ class ticket
 			$archived = array();
 			$counter = 0;
 			$result = $_db->query('SELECT *,
-                              (SELECT COUNT(`sub`.`id`) 
-                                FROM `' . TABLE_PANEL_TICKETS . '` `sub` 
-                                WHERE `sub`.`answerto` = `main`.`id`) as `ticket_answers`  
-                             FROM `' . TABLE_PANEL_TICKETS . '` `main` 
-                             WHERE `main`.`answerto` = "0" 
-                             AND `main`.`archived` = "1" AND `main`.`adminid` = "' . (int)$_admin . '" 
+                              (SELECT COUNT(`sub`.`id`)
+                                FROM `' . TABLE_PANEL_TICKETS . '` `sub`
+                                WHERE `sub`.`answerto` = `main`.`id`) as `ticket_answers`
+                             FROM `' . TABLE_PANEL_TICKETS . '` `main`
+                             WHERE `main`.`answerto` = "0"
+                             AND `main`.`archived` = "1" AND `main`.`adminid` = "' . (int)$_admin . '"
                              ORDER BY `main`.`lastchange` DESC LIMIT 0, ' . (int)$_num);
 
 			while($row = $_db->fetch_array($result))
@@ -511,9 +517,9 @@ class ticket
 	static public function getArchiveSearchStatement($db, $subject = NULL, $priority = NULL, $fromdate = NULL, $todate = NULL, $message = NULL, $customer = - 1, $admin = 1, $categories = NULL)
 	{
 		$query = 'SELECT `main`.*,
-                (SELECT COUNT(`sub`.`id`) FROM `' . TABLE_PANEL_TICKETS . '` `sub` 
-                 WHERE `sub`.`answerto` = `main`.`id`) as `ticket_answers` 
-              FROM `' . TABLE_PANEL_TICKETS . '` `main` 
+                (SELECT COUNT(`sub`.`id`) FROM `' . TABLE_PANEL_TICKETS . '` `sub`
+                 WHERE `sub`.`answerto` = `main`.`id`) as `ticket_answers`
+              FROM `' . TABLE_PANEL_TICKETS . '` `main`
               WHERE `main`.`archived` = "1" AND `main`.`adminid` = "' . (int)$admin . '" ';
 
 		if($subject != NULL
@@ -533,7 +539,7 @@ class ticket
 				&& $priority[2] != '')
 				{
 					$query.= 'AND (`main`.`priority` = "1"
-                     OR `main`.`priority` = "2" 
+                     OR `main`.`priority` = "2"
                      OR `main`.`priority` = "3") ';
 				}
 				else
@@ -680,13 +686,13 @@ class ticket
 	private function convertLatin1ToHtml($str)
 	{
 		$html_entities = array (
-					"Ä" =>  "&Auml;",
-					"ä" =>  "&auml;",
-					"Ö" =>  "&Ouml;",
-					"ö" =>  "&ouml;",
-					"Ü" =>  "&Uuml;",
-					"ü" =>  "&uuml;",
-					"ß" =>  "&szlig;"
+					"ï¿½" =>  "&Auml;",
+					"ï¿½" =>  "&auml;",
+					"ï¿½" =>  "&Ouml;",
+					"ï¿½" =>  "&ouml;",
+					"ï¿½" =>  "&Uuml;",
+					"ï¿½" =>  "&uuml;",
+					"ï¿½" =>  "&szlig;"
 					/*
 					 * @TODO continue this table for all the special-characters
 					 */

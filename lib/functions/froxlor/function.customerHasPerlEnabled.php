@@ -31,8 +31,8 @@ function customerHasPerlEnabled($cid = 0)
 
 	if($cid > 0)
 	{
-		$result = $db->query_first("SELECT `perlenabled` FROM `".TABLE_PANEL_CUSTOMERS."` WHERE `customerid` = '".(int)$cid."'");
-		if(is_array($result) 
+		$result = $db->query_first("SELECT `perlenabled` FROM `".TABLE_USER_RESOURCES."` WHERE `id` = '".(int)$cid."'");
+		if(is_array($result)
 			&& isset($result['perlenabled'])
 		) {
 			return ($result['perlenabled'] == '1') ? true : false;

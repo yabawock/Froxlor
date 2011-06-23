@@ -16,7 +16,7 @@
  */
 
 /*
- * returns true or false whether a 
+ * returns true or false whether a
  * given domain id is the std-subdomain
  * of a customer
  *
@@ -30,10 +30,10 @@ function isCustomerStdSubdomain($did = 0)
 
 	if($did > 0)
 	{
-		$result = $db->query_first("SELECT `customerid` FROM `".TABLE_PANEL_CUSTOMERS."` WHERE `standardsubdomain` = '".(int)$did."'");
-		if(is_array($result) 
-			&& isset($result['customerid'])
-			&& $result['customerid'] > 0
+		$result = $db->query_first("SELECT `id` FROM `".TABLE_USER_RESOURCES."` WHERE `standardsubdomain` = '".(int)$did."'");
+		if(is_array($result)
+			&& isset($result['id'])
+			&& $result['id'] > 0
 		) {
 			return true;
 		}

@@ -63,6 +63,11 @@ return array(
 						'label' => $lng['login']['language'],
 						'type' => 'select',
 						'select_var' => $language_options
+					),
+					'countrycode' => array(
+						'label' => $lng['countrycode'],
+						'type' => 'select',
+						'select_var' => $countrycode
 					)
 				)
 			),

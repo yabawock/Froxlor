@@ -54,6 +54,11 @@ define('TABLE_PANEL_REDIRECTCODES', 'redirect_codes');
 define('TABLE_PANEL_DOMAINREDIRECTS', 'domain_redirect_codes');
 define('TABLE_PANEL_IPDOCROOTSETTINGS', 'ipsandports_docrootsettings');
 define('TABLE_PANEL_DOMDOCROOTSETTINGS', 'domain_docrootsettings');
+define('TABLE_USERS', 'users');
+define('TABLE_USER_ADDRESSES', 'user_addresses');
+define('TABLE_USER_RESOURCES', 'user_resources');
+define('TABLE_ADMIN_RESOURCES', 'user_resources_admin');
+define('TABLE_USER2ADMIN', 'user2admin');
 
 // APS constants
 
@@ -73,6 +78,6 @@ define('PACKAGE_ENABLED', 2);
 
 // VERSION INFO
 
-$version = '0.9.22-svn1';
+$version = '0.9.22-rrp6';
 $dbversion = '2';
 $branding = '';
