@@ -37,6 +37,14 @@ interface dms
 	 * @return boolean
 	 */
 	public function handleDelete($handle);
+	
+	/**
+	 * Modifies a handle.
+	 *
+	 * @param handle $handle
+	 *
+	 * @return boolean
+	 */
 	public function handleAlter($handle);
 	
 	/**

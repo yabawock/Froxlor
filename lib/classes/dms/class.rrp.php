@@ -100,8 +100,34 @@ class rrp implements dms
 		return false;
 	}
 	
+	/**
+	 * (non-PHPdoc)
+	 * @see dms::handleAlter()
+	 */
 	public function handleAlter($handle) {
+		$command = array(
+			"command" => "ModifyContact",
+			"contact" => $handle->getHandleId(),
+			"firstname" => $handle->getFirstname(),
+			"lastname" => $handle->getName(),
+			"organization" => $handle->getCompany(),
+			"street" => $handle->getStree(),
+			"zip" => $handle->getZip(),
+			"city" => $handle->getCity(),
+			"country" => $handle->getCountrycode(),
+			"phone" => $handle->getPhone(),
+			"fax" => $handle->getFax(),
+			"email" => $handle->getEmail()
+		);
 		
+		$response = $this->_reqeust->send($command);
+		
+		if ($response->code == 200) {
+			$handle->sync();
+			return true;
+		}
+		
+		return false;
 	}
 	
 	/**
