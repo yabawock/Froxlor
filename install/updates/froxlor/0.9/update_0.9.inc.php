@@ -1813,3 +1813,35 @@ if(isFroxlorVersion('0.9.22-rrp5'))
 	lastStepStatus(0);
 	updateToVersion('0.9.22-rrp6');
 }
+
+if(isFroxlorVersion('0.9.22-rrp6'))
+{
+	showUpdateStep("Updating from 0.9.22-rrp6 to 0.9.22-rrp7");
+	lastStepStatus(0);
+
+	
+	// create new table
+	showUpdateStep("Create new table: user2handle");
+	$db->query("CREATE TABLE `user2handle` (
+				`userid` INT NOT NULL ,
+				`handleid` INT NOT NULL
+				) ENGINE = MYISAM ;");
+	lastStepStatus(0);
+	
+	showUpdateStep("Create new table: domain_handle");
+	$db->query("CREATE TABLE IF NOT EXISTS `domain_handle` (
+			  `id` int(11) NOT NULL,
+			  `handleid` varchar(16) NOT NULL,
+			  `name` varchar(255) NOT NULL,
+			  `firstname` varchar(255) NOT NULL,
+			  `street` varchar(255) NOT NULL,
+			  `zip` varchar(15) NOT NULL,
+			  `city` varchar(255) NOT NULL,
+			  `countrycode` varchar(4) NOT NULL,
+			  `phone` varchar(55) NOT NULL,
+			  `email` varchar(255) NOT NULL
+			) ENGINE=MyISAM;");
+	
+	lastStepStatus(0);
+	updateToVersion('0.9.22-rrp7');
+}
