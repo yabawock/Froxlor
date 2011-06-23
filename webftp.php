@@ -88,17 +88,19 @@ if(!function_exists("ftp_connect"))
 	die('No FTP support');
 }
 
+require('./lib/classes/general/class.Froxlor.php');
+
 // Create the database - connection
-$db = new mysqli($sql['host'], $sql['user'], $sql['password'], $sql['db']);
+Froxlor::addObject('db', new mysqli($sql['host'], $sql['user'], $sql['password'], $sql['db']));
 unset($sql);
-if ($db->connect_error)
+if (Froxlor::getDb()->connect_error)
 {
-    die('Connect Error (' . $db->connect_errno . ') ' . $db->connect_error);
+    die('Connect Error (' . Froxlor::getDb()->connect_errno . ') ' . Froxlor::getDb()->connect_error);
 }
 
 $settings = array();
 // Let's get the theme we need
-if ($result = $db->query("SELECT `value` FROM `panel_settings` WHERE `varname` = 'default_theme'"))
+if ($result = Froxlor::getDb()->query("SELECT `value` FROM `panel_settings` WHERE `varname` = 'default_theme'"))
 {
 	list($settings['panel']['default_theme']) = $result->fetch_array();
 }
@@ -108,7 +110,6 @@ else
 	$settings['panel']['default_theme'] = 'Froxlor';
 }
 
-require('./lib/classes/general/class.Froxlor.php');
 # Initialize Smarty
 include('./lib/classes/Smarty/Smarty.class.php');
 Froxlor::addObject('smarty', new Smarty());
@@ -122,30 +123,29 @@ Froxlor::addObject('language', new languageSelect());
 Froxlor::getLanguage()->useBrowser = true;
 Froxlor::getLanguage()->setLanguage();
 
-
 # Activate gettext for smarty;
 define('HAVE_GETTEXT', true);
 require ('./lib/functions/smarty_plugins/gettext-prefilter.php');
 
 $settings['admin']['show_version_login'] = 0;
-if ($result = $db->query("SELECT `value` FROM `panel_settings` WHERE `settinggroup` = 'admin' AND `varname` = 'show_version_login'"))
+if ($result = Froxlor::getDb()->query("SELECT `value` FROM `panel_settings` WHERE `settinggroup` = 'admin' AND `varname` = 'show_version_login'"))
 {
 	list($settings['admin']['show_version_login']) = $result->fetch_array();
 }
 $settings['admin']['show_version_footer'] = 0;
-if ($result = $db->query("SELECT `value` FROM `panel_settings` WHERE `settinggroup` = 'admin' AND `varname` = 'show_version_footer'"))
+if ($result = Froxlor::getDb()->query("SELECT `value` FROM `panel_settings` WHERE `settinggroup` = 'admin' AND `varname` = 'show_version_footer'"))
 {
 	list($settings['admin']['show_version_footer']) = $result->fetch_array();
 }
 $settings['panel']['no_robots'] = 0;
-if ($result = $db->query("SELECT `value` FROM `panel_settings` WHERE `settinggroup` = 'panel' AND `varname` = 'no_robots'"))
+if ($result = Froxlor::getDb()->query("SELECT `value` FROM `panel_settings` WHERE `settinggroup` = 'panel' AND `varname` = 'no_robots'"))
 {
 	list($settings['panel']['no_robots']) = $result->fetch_array();
 }
 
 // We don't need the database anymore
-$db->close();
-unset($db);
+Froxlor::getDb()->close();
+Froxlor::deleteObject('db');
 
 # Set default options for template
 $image_path = 'images/'.$settings['panel']['default_theme'];
