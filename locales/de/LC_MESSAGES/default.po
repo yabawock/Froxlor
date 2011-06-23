@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Froxlor\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-23 23:54+0100\n"
-"PO-Revision-Date: 2011-06-23 23:55+0100\n"
+"POT-Creation-Date: 2011-06-24 00:46+0100\n"
+"PO-Revision-Date: 2011-06-24 00:50+0100\n"
 "Last-Translator: Florian Aders <eleras@froxlor.org>\n"
 "Language-Team: The Froxlor team <team@froxlor.org>\n"
 "Language: \n"
@@ -399,20 +399,49 @@ msgstr "Hauptmenü"
 msgid "Login failed, please try again"
 msgstr "Login fehlgeschlagen, bitte erneut versuchen"
 
-#: lib/classes/general/class.Loader.php:288
+#: lib/classes/general/class.Loader.php:299
 msgid "Overview"
 msgstr "Übersicht"
 
-#: lib/classes/general/class.Loader.php:291
+#: lib/classes/general/class.Loader.php:302
 #, php-format
 msgid "Logged in as: %s"
 msgstr "Angemeldet als: %s"
 
-#: lib/classes/general/class.Loader.php:300
+#: lib/classes/general/class.Loader.php:311
 msgid "Server"
 msgstr "Server"
 
-#: lib/classes/general/class.Loader.php:305
+#: lib/classes/general/class.Loader.php:316
 msgid "Froxlor update"
 msgstr "Froxlor Update"
+
+#: modules/login/class.login.php:112
+msgid "Profile language"
+msgstr "Profilsprache"
+
+#: modules/login/class.login.php:126
+msgid "Password reset successfully.<br />You now should receive an email with your new password."
+msgstr "Passwort erfolgreich zurückgesetzt.<br />Sie sollten eine E-Mail mit Ihrem neuen Passwort erhalten haben."
+
+#: modules/login/class.login.php:129
+msgid "The username or password you typed in is wrong. Please try it again!"
+msgstr "Der eingegebene Benutzername oder das Passwort ist falsch. Bitte versuchen Sie es erneut!"
+
+#: modules/login/class.login.php:132
+msgid "This account has been suspended because of too many login errors. <br />Please try again in "
+msgstr "Dieser Account wurde wegen zuvieler falscher Loginversuche deaktiviert.<br />Bitte versuchen Sie es später erneut."
+
+#: modules/login/class.login.php:136
+#, php-format
+msgid "The message to &quot;%s&quot; failed"
+msgstr "Die Meldung konnte nicht an &quot;%s&quot; versendet werden"
+
+#: modules/login/class.login.php:139
+msgid "Your account has been locked. Please contact your administrator for further information."
+msgstr "Ihr Account wurde gesperrt. Bitte kontaktieren Sie Ihren Administrator für nähere Informationen."
+
+#: modules/login/class.login.php:145
+msgid "A newer version of Froxlor has been installed but not yet set up.<br />Only the administrator can log in and finish the update."
+msgstr "Eine neuere Version von Froxlor wurde installiert, aber noch nicht eingerichtet.<br />Nur der Administrator kann sich anmelden und die Aktualisierung abschließen."
 
