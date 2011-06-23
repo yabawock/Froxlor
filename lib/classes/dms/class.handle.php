@@ -99,6 +99,15 @@ class handle {
 		$this->_email = $email;
 		$this->_fax = $fax;
 	}
+	
+	/**
+	 * Sets the handle id.
+	 *
+	 * @param string $id contact id
+	 */
+	public function setHandleId($id) {
+		$this->_handleId = $id;
+	}
 
 	/**
 	 * @return string handleid

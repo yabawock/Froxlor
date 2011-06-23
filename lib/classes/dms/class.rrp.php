@@ -15,6 +15,10 @@
  * @package    DMS
  */
 
+/**
+ *
+ * @todo listing in rrp do only support 1k response entries. work with first/limit
+ */
 class rrp implements dms
 {
 	private $_user;
@@ -25,6 +29,14 @@ class rrp implements dms
 	private $_config = array();
 	private $_reqeust;
 	
+	/**
+	 * Contructor.
+	 *
+	 * @param string $user
+	 * @param string $password
+	 * @param string $opmode
+	 * @param string $socket
+	 */
 	public function __construct($user, $password, $opmode = "ote", $socket = "http://api-ote.rrpproxy.net/call?") {
 		$this->_config = array("username" => $user,
 						"password" => $password,
@@ -39,16 +51,83 @@ class rrp implements dms
 		$this->_request = new MREG_RequestHttp($this->_config);
 	}
 	
+	/**
+	 * (non-PHPdoc)
+	 * @see dms::handleCreate()
+	 */
 	public function handleCreate($handle) {
+		$command = array(
+			"command" => "AddContact",
+			"firstname" => $handle->getFirstname(),
+			"lastname" => $handle->getName(),
+			"organization" => $handle->getCompany(),
+			"street" => $handle->getStree(),
+			"zip" => $handle->getZip(),
+			"city" => $handle->getCity(),
+			"country" => $handle->getCountrycode(),
+			"phone" => $handle->getPhone(),
+			"fax" => $handle->getFax(),
+			"email" => $handle->getEmail()
+		);
 		
+		$response = $this->_reqeust->send($command);
+		
+		if ($response->code == 200) {
+			$data = $response->getList();
+			
+			$id = $data['0']['contact'];
+			$handle->setHandleId($id);
+			$handle->sync();
+			
+			return $handle;
+		}
+		
+		return false;
 	}
 	
+	/**
+	 * (non-PHPdoc)
+	 * @see dms::handleDelete()
+	 */
 	public function handleDelete($handle) {
+		$command = array("command" => "DeleteContact", "contact" => $handle->getHandleId());
+		$response = $this->_reqeust->send($command);
 		
+		if ($response->code == 200) {
+			return true;
+		}
+		
+		return false;
 	}
 	
+	/**
+	 * (non-PHPdoc)
+	 * @see dms::handleAlter()
+	 */
 	public function handleAlter($handle) {
+		$command = array(
+			"command" => "ModifyContact",
+			"contact" => $handle->getHandleId(),
+			"firstname" => $handle->getFirstname(),
+			"lastname" => $handle->getName(),
+			"organization" => $handle->getCompany(),
+			"street" => $handle->getStree(),
+			"zip" => $handle->getZip(),
+			"city" => $handle->getCity(),
+			"country" => $handle->getCountrycode(),
+			"phone" => $handle->getPhone(),
+			"fax" => $handle->getFax(),
+			"email" => $handle->getEmail()
+		);
 		
+		$response = $this->_reqeust->send($command);
+		
+		if ($response->code == 200) {
+			$handle->sync();
+			return true;
+		}
+		
+		return false;
 	}
 	
 	/**
