@@ -23,7 +23,7 @@ $downloadDir = "/tmp/";
 
 // Which file extensions indicate files allowed to be edited
 // Either simple extension or regex
-$editFileExtensions = array("php[345]?$","sh$","txt$","[ps]?htm[l]?$","tpl$","pl","cgi","^ht[acespwd]+$");
+$editFileExtensions = array("php[34]?$","sh$","txt$","[ps]?htm[l]?$","tpl$","pl","cgi","^ht[acespwd]+$");
 // Are files without extension allowed to be edited?
 $editFileNoExtension = true;
 // Which FTP - mode should be used by default?
@@ -108,19 +108,20 @@ else
 	$settings['panel']['default_theme'] = 'Froxlor';
 }
 
+require('./lib/classes/general/class.Froxlor.php');
 # Initialize Smarty
 include('./lib/classes/Smarty/Smarty.class.php');
-$smarty = new Smarty;
-
-$smarty->template_dir = './templates/' . $settings['panel']['default_theme'] . '/';
-$smarty->compile_dir  = './templates_c/';
-$smarty->cache_dir    = './cache/';
+Froxlor::addObject('smarty', new Smarty());
+Froxlor::getSmarty()->template_dir = './templates/' . $settings['panel']['default_theme'] . '/';
+Froxlor::getSmarty()->compile_dir  = './templates_c/';
+Froxlor::getSmarty()->cache_dir    = './cache/';
 
 # Set the language
 require('./lib/classes/output/class.languageSelect.php');
-$language = new languageSelect();
-$language->useBrowser = true;
-$language->setLanguage();
+Froxlor::addObject('language', new languageSelect());
+Froxlor::getLanguage()->useBrowser = true;
+Froxlor::getLanguage()->setLanguage();
+
 
 # Activate gettext for smarty;
 define('HAVE_GETTEXT', true);
@@ -153,12 +154,12 @@ if(file_exists($image_path.'/logo_custom.png'))
 {
 	$header_logo = $image_path.'/logo_custom.png';
 }
-$smarty->assign('header_logo', $header_logo);
-$smarty->assign('settings', $settings);
-$smarty->assign('loggedin', 0);
-$smarty->assign('current_year', date('Y'));
-$smarty->assign('image_folder', $image_path);
-$smarty->assign('title', 'WebFTP - ');
+Froxlor::getSmarty()->assign('header_logo', $header_logo);
+Froxlor::getSmarty()->assign('settings', $settings);
+Froxlor::getSmarty()->assign('loggedin', 0);
+Froxlor::getSmarty()->assign('current_year', date('Y'));
+Froxlor::getSmarty()->assign('image_folder', $image_path);
+Froxlor::getSmarty()->assign('title', 'WebFTP - ');
 
 # Let's start the program
 session_start();
@@ -168,8 +169,8 @@ if (isset($_GET['logoff']) || isset($_POST['logoff']))
 {
 	unset($_SESSION['server'],$_SESSION['user'],$_SESSION['password']);
 	session_destroy();
-	$smarty->assign('successmessage', _('Successfully logged out'));
-	$body = $smarty->fetch('login/login_ftp.tpl');
+	Froxlor::getSmarty()->assign('successmessage', _('Successfully logged out'));
+	$body = Froxlor::getSmarty()->fetch('login/login_ftp.tpl');
 }
 
 elseif ((!empty($_POST['loginname']) && !empty($_POST['password'])) || (!empty($_SESSION['user']) && !empty($_SESSION['password']) && !empty($_SESSION['server'])))
@@ -212,7 +213,7 @@ elseif ((!empty($_POST['loginname']) && !empty($_POST['password'])) || (!empty($
 		$mode = $default_mode;
 		$_SESSION['mode'] = $default_mode;
 	}
-	$smarty->assign('mode', $mode);
+	Froxlor::getSmarty()->assign('mode', $mode);
 
 	if(isset($_POST['file']) && is_array($_POST['file']))
 	{
@@ -249,12 +250,12 @@ elseif ((!empty($_POST['loginname']) && !empty($_POST['password'])) || (!empty($
 		if(isset($_POST['file']))
 		{
 			$file = $_POST['file'];
-			$smarty->assign('file', $file);
+			Froxlor::getSmarty()->assign('file', $file);
 		}
 		elseif(isset($_GET['file']))
 		{
 			$file = $_GET['file'];
-			$smarty->assign('file', $file);
+			Froxlor::getSmarty()->assign('file', $file);
 		}
 		//$file = htmlentities($file);
 	}
@@ -274,27 +275,27 @@ elseif ((!empty($_POST['loginname']) && !empty($_POST['password'])) || (!empty($
 
 	if ($loggedOn)
 	{
-		$smarty->assign('loggedin', true);
+		Froxlor::getSmarty()->assign('loggedin', true);
 
 		if (isset($_POST['currentDir']))
 		{
 			if (!@ftp_chdir($connection, html_entity_decode($_POST['currentDir'])))
 			{
-				$smarty->assign('errormessage', sprintf(_('Directory change to \'%1$s\' failed!'), $file));
+				Froxlor::getSmarty()->assign('errormessage', sprintf(_('Directory change to \'%1$s\' failed!'), $file));
 			}
 		}
 		elseif (isset($_GET['currentDir']))
 		{
 			if(!@ftp_chdir($connection, html_entity_decode($_GET['currentDir'])))
 			{
-				$smarty->assign('errormessage', sprintf(_('Directory change to \'%1$s\' failed!'), $file));
+				Froxlor::getSmarty()->assign('errormessage', sprintf(_('Directory change to \'%1$s\' failed!'), $file));
 			}
 		}
 
 		$currentDir = htmlentities(str_replace("\"\"","\"", ftp_pwd($connection)));
 
-		$smarty->assign('currentDir', $currentDir);
-		$smarty->assign('curdir', sprintf(_('current folder = [%1$s]'), $currentDir));
+		Froxlor::getSmarty()->assign('currentDir', $currentDir);
+		Froxlor::getSmarty()->assign('curdir', sprintf(_('current folder = [%1$s]'), $currentDir));
 
 		// was soll gemacht werden
 		$errormessage = '';
@@ -306,14 +307,14 @@ elseif ((!empty($_POST['loginname']) && !empty($_POST['password'])) || (!empty($
 				if(@ftp_chdir($connection, html_entity_decode($currentDir) . "/" .  html_entity_decode($file)))
 				{
 					$currentDir =  htmlentities(str_replace("\"\"","\"", @ftp_pwd($connection)));
-					$smarty->assign('curdir', sprintf(_('current folder = [%1$s]'), $currentDir));
-					$smarty->assign('currentDir', $currentDir);
+					Froxlor::getSmarty()->assign('curdir', sprintf(_('current folder = [%1$s]'), $currentDir));
+					Froxlor::getSmarty()->assign('currentDir', $currentDir);
 				}
 				elseif(@ftp_chdir($connection,  html_entity_decode($file)))
 				{ // symbolischer Link
 					$currentDir =  htmlentities(str_replace("\"\"","\"", @ftp_pwd($connection)));
-					$smarty->assign('curdir', sprintf(_('current folder = [%1$s]'), $currentDir));
-					$smarty->assign('currentDir', $currentDir);
+					Froxlor::getSmarty()->assign('curdir', sprintf(_('current folder = [%1$s]'), $currentDir));
+					Froxlor::getSmarty()->assign('currentDir', $currentDir);
 				}
 				else
 				{ // link zu einer Datei, abrufen...
@@ -363,7 +364,7 @@ elseif ((!empty($_POST['loginname']) && !empty($_POST['password'])) || (!empty($
 				if(@ftp_chdir($connection, $file))
 				{
 					$currentDir = htmlentities(str_replace("\"\"","\"",@ftp_pwd($connection)));
-					$smarty->assign('curdir', sprintf(_('current folder = [%1$s]'), $currentDir));
+					Froxlor::getSmarty()->assign('curdir', sprintf(_('current folder = [%1$s]'), $currentDir));
 				}
 				else
 				{
@@ -468,7 +469,7 @@ elseif ((!empty($_POST['loginname']) && !empty($_POST['password'])) || (!empty($
 				}
 				elseif($_GET['op']=="show")
 				{
-					$smarty->assign('rename_text', sprintf(_('File \'%1$s\' rename/move to'), $file));
+					Froxlor::getSmarty()->assign('rename_text', sprintf(_('File \'%1$s\' rename/move to'), $file));
 				}
 				break;
 			case "createdir":  // neuen Ordner erstellen
@@ -652,7 +653,7 @@ elseif ((!empty($_POST['loginname']) && !empty($_POST['password'])) || (!empty($
 							// temporäre Datei lesen und ausgeben
 							$myFileContent = implode("",file($downloadDir .  killslashes(html_entity_decode($file))."_".$s));
 						}
-						$smarty->assign('myFileContent', $myFileContent);
+						Froxlor::getSmarty()->assign('myFileContent', $myFileContent);
 						unlink($downloadDir .  killslashes(html_entity_decode($file))."_".$s);
 					}
 					elseif ((isset($_GET['op']) && $_GET['op'] == "save") || (isset($_POST['op']) && $_POST['op'] == "save"))
@@ -714,30 +715,30 @@ elseif ((!empty($_POST['loginname']) && !empty($_POST['password'])) || (!empty($
 					$mode = "FTP_ASCII";
 					$_SESSION['mode'] = "FTP_ASCII";
 				}
-				$smarty->assign('mode', $mode);
+				Froxlor::getSmarty()->assign('mode', $mode);
 				break;
 		}
 
 		if (strlen($errormessage) > 0)
 		{
-			$smarty->assign('errormessage', $errormessage);
+			Froxlor::getSmarty()->assign('errormessage', $errormessage);
 		}
 		if (strlen($successmessage) > 0)
 		{
-			$smarty->assign('successmessage', $successmessage);
+			Froxlor::getSmarty()->assign('successmessage', $successmessage);
 		}
 
 		if ($action == "edit" && ((isset($_GET['op']) && $_GET['op'] == "open") || (isset($_POST['op']) && $_POST['op'] == "open")))
 		{
 			$file = htmlentities($file);
-			$smarty->assign('file', $file);
-			$body = $smarty->fetch('webftp/webftp_edit.tpl');
+			Froxlor::getSmarty()->assign('file', $file);
+			$body = Froxlor::getSmarty()->fetch('webftp/webftp_edit.tpl');
 		}
 		elseif ($action == "edit" && ((isset($_GET['op']) && $_GET['op'] == "new") || (isset($_POST['op']) && $_POST['op'] == "new")))
 		{
 			$file = htmlentities($file);
-			$smarty->assign('file', $file);
-			$body = $smarty->fetch('webftp/webftp_edit_new.tpl');
+			Froxlor::getSmarty()->assign('file', $file);
+			$body = Froxlor::getSmarty()->fetch('webftp/webftp_edit_new.tpl');
 		}
 		else
 		{
@@ -764,16 +765,16 @@ elseif ((!empty($_POST['loginname']) && !empty($_POST['password'])) || (!empty($
 						$fileName = $myDir["name"];
 						if(is_array($file) && val_in_array($fileName, $file))
 						{
-							$smarty->assign('checked', 'checked');
-							$smarty->assign('checked_color', "bgcolor=\"".$marked_color."\"");
+							Froxlor::getSmarty()->assign('checked', 'checked');
+							Froxlor::getSmarty()->assign('checked_color', "bgcolor=\"".$marked_color."\"");
 						}
 						else
 						{
-							$smarty->assign('checked', "");
-							$smarty->assign('checked_color', "");
+							Froxlor::getSmarty()->assign('checked', "");
+							Froxlor::getSmarty()->assign('checked_color', "");
 						}
-						$smarty->assign('myDir', $myDir);
-						$output_dir .= $smarty->fetch('webftp/webftp_main_dir_row.tpl');
+						Froxlor::getSmarty()->assign('myDir', $myDir);
+						$output_dir .= Froxlor::getSmarty()->fetch('webftp/webftp_main_dir_row.tpl');
 					}
 				}
 
@@ -788,16 +789,16 @@ elseif ((!empty($_POST['loginname']) && !empty($_POST['password'])) || (!empty($
 						$fileName = $myDir["target"];
 						if (is_array($file) && val_in_array($fileName, $file))
 						{
-							$smarty->assign('checked', 'checked');
-							$smarty->assign('checked_color', "bgcolor=\"".$marked_color."\"");
+							Froxlor::getSmarty()->assign('checked', 'checked');
+							Froxlor::getSmarty()->assign('checked_color', "bgcolor=\"".$marked_color."\"");
 						}
 						else
 						{
-							$smarty->assign('checked', "");
-							$smarty->assign('checked_color', "");
+							Froxlor::getSmarty()->assign('checked', "");
+							Froxlor::getSmarty()->assign('checked_color', "");
 						}
-						$smarty->assign('myDir', $myDir);
-						$output_link .= $smarty->fetch('webftp/webftp_main_link_row.tpl');
+						Froxlor::getSmarty()->assign('myDir', $myDir);
+						$output_link .= Froxlor::getSmarty()->fetch('webftp/webftp_main_link_row.tpl');
 					}
 				}
 
@@ -813,32 +814,32 @@ elseif ((!empty($_POST['loginname']) && !empty($_POST['password'])) || (!empty($
 						$fileName = $myDir["name"];
 						if (is_array($file) && val_in_array($fileName, $file))
 						{
-							$smarty->assign('checked', 'checked');
-							$smarty->assign('checked_color', "bgcolor=\"".$marked_color."\"");
+							Froxlor::getSmarty()->assign('checked', 'checked');
+							Froxlor::getSmarty()->assign('checked_color', "bgcolor=\"".$marked_color."\"");
 						}
 						else
 						{
-							$smarty->assign('checked', "");
-							$smarty->assign('checked_color', "");
+							Froxlor::getSmarty()->assign('checked', "");
+							Froxlor::getSmarty()->assign('checked_color', "");
 						}
 						// prüfen ob die datei bearbeitbar ist
 						$extarray = explode(".",$fileName);
 						$extension = $extarray[sizeof($extarray)-1];
-						$smarty->assign('editable', false);
+						Froxlor::getSmarty()->assign('editable', false);
 						foreach($editFileExtensions as $regex)
 						{
 							if(preg_match("/$regex/i", $extension))
 							{
-								$smarty->assign('editable', true);
+								Froxlor::getSmarty()->assign('editable', true);
 								break;
 							}
 						}
 						if($extension == $fileName && $editFileNoExtension)
 						{
-							$smarty->assign('editable', true);
+							Froxlor::getSmarty()->assign('editable', true);
 						}
-						$smarty->assign('myDir', $myDir);
-						$output_file .= $smarty->fetch('webftp/webftp_main_file_row.tpl');
+						Froxlor::getSmarty()->assign('myDir', $myDir);
+						$output_file .= Froxlor::getSmarty()->fetch('webftp/webftp_main_file_row.tpl');
 					}
 				}
 			}
@@ -846,72 +847,72 @@ elseif ((!empty($_POST['loginname']) && !empty($_POST['password'])) || (!empty($
 			if(!is_array($file))
 			{
 				$file = htmlentities($file);
-				$smarty->assign('file', $file);
+				Froxlor::getSmarty()->assign('file', $file);
 			}
 
-			$smarty->assign('connected_to', sprintf(_('Connected to %1$s'), $_SESSION['server']));
+			Froxlor::getSmarty()->assign('connected_to', sprintf(_('Connected to %1$s'), $_SESSION['server']));
 
-			$body = $smarty->fetch('webftp/webftp_main_header.tpl');
-			$body .= $smarty->fetch('webftp/webftp_main_additional.tpl');
+			$body = Froxlor::getSmarty()->fetch('webftp/webftp_main_header.tpl');
+			$body .= Froxlor::getSmarty()->fetch('webftp/webftp_main_additional.tpl');
 
 			if($action == "rename" && $_GET['op']=="show")
 			{
-				$body .= $smarty->fetch('webftp/webftp_main_rename');
+				$body .= Froxlor::getSmarty()->fetch('webftp/webftp_main_rename');
 			}
-			$smarty->assign('output_dir', $output_dir);
-			$smarty->assign('output_link', $output_link);
-			$smarty->assign('output_file', $output_file);
-			$smarty->assign('countArray', $countArray);
-			$body .= $smarty->fetch('webftp/webftp_main.tpl');
+			Froxlor::getSmarty()->assign('output_dir', $output_dir);
+			Froxlor::getSmarty()->assign('output_link', $output_link);
+			Froxlor::getSmarty()->assign('output_file', $output_file);
+			Froxlor::getSmarty()->assign('countArray', $countArray);
+			$body .= Froxlor::getSmarty()->fetch('webftp/webftp_main.tpl');
 
 			if ($action == "multiple" && (!isset($_POST['yes']) || $_POST['yes']=="") && (!isset($_POST['no']) || $_POST['no']==""))
 			{
 				if($_POST['op']=="delete")
 				{
-					$smarty->assign('action_text', _('Do you really want to delete the selected files?'));
+					Froxlor::getSmarty()->assign('action_text', _('Do you really want to delete the selected files?'));
 				}
 				elseif($_POST['op']=="move")
 				{
-					$smarty->assign('action_text', sprintf(_('Do you really want to move the selected files to \'%1$s\'?'), $_POST['move_to']));
-					$smarty->assign('move_to', $_POST['move_to']);
+					Froxlor::getSmarty()->assign('action_text', sprintf(_('Do you really want to move the selected files to \'%1$s\'?'), $_POST['move_to']));
+					Froxlor::getSmarty()->assign('move_to', $_POST['move_to']);
 				}
 				elseif($_POST['op']=="chmod")
 				{
-					$smarty->assign('action_text', sprintf(_('Do you really want to set the permission of the selected files to \'%1$s\'?'), $_POST['chmod']));
-					$smarty->assign('chmod', $_POST['chmod']);
+					Froxlor::getSmarty()->assign('action_text', sprintf(_('Do you really want to set the permission of the selected files to \'%1$s\'?'), $_POST['chmod']));
+					Froxlor::getSmarty()->assign('chmod', $_POST['chmod']);
 				}
-				$smarty->assign('op', $_POST['op']);
-				$body .= $smarty->fetch('webftp/webftp_main_prompt');
+				Froxlor::getSmarty()->assign('op', $_POST['op']);
+				$body .= Froxlor::getSmarty()->fetch('webftp/webftp_main_prompt');
 			}
 			else
 			{
-				$body .= $smarty->fetch('webftp/webftp_main_multiple.tpl');
+				$body .= Froxlor::getSmarty()->fetch('webftp/webftp_main_multiple.tpl');
 			}
 		}
-		$smarty->assign('completeLink', '<a href="webftp.php?logoff=true">' . _('Logout') . '</a>');
-		$navlinks = $smarty->fetch('navigation_link.tpl');
-		$smarty->assign('completeLink', '<a href="webftp.php?webftp.php?action=mode&amp;mode=FTP_BINARY&amp;currentDir=' . $currentDir . '">' . _('Switch to BINARY mode') . '</a>');
-		$navlinks .= $smarty->fetch('navigation_link.tpl');
-		$smarty->assign('completeLink', '<a href="webftp.php?webftp.php?action=mode&amp;mode=FTP_ASCII&amp;currentDir=' . $currentDir . '">' . _('Switch to ASCII mode') . '</a>');
-		$navlinks .= $smarty->fetch('navigation_link.tpl');
-		$smarty->assign('completeLink', _('Main'));
-		$smarty->assign('navigation_links', $navlinks);
-		$smarty->assign('navigation', $smarty->fetch('navigation_element.tpl'));
+		Froxlor::getSmarty()->assign('completeLink', '<a href="webftp.php?logoff=true">' . _('Logout') . '</a>');
+		$navlinks = Froxlor::getSmarty()->fetch('navigation_link.tpl');
+		Froxlor::getSmarty()->assign('completeLink', '<a href="webftp.php?webftp.php?action=mode&amp;mode=FTP_BINARY&amp;currentDir=' . $currentDir . '">' . _('Switch to BINARY mode') . '</a>');
+		$navlinks .= Froxlor::getSmarty()->fetch('navigation_link.tpl');
+		Froxlor::getSmarty()->assign('completeLink', '<a href="webftp.php?webftp.php?action=mode&amp;mode=FTP_ASCII&amp;currentDir=' . $currentDir . '">' . _('Switch to ASCII mode') . '</a>');
+		$navlinks .= Froxlor::getSmarty()->fetch('navigation_link.tpl');
+		Froxlor::getSmarty()->assign('completeLink', _('Main'));
+		Froxlor::getSmarty()->assign('navigation_links', $navlinks);
+		Froxlor::getSmarty()->assign('navigation', Froxlor::getSmarty()->fetch('navigation_element.tpl'));
 	}
 	else
 	{
-		$smarty->assign('errormessage', _('Login failed, please try again'));
+		Froxlor::getSmarty()->assign('errormessage', _('Login failed, please try again'));
 		session_destroy();
-		$body = $smarty->fetch('login/login_ftp.tpl');
+		$body = Froxlor::getSmarty()->fetch('login/login_ftp.tpl');
 	}
 }
 else
 {
-	$body = $smarty->fetch('login/login_ftp.tpl');
+	$body = Froxlor::getSmarty()->fetch('login/login_ftp.tpl');
 }
 
-$smarty->assign('body', $body);
-$smarty->display('index.tpl');
+Froxlor::getSmarty()->assign('body', $body);
+Froxlor::getSmarty()->display('index.tpl');
 
 /**
  * Functions
