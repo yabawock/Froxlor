@@ -155,4 +155,14 @@ class rrp implements dms
 		
 		return $handles;
 	}
+	
+	/**
+	 * (non-PHPdoc)
+	 * @see dms::domainCheck()
+	 */
+	public function domainCheck($domain) {
+		$response = $this->_request->send(array("command" => "CheckDomain", "domain" => $domain));
+		
+		return $response->code;
+	}
 }

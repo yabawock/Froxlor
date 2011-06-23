@@ -55,8 +55,16 @@ interface dms
 	 */
 	public function handleList();
 	
-	/*
+	/**
+	 * Checks if a domain is available for registration.
+	 *
+	 * @param string $domain
+	 *
+	 * @return int statuscode
+	 */
 	public function domainCheck($domain);
+	
+	/*
 	public function domainRegister();
 	
 	public function eventListener();
