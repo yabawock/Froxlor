@@ -126,15 +126,15 @@ class linker
 		# temporary until frontcontroller exists
 		# We got a section in the URL -> morph AREA and section into filename
 		# @TODO: Remove this
-		if (isset($this->args['section']) && strlen($this->args['section']) > 0)
-		{
-			$link .= AREA . '_' . $this->args['section'] . '.php';
-			unset($this->args['section']);
-		}
-		else
-		{
+#		if (isset($this->args['section']) && strlen($this->args['section']) > 0)
+#		{
+#			$link .= AREA . '_' . $this->args['section'] . '.php';
+#			unset($this->args['section']);
+#		}
+#		else
+#		{
 			$link .= $this->filename;
-		}
+#		}
 
 		# Let's see if we are done (no arguments in query)
 		if (count($this->args) == 0)

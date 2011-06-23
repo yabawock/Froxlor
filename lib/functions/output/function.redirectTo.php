@@ -38,63 +38,8 @@
 
 function redirectTo($destination, $get_variables = array(), $isRelative = false)
 {
-	global $s;
-
-	if(is_array($get_variables))
-	{
-		if (isset($get_variables['s']))
-		{
-			$linker = new linker($destination, $get_variables['s']);
-		}
-		else
-		{
-			$linker = new linker($destination, $s);
-		}
-
-		foreach($get_variables as $key => $value)
-		{
-			$linker->add($key, $value);
-		}
-
-		if($isRelative)
-		{
-			$linker->protocol = '';
-			$linker->host = '';
-			$path = './';
-		}
-		else
-		{
-			if(isset($_SERVER['HTTPS'])
-			   && strtolower($_SERVER['HTTPS']) == 'on')
-			{
-				$linker->protocol = 'https';
-			}
-			else
-			{
-				$linker->protocol = 'http';
-			}
-
-			$linker->host = $_SERVER['HTTP_HOST'];
-
-			if(dirname($_SERVER['PHP_SELF']) == '/')
-			{
-				$path = '/';
-			}
-			else
-			{
-				$path = dirname($_SERVER['PHP_SELF']) . '/';
-			}
-			$linker->filename = $path . $destination;
-		}
-		header('Location: ' . $linker->getLink());
-		exit;
-	}
-	elseif($get_variables == null)
-	{
-		$linker = new linker($destination, $s);
-		header('Location: ' . $linker->getLink());
-		exit;
-	}
+	header('Location: ' . $destination);
+	exit;
 
 	return false;
 }

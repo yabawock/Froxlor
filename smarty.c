@@ -1,3 +1,33 @@
+/* templates/Froxlor/admin/update/index.tpl */
+gettext("Update");
+
+/* templates/Froxlor/admin/update/index.tpl */
+gettext("Proceed");
+
+/* templates/Froxlor/login/login.tpl */
+gettext("Information");
+
+/* templates/Froxlor/login/login.tpl */
+gettext("Error");
+
+/* templates/Froxlor/login/login.tpl */
+gettext("Froxlor - Login");
+
+/* templates/Froxlor/login/login.tpl */
+gettext("Username");
+
+/* templates/Froxlor/login/login.tpl */
+gettext("Password");
+
+/* templates/Froxlor/login/login.tpl */
+gettext("Language");
+
+/* templates/Froxlor/login/login.tpl */
+gettext("Login");
+
+/* templates/Froxlor/login/login.tpl */
+gettext("Forgot password");
+
 /* templates/Froxlor/login/login_ftp.tpl */
 gettext("Froxlor Server Management Panel");
 
