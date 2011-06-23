@@ -543,9 +543,9 @@ $lng['panel']['back'] = 'Back';
 // ADDED IN 1.2.16-svn12
 
 $lng['serversettings']['mod_log_sql']['title'] = 'Temporary save logs in the database';
-$lng['serversettings']['mod_log_sql']['description'] = 'Use <a href="http://www.outoforder.cc/projects/apache/mod_log_sql/" title="mod_log_sql">mod_log_sql</a> to save webrequests temporarily<br /><b>This needs a special <a href="http://files.froxlor.org/docs/mod_log_sql/" title="mod_log_sql - documentation">apache-configuration</a>!</b>';
+$lng['serversettings']['mod_log_sql']['description'] = 'Use <a target="blank" href="http://www.outoforder.cc/projects/apache/mod_log_sql/" title="mod_log_sql">mod_log_sql</a> to save webrequests temporarily<br /><b>This needs a special <a target="blank" href="http://files.froxlor.org/docs/mod_log_sql/" title="mod_log_sql - documentation">apache-configuration</a>!</b>';
 $lng['serversettings']['mod_fcgid']['title'] = 'Enable FCGID';
-$lng['serversettings']['mod_fcgid']['description'] = 'Use this to run PHP with the corresponding useraccount.<br /><br /><b>This needs a special webserver configuration for Apache, see <a href="http://wiki.froxlor.org/contrib/fcgid-handbook">http://wiki.froxlor.org/contrib/fcgid-handbook</a></b>';
+$lng['serversettings']['mod_fcgid']['description'] = 'Use this to run PHP with the corresponding useraccount.<br /><br /><b>This needs a special webserver configuration for Apache, see <a target="blank" href="http://redmine.froxlor.org/projects/froxlor/wiki/FCGID_-_handbook">FCGI - handbook</a></b>';
 $lng['serversettings']['sendalternativemail']['title'] = 'Use alternative email-address';
 $lng['serversettings']['sendalternativemail']['description'] = 'Send the password-email to a different address during email-account-creation';
 $lng['emails']['alternative_emailaddress'] = 'Alternative e-mail-address';
@@ -1306,7 +1306,7 @@ $lng['dkim']['dkim_notes']['description'] = 'Notes that might be of interest to 
 $lng['dkim']['dkim_add_adsp']['title'] = 'Add DKIM ADSP entry';
 $lng['dkim']['dkim_add_adsp']['description'] = 'If you don\'t know what this is, leave it "enabled"';
 $lng['dkim']['dkim_add_adsppolicy']['title'] = 'ADSP policy';
-$lng['dkim']['dkim_add_adsppolicy']['description'] = 'For more information about this setting see <a href="http://wiki.froxlor.org/contrib/dkim-adsp-policies">http://wiki.froxlor.org/contrib/dkim-adsp-policies</a>';
+$lng['dkim']['dkim_add_adsppolicy']['description'] = 'For more information about this setting see <a target="blank" href="http://redmine.froxlor.org/projects/froxlor/wiki/En-dkim-adsp-policies">DKIM ADSP policies</a>';
 
 $lng['admin']['cron']['cronsettings'] = 'Cronjob settings';
 $lng['cron']['cronname'] = 'cronjob-name';
@@ -1423,7 +1423,7 @@ $lng['serversettings']['mail_also_with_mxservers'] = 'Create mail-, imap-, pop3-
 $lng['aps']['nocontingent'] = 'Your APS contingent is insufficient. You cannot install any package.';
 $lng['aps']['packageneedsdb'] = 'This package needs a database but your contingent is used up';
 $lng['aps']['cannoteditordeleteapsdb'] = 'APS databases cannot be edited or removed here';
-$lng['admin']['webserver_user'] = 'Webserver user-name';
+$lng['admin']['webserver_Puser'] = 'Webserver user-name';
 $lng['admin']['webserver_group'] = 'Webserver group-name';
 
 // ADDED IN FROXLOR 0.9.10
@@ -1431,7 +1431,7 @@ $lng['serversettings']['froxlordirectlyviahostname'] = 'Access Froxlor directly 
 
 // ADDED IN FROXLOR 0.9.11-svn1
 $lng['serversettings']['panel_password_regex']['title'] = 'Regular expression for passwords';
-$lng['serversettings']['panel_password_regex']['description'] = 'Here you can set a regular expression for passwords-complexity.<br />Empty = no specific requirement<br />(<a href="http://wiki.froxlor.org/doc/password-regex-examples">regex help/examples</a>)';
+$lng['serversettings']['panel_password_regex']['description'] = 'Here you can set a regular expression for passwords-complexity.<br />Empty = no specific requirement<br />(<a target="blank" href="http://redmine.froxlor.org/projects/froxlor/wiki/En-password-regex-examples">regex help/examples</a>)';
 $lng['error']['notrequiredpasswordcomplexity'] = 'The specified password-complexity was not satisfied.<br />Please contact your administrator if you have any questions about the complexity-specification';
 
 // ADDED IN FROXLOR 0.9.11-svn2
@@ -1515,7 +1515,7 @@ $lng['question']['customer_reallyunlock'] = 'Do you really want to unlock custom
 
 // ADDED IN FROXLOR 0.9.15-svn1
 $lng['serversettings']['perl_server']['title'] = 'Perl server location';
-$lng['serversettings']['perl_server']['description'] = 'Default is set for using the guide found at: http://wiki.nginx.org/SimpleCGI';
+$lng['serversettings']['perl_server']['description'] = 'Default is set for using the guide found at: <a target="blank" href="http://wiki.nginx.org/SimpleCGI">http://wiki.nginx.org/SimpleCGI</a>';
 $lng['serversettings']['nginx_php_backend']['title'] = 'Nginx PHP backend';
 $lng['serversettings']['nginx_php_backend']['description'] = 'this is where the PHP process is listening for requests from nginx, can be a unix socket of ip:port combination';
 $lng['serversettings']['phpreload_command']['title'] = 'PHP reload command';
@@ -1606,13 +1606,13 @@ $lng['error']['admin_domain_emailsystemhostname'] = 'Sorry, the system - hostnam
 $lng['backup'] = 'Backup';
 $lng['backup_allowed'] = 'Backup allowed';
 $lng['extras']['backup_create'] = 'Create Backup?';
-$lng['extras']['backup_info'] = 'Backup will be saved once daily in directory "' . $settings['system']['backup_dir'] . '".';
+$lng['extras']['backup_info'] = 'Backup will be saved once daily to a FTP directory. The FTP username is "'. $userinfo['loginname'] .'_backup". The FTP password is the same as for your main FTP account.';
 $lng['extras']['backup_info_sep'] = 'It contains compressed archives of your web-directory and databases.';
 $lng['extras']['backup_info_big'] = 'It contains a compressed archive of your web-directory and databases.';
 $lng['extras']['backup_count_info'] = '<br /><br />Please note that the backup will charge your webspace!';
 $lng['serversettings']['backup_count'] = 'Should backup size be subtracted from webspace size?';
 $lng['serversettings']['backup_enabled'] = 'Backup activated?';
-$lng['serversettings']['backupdir']['description'] = 'Which name should the customer\'s backup directory have?';
+$lng['serversettings']['backupdir']['description'] = 'Backup dir path?';
 $lng['serversettings']['mysqldump_path']['description'] = 'Path to mysqldump binary?';
 $lng['serversettings']['backup_bigfile'] = 'Save backup in 1 big file instead in separeted files for html and databases?';
 $lng['serversettings']['backup_ftp_enabled'] = 'FTP Upload activated?';
@@ -1886,3 +1886,5 @@ $lng['serversettings']['diskquota_repquota_path']['description'] = 'Path to repq
 $lng['serversettings']['diskquota_quotatool_path']['description'] = 'Path to quotatool';
 $lng['serversettings']['diskquota_customer_partition']['description'] = 'Partition, on which the customer files are stored';
 $lng['tasks']['diskspace_set_quota'] = 'Set quota on filesystem';
+$lng['error']['session_timeout'] = 'Value too low';
+$lng['error']['session_timeout_desc'] = 'You should not set the session timeout lower than 1 minute.';

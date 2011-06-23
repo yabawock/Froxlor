@@ -45,7 +45,7 @@ interface dms
 	 *
 	 * @return boolean
 	 */
-	public function handleAlter($handle);
+	public function handleModify($handle);
 	
 	/**
 	 * This will get all handles, sync them and
@@ -55,8 +55,16 @@ interface dms
 	 */
 	public function handleList();
 	
-	/*
+	/**
+	 * Checks if a domain is available for registration.
+	 *
+	 * @param string $domain
+	 *
+	 * @return int statuscode
+	 */
 	public function domainCheck($domain);
+	
+	/*
 	public function domainRegister();
 	
 	public function eventListener();

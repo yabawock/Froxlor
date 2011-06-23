@@ -102,9 +102,9 @@ class rrp implements dms
 	
 	/**
 	 * (non-PHPdoc)
-	 * @see dms::handleAlter()
+	 * @see dms::handleModify()
 	 */
-	public function handleAlter($handle) {
+	public function handleModify($handle) {
 		$command = array(
 			"command" => "ModifyContact",
 			"contact" => $handle->getHandleId(),
@@ -154,5 +154,15 @@ class rrp implements dms
 		}
 		
 		return $handles;
+	}
+	
+	/**
+	 * (non-PHPdoc)
+	 * @see dms::domainCheck()
+	 */
+	public function domainCheck($domain) {
+		$response = $this->_request->send(array("command" => "CheckDomain", "domain" => $domain));
+		
+		return $response->code;
 	}
 }

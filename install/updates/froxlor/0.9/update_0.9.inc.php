@@ -1635,9 +1635,36 @@ if(isFroxlorVersion('0.9.21'))
 	updateToVersion('0.9.22-svn1');
 }
 
+if(isFroxlorVersion('0.9.21-svn1'))
+{
+	showUpdateStep("Updating from 0.9.22-svn1 to 0.9.22-svn2");
+	lastStepStatus(0);
+
+	/* add new settings for diskspacequota - support */
+	$db->query("UPDATE `" . TABLE_PANEL_SETTINGS . "` SET `value` = '/var/customers/backups/' WHERE `varname` = 'backup_dir';");
+	
+	updateToVersion('0.9.22-svn2');
+}
+
 if(isFroxlorVersion('0.9.22-svn1'))
 {
 	showUpdateStep("Updating from 0.9.21 to 0.9.22-rrp1");
+	
+	$db->query("CREATE TABLE IF NOT EXISTS `users` (
+		  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+		  `loginname` varchar(50) NOT NULL DEFAULT '',
+		  `password` varchar(50) NOT NULL DEFAULT '',
+		  `contactid` int(11) NOT NULL,
+		  `def_language` varchar(255) NOT NULL DEFAULT '',
+		  `guid` int(5) NOT NULL DEFAULT '0',
+		  `deactivated` tinyint(1) NOT NULL DEFAULT '0',
+		  `lastlogin_succ` int(11) unsigned NOT NULL DEFAULT '0',
+		  `lastlogin_fail` int(11) unsigned NOT NULL DEFAULT '0',
+		  `loginfail_count` int(11) unsigned NOT NULL DEFAULT '0',
+		  `theme` varchar(255) NOT NULL DEFAULT 'Froxlor',
+		  PRIMARY KEY (`id`),
+		  UNIQUE KEY `loginname` (`loginname`)
+		) ENGINE=MyISAM");
 	
 	$db->query("CREATE TABLE IF NOT EXISTS `user_adresses` (
   `userid` int(11) unsigned NOT NULL AUTO_INCREMENT,
