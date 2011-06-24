@@ -71,11 +71,10 @@ class user {
 	 * 3 forgot password, login with name and email (minimal data)
 	 */
 	public function __construct() {
-		global $db;
-		$this->_db = $db;
-		
+		$this->_db = Froxlor::getDb();
+
 		$num = func_num_args();
-		
+
 		if ($num == 0) {
 			// create a new user
 			// nothing to do
@@ -167,55 +166,55 @@ class user {
 			// create a new record
 			$sql = "INSERT INTO `". TABLE_USERS ."` SET `deactivated` = '0'";
 			$result = $this->_db->query($sql);
-			
+
 			if (!$result) {
 				throw new Exception("Could not insert into: ".TABLE_USERS);
 			}
-			
+
 			$this->_id = $this->_db->insert_id();
 			$data['general']['id'] = $this->_id;
 			$data['resources']['id'] = $this->getId();
-			
+
 			// now setup user address record
 			if (!isset($data['general']['contactid'])) {
 				$sql = "INSERT INTO `". TABLE_USER_ADDRESSES ."`";
 				$result = $this->_db->query($sql);
-				
+
 				if (!$result) {
 					throw new Exception("Could not insert into: ".TABLE_USERS);
 				}
 				$contactid = $this->_db->insert_id();
 				$data['general']['contactid'] = $contactid;
 			}
-			
+
 			// setup resources
 			if ($data['general']['isadmin']) {
 				$this->_isAdmin = true;
-				
+
 				$sql = "INSERT INTO `".TABLE_ADMIN_RESOURCES."` SET `id` = '".$this->getId()."'";
-				
+
 				$result = $this->_db->query($sql);
-				
+
 				if (!$result) {
 					throw new Exception("Could not insert into: ".TABLE_USERS);
 				}
 			} else {
 				$sql = "INSERT INTO `".TABLE_USER_RESOURCES."` SET `id` = '".$this->getId()."'";
-				
+
 				$result = $this->_db->query($sql);
-				
+
 				if (!$result) {
 					throw new Exception("Could not insert into: ".TABLE_USERS);
 				}
 			}
-			
+
 			// @TODO setup the users admin
-			
+
 			$this->_data = $data;
 			$this->syncAll();
 		}
 	}
-	
+
 	/**
 	 * This function initializes all data.
 	 */
