@@ -40,6 +40,12 @@ gettext("Delete");
 /* templates/Froxlor/admin/customers/index.tpl */
 gettext("Create customer");
 
+/* templates/Froxlor/admin/customers/customers_add.tpl */
+gettext("This value is mandatory");
+
+/* templates/Froxlor/admin/customers/customers_add.tpl */
+gettext("Either &quot;name&quot; and &quot;firstname&quot; or &quot;company&quot; must be filled");
+
 /* templates/Froxlor/admin/index/change_language.tpl */
 gettext("Change language");
 
@@ -252,6 +258,15 @@ gettext("Login");
 
 /* templates/Froxlor/misc/error.tpl */
 gettext("Error");
+
+/* templates/Froxlor/misc/question_yesno.tpl */
+gettext("Question");
+
+/* templates/Froxlor/misc/question_yesno.tpl */
+gettext("Yes");
+
+/* templates/Froxlor/misc/question_yesno.tpl */
+gettext("No");
 
 /* templates/Froxlor/index.tpl */
 gettext("the Froxlor Team");
