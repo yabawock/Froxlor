@@ -1,36 +1,32 @@
-$header
 	<article>
 		<header>
 			<h2>
 				<img src="images/Froxlor/icons/encrypted.png" alt="" />&nbsp;
-				{$lng['menue']['main']['changepassword']}
+				{t}Change password{/t}
 			</h2>
 		</header>
 
 		<section class="tinyform bradiusodd">
-			<form method="post" action="{$linker->getLink(array('section' => 'index'))}" enctype="application/x-www-form-urlencoded">
+			<form method="post" action="{link area='admin' section='index' action='change_password'}" enctype="application/x-www-form-urlencoded">
 				<fieldset>
-				<legend>Froxlor&nbsp;-&nbsp;{$lng['menue']['main']['changepassword']}</legend>
+				<legend>Froxlor&nbsp;-&nbsp;{t}Change password{/t}</legend>
 				<p>
-					<label for="old_password">{$lng['changepassword']['old_password']}:</label>&nbsp;
+					<label for="old_password">{t}Old password:{/t}</label>&nbsp;
 					<input type="password" id="old_password" name="old_password" />
 				</p>
 				<p>
-					<label for="new_password">{$lng['changepassword']['new_password']}:</label>&nbsp;
+					<label for="new_password">{t}New password:{/t}</label>&nbsp;
 					<input type="password" id="new_password" name="new_password" />
 				</p>
 				<p>
-					<label for="new_password_confirm">{$lng['changepassword']['new_password_confirm']}:</label>&nbsp;
+					<label for="new_password_confirm">{t}New password (confirm):{/t}</label>&nbsp;
 					<input type="password" id="new_password_confirm" name="new_password_confirm" />
 				</p>
 				<p class="submit">
-					<input type="hidden" name="s" value="$s" />
-					<input type="hidden" name="page" value="$page" />
 					<input type="hidden" name="send" value="send" />
-					<input type="submit" value="{$lng['menue']['main']['changepassword']}" />
+					<input type="submit" value="{t}Change password{/t}" />
 				</p>
 				</fieldset>
 			</form>
 		</section>
 	</article>
-$footer

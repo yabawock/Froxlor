@@ -48,7 +48,7 @@
 
 			<aside>
 				{if $settings.panel.allow_preset == '1'}
-					<a href="{link area="login" section="login" action="forgotpwd"}">{t}Forgot password{/t}</a>
+					<a href="{link area='login' section='login' action='forgotpwd'}">{t}Forgot password{/t}</a>
 				{else}
 					&nbsp;
 				{/if}

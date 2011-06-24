@@ -178,6 +178,50 @@ class index
 		return Froxlor::getSmarty()->fetch('admin/index/index.tpl');
 	}
 
+	public function change_password()
+	{
+		if(isset($_POST['send'])
+		&& $_POST['send'] == 'send')
+		{
+			$old_password = validate($_POST['old_password'], 'old password');
+
+			if(md5($old_password) != Froxlor::getUser()->getData('general', 'password'))
+			{
+				return standard_error(_('The old password is not correct'), '', array('area' => 'admin', 'section' => 'index', 'action' => 'change_password'));
+			}
+
+			$new_password = validate($_POST['new_password'], 'new password');
+			$new_password_confirm = validate($_POST['new_password_confirm'], 'new password confirm');
+
+			if($old_password == '')
+			{
+				return standard_error(_('Missing input in field &quot;%s&quot;'), _('Old password'), array('area' => 'admin', 'section' => 'index', 'action' => 'change_password'));
+			}
+			elseif($new_password == '')
+			{
+				return standard_error(_('Missing input in field &quot;%s&quot;'), _('New password'), array('area' => 'admin', 'section' => 'index', 'action' => 'change_password'));
+			}
+			elseif($new_password_confirm == '')
+			{
+				return standard_error(_('Missing input in field &quot;%s&quot;'), _('New password (confirm)'), array('area' => 'admin', 'section' => 'index', 'action' => 'change_password'));
+			}
+			elseif($new_password != $new_password_confirm)
+			{
+				return standard_error(_('New password and confirmation do not match'), '', array('area' => 'admin', 'section' => 'index', 'action' => 'change_password'));
+			}
+			else
+			{
+				Froxlor::getUser()->setData('general', 'password', md5($new_password));
+				#Froxlor::getLog()->logAction(ADM_ACTION, LOG_NOTICE, 'changed password');
+				redirectTo(Froxlor::getLinker()->getLink(array('area' => 'admin', 'section' => 'index', 'action' => 'index')));
+			}
+		}
+		else
+		{
+			return Froxlor::getSmarty()->fetch('admin/index/change_password.tpl');
+		}
+	}
+
 	public function change_language()
 	{
 		$languages = Froxlor::getLanguage()->getWorkingLanguages();
@@ -211,6 +255,40 @@ class index
 
 			Froxlor::getSmarty()->assign('language_options', $language_options);
 			return Froxlor::getSmarty()->fetch('admin/index/change_language.tpl');
+		}
+	}
+
+	public function change_theme()
+	{
+
+		if(isset($_POST['send'])
+			&& $_POST['send'] == 'send'
+		) {
+			$theme = validate($_POST['theme'], _('theme'));
+
+			$db->query("UPDATE `users` SET `theme`='" . $db->escape($theme) . "' WHERE `id`='" . (int)Froxlor::getUser()->getId() . "'");
+			$db->query("UPDATE `panel_sessions` SET `theme`='" . Froxlor::getDb()->escape($theme) . "' WHERE `hash`='" . Froxlor::getDb()->escape($s) . "'");
+
+			#Froxlor::getLog()->logAction(ADM_ACTION, LOG_NOTICE, "changed his/her theme to '" . $theme . "'");
+			redirectTo(Froxlor::getLinker()->getLink(array('area' => 'admin', 'section' => 'index', 'action' => 'index')));
+		}
+		else
+		{
+			$theme_options = '';
+
+			$default_theme = getSetting('panel', 'default_theme');
+			if(Froxlor::getUser()->getData('general', 'theme') != '') {
+				$default_theme = Froxlor::getUser()->getData('general', 'theme');
+			}
+
+			$themes_avail = getThemes();
+			foreach($themes_avail as $t)
+			{
+				$theme_options.= makeoption($t, $t, $default_theme, true);
+			}
+
+			Froxlor::getSmarty()->assign('theme_options', $theme_options);
+			return Froxlor::getSmarty()->fetch('admin/index/change_theme.tpl');
 		}
 	}
 }

@@ -18,8 +18,9 @@ class login
 			}
 			catch(Exception $e) {
 				// login incorrect
-				$user->setData("general", "lastlogin_fail", time());
-				$user->setData("general", "loginfail_count", $user->getData("general", "loginfail_count")+1);
+				// TODO
+				#$user->setData("general", "lastlogin_fail", time());
+				#$user->setData("general", "loginfail_count", $user->getData("general", "loginfail_count")+1);
 
 				redirectTo(Froxlor::getLinker()->getLink(array('showmessage' => '2')));
 				exit;
