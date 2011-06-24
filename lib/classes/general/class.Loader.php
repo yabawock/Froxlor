@@ -301,14 +301,14 @@ class Loader
 				$navigation_data = array (
 					'admin' => array (
 						'index' => array (
-							'url' => Froxlor::getLinker()->getLink(array('area' => 'admin', 'section' => 'index', 'action' => 'index')),
+							'url' => array('area' => 'admin', 'section' => 'index', 'action' => 'index'),
 							'label' => _('Overview'),
 							'elements' => array (
 								array (
 									'label' => sprintf(_('Logged in as: %s'), Froxlor::getUser()->getLoginname()),
 								),
 								array (
-									'url' => Froxlor::getLinker()->getLink(array('area' => 'login', 'section' => 'logout')),
+									'url' => array('area' => 'login', 'section' => 'logout'),
 									'label' => _('Logout'),
 								),
 							),
@@ -318,7 +318,7 @@ class Loader
 							'required_resources' => 'change_serversettings',
 							'elements' => array (
 								array (
-									'url' => Froxlor::getLinker()->getLink(array('area' => 'admin', 'section' => 'updates', 'action' => 'index', 'page' => 'overview')),
+									'url' => array('area' => 'admin', 'section' => 'updates', 'action' => 'index'),
 									'label' => _('Froxlor update'),
 									'required_resources' => 'change_serversettings',
 								),

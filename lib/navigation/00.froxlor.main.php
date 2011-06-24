@@ -20,233 +20,233 @@
 return array (
 	'customer' => array (
 		'index' => array (
-			'url' => 'customer_index.php',
-			'label' => $lng['admin']['overview'],
+			'url' => array('area' => 'customer', 'section' => 'index', 'action' => 'index'),
+			'label' => _('Overview'),
 			'elements' => array (
 				array (
-					'label' => $lng['menue']['main']['username'],
+					'label' => sprintf(_('Logged in as %s'), Froxlor::getUser()->getLoginname()),
 				),
 				array (
-					'url' => 'customer_index.php?page=change_password',
-					'label' => $lng['menue']['main']['changepassword'],
+					'url' => array('area' => 'customer', 'section' => 'index', 'action' => 'change_password'),
+					'label' => _('Change password'),
 				),
 				array (
-					'url' => 'customer_index.php?page=change_language',
-					'label' => $lng['menue']['main']['changelanguage'],
+					'url' => array('area' => 'customer', 'section' => 'index', 'action' => 'change_language'),
+					'label' => _('Change language'),
 				),
 				array (
-					'url' => 'customer_index.php?page=change_theme',
-					'label' => $lng['menue']['main']['changetheme'],
+					'url' => array('area' => 'customer', 'section' => 'index', 'action' => 'change_theme'),
+					'label' => _('Change theme'),
 				),
 				array (
-					'url' => 'customer_index.php?action=logout',
-					'label' => $lng['login']['logout'],
+					'url' => array('area' => 'login', 'section' => 'login', 'action' => 'logout'),
+					'label' => _('Logout'),
 				),
 			),
 		),
 		'email' => array (
-			'url' => 'customer_email.php',
-			'label' => $lng['menue']['email']['email'],
+			'url' => array('area' => 'customer', 'section' => 'email', 'action' => 'description'),
+			'label' => _('E-mail'),
 			'elements' => array (
 				array (
-					'url' => 'customer_email.php?page=emails',
-					'label' => $lng['menue']['email']['emails'],
+					'url' => array('area' => 'customer', 'section' => 'email', 'action' => 'index'),
+					'label' => _('Addresses'),
 					'required_resources' => 'emails',
 				),
 				array (
-					'url' => 'customer_email.php?page=emails&action=add',
-					'label' => $lng['emails']['emails_add'],
+					'url' => array('area' => 'customer', 'section' => 'email', 'action' => 'add'),
+					'label' => _('Create e-mail address'),
 					'required_resources' => 'emails'
 				),
 				array (
-					'url' => 'customer_autoresponder.php',
-					'label' => $lng['menue']['email']['autoresponder'],
+					'url' => array('area' => 'customer', 'section' => 'autoresponder', 'action' => 'index'),
+					'label' => _('Autoresponder'),
 					'required_resources' => 'emails',
 					'show_element' => ( getSetting('autoresponder', 'autoresponder_active') == true ),
 				),
 				array (
 					'url' => getSetting('panel', 'webmail_url'),
 					'new_window' => true,
-					'label' => $lng['menue']['email']['webmail'],
+					'label' => _('Webmail'),
 					'required_resources' => 'emails_used',
 					'show_element' => ( getSetting('panel', 'webmail_url') != '' ),
 				),
 			),
 		),
 		'mysql' => array (
-			'url' => 'customer_mysql.php',
-			'label' => $lng['menue']['mysql']['mysql'],
+			'url' => array('area' => 'customer', 'section' => 'mysql', 'action' => 'description'),
+			'label' => _('MySQL'),
 			'elements' => array (
 				array (
-					'url' => 'customer_mysql.php?page=mysqls',
-					'label' => $lng['menue']['mysql']['databases'],
+					'url' => array('area' => 'customer', 'section' => 'mysql', 'action' => 'index'),
+					'label' => _('Databases'),
 					'required_resources' => 'mysqls',
 				),
 				array (
 					'url' => getSetting('panel', 'phpmyadmin_url'),
 					'new_window' => true,
-					'label' => $lng['menue']['mysql']['phpmyadmin'],
+					'label' => _('phpMyAdmin'),
 					'required_resources' => 'mysqls_used',
 					'show_element' => ( getSetting('panel', 'phpmyadmin_url') != '' ),
 				),
 			),
 		),
 		'domains' => array (
-			'url' => 'customer_domains.php',
-			'label' => $lng['menue']['domains']['domains'],
+			'url' => array('area' => 'customer', 'section' => 'domains', 'action' => 'description'),
+			'label' => _('Domains'),
 			'elements' => array (
 				array (
-					'url' => 'customer_domains.php?page=domains',
-					'label' => $lng['menue']['domains']['settings'],
+					'url' => array('area' => 'customer', 'section' => 'domains', 'action' => 'index'),
+					'label' => _('Settings'),
 				),
 			),
 		),
 		'ftp' => array (
-			'url' => 'customer_ftp.php',
-			'label' => $lng['menue']['ftp']['ftp'],
+			'url' => array('area' => 'customer', 'section' => 'ftp', 'action' => 'description'),
+			'label' => _('FTP'),
 			'elements' => array (
 				array (
-					'url' => 'customer_ftp.php?page=accounts',
-					'label' => $lng['menue']['ftp']['accounts'],
+					'url' => array('area' => 'customer', 'section' => 'ftp', 'action' => 'index'),
+					'label' => _('Accounts'),
 				),
 				array (
 					'url' => getSetting('panel', 'webftp_url'),
 					'new_window' => true,
-					'label' => $lng['menue']['ftp']['webftp'],
+					'label' => _('WebFTP'),
 					'show_element' => ( getSetting('panel', 'webftp_url') != '' ),
 				),
 			),
 		),
 		'extras' => array (
-			'url' => 'customer_extras.php',
-			'label' => $lng['menue']['extras']['extras'],
+			'url' => array('area' => 'customer', 'section' => 'extras', 'action' => 'description'),
+			'label' => _('Extras'),
 			'elements' => array (
 				array (
-					'url' => 'customer_extras.php?page=htpasswds',
-					'label' => $lng['menue']['extras']['directoryprotection'],
+					'url' => array('area' => 'customer', 'section' => 'extras', 'action' => 'htpasswd'),
+					'label' => _('Directory protection'),
 				),
 				array (
-					'url' => 'customer_extras.php?page=htaccess',
-					'label' => $lng['menue']['extras']['pathoptions'],
+					'url' => array('area' => 'customer', 'section' => 'extras', 'action' => 'htaccess'),
+					'label' => _('Path options'),
 				),
 				array (
-					'url' => 'customer_extras.php?page=backup',
-					'label' => $lng['backup'],
+					'url' => array('area' => 'customer', 'section' => 'extras', 'action' => 'backup'),
+					'label' => _('Backup'),
 					'required_resources' => 'backup_allowed',
 				),
 			),
 		),
 		'traffic' => array (
-			'url' => 'customer_traffic.php',
-			'label' => $lng['menue']['traffic']['traffic'],
+			'url' => array('area' => 'customer', 'section' => 'traffic', 'action' => 'index'),
+			'label' => _('Traffic'),
 			'elements' => array (
 				array (
-					'url' => 'customer_traffic.php?page=current',
-					'label' => $lng['menue']['traffic']['current'],
+					'url' => array('area' => 'customer', 'section' => 'traffic', 'action' => 'current'),
+					'label' => _('Current month'),
 				),
 			),
 		),
 	),
 	'admin' => array (
 		'index' => array (
-			'url' => 'admin_index.php',
-			'label' => $lng['admin']['overview'],
+			'url' => array('area' => 'admin', 'section' => 'index', 'action' => 'index'),
+			'label' => _('Overview'),
 			'elements' => array (
 				array (
-					'label' => $lng['menue']['main']['username'],
+					'label' => sprintf(_('Logged in as: %s'), Froxlor::getUser()->getLoginname()),
 				),
 				array (
-					'url' => 'admin_index.php?page=change_password',
-					'label' => $lng['menue']['main']['changepassword'],
+					'url' => array('area' => 'admin', 'section' => 'index', 'action' => 'change_password'),
+					'label' => _('Change password'),
 				),
 				array (
-					'url' => 'admin_index.php?page=change_language',
-					'label' => $lng['menue']['main']['changelanguage'],
+					'url' => array('area' => 'admin', 'section' => 'index', 'action' => 'change_language'),
+					'label' => _('Change language'),
 				),
 				array (
-					'url' => 'admin_index.php?page=change_theme',
-					'label' => $lng['menue']['main']['changetheme'],
+					'url' => array('area' => 'admin', 'section' => 'index', 'action' => 'change_theme'),
+					'label' => _('Change theme'),
 				),
 				array (
-					'url' => 'admin_index.php?action=logout',
-					'label' => $lng['login']['logout'],
+					'url' => array('area' => 'login', 'section' => 'login', 'action' => 'logout'),
+					'label' => _('Logout'),
 				),
 			),
 		),
 		'resources' => array (
-			'label' => $lng['admin']['resources'],
+			'label' => _('Resources'),
 			'required_resources' => 'customers',
 			'elements' => array (
 				array (
-					'url' => 'admin_customers.php?page=customers',
-					'label' => $lng['admin']['customers'],
+					'url' => array('area' => 'admin', 'section' => 'customers', 'action' => 'index'),
+					'label' => _('Customers'),
 					'required_resources' => 'customers',
 				),
 				array (
-					'url' => 'admin_domains.php?page=domains',
-					'label' => $lng['admin']['domains'],
+					'url' => array('area' => 'admin', 'section' => 'domains', 'action' => 'index'),
+					'label' => _('Domains'),
 					'required_resources' => 'domains',
 				),
 				array (
-					'url' => 'admin_admins.php?page=admins',
-					'label' => $lng['admin']['admins'],
+					'url' => array('area' => 'admin', 'section' => 'admins', 'action' => 'index'),
+					'label' => _('Admins'),
 					'required_resources' => 'change_serversettings',
 				),
 			),
 		),
 		'traffic' => array (
-			'label' => $lng['admin']['traffic'],
+			'label' => _('Traffic'),
 			'required_resources' => 'customers',
 			'elements' => array (
 				array (
-					'url' => 'admin_traffic.php?page=customers',
-					'label' => $lng['admin']['customertraffic'],
+					'url' => array('area' => 'admin', 'section' => 'traffic', 'action' => 'index'),
+					'label' => _('Customers'),
 					'required_resources' => 'customers',
 				),
 			),
 		),
 		'server' => array (
-			'label' => $lng['admin']['server'],
+			'label' => _('Server'),
 			'required_resources' => 'change_serversettings',
 			'elements' => array (
 				array (
-					'url' => 'admin_configfiles.php?page=configfiles',
-					'label' => $lng['admin']['configfiles']['serverconfiguration'],
+					'url' => array('area' => 'admin', 'section' => 'configfiles', 'action' => 'index'),
+					'label' => _('Configuration'),
 					'required_resources' => 'change_serversettings',
 				),
 				array (
-					'url' => 'admin_settings.php?page=settings',
-					'label' => $lng['admin']['serversettings'],
+					'url' => array('area' => 'admin', 'section' => 'settings', 'action' => 'index'),
+					'label' => _('Settings'),
 					'required_resources' => 'change_serversettings',
 				),
 				array (
-					'url' => 'admin_ipsandports.php?page=ipsandports',
-					'label' => $lng['admin']['ipsandports']['ipsandports'],
+					'url' => array('area' => 'admin', 'section' => 'ipsandports', 'action' => 'index'),
+					'label' => _('IPs and ports'),
 					'required_resources' => 'change_serversettings',
 				),
 				array (
-					'url' => 'admin_cronjobs.php?page=overview',
-					'label' => $lng['admin']['cron']['cronsettings'],
+					'url' => array('area' => 'admin', 'section' => 'cronjobs', 'action' => 'index'),
+					'label' => _('Cronjob settings'),
 					'required_resources' => 'change_serversettings',
 				),
 				array (
-					'url' => 'admin_settings.php?page=rebuildconfigs',
-					'label' => $lng['admin']['rebuildconf'],
+					'url' => array('area' => 'admin', 'section' => 'settings', 'action' => 'rebuildconfigs'),
+					'label' => _('Rebuild config files'),
 					'required_resources' => 'change_serversettings',
 				),
 				array (
-					'url' => 'admin_settings.php?page=updatecounters',
-					'label' => $lng['admin']['updatecounters'],
+					'url' => array('area' => 'admin', 'section' => 'settings', 'action' => 'updatecounters'),
+					'label' => _('Recalculate resource usage'),
 					'required_resources' => 'change_serversettings',
 				),
 				array (
-					'url' => 'admin_phpsettings.php?page=overview',
-					'label' => $lng['menue']['phpsettings']['maintitle'],
-					'show_element' => ( 
-						getSetting('system', 'mod_fcgid') == true 
-						/* 
+					'url' => array('area' => 'admin', 'section' => 'settings', 'action' => 'index'),
+					'label' => _('PHP configurations'),
+					'show_element' => (
+						getSetting('system', 'mod_fcgid') == true
+						/*
 						 * @TODO activate if phpfpm knows custom php.ini files
-						 * 
+						 *
 						 * || getSetting('phpfpm', 'enabled') == true
 						 */
 						),
@@ -254,21 +254,21 @@ return array (
 			),
 		),
 		'misc' => array (
-			'label' => $lng['admin']['misc'],
+			'label' => _('Miscellaneous'),
 			'elements' => array (
 				array (
-					'url' => 'admin_templates.php?page=email',
-					'label' => $lng['admin']['templates']['email'],
+					'url' => array('area' => 'admin', 'section' => 'templates', 'action' => 'email'),
+					'label' => _('E-Mail & file templates'),
 				),
 				array (
-					'url' => 'admin_logger.php?page=log',
-					'label' => $lng['menue']['logger']['logger'],
+					'url' => array('area' => 'admin', 'section' => 'logger', 'action' => 'index'),
+					'label' => _('System logging'),
 					'required_resources' => 'change_serversettings',
 					'show_element' => ( getSetting('logger', 'enabled') == true ),
 				),
 				array (
-					'url' => 'admin_message.php?page=message',
-					'label' => $lng['admin']['message'],
+					'url' => array('area' => 'admin', 'section' => 'message', 'action' => 'index'),
+					'label' => _('Write a message'),
 				),
 			),
 		),

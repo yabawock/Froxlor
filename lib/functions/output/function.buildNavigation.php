@@ -29,94 +29,74 @@
 function buildNavigation($navigation, $userinfo)
 {
 	$returnvalue = '';
-	
+
+	$user = Froxlor::getUser();
 	foreach($navigation as $box)
 	{
 		if((!isset($box['show_element']) || $box['show_element'] === true) &&
-			(!isset($box['required_resources']) || $box['required_resources'] == '' || (isset($userinfo[$box['required_resources']]) && ((int)$userinfo[$box['required_resources']] > 0 || $userinfo[$box['required_resources']] == '-1'))))
+			(!isset($box['required_resources']) || $box['required_resources'] == '' || (((int)$user->getData('resources', $box['required_resources']) > 0 || $user->getData('resources', $box['required_resources']) == '-1'))))
 		{
 			$navigation_links = '';
 			foreach($box['elements'] as $element_id => $element)
 			{
 				if((!isset($element['show_element']) || $element['show_element'] === true) &&
-					(!isset($element['required_resources']) || $element['required_resources'] == '' || (isset($userinfo[$element['required_resources']]) && ((int)$userinfo[$element['required_resources']] > 0 || $userinfo[$element['required_resources']] == '-1'))))
+					(!isset($element['required_resources']) || $element['required_resources'] == '' || (((int)$user->getData('resources', $element['required_resources']) > 0 || $user->getData('resources', $element['required_resources']) == '-1'))))
 				{
-					if(isset($element['url']) && trim($element['url']) != '')
+					if(isset($element['url']))
 					{
-						// append sid only to local
-				
-						if(!preg_match('/^https?\:\/\//', $element['url'])
-						   && (isset($userinfo['hash']) && $userinfo['hash'] != ''))
+						if(is_array($element['url']))
 						{
-							// generate sid with ? oder &
-				
-							if(strpos($element['url'], '?') !== false)
-							{
-								$element['url'].= '&s=' . $userinfo['hash'];
-							}
-							else
-							{
-								$element['url'].= '?s=' . $userinfo['hash'];
-							}
+							$completeLink = Froxlor::getLinker()->getLink($element['url']);
 						}
-				
+
 						$target = '';
-				
+
 						if(isset($element['new_window']) && $element['new_window'] == true)
 						{
 							$target = ' target="_blank"';
 						}
-				
-						$completeLink = '<a href="' . htmlspecialchars($element['url']) . '"' . $target . ' class="menu">' . $element['label'] . '</a>';
+
+						$completeLink = '<a href="' . htmlspecialchars($completeLink) . '"' . $target . ' class="menu">' . htmlspecialchars($element['label']) . '</a>';
 					}
 					else
 					{
-						$completeLink = $element['label'];
+						$completeLink = htmlspecialchars($element['label']);
 					}
-				
-					eval("\$navigation_links .= \"" . getTemplate("navigation_link", 1) . "\";");
+
+					Froxlor::getSmarty()->assign('completeLink', $completeLink);
+					$navigation_links .= Froxlor::getSmarty()->fetch('navigation_link.tpl');
 				}
 			}
-	
+
 			if($navigation_links != '')
 			{
-				if(isset($box['url']) && trim($box['url']) != '')
+				if(isset($box['url']))
 				{
-					// append sid only to local
-			
-					if(!preg_match('/^https?\:\/\//', $box['url'])
-					   && (isset($userinfo['hash']) && $userinfo['hash'] != ''))
+					if(is_array($box['url']))
 					{
-						// generate sid with ? oder &
-			
-						if(strpos($box['url'], '?') !== false)
-						{
-							$box['url'].= '&s=' . $userinfo['hash'];
-						}
-						else
-						{
-							$box['url'].= '?s=' . $userinfo['hash'];
-						}
+						$completeLink = Froxlor::getLinker()->getLink($box['url']);
 					}
-			
+
 					$target = '';
-			
+
 					if(isset($box['new_window']) && $box['new_window'] == true)
 					{
 						$target = ' target="_blank"';
 					}
-			
-					$completeLink = '<a href="' . htmlspecialchars($box['url']) . '"' . $target . ' class="menu">' . $box['label'] . '</a>';
+
+					$completeLink = '<a href="' . htmlspecialchars($completeLink) . '"' . $target . ' class="menu">' . htmlspecialchars($box['label']) . '</a>';
 				}
 				else
 				{
-					$completeLink = $box['label'];
+					$completeLink = htmlspecialchars($box['label']);
 				}
-			
-				eval("\$returnvalue .= \"" . getTemplate("navigation_element", 1) . "\";");
+
+				Froxlor::getSmarty()->assign('completeLink', $completeLink);
+				Froxlor::getSmarty()->assign('navigation_links', $navigation_links);
+				$returnvalue .= Froxlor::getSmarty()->fetch('navigation_element.tpl');
 			}
 		}
 	}
-	
+
 	return $returnvalue;
 }
