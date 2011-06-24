@@ -1,3 +1,15 @@
+/* templates/Froxlor/admin/index/change_language.tpl */
+gettext("Change language");
+
+/* templates/Froxlor/admin/index/change_language.tpl */
+gettext("Change language");
+
+/* templates/Froxlor/admin/index/change_language.tpl */
+gettext("Language:");
+
+/* templates/Froxlor/admin/index/change_language.tpl */
+gettext("Change language");
+
 /* templates/Froxlor/admin/index/index.tpl */
 gettext("WARNING - Please note!");
 

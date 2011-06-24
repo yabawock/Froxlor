@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Froxlor\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-24 14:43+0100\n"
-"PO-Revision-Date: 2011-06-24 14:47+0100\n"
+"POT-Creation-Date: 2011-06-24 15:02+0100\n"
+"PO-Revision-Date: 2011-06-24 15:03+0100\n"
 "Last-Translator: Florian Aders <eleras@froxlor.org>\n"
 "Language-Team: The Froxlor team <team@froxlor.org>\n"
 "Language: \n"
@@ -17,352 +17,362 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 
 #: smarty.c:2
+#: smarty.c:5
+#: smarty.c:11
+msgid "Change language"
+msgstr "Sprache ändern"
+
+#: smarty.c:8
+msgid "Language:"
+msgstr "Sprache"
+
+#: smarty.c:14
 msgid "WARNING - Please note!"
 msgstr "WARNUNG - Bitte beachten!"
 
-#: smarty.c:5
+#: smarty.c:17
 msgid "Used resources (Used by customers (assigned/available))"
 msgstr "Verbrauchte Ressourcen (Von Kunden verwendet (zugewiesen/verfügbar))"
 
-#: smarty.c:8
+#: smarty.c:20
 msgid "Customers"
 msgstr "Kunden"
 
-#: smarty.c:11
+#: smarty.c:23
 msgid "Domain"
 msgstr "Domain"
 
-#: smarty.c:14
+#: smarty.c:26
 msgid "Subdomains"
 msgstr "Subdomains"
 
-#: smarty.c:17
+#: smarty.c:29
 msgid "Webspace"
 msgstr "Webspace"
-
-#: smarty.c:20
-#: smarty.c:23
-#: smarty.c:26
-msgid "MB"
-msgstr "MB"
-
-#: smarty.c:29
-msgid "Traffic"
-msgstr "Traffic"
 
 #: smarty.c:32
 #: smarty.c:35
 #: smarty.c:38
+msgid "MB"
+msgstr "MB"
+
+#: smarty.c:41
+msgid "Traffic"
+msgstr "Traffic"
+
+#: smarty.c:44
+#: smarty.c:47
+#: smarty.c:50
 msgid "GB"
 msgstr "GB"
 
-#: smarty.c:41
+#: smarty.c:53
 msgid "MySQL-databases"
 msgstr "MySQL - Datenbanken"
 
-#: smarty.c:44
+#: smarty.c:56
 msgid "E-mail - addresses"
 msgstr "E-Mail - Adressen"
 
-#: smarty.c:47
+#: smarty.c:59
 msgid "E-Mail - accounts"
 msgstr "E-Mail - Konten"
 
-#: smarty.c:50
+#: smarty.c:62
 msgid "E-mail - forwarders"
 msgstr "E-Mail - Weiterleitungen"
 
-#: smarty.c:53
+#: smarty.c:65
 msgid "E-mail quota"
 msgstr "E-Mail - Quota"
 
-#: smarty.c:56
+#: smarty.c:68
 msgid "E-mail - autoresponder"
 msgstr "E-Mail - Autoresponder"
 
-#: smarty.c:59
+#: smarty.c:71
 msgid "APS - installations"
 msgstr "APS - Installationen"
 
-#: smarty.c:62
+#: smarty.c:74
 msgid "FTP - accounts"
 msgstr "FTP - Konten"
 
-#: smarty.c:65
+#: smarty.c:77
 msgid "Support - tickets"
 msgstr "Support - Tickets"
 
-#: smarty.c:68
+#: smarty.c:80
 msgid "System details"
 msgstr "Systemdetails"
 
-#: smarty.c:71
+#: smarty.c:83
 msgid "Serversoftware"
 msgstr "Serversoftware"
 
-#: smarty.c:74
+#: smarty.c:86
 msgid "PHP - version"
 msgstr "PHP - Version"
 
-#: smarty.c:77
+#: smarty.c:89
 msgid "PHP - memorylimit"
 msgstr "PHP - Speicherlimit"
 
-#: smarty.c:80
+#: smarty.c:92
 msgid "MySQL - server version"
 msgstr "MySQL - Serverversion"
 
-#: smarty.c:83
+#: smarty.c:95
 msgid "MySQL - client version"
 msgstr "MySQL - Clientversion"
 
-#: smarty.c:86
+#: smarty.c:98
 msgid "MySQL - webserver interface"
 msgstr "MySQL - Webserver Interface"
 
-#: smarty.c:89
+#: smarty.c:101
 msgid "System load"
 msgstr "Systemlast"
 
-#: smarty.c:92
+#: smarty.c:104
 msgid "Kernel:"
 msgstr "Kernel:"
 
-#: smarty.c:95
+#: smarty.c:107
 msgid "Uptime:"
 msgstr "Uptime:"
 
-#: smarty.c:98
+#: smarty.c:110
 msgid "Froxlor details"
 msgstr "Froxlor details"
 
-#: smarty.c:101
+#: smarty.c:113
 msgid "Outstanding tasks:"
 msgstr "Ausstehende Aufgaben:"
 
-#: smarty.c:104
+#: smarty.c:116
 msgid "There are currently no outstanding tasks for Froxlor"
 msgstr "Derzeit sind keine Aufgaben in Froxlor ausstehend"
 
-#: smarty.c:107
+#: smarty.c:119
 msgid "Last execution of cronjobs"
 msgstr "Letzte Ausführung der Cronjobs"
 
-#: smarty.c:110
+#: smarty.c:122
 msgid "Installed version"
 msgstr "Installierte Version"
 
-#: smarty.c:113
+#: smarty.c:125
 msgid "Latest version:"
 msgstr "Aktuellste Version:"
 
-#: smarty.c:116
+#: smarty.c:128
 msgid "There is a newer version of Froxlor available"
 msgstr "Es ist eine aktuelle Version von Froxlor verfügbar"
 
-#: smarty.c:119
+#: smarty.c:131
 msgid "Update"
 msgstr "Update"
 
-#: smarty.c:122
+#: smarty.c:134
 msgid "Proceed"
 msgstr "Fortfahren"
 
-#: smarty.c:125
+#: smarty.c:137
 msgid "Information"
 msgstr "Information"
 
-#: smarty.c:128
-#: smarty.c:155
-#: smarty.c:179
-#: smarty.c:194
-#: smarty.c:278
+#: smarty.c:140
+#: smarty.c:167
+#: smarty.c:191
+#: smarty.c:206
+#: smarty.c:290
 msgid "Error"
 msgstr "Fehler"
 
-#: smarty.c:131
+#: smarty.c:143
 msgid "Froxlor - Login"
 msgstr "Froxlor - Login"
 
-#: smarty.c:134
-#: smarty.c:161
+#: smarty.c:146
+#: smarty.c:173
 msgid "Username"
 msgstr "Benutzername"
 
-#: smarty.c:137
-#: smarty.c:164
+#: smarty.c:149
+#: smarty.c:176
 msgid "Password"
 msgstr "Passwort"
 
-#: smarty.c:140
+#: smarty.c:152
 msgid "Language"
 msgstr "Sprache"
 
-#: smarty.c:143
-#: smarty.c:167
+#: smarty.c:155
+#: smarty.c:179
 msgid "Login"
 msgstr "Login"
 
-#: smarty.c:146
+#: smarty.c:158
 msgid "Forgot password"
 msgstr "Passwort vergessen"
 
-#: smarty.c:149
+#: smarty.c:161
 msgid "Froxlor Server Management Panel"
 msgstr "Froxlor Server Management Panel"
 
-#: smarty.c:152
-#: smarty.c:176
-#: smarty.c:191
-#: smarty.c:275
+#: smarty.c:164
+#: smarty.c:188
+#: smarty.c:203
+#: smarty.c:287
 msgid "Success"
 msgstr "Erfolgreich"
 
-#: smarty.c:158
+#: smarty.c:170
 msgid "Froxlor - WebFTP - Login"
 msgstr "Froxlor - WebFTP - Login"
 
-#: smarty.c:170
+#: smarty.c:182
 msgid "the Froxlor Team"
 msgstr "das Froxlor Team"
 
-#: smarty.c:173
+#: smarty.c:185
 msgid "Editing"
 msgstr "Bearbeiten"
 
-#: smarty.c:182
-#: smarty.c:200
+#: smarty.c:194
+#: smarty.c:212
 msgid "Save file"
 msgstr "Datei speichern"
 
-#: smarty.c:185
-#: smarty.c:203
+#: smarty.c:197
+#: smarty.c:215
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: smarty.c:188
+#: smarty.c:200
 msgid "Creating a file in"
 msgstr "Erstellt eine Datei in"
 
-#: smarty.c:197
-#: smarty.c:206
+#: smarty.c:209
+#: smarty.c:218
 msgid "Filename"
 msgstr "Dateiname"
 
-#: smarty.c:209
+#: smarty.c:221
 msgid "Size"
 msgstr "Größe"
 
-#: smarty.c:212
+#: smarty.c:224
 msgid "Date"
 msgstr "Datum"
 
-#: smarty.c:215
+#: smarty.c:227
 msgid "Permissions"
 msgstr "Berechtigungen"
 
-#: smarty.c:218
+#: smarty.c:230
 msgid "User"
 msgstr "Benutzer"
 
-#: smarty.c:221
+#: smarty.c:233
 msgid "Group"
 msgstr "Gruppe"
 
-#: smarty.c:224
+#: smarty.c:236
 msgid "Options"
 msgstr "Optionen"
 
-#: smarty.c:227
+#: smarty.c:239
 msgid "Files"
 msgstr "Dateien"
 
-#: smarty.c:230
+#: smarty.c:242
 msgid "Complete filesize"
 msgstr "Komplette Dateigröße"
 
-#: smarty.c:233
+#: smarty.c:245
 msgid "Symlinks"
 msgstr "Symlinks"
 
-#: smarty.c:236
+#: smarty.c:248
 msgid "Directories"
 msgstr "Verzeichnisse"
 
-#: smarty.c:239
+#: smarty.c:251
 msgid "Complete directorysize"
 msgstr "Komplette Verzeichnisgröße"
 
-#: smarty.c:242
+#: smarty.c:254
 msgid "Basic operations"
 msgstr "Standard Operationen"
 
-#: smarty.c:245
+#: smarty.c:257
 msgid "Change dir"
 msgstr "Verzeichnis wechseln"
 
-#: smarty.c:248
+#: smarty.c:260
 msgid "Create dir"
 msgstr "Verzeichnis erstellen"
 
-#: smarty.c:251
+#: smarty.c:263
 msgid "Create new file in current directory"
 msgstr "Neue Datei in aktuellem Verzeichnis erstellen"
 
-#: smarty.c:254
+#: smarty.c:266
 msgid "Upload files"
 msgstr "Dateien hochladen"
 
-#: smarty.c:257
+#: smarty.c:269
 msgid "Upload file(s)"
 msgstr "Datei(en) hochladen"
 
-#: smarty.c:260
-#: smarty.c:266
-#: smarty.c:281
+#: smarty.c:272
+#: smarty.c:278
 #: smarty.c:293
+#: smarty.c:305
 msgid "Delete"
 msgstr "Löschen"
 
-#: smarty.c:263
-#: smarty.c:269
-#: smarty.c:284
+#: smarty.c:275
+#: smarty.c:281
+#: smarty.c:296
 msgid "Rename"
 msgstr "Umbenennen"
 
-#: smarty.c:272
+#: smarty.c:284
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: smarty.c:287
+#: smarty.c:299
 msgid "Symbolic link to"
 msgstr "Symlink nach"
 
-#: smarty.c:290
+#: smarty.c:302
 msgid "Selected file(s)"
 msgstr "Markierte Datei(en)"
 
-#: smarty.c:296
+#: smarty.c:308
 msgid "Change permission to"
 msgstr "Berechtigungen ändern zu"
 
-#: smarty.c:299
+#: smarty.c:311
 msgid "Move to"
 msgstr "Verschieben nach"
 
-#: smarty.c:302
+#: smarty.c:314
 msgid "Do it"
 msgstr "Tu es"
 
-#: smarty.c:305
+#: smarty.c:317
 msgid "Yes"
 msgstr "Ja"
 
-#: smarty.c:308
+#: smarty.c:320
 msgid "No"
 msgstr "Nein"
 
-#: smarty.c:311
+#: smarty.c:323
 msgid "Rename / Move"
 msgstr "Umbenennen / Verschieben"
 
@@ -660,11 +670,6 @@ msgstr "Angemeldet als: %s"
 msgid "Change password"
 msgstr "Passwort ändern"
 
-#: lib/navigation/00.froxlor.main.php:35
-#: lib/navigation/00.froxlor.main.php:164
-msgid "Change language"
-msgstr "Sprache ändern"
-
 #: lib/navigation/00.froxlor.main.php:39
 #: lib/navigation/00.froxlor.main.php:168
 msgid "Change theme"
@@ -800,6 +805,10 @@ msgstr "Via Webservice suchen"
 #, php-format
 msgid "You have %s unanswered support-ticket(s)"
 msgstr "Sie haben %s unbeantwortete Supprt - Ticket(s)"
+
+#: modules/admin/class.index.php:187
+msgid "default language"
+msgstr "Standardsprache"
 
 #: modules/login/class.login.php:112
 msgid "Profile language"
