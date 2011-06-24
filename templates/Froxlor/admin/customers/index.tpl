@@ -76,7 +76,7 @@
 								{/if}
 							</span>
 							<span style="clear: both !important;">
-								{$customer.last_login}
+								{$customer.last_login}{$customer.unlock_link}
 							</span>
 						</div>
 					</td>

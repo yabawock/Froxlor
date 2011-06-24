@@ -35,7 +35,7 @@ class adminCustomers
 		{
 			$where = " AND `u2a`.`adminid` = '" . Froxlor::getUser()->getId() . "'";
 		}
-		$result = Froxlor::getDb()->query("SELECT `c`.*, `r`.* FROM `users` AS c, `user_resources` AS r, `user2admin` AS u2a WHERE `c`.`id` = `r`.`id`" . $where);
+		$result = Froxlor::getDb()->query("SELECT `u`.*, `r`.* FROM `users` AS u, `user_resources` AS r, `user2admin` AS u2a WHERE `u`.`id` = `r`.`id`" . $where);
 		$customers = array();
 		$maxdisk = 0;
 		$maxtraffic = 0;
@@ -101,7 +101,7 @@ class adminCustomers
 		{
 			$id = (int)$_GET['id'];
 		}
-		$result = Froxlor::getDb()->query_first("SELECT `u`.`loginname` FROM `users` u, `user2admin` u2a WHERE `id`='" . $id . "' " . (Froxlor::getUser()->getData('resource', 'customers_see_all') ? '' : " AND `u2a`.`userid` = '" . $id . "' AND `u2a`.`adminid` = '" . Froxlor::getUser()->getId() . "'"));
+		$result = Froxlor::getDb()->query_first("SELECT `u`.`loginname` FROM `users` u, `user2admin` u2a WHERE `id`='" . $id . "' " . (Froxlor::getUser()->getData('resources', 'customers_see_all') ? '' : " AND `u2a`.`userid` = '" . $id . "' AND `u2a`.`adminid` = '" . Froxlor::getUser()->getId() . "'"));
 		$destination_user = $result['loginname'];
 
 		if($destination_user != '')
@@ -117,5 +117,38 @@ class adminCustomers
 		{
 			return standard_error(_('You are either not allowed to incorporate this customer or this customer does not exist'), '', array('area' => 'admin', 'section' => 'customers', 'action' => 'index'));
 		}
+	}
+
+	public function unlock()
+	{
+		$id = 0;
+		if (isset($_GET['id']))
+		{
+			$id = (int)$_GET['id'];
+		}
+		$result = Froxlor::getDb()->query_first("SELECT `u`.`loginname` FROM `users` u, `user2admin` u2a WHERE `id`='" . (int)$id . "' " . (Froxlor::getUser()->getData('resources', 'customers_see_all') ? '' : " AND `u2a`.`userid` = '" . $id . "' AND `u2a`.`adminid` = '" . Froxlor::getUser()->getId() . "'"));
+
+		if($result['loginname'] != '')
+		{
+			return ask_yesno(_('Do you really want to unlock customer %s?'), array('area' => 'admin', 'section' => 'customers', 'action' => 'unlock'), array('id' => $id), $result['loginname'] );
+		}
+		return standard_error(_('You are either not allowed to unlock this customer or this customer does not exist'), '', array('area' => 'customer', 'section' => 'index', 'action' => 'index'));
+	}
+
+	public function unlockPost()
+	{
+		$id = 0;
+		if (isset($_POST['id']))
+		{
+			$id = (int)$_POST['id'];
+		}
+		$result = Froxlor::getDb()->query_first("SELECT `u`.`loginname` FROM `users` u, `user2admin` u2a WHERE `id`='" . (int)$id . "' " . (Froxlor::getUser()->getData('resources', 'customers_see_all') ? '' : " AND `u2a`.`userid` = '" . $id . "' AND `u2a`.`adminid` = '" . Froxlor::getUser()->getId() . "'"));
+
+		if($result['loginname'] != '')
+		{
+			$result = Froxlor::getDb()->query("UPDATE `users` SET `loginfail_count` = '0', `lastlogin_fail` = '0' WHERE `id`= '" . (int)$id . "'");
+			redirectTo(Froxlor::getLinker()->getLink(array('area' => 'admin', 'section' => 'customers', 'action' => 'index')));
+		}
+		return standard_error(_('You are either not allowed to unlock this customer or this customer does not exist'), '', array('area' => 'customer', 'section' => 'index', 'action' => 'index'));
 	}
 }
