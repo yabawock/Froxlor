@@ -1,3 +1,45 @@
+/* templates/Froxlor/admin/customers/index.tpl */
+gettext("Customers");
+
+/* templates/Froxlor/admin/customers/index.tpl */
+gettext("Create customer");
+
+/* templates/Froxlor/admin/customers/index.tpl */
+gettext("Name");
+
+/* templates/Froxlor/admin/customers/index.tpl */
+gettext("Firstname");
+
+/* templates/Froxlor/admin/customers/index.tpl */
+gettext("Username");
+
+/* templates/Froxlor/admin/customers/index.tpl */
+gettext("Admin");
+
+/* templates/Froxlor/admin/customers/index.tpl */
+gettext("Options");
+
+/* templates/Froxlor/admin/customers/index.tpl */
+gettext("Webspace:");
+
+/* templates/Froxlor/admin/customers/index.tpl */
+gettext("Unlimited");
+
+/* templates/Froxlor/admin/customers/index.tpl */
+gettext("Traffic:");
+
+/* templates/Froxlor/admin/customers/index.tpl */
+gettext("Unlimited");
+
+/* templates/Froxlor/admin/customers/index.tpl */
+gettext("Edit");
+
+/* templates/Froxlor/admin/customers/index.tpl */
+gettext("Delete");
+
+/* templates/Froxlor/admin/customers/index.tpl */
+gettext("Create customer");
+
 /* templates/Froxlor/admin/index/change_language.tpl */
 gettext("Change language");
 
