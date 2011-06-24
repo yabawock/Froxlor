@@ -372,10 +372,11 @@ class Loader
 			Froxlor::getSmarty()->assign('loggedin', 0);
 		}
 		require_once("./modules/$area/class.$section.php");
-		$module = new $section;
+		$modulename = strtolower($area) . ucfirst($section);
+		$module = new $modulename;
 		if(!method_exists($module, $action))
 		{
-			$action = 'overview';
+			$action = 'index';
 		}
 		$body = $module->$action();
 		Froxlor::getSmarty()->assign('body', $body);

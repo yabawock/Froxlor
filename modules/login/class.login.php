@@ -1,6 +1,6 @@
 <?php
 
-class login
+class loginLogin
 {
 	public function login()
 	{

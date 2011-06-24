@@ -1,11 +1,40 @@
 <?php
+/**
+ * This file is part of the Froxlor project.
+ * Copyright (c) 2011 the Froxlor Team (see authors).
+ *
+ * For the full copyright and license information, please view the COPYING
+ * file that was distributed with this source code. You can also view the
+ * COPYING file online at http://files.froxlor.org/misc/COPYING.txt
+ *
+ * @copyright  (c) the authors
+ * @author     Froxlor team <team@froxlor.org> (2011-)
+ * @license    GPLv2 http://files.froxlor.org/misc/COPYING.txt
+ * @package    Classes
+ * @subpackage Admininterface
+ */
 
-class index
+/**
+ * adminIndex - Dashboard for the administrator
+ *
+ * This module contains the dashboard and account - management for
+ * the administrator, i.e. changing password or language
+ */
+class adminIndex
 {
+	/**
+	 * index
+	 *
+	 * The dashboard for the administrator. It will show the current
+	 * account status as well as the current system status.
+	 * We also display the status of the cronjobs
+	 */
 	public function index()
 	{
-		$settings = Froxlor::getSettings();
 		#Froxlor::getLog()->logAction(ADM_ACTION, LOG_NOTICE, "viewed admin_index");
+
+		// Get the global resource-usage of the customers this user is allowed to see
+		// @TODO: Move to new users - table - structure
 		$overview = Froxlor::getDb()->query_first("SELECT COUNT(*) AS `number_customers`,
 					SUM(`diskspace_used`) AS `diskspace_used`,
 					SUM(`mysqls_used`) AS `mysqls_used`,
@@ -21,105 +50,134 @@ class index
 					SUM(`aps_packages_used`) AS `aps_packages_used`
 					FROM `" . TABLE_PANEL_CUSTOMERS . "`" . (Froxlor::getUser()->getData('resources', 'customers_see_all') ? '' : " WHERE `adminid` = '" . (int)Froxlor::getUser()->getId() . "' "));
 
-		$overview['traffic_used'] = round($overview['traffic_used'] / (1024 * 1024), $settings['panel']['decimal_places']);
-		$overview['diskspace_used'] = round($overview['diskspace_used'] / 1024, $settings['panel']['decimal_places']);
+		// Convert traffic and diskspace - usage to GB / MB etc
+		$overview['traffic_used'] = round($overview['traffic_used'] / (1024 * 1024), getSetting('panel', 'decimal_places'));
+		$overview['diskspace_used'] = round($overview['diskspace_used'] / 1024, getSetting('panel', 'decimal_places'));
 		$number_domains = Froxlor::getDb()->query_first("SELECT COUNT(*) AS `number_domains` FROM `" . TABLE_PANEL_DOMAINS . "` WHERE `parentdomainid`='0'" . (Froxlor::getUser()->getData('resources', 'customers_see_all') ? '' : " AND `adminid` = '" . (int)Froxlor::getUser()->getId() . "' "));
 		$overview['number_domains'] = $number_domains['number_domains'];
+
+		// Let smarty know about the resource - usage
+		Froxlor::getSmarty()->assign('overview', $overview);
+
+		// Get the PHP memorylimit
 		$phpmemorylimit = @ini_get("memory_limit");
 
-		if($phpmemorylimit == "")
+		// The memorylimit-setting is empty, it seems to be disabled
+		if ($phpmemorylimit == "")
 		{
-			$phpmemorylimit = $lng['admin']['memorylimitdisabled'];
+			$phpmemorylimit = _('Disabled');
 		}
 
+		// Assign various system values to smarty
 		Froxlor::getSmarty()->assign('phpmemorylimit', $phpmemorylimit);
 		Froxlor::getSmarty()->assign('mysqlserverversion', mysql_get_server_info());
 		Froxlor::getSmarty()->assign('mysqlclientversion', mysql_get_client_info());
 		Froxlor::getSmarty()->assign('webserverinterface', strtoupper(@php_sapi_name()));
 		Froxlor::getSmarty()->assign('phpversion', phpversion());
-		Froxlor::getSmarty()->assign('overview', $overview);
 
+		// Do we want to search for the latest Froxlor - version?
 		if((isset($_GET['lookfornewversion']) && $_GET['lookfornewversion'] == 'yes'))
 		{
-			$update_check_uri = 'http://version.froxlor.org/Froxlor/legacy/' . $version;
+			// Construct the basic URL
+			$update_check_uri = 'http://version.froxlor.org/Froxlor/legacy/' . Froxlor::getVersion();
 
+			// We may use file to get the latest version
 			if(ini_get('allow_url_fopen'))
 			{
+				// Fetch the file containing the latest version information of Froxlor
 				$latestversion = @file($update_check_uri);
 
+				// Was the retrival successful?
 				if (isset($latestversion[0]))
 				{
+					// The file should be composed as follows:
+					// <latest version>|<description of latest version>[|<link to announcement of latest version>]
+					// The last part is only available if we do not have the latest version
 					$latestversion = explode('|', $latestversion[0]);
 
+					// Is the version - file wellformed?
 					if(is_array($latestversion)
 					&& count($latestversion) >= 1)
 					{
-						$_version = $latestversion[0];
-						$_message = isset($latestversion[1]) ? $latestversion[1] : '';
-						$_link = isset($latestversion[2]) ? $latestversion[2] : Froxlor::getLinker()->getLink(array('page' => $page, 'lookfornewversion' => 'yes'));
+						// Yes, it's wellformed, assign information to smarty
+						Froxlor::getSmarty()->assign('lookfornewversion_lable', $latestversion[0]);
+						Froxlor::getSmarty()->assign('lookfornewversion_addinfo', isset($latestversion[1]) ? $latestversion[1] : '');
 
-						Froxlor::getSmarty()->assign('lookfornewversion_lable', $_version);
-						Froxlor::getSmarty()->assign('lookfornewversion_link', $_link);
-						Froxlor::getSmarty()->assign('lookfornewversion_addinfo', $_message);
+						// If there was a link to the announcement, generate it, otherwise just link to the current page
+						Froxlor::getSmarty()->assign('lookfornewversion_link', isset($latestversion[2]) ? $latestversion[2] : Froxlor::getLinker()->getLink(array('area' => 'admin', 'section' => 'index', 'action' => 'index', 'lookfornewversion' => 'yes')));
 
-						if (version_compare($version, $_version) == -1)
+						// Now let's compare our version to the current version of Froxlor
+						if (version_compare(Froxlor::getVersion(), $_version) == -1)
 						{
+							// There is a newer version if Froxklor available
 							Froxlor::getSmarty()->assign('isnewerversion', 1);
 						}
 						else
 						{
+							// We are up-to-date, yay
 							Froxlor::getSmarty()->assign('isnewerversion', 0);
 						}
 					}
 					else
 					{
+						// The format of the file we got is invalid - redirect to the pretty page on the Froxlor server
 						redirectTo($update_check_uri.'/pretty', NULL);
 					}
 				}
 				else
 				{
+					// The retrival of the current Froxlor version failed - redirect to the pretty page on the Froxlor server
 					redirectTo($update_check_uri.'/pretty', NULL);
 				}
 			}
 			else
 			{
+				// allow_url_fopen is disabled - redirect to the pretty page on the Froxlor server
 				redirectTo($update_check_uri.'/pretty', NULL);
 			}
 		}
 		else
 		{
-			Froxlor::getSmarty()->assign('lookfornewversion_lable', _('search via webservice'));
+			// No search for latest version, just show a link to the search
+			Froxlor::getSmarty()->assign('lookfornewversion_lable', _('Search via webservice'));
 			Froxlor::getSmarty()->assign('lookfornewversion_link', Froxlor::getLinker()->getLink(array('area' => 'admin', 'section' => 'index', 'action' => 'index', 'lookfornewversion' => 'yes')));
 			Froxlor::getSmarty()->assign('lookfornewversion_addinfo', '');
 			Froxlor::getSmarty()->assign('isnewerversion', 0);
 		}
 
-		$userinfo['diskspace'] = round(Froxlor::getUser()->getData('resources', 'diskspace') / 1024, $settings['panel']['decimal_places']);
-		$userinfo['diskspace_used'] = round(Froxlor::getUser()->getData('resources', 'diskspace_used') / 1024, $settings['panel']['decimal_places']);
-		$userinfo['traffic'] = round(Froxlor::getUser()->getData('resources', 'traffic') / (1024 * 1024), $settings['panel']['decimal_places']);
-		$userinfo['traffic_used'] = round(Froxlor::getUser()->getData('resources', 'traffic_used') / (1024 * 1024), $settings['panel']['decimal_places']);
-
+		// Reformat the used resources where necessary
+		$userinfo['diskspace'] = round(Froxlor::getUser()->getData('resources', 'diskspace') / 1024, getSetting('panel', 'decimal_places'));
+		$userinfo['diskspace_used'] = round(Froxlor::getUser()->getData('resources', 'diskspace_used') / 1024, getSetting('panel', 'decimal_places'));
+		$userinfo['traffic'] = round(Froxlor::getUser()->getData('resources', 'traffic') / (1024 * 1024), getSetting('panel', 'decimal_places'));
+		$userinfo['traffic_used'] = round(Froxlor::getUser()->getData('resources', 'traffic_used') / (1024 * 1024), getSetting('panel', 'decimal_places'));
 		Froxlor::getSmarty()->assign('userinfo', $userinfo);
+
+		// Fetch the latest data about the Froxlor cronjobs
 		Froxlor::getSmarty()->assign('cron_last_runs', getCronjobsLastRun());
 		Froxlor::getSmarty()->assign('outstanding_tasks', getOutstandingTasks());
 
+		// Do we have tickets where the user needs to reply?
 		$opentickets = 0;
 		$opentickets = Froxlor::getDb()->query_first('SELECT COUNT(`id`) as `count` FROM `' . TABLE_PANEL_TICKETS . '`
 	                                   WHERE `answerto` = "0" AND (`status` = "0" OR `status` = "1")
 	                                   AND `lastreplier`="0" AND `adminid` = "' . Froxlor::getUser()->getId() . '"');
 		Froxlor::getSmarty()->assign('awaitingtickets', $opentickets['count']);
-		$awaitingtickets_text = '';
 
+		$awaitingtickets_text = '';
 		if($opentickets > 0)
 		{
+			// There are unanswered tickets asking for attention, create a link to the ticket system for faster access
 			$awaitingtickets_text = sprintf(_('You have %s unanswered support-ticket(s)'), '<a href="' . Froxlor::getLinker()->getLink(array('area' => 'admin', 'section' => 'tickets', 'page' => 'tickets')) . '">' . $opentickets['count'] . '</a>');
 		}
 		Froxlor::getSmarty()->assign('awaitingtickets_text', $awaitingtickets_text);
 
+
+		// Try to get the system load via various functions
 		if(function_exists('sys_getloadavg'))
 		{
 			$loadArray = sys_getloadavg();
-			$load = number_format($loadArray[0], 2, '.', '') . " / " . number_format($loadArray[1], 2, '.', '') . " / " . number_format($loadArray[2], 2, '.', '');
+			// Format the load according to the language we currently use
+			$load = number_format($loadArray[0], 2, nl_langinfo(RADIXCHAR), nl_langinfo(THOUSEP)) . " / " . number_format($loadArray[1], 2, nl_langinfo(RADIXCHAR), nl_langinfo(THOUSEP)) . " / " . number_format($loadArray[2], 2, nl_langinfo(RADIXCHAR), nl_langinfo(THOUSEP));
 		}
 		else
 		{
@@ -127,11 +185,12 @@ class index
 
 			if(!$load)
 			{
-				$load = $lng['admin']['noloadavailable'];
+				$load = _('not available');
 			}
 		}
 		Froxlor::getSmarty()->assign('load', $load);
 
+		// Now let's see what kernel the system currently uses using posix
 		if(function_exists('posix_uname'))
 		{
 			Froxlor::getSmarty()->assign('showkernel', 1);
@@ -140,21 +199,19 @@ class index
 		}
 		else
 		{
+			// We failed to get the kernel version since posix is not available
 			Froxlor::getSmarty()->assign('showkernel', 0);
 			Froxlor::getSmarty()->assign('kernel', '');
 		}
 
 		// Try to get the uptime
 		// First: With exec (let's hope it's enabled for the Froxlor - vHost)
-
 		$uptime_array = explode(" ", @file_get_contents("/proc/uptime"));
-
 		if(is_array($uptime_array)
 		&& isset($uptime_array[0])
 		&& is_numeric($uptime_array[0]))
 		{
-			// Some calculatioon to get a nicly formatted display
-
+			// Some calculation to get a nicly formatted display
 			$seconds = round($uptime_array[0], 0);
 			$minutes = $seconds / 60;
 			$hours = $minutes / 60;
@@ -165,16 +222,15 @@ class index
 			Froxlor::getSmarty()->assign('uptime', "{$days}d, {$hours}h, {$minutes}m, {$seconds}s");
 
 			// Just cleanup
-
 			unset($uptime_array, $seconds, $minutes, $hours, $days);
 		}
 		else
 		{
 			// Nothing of the above worked, show an error :/
-
 			Froxlor::getSmarty()->assign('uptime', '');
 		}
 
+		// Render and return the current page
 		return Froxlor::getSmarty()->fetch('admin/index/index.tpl');
 	}
 
