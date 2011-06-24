@@ -388,6 +388,16 @@ class Loader
 			$action = 'index';
 		}
 		$body = $module->$action();
+		if (isset($_SESSION['successmessage']))
+		{
+			Froxlor::getSmarty()->assign('successmessage', $_SESSION['successmessage']);
+			unset($_SESSION['successmessage']);
+		}
+		if (isset($_SESSION['errormessage']))
+		{
+			Froxlor::getSmarty()->assign('errormessage', $_SESSION['errormessage']);
+			unset($_SESSION['errormessage']);
+		}
 		Froxlor::getSmarty()->assign('body', $body);
 		Froxlor::getSmarty()->display('index.tpl');
 	}

@@ -22,25 +22,37 @@ class countrycode
 	 *
 	 * @param boolean $asOptions shall this be returned as a <option> list
 	 */
-	public static function get($asOptions = false, $select = null) {
-		global $lng;
+	public static function get($asOptions = false, $selectname = '', $select = null) {
 		$cc = array();
 		$output = '';
-		
-		foreach($lng['country'] as $key=>$val) {
+
+		include_once(dirname(__FILE__) . '/countries.inc.php');
+		if (!$asOptions)
+		{
+			return $country;
+		}
+		foreach($country as $key=>$val) {
 			$append = "";
 			if ($asOptions) {
-				if (!empty($select)) {
+				if (!empty($select))
+				{
 					$append = ' selected="selected"';
 				}
-				$out .= '<option value="'. $key .'"'. $append .'>'. $val .'</option>';
-			}
-			else {
-				$cc[$key] = $val;
+				if (isset($selectname))
+				{
+					if (isset($_SESSION['requestData'][$selectname]) && $key ==  $_SESSION['requestData'][$selectname])
+					{
+						$append = ' selected="selected"';
+					}
+					elseif(isset($_SESSION['requestData'][$selectname]) && $key !=  $_SESSION['requestData'][$selectname])
+					{
+						$append = '';
+					}
+				}
+				$output .= '<option value="'. $key .'"'. $append .'>'. $val .'</option>';
 			}
 		}
-		
-		if ($asOptions) return $out;
-		return $cc;
+
+		return $output;
 	}
 }

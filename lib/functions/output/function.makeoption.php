@@ -29,14 +29,23 @@
  * @author Florian Lippert <flo@syscp.org>
  */
 
-function makeoption($title, $value, $selvalue = NULL, $title_trusted = false, $value_trusted = false)
+function makeoption($selectname, $title, $value, $selvalue = NULL, $title_trusted = false, $value_trusted = false)
 {
 	if($selvalue !== NULL
 	   && ((is_array($selvalue) && in_array($value, $selvalue)) || $value == $selvalue))
 	{
-		$selected = 'selected="selected"';
+		$selected = ' selected="selected"';
 	}
 	else
+	{
+		$selected = '';
+	}
+
+	if (isset($_SESSION['requestData'][$selectname]) && $value ==  $_SESSION['requestData'][$selectname])
+	{
+		$selected = ' selected="selected"';
+	}
+	elseif(isset($_SESSION['requestData'][$selectname]) && $value !=  $_SESSION['requestData'][$selectname])
 	{
 		$selected = '';
 	}
@@ -51,6 +60,6 @@ function makeoption($title, $value, $selvalue = NULL, $title_trusted = false, $v
 		$value = htmlspecialchars($value);
 	}
 
-	$option = '<option value="' . $value . '" ' . $selected . ' >' . $title . '</option>';
+	$option = '<option value="' . $value . '"' . $selected . '>' . $title . '</option>';
 	return $option;
 }

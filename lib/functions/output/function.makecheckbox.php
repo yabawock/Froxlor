@@ -38,7 +38,7 @@ function makecheckbox($name, $title, $value, $break = false, $selvalue = NULL, $
 	{
 		$checked = 'checked="checked"';
 	}
-	else if(isset($_SESSION['requestData'][$name]))
+	elseif(isset($_SESSION['requestData'][$name]))
 	{
 		$checked = 'checked="checked"';
 	}
