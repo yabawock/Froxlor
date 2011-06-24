@@ -153,7 +153,7 @@ class login
 
 	public function logout()
 	{
-		Froxlor::getDb()->query("DELETE FROM `" . TABLE_PANEL_SESSIONS . "` WHERE `userid` = '" . Froxlor::getUser()->getId() . '"');
+		Froxlor::getDb()->query("DELETE FROM `" . TABLE_PANEL_SESSIONS . "` WHERE `userid` = '" . Froxlor::getUser()->getId() . "'");
 		Froxlor::getLinker()->delAll();
 		Froxlor::getSmarty()->assign('loggedin', 0);
 		redirectTo(Froxlor::getLinker()->getLink(array('area' => 'login', 'section' => 'login', 'action' => 'login', 's' => '')));
