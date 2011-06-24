@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Froxlor\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-06-24 11:45+0100\n"
-"PO-Revision-Date: 2011-06-24 11:46+0100\n"
+"PO-Revision-Date: 2011-06-24 12:06+0100\n"
 "Last-Translator: Florian Aders <eleras@froxlor.org>\n"
 "Language-Team: The Froxlor team <team@froxlor.org>\n"
 "Language: \n"
@@ -18,11 +18,11 @@ msgstr ""
 
 #: smarty.c:2
 msgid "WARNING - Please note!"
-msgstr ""
+msgstr "WARNUNG - Bitte beachten!"
 
 #: smarty.c:5
 msgid "Used resources (Used by customers (assigned/available))"
-msgstr ""
+msgstr "Verbrauchte Ressourcen (Von Kunden verwendet (zugewiesen/verfügbar))"
 
 #: smarty.c:8
 msgid "Customers"
@@ -30,137 +30,135 @@ msgstr "Kunden"
 
 #: smarty.c:11
 msgid "Domain"
-msgstr ""
+msgstr "Domain"
 
 #: smarty.c:14
 msgid "Subdomains"
-msgstr ""
+msgstr "Subdomains"
 
 #: smarty.c:17
 msgid "Webspace"
-msgstr ""
+msgstr "Webspace"
 
 #: smarty.c:20
 #: smarty.c:23
 #: smarty.c:26
 msgid "MB"
-msgstr ""
+msgstr "MB"
 
 #: smarty.c:29
 msgid "Traffic"
-msgstr ""
+msgstr "Traffic"
 
 #: smarty.c:32
 #: smarty.c:35
 #: smarty.c:38
 msgid "GB"
-msgstr ""
+msgstr "GB"
 
 #: smarty.c:41
 msgid "MySQL-databases"
-msgstr ""
+msgstr "MySQL - Datenbanken"
 
 #: smarty.c:44
 msgid "E-mail - addresses"
-msgstr ""
+msgstr "E-Mail - Adressen"
 
 #: smarty.c:47
 msgid "E-Mail - accounts"
-msgstr ""
+msgstr "E-Mail - Konten"
 
 #: smarty.c:50
 msgid "E-mail - forwarders"
-msgstr ""
+msgstr "E-Mail - Weiterleitungen"
 
 #: smarty.c:53
 msgid "E-mail quota"
-msgstr ""
+msgstr "E-Mail - Quota"
 
 #: smarty.c:56
 msgid "E-mail - autoresponder"
-msgstr ""
+msgstr "E-Mail - Autoresponder"
 
 #: smarty.c:59
 msgid "APS - installations"
-msgstr ""
+msgstr "APS - Installationen"
 
 #: smarty.c:62
 msgid "FTP - accounts"
-msgstr ""
+msgstr "FTP - Konten"
 
 #: smarty.c:65
 msgid "Support - tickets"
-msgstr ""
+msgstr "Support - Tickets"
 
 #: smarty.c:68
 msgid "System details"
-msgstr ""
+msgstr "Systemdetails"
 
 #: smarty.c:71
-#, fuzzy
 msgid "Serversoftware"
-msgstr "Server"
+msgstr "Serversoftware"
 
 #: smarty.c:74
 msgid "PHP - version"
-msgstr ""
+msgstr "PHP - Version"
 
 #: smarty.c:77
 msgid "PHP - memorylimit"
-msgstr ""
+msgstr "PHP - Speicherlimit"
 
 #: smarty.c:80
 msgid "MySQL - server version"
-msgstr ""
+msgstr "MySQL - Serverversion"
 
 #: smarty.c:83
 msgid "MySQL - client version"
-msgstr ""
+msgstr "MySQL - Clientversion"
 
 #: smarty.c:86
 msgid "MySQL - webserver interface"
-msgstr ""
+msgstr "MySQL - Webserver Interface"
 
 #: smarty.c:89
 msgid "System load"
-msgstr ""
+msgstr "Systemlast"
 
 #: smarty.c:92
 msgid "Kernel:"
-msgstr ""
+msgstr "Kernel:"
 
 #: smarty.c:95
 msgid "Uptime:"
-msgstr ""
+msgstr "Uptime:"
 
 #: smarty.c:98
-#, fuzzy
 msgid "Froxlor details"
-msgstr "Froxlor Update"
+msgstr "Froxlor details"
 
 #: smarty.c:101
 msgid "Outstanding tasks:"
-msgstr ""
+msgstr "Ausstehende Aufgaben:"
 
 #: smarty.c:104
 msgid "There are currently no outstanding tasks for Froxlor"
-msgstr ""
+msgstr "Derzeit sind keine Aufgaben in Froxlor ausstehend"
 
 #: smarty.c:107
 msgid "Last execution of cronjobs"
-msgstr ""
+msgstr "Letzte Ausführung der Cronjobs"
 
 #: smarty.c:110
 msgid "Installed version"
-msgstr ""
+msgstr "Installierte Version"
 
 #: smarty.c:113
 msgid "Latest version:"
-msgstr ""
+msgstr "Aktuellste Version:"
 
 #: smarty.c:116
 msgid "There is a newer version of Froxlor available"
-msgstr ""
+msgstr "Es ist eine aktuelle Version von Froxlor verfügbar"
 
 #: smarty.c:119
 msgid "Update"
@@ -564,106 +562,106 @@ msgstr "Froxlor Update"
 
 #: lib/functions/froxlor/function.CronjobFunctions.php:120
 msgid "No execution yet"
-msgstr ""
+msgstr "Bisher nicht ausgeführt"
 
 #: lib/functions/froxlor/function.CronjobFunctions.php:129
 msgid "APS installer"
-msgstr ""
+msgstr "APS Installer"
 
 #: lib/functions/froxlor/function.CronjobFunctions.php:130
 msgid "Updating APS packages"
-msgstr ""
+msgstr "APS - Pakete aktualisieren"
 
 #: lib/functions/froxlor/function.CronjobFunctions.php:131
 msgid "E-mail autoresponder"
-msgstr ""
+msgstr "E-Mail Autoresponder"
 
 #: lib/functions/froxlor/function.CronjobFunctions.php:132
 msgid "Backing up files"
-msgstr ""
+msgstr "Dateien sichern"
 
 #: lib/functions/froxlor/function.CronjobFunctions.php:133
 msgid "Generating of configfiles"
-msgstr ""
+msgstr "Konfigurationen neu erstellen"
 
 #: lib/functions/froxlor/function.CronjobFunctions.php:134
 msgid "Archiving old tickets"
-msgstr ""
+msgstr "Alte Tickets archivieren"
 
 #: lib/functions/froxlor/function.CronjobFunctions.php:135
 msgid "Traffic calculation"
-msgstr ""
+msgstr "Traffic berechnen"
 
 #: lib/functions/froxlor/function.CronjobFunctions.php:136
 msgid "Send reports about web- and traffic-usage"
-msgstr ""
+msgstr "Reports über die Web- und Traffic - Benutzung versenden"
 
 #: lib/functions/froxlor/function.CronjobFunctions.php:137
 msgid "Resetting ticket counter"
-msgstr ""
+msgstr "Ticketzähler zurücksetzen"
 
 #: lib/functions/froxlor/function.CronjobFunctions.php:176
 msgid "Rebuilding webserver-configuration"
-msgstr ""
+msgstr "Webserver - Konfiguration neu erstellen"
 
 #: lib/functions/froxlor/function.CronjobFunctions.php:188
 #, php-format
 msgid "Adding new customer %s"
-msgstr ""
+msgstr "Neuen Kunden %s hinzufügen"
 
 #: lib/functions/froxlor/function.CronjobFunctions.php:195
 msgid "Rebuilding bind-configuration"
-msgstr ""
+msgstr "BIND - Konfiguration neu erstellen"
 
 #: lib/functions/froxlor/function.CronjobFunctions.php:202
 msgid "Creating directory for new ftp-user"
-msgstr ""
+msgstr "Verzeichnis für neuen FTP - Benutzer erstellen"
 
 #: lib/functions/froxlor/function.CronjobFunctions.php:214
 #, php-format
 msgid "Deleting files of customer %s"
-msgstr ""
+msgstr "Dateien von Kunden %s löschen"
 
 #: lib/functions/froxlor/function.CronjobFunctions.php:221
 msgid "Set quota on filesystem"
-msgstr ""
+msgstr "Quota auf Dateisystem setzen"
 
 #: lib/functions/froxlor/function.CronjobFunctions.php:235
 msgid "Installing one or more APS packages"
-msgstr ""
+msgstr "Eins oder mehrere APS - Pakete installieren"
 
 #: lib/functions/froxlor/function.CronjobFunctions.php:242
 msgid "Removing one or more APS packages"
-msgstr ""
+msgstr "Eins oder mehrere APS - Pakete entfernen"
 
 #: lib/functions/froxlor/function.CronjobFunctions.php:249
 msgid "Reconfigurating one or more APS packages"
-msgstr ""
+msgstr "Eins oder mehrere APS - Pakete neu konfigurieren"
 
 #: lib/functions/froxlor/function.CronjobFunctions.php:256
 msgid "Upgrading one or more APS packages"
-msgstr ""
+msgstr "Eins oder mehrere APS - Pakete upgraden"
 
 #: lib/functions/froxlor/function.CronjobFunctions.php:263
 msgid "Updating all APS packages"
-msgstr ""
+msgstr "Alle APS - Pakete aktualisieren"
 
 #: lib/functions/froxlor/function.CronjobFunctions.php:270
 msgid "Downloading new APS packages"
-msgstr ""
+msgstr "Neue APS - Pakete herunterladen"
 
 #: modules/admin/class.index.php:91
 msgid "search via webservice"
-msgstr ""
+msgstr "Via Webservice suchen"
 
 #: modules/admin/class.index.php:123
 msgid "&infin;"
-msgstr ""
+msgstr "&infin;"
 
 #: modules/admin/class.index.php:140
 #, php-format
 msgid "You have %s unanswered support-ticket(s)"
-msgstr ""
+msgstr "Sie haben %s unbeantwortete Supprt - Ticket(s)"
 
 #: modules/login/class.login.php:112
 msgid "Profile language"
