@@ -10,6 +10,36 @@ gettext("Language:");
 /* templates/Froxlor/admin/index/change_language.tpl */
 gettext("Change language");
 
+/* templates/Froxlor/admin/index/change_password.tpl */
+gettext("Change password");
+
+/* templates/Froxlor/admin/index/change_password.tpl */
+gettext("Change password");
+
+/* templates/Froxlor/admin/index/change_password.tpl */
+gettext("Old password:");
+
+/* templates/Froxlor/admin/index/change_password.tpl */
+gettext("New password:");
+
+/* templates/Froxlor/admin/index/change_password.tpl */
+gettext("New password (confirm):");
+
+/* templates/Froxlor/admin/index/change_password.tpl */
+gettext("Change password");
+
+/* templates/Froxlor/admin/index/change_theme.tpl */
+gettext("Change theme");
+
+/* templates/Froxlor/admin/index/change_theme.tpl */
+gettext("Change theme");
+
+/* templates/Froxlor/admin/index/change_theme.tpl */
+gettext("Theme:");
+
+/* templates/Froxlor/admin/index/change_theme.tpl */
+gettext("Change theme");
+
 /* templates/Froxlor/admin/index/index.tpl */
 gettext("WARNING - Please note!");
 
@@ -177,6 +207,9 @@ gettext("Password");
 
 /* templates/Froxlor/login/login_ftp.tpl */
 gettext("Login");
+
+/* templates/Froxlor/misc/error.tpl */
+gettext("Error");
 
 /* templates/Froxlor/index.tpl */
 gettext("the Froxlor Team");
