@@ -93,4 +93,29 @@ class adminCustomers
 		// Render and return the current page
 		return Froxlor::getSmarty()->fetch('admin/customers/index.tpl');
 	}
+
+	public function su()
+	{
+		$id = 0;
+		if (isset($_GET['id']))
+		{
+			$id = (int)$_GET['id'];
+		}
+		$result = Froxlor::getDb()->query_first("SELECT `u`.`loginname` FROM `users` u, `user2admin` u2a WHERE `id`='" . $id . "' " . (Froxlor::getUser()->getData('resource', 'customers_see_all') ? '' : " AND `u2a`.`userid` = '" . $id . "' AND `u2a`.`adminid` = '" . Froxlor::getUser()->getId() . "'"));
+		$destination_user = $result['loginname'];
+
+		if($destination_user != '')
+		{
+			$result = Froxlor::getDb()->query_first("SELECT * FROM `panel_sessions` WHERE `userid`='" . (int)Froxlor::getUser()->getId() . "' AND `hash`='" . Froxlor::getDb()->escape(session_id()) . "'");
+			$s = md5(uniqid(microtime(), 1));
+			Froxlor::getDb()->query("INSERT INTO `panel_sessions` (`hash`, `userid`, `ipaddress`, `useragent`, `lastactivity`, `language`, `adminsession`) VALUES ('" . Froxlor::getDb()->escape($s) . "', '" . (int)$id . "', '" . Froxlor::getDb()->escape($result['ipaddress']) . "', '" . Froxlor::getDb()->escape($result['useragent']) . "', '" . time() . "', '" . Froxlor::getDb()->escape($result['language']) . "', '0')");
+			#Froxlor::getLog()->logAction(ADM_ACTION, LOG_INFO, "switched user and is now '" . $destination_user . "'");
+			Froxlor::getLinker()->add('s', $s);
+			redirectTo(Froxlor::getLinker()->getLink(array('area' => 'customer', 'section' => 'index', 'action' => 'index')));
+		}
+		else
+		{
+			return standard_error(_('You are either not allowed to incorporate this customer or this customer does not exist'), '', array('area' => 'admin', 'section' => 'customers', 'action' => 'index'));
+		}
+	}
 }
