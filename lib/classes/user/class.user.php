@@ -71,6 +71,9 @@ class user {
 	 * 3 forgot password, login with name and email (minimal data)
 	 */
 	public function __construct() {
+		global $db;
+		$this->_db = $db;
+		
 		$num = func_num_args();
 		
 		if ($num == 0) {
@@ -97,9 +100,6 @@ class user {
 	 * @throws Exception
 	 */
 	private function createById($id) {
-		global $db;
-		$this->_db = $db;
-		
 		if (is_int($id)) {
 			$this->_id = $id;
 		
@@ -118,9 +118,6 @@ class user {
 	 * @throws Exception on failed login
 	 */
 	private function createByName($loginname, $password) {
-		global $db;
-		$this->_db = $db;
-		
 		if ($this->performLogin($loginname, $password)) {
 			$this->init();
 		} else {
@@ -137,9 +134,6 @@ class user {
 	 * @throws Exception if no record is found
 	 */
 	private function createByNameEmail($loginname, $email) {
-		global $db;
-		$this->_db = $db;
-		
 		$sql = "SELECT `u`.`id` FROM `". TABLE_USERS ."` `u`, `". TABLE_USER_ADDRESSES ."` `a`
 		 WHERE `u`.`loginname` = '". $loginname ."' AND `u`.`contactid` = `a`.`id` AND `a`.`email` = '". $email ."'";
 		$result = $db->query($sql);
