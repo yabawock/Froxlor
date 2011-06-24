@@ -1,9 +1,7 @@
-$header
 <div class="messagewrapper">
 	<div class="errorcontainer bradius">
-		<div class="errortitle">{$lng['error']['error']}</div>
-		<div class="error">$error</div>
-		$link
+		<div class="errortitle">{t}Error{/t}</div>
+		<div class="error">{$error}</div>
+		{if isset($link)}{$link}{/if}
 	</div>
 </div>
-$footer

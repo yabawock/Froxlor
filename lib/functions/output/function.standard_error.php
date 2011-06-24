@@ -22,14 +22,13 @@
  *
  * @param array Errormessages
  * @param string A %s in the errormessage will be replaced by this string.
+ * @param array An optional array holding the paramters for the linker generating a back-link
  * @author Florian Lippert <flo@syscp.org>
  * @author Ron Brand <ron.brand@web.de>
  */
 
-function standard_error($errors = '', $replacer = '')
+function standard_error($errors = '', $replacer = '', $link = '')
 {
-	global $db, $userinfo, $s, $header, $footer, $lng;
-	$_SESSION['requestData'] = $_POST;
 	$replacer = htmlentities($replacer);
 
 	if(!is_array($errors))
@@ -38,23 +37,18 @@ function standard_error($errors = '', $replacer = '')
 			$errors
 		);
 	}
-	
-	if (isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], $_SERVER['HTTP_HOST']) !== false) {
-		$link = '<a href="'.$_SERVER['HTTP_REFERER'].'">'.$lng['panel']['back'].'</a>';
+
+	if (is_array($link))
+	{
+		Froxlor::getSmarty()->assign('link', '<a href="'.Froxlor::getLinker()->getLink($link).'">' . _('Back') . '</a>');
 	}
 
 	$error = '';
 	foreach($errors as $single_error)
 	{
-		if(isset($lng['error'][$single_error]))
+		if ($replacer != '')
 		{
-			$single_error = $lng['error'][$single_error];
-			$single_error = strtr($single_error, array('%s' => $replacer));
-		}
-		else
-		{
-			$error = 'Unknown Error (' . $single_error . '): ' . $replacer;
-			break;
+			$single_error = sprintf($single_error, $replacer);
 		}
 
 		if(empty($error))
@@ -67,6 +61,6 @@ function standard_error($errors = '', $replacer = '')
 		}
 	}
 
-	eval("echo \"" . getTemplate('misc/error', '1') . "\";");
-	exit;
+	Froxlor::getSmarty()->assign('error', $error);
+	return Froxlor::getSmarty()->fetch('misc/error.tpl');
 }
