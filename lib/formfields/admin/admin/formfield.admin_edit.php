@@ -64,8 +64,50 @@ return array(
 					'name' => array(
 						'label' => $lng['customer']['name'],
 						'type' => 'text',
-						'mandatory' => true,
+						'mandatory_ex' => true,
 						'value' => $result['name']
+					),
+					'firstname' => array(
+						'label' => $lng['customer']['firstname'],
+						'type' => 'text',
+						'mandatory_ex' => true,
+						'value' => $result['firstname']
+					),
+					'gender' => array(
+						'label' => $lng['gender']['title'],
+						'type' => 'select',
+						'select_var' => $gender_options
+					),
+					'company' => array(
+						'label' => $lng['customer']['company'],
+						'type' => 'text',
+						'mandatory_ex' => true,
+						'value' => $result['company']
+					),
+					'street' => array(
+						'label' => $lng['customer']['street'],
+						'type' => 'text',
+						'value' => $result['street']
+					),
+					'zipcode' => array(
+						'label' => $lng['customer']['zipcode'],
+						'type' => 'text',
+						'value' => $result['zipcode']
+					),
+					'city' => array(
+						'label' => $lng['customer']['city'],
+						'type' => 'text',
+						'value' => $result['city']
+					),
+					'phone' => array(
+						'label' => $lng['customer']['phone'],
+						'type' => 'text',
+						'value' => $result['phone']
+					),
+					'fax' => array(
+						'label' => $lng['customer']['fax'],
+						'type' => 'text',
+						'value' => $result['fax']
 					),
 					'email' => array(
 						'label' => $lng['customer']['email'],
