@@ -110,24 +110,33 @@ function getIntervalOptions()
 
 function getCronjobsLastRun()
 {
-	global $db, $lng;
+	$query = "SELECT `lastrun`, `desc_lng_key` FROM `".TABLE_PANEL_CRONRUNS."` ORDER BY `cronfile` ASC";
+	$result = Froxlor::getDb()->query($query);
 
-	$query = "SELECT `lastrun`, `desc_lng_key` FROM `".TABLE_PANEL_CRONRUNS."` WHERE `isactive` = '1' ORDER BY `cronfile` ASC";
-	$result = $db->query($query);
+	$cronjobs_last_run = array();
 
-	$cronjobs_last_run = '';
-
-	while($row = $db->fetch_array($result))
+	while($row = Froxlor::getDb()->fetch_array($result))
 	{
-		$lastrun = $lng['cronjobs']['notyetrun'];
-		if($row['lastrun'] > 0) {
-			$lastrun = date('d.m.Y H:i:s', $row['lastrun']);
+		$lastrun = _('No execution yet');
+
+		if($row['lastrun'] > 0)
+		{
+			$lastrun = $row['lastrun'];
 		}
-
-		$text = $lng['crondesc'][$row['desc_lng_key']];
-		$value = $lastrun;
-
-		eval("\$cronjobs_last_run .= \"" . getTemplate("index/overview_item") . "\";");
+		$desc = '';
+		switch($row['desc_lng_key'])
+		{
+			case 'cron_apsinstaller': $desc = _('APS installer'); break;
+			case 'cron_apsupdater': $desc = _('Updating APS packages'); break;
+			case 'cron_autoresponder': $desc = _('E-mail autoresponder'); break;
+			case 'cron_backup': $desc = _('Backing up files'); break;
+			case 'cron_tasks': $desc = _('Generating of configfiles'); break;
+			case 'cron_ticketarchive': $desc = _('Archiving old tickets'); break;
+			case 'cron_traffic': $desc = _('Traffic calculation'); break;
+			case 'cron_usage_report': $desc = _('Send reports about web- and traffic-usage'); break;
+			case 'cron_ticketsreset': $desc = _('Resetting ticket counter'); break;
+		}
+		$cronjobs_last_run[$row['desc_lng_key']] = array('text' => $desc, 'lastrun' => $lastrun);
 	}
 
 	return $cronjobs_last_run;
@@ -148,14 +157,11 @@ function toggleCronStatus($module = null, $isactive = 0)
 
 function getOutstandingTasks()
 {
-	global $db, $lng;
-
 	$query = "SELECT * FROM `".TABLE_PANEL_TASKS."` ORDER BY `type` ASC";
-	$result = $db->query($query);
+	$result = Froxlor::getDb()->query($query);
 
-	$value = '<ul class="cronjobtask">';
-	$tasks = '';
-	while($row = $db->fetch_array($result))
+	$tasks = array();
+	while($row = Froxlor::getDb()->fetch_array($result))
 	{
 		if($row['data'] != '')
 		{
@@ -167,7 +173,7 @@ function getOutstandingTasks()
 		 */
 		if($row['type'] == '1')
 		{
-			$task_desc = $lng['tasks']['rebuild_webserverconfig'];
+			$tasks[] = _('Rebuilding webserver-configuration');
 		}
 		/*
 		 * adding new user
@@ -179,22 +185,21 @@ function getOutstandingTasks()
 			{
 				$loginname = $row['data']['loginname'];
 			}
-			$task_desc = $lng['tasks']['adding_customer'];
-			$task_desc = str_replace('%loginname%', $loginname, $task_desc);
+			$tasks[] = sprintf(_('Adding new customer %s'), $loginname);
 		}
 		/*
 		 * rebuilding bind-configuration
 		 */
 		elseif($row['type'] == '4')
 		{
-			$task_desc = $lng['tasks']['rebuild_bindconfig'];
+			$tasks[] = _('Rebuilding bind-configuration');
 		}
 		/*
 		 * creating ftp-user directory
 		 */
 		elseif($row['type'] == '5')
 		{
-			$task_desc = $lng['tasks']['creating_ftpdir'];
+			$tasks[] = _('Creating directory for new ftp-user');
 		}
 		/*
 		 * deleting user-files
@@ -206,84 +211,65 @@ function getOutstandingTasks()
 			{
 				$loginname = $row['data']['loginname'];
 			}
-			$task_desc = $lng['tasks']['deleting_customerfiles'];
-			$task_desc = str_replace('%loginname%', $loginname, $task_desc);
+			$tasks[] = sprintf(_('Deleting files of customer %s'), $loginname);
 		}
 		/*
 		 * Set FS - quota
 		 */
 		elseif($row['type'] == '10')
 		{
-			$task_desc = $lng['tasks']['diskspace_set_quota'];
-		}
-
-		if($task_desc != '') {
-			$tasks .= '<li>'.$task_desc.'</li>';
+			$tasks[] = _('Set quota on filesystem');
 		}
 	}
 
 	$query2 = "SELECT DISTINCT `Task` FROM `".TABLE_APS_TASKS."` ORDER BY `Task` ASC";
-	$result2 = $db->query($query2);
+	$result2 = Froxlor::getDb()->query($query2);
 
-	while($row2 = $db->fetch_array($result2))
+	while($row2 = Froxlor::getDb()->fetch_array($result2))
 	{
 		/*
 		 * install
 		 */
 		if($row2['Task'] == '1')
 		{
-			$task_desc = $lng['tasks']['aps_task_install'];
+			$tasks[] = _('Installing one or more APS packages');
 		}
 		/*
 		 * remove
 		 */
 		elseif($row2['Task'] == '2')
 		{
-			$task_desc = $lng['tasks']['aps_task_remove'];
+			$tasks[] = _('Removing one or more APS packages');
 		}
 		/*
 		 * reconfigure
 		 */
 		elseif($row2['Task'] == '3')
 		{
-			$task_desc = $lng['tasks']['aps_task_reconfigure'];
+			$tasks[] = _('Reconfigurating one or more APS packages');
 		}
 		/*
 		 * upgrade
 		 */
 		elseif($row2['Task'] == '4')
 		{
-			$task_desc = $lng['tasks']['aps_task_upgrade'];
+			$tasks[] = _('Upgrading one or more APS packages');
 		}
 		/*
 		 * system update
 		 */
 		elseif($row2['Task'] == '5')
 		{
-			$task_desc = $lng['tasks']['aps_task_sysupdate'];
+			$tasks[] = _('Updating all APS packages');
 		}
 		/*
 		 * system download
 		 */
 		elseif($row2['Task'] == '6')
 		{
-			$task_desc = $lng['tasks']['aps_task_sysdownload'];
-		}
-
-		if($task_desc != '') {
-			$tasks .= '<li>'.$task_desc.'</li>';
+			$tasks[] = _('Downloading new APS packages');
 		}
 	}
 
-	if(trim($tasks) == '') {
-		$value .= '<li>'.$lng['tasks']['noneoutstanding'].'</li>';
-	} else {
-		$value .= $tasks;
-	}
-
-	$value .= '</ul>';
-	$text = $lng['tasks']['outstanding_tasks'];
-	eval("\$outstanding_tasks = \"" . getTemplate("index/overview_item") . "\";");
-
-	return $outstanding_tasks;
+	return $tasks;
 }

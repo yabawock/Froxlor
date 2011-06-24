@@ -246,13 +246,12 @@ class Loader
 		/**
 		 * Logic moved out of lng-file
 		 */
-		if(isset($userinfo['loginname']) && $userinfo['loginname'] != '')
+		if(Froxlor::getUser() !== false)
 		{
-			$lng['menue']['main']['username'].= $userinfo['loginname'];
 			/**
 			 * Initialize logging
 			 */
-			Froxlor::addObject('log', FroxlorLogger::getInstanceOf($userinfo, $db, $settings));
+			#Froxlor::addObject('log', FroxlorLogger::getInstanceOf($userinfo, Froxlor::getDb(), Froxlor::getSettings()));
 		}
 		# Initialize Smarty
 		Froxlor::addObject('smarty', new Smarty());
@@ -279,6 +278,9 @@ class Loader
 		Froxlor::getSmarty()->assign('current_year', date('Y'));
 		Froxlor::getSmarty()->assign('image_folder', $image_path);
 		Froxlor::getSmarty()->assign('title', '');
+		Froxlor::getSmarty()->assign('version', $version);
+		Froxlor::getSmarty()->assign('branding', $branding);
+		Froxlor::getSmarty()->assign('user', Froxlor::getUser());
 		Froxlor::getSmarty()->debugging = true;
 		/**
 		 * Fills variables for navigation, header and footer

@@ -98,12 +98,12 @@ class login
 				}
 				else
 				{
-					redirectTo(Froxlor::getLinker()->getLink(array('area' => 'admin', 'section' => 'index')));
+					redirectTo(Froxlor::getLinker()->getLink(array('area' => 'admin', 'section' => 'index', 'action' => 'index')));
 					exit;
 				}
 			}
 
-			redirectTo(Froxlor::getLinker()->getLink(array('area' => 'customer', 'section' => 'index')));
+			redirectTo(Froxlor::getLinker()->getLink(array('area' => 'customer', 'section' => 'index', 'action' => 'index')));
 			exit;
 		}
 		else
