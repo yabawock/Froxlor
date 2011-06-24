@@ -53,12 +53,51 @@ return array(
 					'name' => array(
 						'label' => $lng['customer']['name'],
 						'type' => 'text',
-						'mandatory' => true
+						'mandatory_ex' => true
+					),
+					'firstname' => array(
+						'label' => $lng['customer']['firstname'],
+						'type' => 'text',
+						'mandatory_ex' => true
+					),
+					'gender' => array(
+						'label' => $lng['gender']['title'],
+						'type' => 'select',
+						'select_var' => $gender_options
+					),
+					'company' => array(
+						'label' => $lng['customer']['company'],
+						'type' => 'text',
+						'mandatory_ex' => true
+					),
+					'street' => array(
+						'label' => $lng['customer']['street'],
+						'type' => 'text'
+					),
+					'zipcode' => array(
+						'label' => $lng['customer']['zipcode'],
+						'type' => 'text'
+					),
+					'city' => array(
+						'label' => $lng['customer']['city'],
+						'type' => 'text'
+					),
+					'phone' => array(
+						'label' => $lng['customer']['phone'],
+						'type' => 'text'
+					),
+					'fax' => array(
+						'label' => $lng['customer']['fax'],
+						'type' => 'text'
 					),
 					'email' => array(
 						'label' => $lng['customer']['email'],
 						'type' => 'text',
 						'mandatory' => true
+					),
+					'customernumber' => array(
+						'label' => $lng['customer']['customernumber'],
+						'type' => 'text'
 					)
 				)
 			),

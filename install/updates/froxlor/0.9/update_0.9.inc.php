@@ -1883,6 +1883,10 @@ if(isFroxlorVersion('0.9.22-rrp6'))
 			  PRIMARY KEY (`handleid`)
 			) ENGINE=MyISAM");
 	
+	// remove auto_increment
+	$db->query("ALTER TABLE `user_resources` CHANGE `id` `id` INT( 11 ) UNSIGNED NOT NULL ");
+	$db->query("ALTER TABLE `user_resources_admin` CHANGE `id` `id` INT( 11 ) UNSIGNED NOT NULL ");
+	
 	lastStepStatus(0);
 	updateToVersion('0.9.22-rrp7');
 }

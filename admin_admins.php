@@ -388,33 +388,33 @@ if($page == 'admins'
 
 				$_theme = $settings['panel']['default_theme'];
 
-				$result = $db->query("INSERT INTO 
+				$result = $db->query("INSERT INTO
 					`" . TABLE_PANEL_ADMINS . "`
-				SET 
-					`loginname` = '" . $db->escape($loginname) . "', 
-					`password` = '" . md5($password) . "', 
-					`name` = '" . $db->escape($name) . "', 
-					`email` = '" . $db->escape($email) . "', 
-					`def_language` = '" . $db->escape($def_language) . "', 
-					`change_serversettings` = '" . $db->escape($change_serversettings) . "', 
-					`customers` = '" . $db->escape($customers) . "', 
-					`customers_see_all` = '" . $db->escape($customers_see_all) . "', 
-					`domains` = '" . $db->escape($domains) . "', 
-					`domains_see_all` = '" . $db->escape($domains_see_all) . "', 
-					`caneditphpsettings` = '" . (int)$caneditphpsettings . "', 
-					`diskspace` = '" . $db->escape($diskspace) . "', 
-					`traffic` = '" . $db->escape($traffic) . "', 
-					`subdomains` = '" . $db->escape($subdomains) . "', 
-					`emails` = '" . $db->escape($emails) . "', 
-					`email_accounts` = '" . $db->escape($email_accounts) . "', 
-					`email_forwarders` = '" . $db->escape($email_forwarders) . "', 
-					`email_quota` = '" . $db->escape($email_quota) . "', 
-					`ftps` = '" . $db->escape($ftps) . "', 
-					`tickets` = '" . $db->escape($tickets) . "', 
-					`mysqls` = '" . $db->escape($mysqls) . "', 
-					`ip` = '" . (int)$ipaddress . "', 
-					`can_manage_aps_packages` = '" . (int)$can_manage_aps_packages . "', 
-					`aps_packages` = '" . (int)$number_of_aps_packages . "', 
+				SET
+					`loginname` = '" . $db->escape($loginname) . "',
+					`password` = '" . md5($password) . "',
+					`name` = '" . $db->escape($name) . "',
+					`email` = '" . $db->escape($email) . "',
+					`def_language` = '" . $db->escape($def_language) . "',
+					`change_serversettings` = '" . $db->escape($change_serversettings) . "',
+					`customers` = '" . $db->escape($customers) . "',
+					`customers_see_all` = '" . $db->escape($customers_see_all) . "',
+					`domains` = '" . $db->escape($domains) . "',
+					`domains_see_all` = '" . $db->escape($domains_see_all) . "',
+					`caneditphpsettings` = '" . (int)$caneditphpsettings . "',
+					`diskspace` = '" . $db->escape($diskspace) . "',
+					`traffic` = '" . $db->escape($traffic) . "',
+					`subdomains` = '" . $db->escape($subdomains) . "',
+					`emails` = '" . $db->escape($emails) . "',
+					`email_accounts` = '" . $db->escape($email_accounts) . "',
+					`email_forwarders` = '" . $db->escape($email_forwarders) . "',
+					`email_quota` = '" . $db->escape($email_quota) . "',
+					`ftps` = '" . $db->escape($ftps) . "',
+					`tickets` = '" . $db->escape($tickets) . "',
+					`mysqls` = '" . $db->escape($mysqls) . "',
+					`ip` = '" . (int)$ipaddress . "',
+					`can_manage_aps_packages` = '" . (int)$can_manage_aps_packages . "',
+					`aps_packages` = '" . (int)$number_of_aps_packages . "',
 					`email_autoresponder` = '" . $db->escape($email_autoresponder) . "',
 					`theme` = '".$db->escape($_theme)."';
 				");
@@ -469,7 +469,11 @@ if($page == 'admins'
 			#$caneditphpsettings = makeyesno('caneditphpsettings', '1', '0', '0');
 			#$can_manage_aps_packages = makeyesno('can_manage_aps_packages', '1', '0', '0');
 			$number_of_aps_packages_ul = makecheckbox('number_of_aps_packages_ul', $lng['customer']['unlimited'], '-1', false, '0', true, true);
-
+			
+			$gender_options = makeoption($lng['gender']['undef'], 0, true, true, true);
+			$gender_options .= makeoption($lng['gender']['male'], 1, null, true, true);
+			$gender_options .= makeoption($lng['gender']['female'], 2, null, true, true);
+			
 			$admin_add_data = include_once dirname(__FILE__).'/lib/formfields/admin/admin/formfield.admin_add.php';
 			$admin_add_form = htmlform::genHTMLForm($admin_add_data);
 
@@ -859,6 +863,10 @@ if($page == 'admins'
 				#$deactivated = makeyesno('deactivated', '1', '0', $result['deactivated']);
 				#$can_manage_aps_packages = makeyesno('can_manage_aps_packages', '1', '0', $result['can_manage_aps_packages']);
 
+				$gender_options = makeoption($lng['gender']['undef'], 0, true, true, true);
+				$gender_options .= makeoption($lng['gender']['male'], 1, null, true, true);
+				$gender_options .= makeoption($lng['gender']['female'], 2, null, true, true);
+				
 				$result = htmlentities_array($result);
 
 				$admin_edit_data = include_once dirname(__FILE__).'/lib/formfields/admin/admin/formfield.admin_edit.php';

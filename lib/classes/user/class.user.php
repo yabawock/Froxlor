@@ -71,9 +71,16 @@ class user {
 	 * 3 forgot password, login with name and email (minimal data)
 	 */
 	public function __construct() {
+		global $db;
+		$this->_db = $db;
+		
 		$num = func_num_args();
-
-		if ($num == 1) {
+		
+		if ($num == 0) {
+			// create a new user
+			// nothing to do
+		}
+		else if ($num == 1) {
 			// this must be id based login
 			$this->createById(func_get_arg(0));
 		} else if ($num == 2) {
@@ -93,8 +100,6 @@ class user {
 	 * @throws Exception
 	 */
 	private function createById($id) {
-		$this->_db = Froxlor::getDb();
-
 		if (is_int($id)) {
 			$this->_id = $id;
 
@@ -113,8 +118,6 @@ class user {
 	 * @throws Exception on failed login
 	 */
 	private function createByName($loginname, $password) {
-		$this->_db = Froxlor::getDb();
-
 		if ($this->performLogin($loginname, $password)) {
 			$this->init();
 		} else {
@@ -131,8 +134,6 @@ class user {
 	 * @throws Exception if no record is found
 	 */
 	private function createByNameEmail($loginname, $email) {
-		$this->_db = Froxlor::getDb();
-
 		$sql = "SELECT `u`.`id` FROM `". TABLE_USERS ."` `u`, `". TABLE_USER_ADDRESSES ."` `a`
 		 WHERE `u`.`loginname` = '". $loginname ."' AND `u`.`contactid` = `a`.`id` AND `a`.`email` = '". $email ."'";
 		$result = $db->query($sql);
@@ -154,6 +155,67 @@ class user {
 		throw new Exception("User not found.");
 	}
 
+	/**
+	 * Create a new user.
+	 *
+	 * @param array $data
+	 * @throws Exception
+	 */
+	public function createNewUser($data) {
+		// creating a new user is possible
+		if ($this->_id == -1) {
+			// create a new record
+			$sql = "INSERT INTO `". TABLE_USERS ."` SET `deactivated` = '0'";
+			$result = $this->_db->query($sql);
+			
+			if (!$result) {
+				throw new Exception("Could not insert into: ".TABLE_USERS);
+			}
+			
+			$this->_id = $this->_db->insert_id();
+			$data['general']['id'] = $this->_id;
+			$data['resources']['id'] = $this->getId();
+			
+			// now setup user address record
+			if (!isset($data['general']['contactid'])) {
+				$sql = "INSERT INTO `". TABLE_USER_ADDRESSES ."`";
+				$result = $this->_db->query($sql);
+				
+				if (!$result) {
+					throw new Exception("Could not insert into: ".TABLE_USERS);
+				}
+				$contactid = $this->_db->insert_id();
+				$data['general']['contactid'] = $contactid;
+			}
+			
+			// setup resources
+			if ($data['general']['isadmin']) {
+				$this->_isAdmin = true;
+				
+				$sql = "INSERT INTO `".TABLE_ADMIN_RESOURCES."` SET `id` = '".$this->getId()."'";
+				
+				$result = $this->_db->query($sql);
+				
+				if (!$result) {
+					throw new Exception("Could not insert into: ".TABLE_USERS);
+				}
+			} else {
+				$sql = "INSERT INTO `".TABLE_USER_RESOURCES."` SET `id` = '".$this->getId()."'";
+				
+				$result = $this->_db->query($sql);
+				
+				if (!$result) {
+					throw new Exception("Could not insert into: ".TABLE_USERS);
+				}
+			}
+			
+			// @TODO setup the users admin
+			
+			$this->_data = $data;
+			$this->syncAll();
+		}
+	}
+	
 	/**
 	 * This function initializes all data.
 	 */
