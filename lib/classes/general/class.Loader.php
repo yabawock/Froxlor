@@ -356,7 +356,7 @@ class Loader
 		$area = $this->area;
 		$section = $this->section;
 		$action = $this->action;
-		if (!preg_match('/^[a-z0-9]+$/i', $area) || !preg_match('/^[a-z0-9]+$/i', $section) || !preg_match('/^[a-z0-9]+$/i', $action))
+		if (!preg_match('/^[a-z0-9]+$/i', $area) || !preg_match('/^[a-z0-9]+$/i', $section) || !preg_match('/^[a-z0-9_]+$/i', $action))
 		{
 			$area = $section = $action = 'login';
 			Froxlor::getSmarty()->assign('loggedin', 0);

@@ -177,4 +177,40 @@ class index
 
 		return Froxlor::getSmarty()->fetch('admin/index/index.tpl');
 	}
+
+	public function change_language()
+	{
+		$languages = Froxlor::getLanguage()->getWorkingLanguages();
+		if(isset($_POST['send'])
+		&& $_POST['send'] == 'send')
+		{
+			$def_language = validate($_POST['def_language'], _('default language'));
+
+			if(isset($languages[$def_language]))
+			{
+				Froxlor::getDb()->query("UPDATE `users` SET `def_language`='" . Froxlor::getDb()->escape($def_language) . "' WHERE `id`='" . (int)Froxlor::getUser()->getId() . "'");
+				Froxlor::getDb()->query("UPDATE `panel_sessions` SET `language`='" . Froxlor::getDb()->escape($def_language) . "' WHERE `hash`='" . Froxlor::getDb()->escape($s) . "'");
+			}
+
+			#Froxlor::getLog()->logAction(ADM_ACTION, LOG_NOTICE, "changed his/her default language to '" . $def_language . "'");
+			redirectTo(Froxlor::getLinker()->getLink(array('area' => 'admin', 'section' => 'index', 'action' => 'index')));
+		}
+		else
+		{
+			$language_options = '';
+
+			$default_lang = getSetting('panel', 'standardlanguage');
+			if(Froxlor::getUser()->getData('general', 'def_language') != '') {
+				$default_lang = Froxlor::getUser()->getData('general', 'def_language');
+			}
+
+			while(list($language_file, $language_name) = each($languages))
+			{
+				$language_options.= makeoption($language_name, $language_file, $default_lang, true);
+			}
+
+			Froxlor::getSmarty()->assign('language_options', $language_options);
+			return Froxlor::getSmarty()->fetch('admin/index/change_language.tpl');
+		}
+	}
 }
