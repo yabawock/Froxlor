@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Froxlor\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-24 11:45+0100\n"
-"PO-Revision-Date: 2011-06-24 12:06+0100\n"
+"POT-Creation-Date: 2011-06-24 14:43+0100\n"
+"PO-Revision-Date: 2011-06-24 14:47+0100\n"
 "Last-Translator: Florian Aders <eleras@froxlor.org>\n"
 "Language-Team: The Froxlor team <team@froxlor.org>\n"
 "Language: \n"
@@ -650,15 +650,153 @@ msgstr "Alle APS - Pakete aktualisieren"
 msgid "Downloading new APS packages"
 msgstr "Neue APS - Pakete herunterladen"
 
+#: lib/navigation/00.froxlor.main.php:27
+#, php-format
+msgid "Logged in as %s"
+msgstr "Angemeldet als: %s"
+
+#: lib/navigation/00.froxlor.main.php:31
+#: lib/navigation/00.froxlor.main.php:160
+msgid "Change password"
+msgstr "Passwort ändern"
+
+#: lib/navigation/00.froxlor.main.php:35
+#: lib/navigation/00.froxlor.main.php:164
+msgid "Change language"
+msgstr "Sprache ändern"
+
+#: lib/navigation/00.froxlor.main.php:39
+#: lib/navigation/00.froxlor.main.php:168
+msgid "Change theme"
+msgstr "Theme ändern"
+
+#: lib/navigation/00.froxlor.main.php:49
+msgid "E-mail"
+msgstr "E-Mail"
+
+#: lib/navigation/00.froxlor.main.php:53
+msgid "Addresses"
+msgstr "Adressen"
+
+#: lib/navigation/00.froxlor.main.php:58
+msgid "Create e-mail address"
+msgstr "E-Mail - Adresse anlegen"
+
+#: lib/navigation/00.froxlor.main.php:63
+msgid "Autoresponder"
+msgstr "Autoresponder"
+
+#: lib/navigation/00.froxlor.main.php:70
+msgid "Webmail"
+msgstr "Webmail"
+
+#: lib/navigation/00.froxlor.main.php:78
+msgid "MySQL"
+msgstr "MySQL"
+
+#: lib/navigation/00.froxlor.main.php:82
+msgid "Databases"
+msgstr "Datenbanken"
+
+#: lib/navigation/00.froxlor.main.php:88
+msgid "phpMyAdmin"
+msgstr "phpMyAdmin"
+
+#: lib/navigation/00.froxlor.main.php:96
+#: lib/navigation/00.froxlor.main.php:187
+msgid "Domains"
+msgstr "Domains"
+
+#: lib/navigation/00.froxlor.main.php:100
+#: lib/navigation/00.froxlor.main.php:219
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: lib/navigation/00.froxlor.main.php:106
+msgid "FTP"
+msgstr "FTP"
+
+#: lib/navigation/00.froxlor.main.php:110
+msgid "Accounts"
+msgstr "Konten"
+
+#: lib/navigation/00.froxlor.main.php:115
+msgid "WebFTP"
+msgstr "WebFTP"
+
+#: lib/navigation/00.froxlor.main.php:122
+msgid "Extras"
+msgstr "Extras"
+
+#: lib/navigation/00.froxlor.main.php:126
+msgid "Directory protection"
+msgstr "Verzeichnisschutz"
+
+#: lib/navigation/00.froxlor.main.php:130
+msgid "Path options"
+msgstr "Pfadoptionen"
+
+#: lib/navigation/00.froxlor.main.php:134
+msgid "Backup"
+msgstr "Backup"
+
+#: lib/navigation/00.froxlor.main.php:145
+msgid "Current month"
+msgstr "Aktueller Monat"
+
+#: lib/navigation/00.froxlor.main.php:177
+msgid "Resources"
+msgstr "Ressourcen"
+
+#: lib/navigation/00.froxlor.main.php:192
+msgid "Admins"
+msgstr "Admins"
+
+#: lib/navigation/00.froxlor.main.php:214
+msgid "Configuration"
+msgstr "Konfiguration"
+
+#: lib/navigation/00.froxlor.main.php:224
+msgid "IPs and ports"
+msgstr "IPs und Ports"
+
+#: lib/navigation/00.froxlor.main.php:229
+msgid "Cronjob settings"
+msgstr "Cronjobeinstellungen"
+
+#: lib/navigation/00.froxlor.main.php:234
+msgid "Rebuild config files"
+msgstr "Konfigurationen neu erstellen"
+
+#: lib/navigation/00.froxlor.main.php:239
+msgid "Recalculate resource usage"
+msgstr "Ressourcenverbrauch"
+
+#: lib/navigation/00.froxlor.main.php:244
+msgid "PHP configurations"
+msgstr "PHP - Konfigurationen"
+
+#: lib/navigation/00.froxlor.main.php:257
+msgid "Miscellaneous"
+msgstr "Verschiedenes"
+
+#: lib/navigation/00.froxlor.main.php:261
+msgid "E-Mail & file templates"
+msgstr "E-Mail & Dateitemplates"
+
+#: lib/navigation/00.froxlor.main.php:265
+msgid "System logging"
+msgstr "Systemlog"
+
+#: lib/navigation/00.froxlor.main.php:271
+msgid "Write a message"
+msgstr "Nachricht schreiben"
+
 #: modules/admin/class.index.php:91
 msgid "search via webservice"
 msgstr "Via Webservice suchen"
 
-#: modules/admin/class.index.php:123
-msgid "&infin;"
-msgstr "&infin;"
-
-#: modules/admin/class.index.php:140
+#: modules/admin/class.index.php:115
 #, php-format
 msgid "You have %s unanswered support-ticket(s)"
 msgstr "Sie haben %s unbeantwortete Supprt - Ticket(s)"
@@ -692,3 +830,5 @@ msgstr "Ihr Account wurde gesperrt. Bitte kontaktieren Sie Ihren Administrator f
 msgid "A newer version of Froxlor has been installed but not yet set up.<br />Only the administrator can log in and finish the update."
 msgstr "Eine neuere Version von Froxlor wurde installiert, aber noch nicht eingerichtet.<br />Nur der Administrator kann sich anmelden und die Aktualisierung abschließen."
 
+#~ msgid "&infin;"
+#~ msgstr "&infin;"
