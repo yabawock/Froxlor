@@ -28,6 +28,18 @@ class languageSelect
 	private $useBrowser = true;
 
 	/**
+	 * Shall the users language be used to get the language?
+	 * @var bool
+	 */
+	private $useUser = false;
+
+	/**
+	 * Shall the session be used to get the language?
+	 * @var bool
+	 */
+	private $useSession = true;
+
+	/**
 	 * The default language to be used if the chosen one is not working
 	 * @var string
 	 */
@@ -61,6 +73,7 @@ class languageSelect
 		if ($handle = opendir('./locales/'))
 		{
 			$files = array();
+			$files[] = 'en';
 			// Loop through the directory
 			while(false!==($file = readdir($handle)))
 			{
@@ -135,11 +148,26 @@ class languageSelect
 					break;
 				}
 			}
+		}
 
+		# Use user language
+		if ($this->useUser)
+		{
+			if (Froxlor::getUser() instanceof user)
+			{
+				if(setLocale(LC_ALL, Froxlor::getUser()->getData('general', 'def_language')))
+				{
+					return true;
+				}
+				if(isset($this->workingLanguages[Froxlor::getUser()->getData('general', 'def_language')]) && setLocale(LC_ALL, $this->workingLanguages[Froxlor::getUser()->getData('general', 'def_language')]) !== false)
+				{
+					return true;
+				}
+			}
 		}
 
 		// Let's try the original language selected
-		if(setLocale(LC_ALL, $this->selectedLanguage))
+		if(setLocale(LC_ALL, $this->selectedLanguage) !== false)
 		{
 			// Worked, okay, no more work needed
 			return true;
@@ -186,6 +214,10 @@ class languageSelect
 		{
 			case "useBrowser":
 				$this->useBrowser = ($value === false) ? false : true;
+				return true;
+				break;
+			case "useUser":
+				$this->useUser = ($value === false) ? false : true;
 				return true;
 				break;
 		}

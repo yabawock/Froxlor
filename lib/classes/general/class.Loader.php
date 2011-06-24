@@ -267,6 +267,10 @@ class Loader
 		# Set the language
 		Froxlor::addObject('language', new languageSelect());
 		Froxlor::getLanguage()->useBrowser = true;
+		if(Froxlor::getUser() !== false)
+		{
+			Froxlor::getLanguage()->useUser = true;
+		}
 		Froxlor::getLanguage()->setLanguage();
 
 		# Activate gettext for smarty;

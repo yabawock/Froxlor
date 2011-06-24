@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Froxlor\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-24 00:46+0100\n"
-"PO-Revision-Date: 2011-06-24 00:50+0100\n"
+"POT-Creation-Date: 2011-06-24 11:45+0100\n"
+"PO-Revision-Date: 2011-06-24 11:46+0100\n"
 "Last-Translator: Florian Aders <eleras@froxlor.org>\n"
 "Language-Team: The Froxlor team <team@froxlor.org>\n"
 "Language: \n"
@@ -17,208 +17,354 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 
 #: smarty.c:2
+msgid "WARNING - Please note!"
+msgstr ""
+
+#: smarty.c:5
+msgid "Used resources (Used by customers (assigned/available))"
+msgstr ""
+
+#: smarty.c:8
+msgid "Customers"
+msgstr "Kunden"
+
+#: smarty.c:11
+msgid "Domain"
+msgstr ""
+
+#: smarty.c:14
+msgid "Subdomains"
+msgstr ""
+
+#: smarty.c:17
+msgid "Webspace"
+msgstr ""
+
+#: smarty.c:20
+#: smarty.c:23
+#: smarty.c:26
+msgid "MB"
+msgstr ""
+
+#: smarty.c:29
+msgid "Traffic"
+msgstr ""
+
+#: smarty.c:32
+#: smarty.c:35
+#: smarty.c:38
+msgid "GB"
+msgstr ""
+
+#: smarty.c:41
+msgid "MySQL-databases"
+msgstr ""
+
+#: smarty.c:44
+msgid "E-mail - addresses"
+msgstr ""
+
+#: smarty.c:47
+msgid "E-Mail - accounts"
+msgstr ""
+
+#: smarty.c:50
+msgid "E-mail - forwarders"
+msgstr ""
+
+#: smarty.c:53
+msgid "E-mail quota"
+msgstr ""
+
+#: smarty.c:56
+msgid "E-mail - autoresponder"
+msgstr ""
+
+#: smarty.c:59
+msgid "APS - installations"
+msgstr ""
+
+#: smarty.c:62
+msgid "FTP - accounts"
+msgstr ""
+
+#: smarty.c:65
+msgid "Support - tickets"
+msgstr ""
+
+#: smarty.c:68
+msgid "System details"
+msgstr ""
+
+#: smarty.c:71
+#, fuzzy
+msgid "Serversoftware"
+msgstr "Server"
+
+#: smarty.c:74
+msgid "PHP - version"
+msgstr ""
+
+#: smarty.c:77
+msgid "PHP - memorylimit"
+msgstr ""
+
+#: smarty.c:80
+msgid "MySQL - server version"
+msgstr ""
+
+#: smarty.c:83
+msgid "MySQL - client version"
+msgstr ""
+
+#: smarty.c:86
+msgid "MySQL - webserver interface"
+msgstr ""
+
+#: smarty.c:89
+msgid "System load"
+msgstr ""
+
+#: smarty.c:92
+msgid "Kernel:"
+msgstr ""
+
+#: smarty.c:95
+msgid "Uptime:"
+msgstr ""
+
+#: smarty.c:98
+#, fuzzy
+msgid "Froxlor details"
+msgstr "Froxlor Update"
+
+#: smarty.c:101
+msgid "Outstanding tasks:"
+msgstr ""
+
+#: smarty.c:104
+msgid "There are currently no outstanding tasks for Froxlor"
+msgstr ""
+
+#: smarty.c:107
+msgid "Last execution of cronjobs"
+msgstr ""
+
+#: smarty.c:110
+msgid "Installed version"
+msgstr ""
+
+#: smarty.c:113
+msgid "Latest version:"
+msgstr ""
+
+#: smarty.c:116
+msgid "There is a newer version of Froxlor available"
+msgstr ""
+
+#: smarty.c:119
 msgid "Update"
 msgstr "Update"
 
-#: smarty.c:5
+#: smarty.c:122
 msgid "Proceed"
 msgstr "Fortfahren"
 
-#: smarty.c:8
+#: smarty.c:125
 msgid "Information"
 msgstr "Information"
 
-#: smarty.c:11
-#: smarty.c:38
-#: smarty.c:62
-#: smarty.c:77
-#: smarty.c:161
+#: smarty.c:128
+#: smarty.c:155
+#: smarty.c:179
+#: smarty.c:194
+#: smarty.c:278
 msgid "Error"
 msgstr "Fehler"
 
-#: smarty.c:14
+#: smarty.c:131
 msgid "Froxlor - Login"
 msgstr "Froxlor - Login"
 
-#: smarty.c:17
-#: smarty.c:44
+#: smarty.c:134
+#: smarty.c:161
 msgid "Username"
 msgstr "Benutzername"
 
-#: smarty.c:20
-#: smarty.c:47
+#: smarty.c:137
+#: smarty.c:164
 msgid "Password"
 msgstr "Passwort"
 
-#: smarty.c:23
+#: smarty.c:140
 msgid "Language"
 msgstr "Sprache"
 
-#: smarty.c:26
-#: smarty.c:50
+#: smarty.c:143
+#: smarty.c:167
 msgid "Login"
 msgstr "Login"
 
-#: smarty.c:29
+#: smarty.c:146
 msgid "Forgot password"
 msgstr "Passwort vergessen"
 
-#: smarty.c:32
+#: smarty.c:149
 msgid "Froxlor Server Management Panel"
 msgstr "Froxlor Server Management Panel"
 
-#: smarty.c:35
-#: smarty.c:59
-#: smarty.c:74
-#: smarty.c:158
+#: smarty.c:152
+#: smarty.c:176
+#: smarty.c:191
+#: smarty.c:275
 msgid "Success"
 msgstr "Erfolgreich"
 
-#: smarty.c:41
+#: smarty.c:158
 msgid "Froxlor - WebFTP - Login"
 msgstr "Froxlor - WebFTP - Login"
 
-#: smarty.c:53
+#: smarty.c:170
 msgid "the Froxlor Team"
 msgstr "das Froxlor Team"
 
-#: smarty.c:56
+#: smarty.c:173
 msgid "Editing"
 msgstr "Bearbeiten"
 
-#: smarty.c:65
-#: smarty.c:83
+#: smarty.c:182
+#: smarty.c:200
 msgid "Save file"
 msgstr "Datei speichern"
 
-#: smarty.c:68
-#: smarty.c:86
+#: smarty.c:185
+#: smarty.c:203
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: smarty.c:71
+#: smarty.c:188
 msgid "Creating a file in"
 msgstr "Erstellt eine Datei in"
 
-#: smarty.c:80
-#: smarty.c:89
+#: smarty.c:197
+#: smarty.c:206
 msgid "Filename"
 msgstr "Dateiname"
 
-#: smarty.c:92
+#: smarty.c:209
 msgid "Size"
 msgstr "Größe"
 
-#: smarty.c:95
+#: smarty.c:212
 msgid "Date"
 msgstr "Datum"
 
-#: smarty.c:98
+#: smarty.c:215
 msgid "Permissions"
 msgstr "Berechtigungen"
 
-#: smarty.c:101
+#: smarty.c:218
 msgid "User"
 msgstr "Benutzer"
 
-#: smarty.c:104
+#: smarty.c:221
 msgid "Group"
 msgstr "Gruppe"
 
-#: smarty.c:107
+#: smarty.c:224
 msgid "Options"
 msgstr "Optionen"
 
-#: smarty.c:110
+#: smarty.c:227
 msgid "Files"
 msgstr "Dateien"
 
-#: smarty.c:113
+#: smarty.c:230
 msgid "Complete filesize"
 msgstr "Komplette Dateigröße"
 
-#: smarty.c:116
+#: smarty.c:233
 msgid "Symlinks"
 msgstr "Symlinks"
 
-#: smarty.c:119
+#: smarty.c:236
 msgid "Directories"
 msgstr "Verzeichnisse"
 
-#: smarty.c:122
+#: smarty.c:239
 msgid "Complete directorysize"
 msgstr "Komplette Verzeichnisgröße"
 
-#: smarty.c:125
+#: smarty.c:242
 msgid "Basic operations"
 msgstr "Standard Operationen"
 
-#: smarty.c:128
+#: smarty.c:245
 msgid "Change dir"
 msgstr "Verzeichnis wechseln"
 
-#: smarty.c:131
+#: smarty.c:248
 msgid "Create dir"
 msgstr "Verzeichnis erstellen"
 
-#: smarty.c:134
+#: smarty.c:251
 msgid "Create new file in current directory"
 msgstr "Neue Datei in aktuellem Verzeichnis erstellen"
 
-#: smarty.c:137
+#: smarty.c:254
 msgid "Upload files"
 msgstr "Dateien hochladen"
 
-#: smarty.c:140
+#: smarty.c:257
 msgid "Upload file(s)"
 msgstr "Datei(en) hochladen"
 
-#: smarty.c:143
-#: smarty.c:149
-#: smarty.c:164
-#: smarty.c:176
+#: smarty.c:260
+#: smarty.c:266
+#: smarty.c:281
+#: smarty.c:293
 msgid "Delete"
 msgstr "Löschen"
 
-#: smarty.c:146
-#: smarty.c:152
-#: smarty.c:167
+#: smarty.c:263
+#: smarty.c:269
+#: smarty.c:284
 msgid "Rename"
 msgstr "Umbenennen"
 
-#: smarty.c:155
+#: smarty.c:272
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: smarty.c:170
+#: smarty.c:287
 msgid "Symbolic link to"
 msgstr "Symlink nach"
 
-#: smarty.c:173
+#: smarty.c:290
 msgid "Selected file(s)"
 msgstr "Markierte Datei(en)"
 
-#: smarty.c:179
+#: smarty.c:296
 msgid "Change permission to"
 msgstr "Berechtigungen ändern zu"
 
-#: smarty.c:182
+#: smarty.c:299
 msgid "Move to"
 msgstr "Verschieben nach"
 
-#: smarty.c:185
+#: smarty.c:302
 msgid "Do it"
 msgstr "Tu es"
 
-#: smarty.c:188
+#: smarty.c:305
 msgid "Yes"
 msgstr "Ja"
 
-#: smarty.c:191
+#: smarty.c:308
 msgid "No"
 msgstr "Nein"
 
-#: smarty.c:194
+#: smarty.c:311
 msgid "Rename / Move"
 msgstr "Umbenennen / Verschieben"
 
@@ -399,22 +545,125 @@ msgstr "Hauptmenü"
 msgid "Login failed, please try again"
 msgstr "Login fehlgeschlagen, bitte erneut versuchen"
 
-#: lib/classes/general/class.Loader.php:299
+#: lib/classes/general/class.Loader.php:305
 msgid "Overview"
 msgstr "Übersicht"
 
-#: lib/classes/general/class.Loader.php:302
+#: lib/classes/general/class.Loader.php:308
 #, php-format
 msgid "Logged in as: %s"
 msgstr "Angemeldet als: %s"
 
-#: lib/classes/general/class.Loader.php:311
+#: lib/classes/general/class.Loader.php:317
 msgid "Server"
 msgstr "Server"
 
-#: lib/classes/general/class.Loader.php:316
+#: lib/classes/general/class.Loader.php:322
 msgid "Froxlor update"
 msgstr "Froxlor Update"
+
+#: lib/functions/froxlor/function.CronjobFunctions.php:120
+msgid "No execution yet"
+msgstr ""
+
+#: lib/functions/froxlor/function.CronjobFunctions.php:129
+msgid "APS installer"
+msgstr ""
+
+#: lib/functions/froxlor/function.CronjobFunctions.php:130
+msgid "Updating APS packages"
+msgstr ""
+
+#: lib/functions/froxlor/function.CronjobFunctions.php:131
+msgid "E-mail autoresponder"
+msgstr ""
+
+#: lib/functions/froxlor/function.CronjobFunctions.php:132
+msgid "Backing up files"
+msgstr ""
+
+#: lib/functions/froxlor/function.CronjobFunctions.php:133
+msgid "Generating of configfiles"
+msgstr ""
+
+#: lib/functions/froxlor/function.CronjobFunctions.php:134
+msgid "Archiving old tickets"
+msgstr ""
+
+#: lib/functions/froxlor/function.CronjobFunctions.php:135
+msgid "Traffic calculation"
+msgstr ""
+
+#: lib/functions/froxlor/function.CronjobFunctions.php:136
+msgid "Send reports about web- and traffic-usage"
+msgstr ""
+
+#: lib/functions/froxlor/function.CronjobFunctions.php:137
+msgid "Resetting ticket counter"
+msgstr ""
+
+#: lib/functions/froxlor/function.CronjobFunctions.php:176
+msgid "Rebuilding webserver-configuration"
+msgstr ""
+
+#: lib/functions/froxlor/function.CronjobFunctions.php:188
+#, php-format
+msgid "Adding new customer %s"
+msgstr ""
+
+#: lib/functions/froxlor/function.CronjobFunctions.php:195
+msgid "Rebuilding bind-configuration"
+msgstr ""
+
+#: lib/functions/froxlor/function.CronjobFunctions.php:202
+msgid "Creating directory for new ftp-user"
+msgstr ""
+
+#: lib/functions/froxlor/function.CronjobFunctions.php:214
+#, php-format
+msgid "Deleting files of customer %s"
+msgstr ""
+
+#: lib/functions/froxlor/function.CronjobFunctions.php:221
+msgid "Set quota on filesystem"
+msgstr ""
+
+#: lib/functions/froxlor/function.CronjobFunctions.php:235
+msgid "Installing one or more APS packages"
+msgstr ""
+
+#: lib/functions/froxlor/function.CronjobFunctions.php:242
+msgid "Removing one or more APS packages"
+msgstr ""
+
+#: lib/functions/froxlor/function.CronjobFunctions.php:249
+msgid "Reconfigurating one or more APS packages"
+msgstr ""
+
+#: lib/functions/froxlor/function.CronjobFunctions.php:256
+msgid "Upgrading one or more APS packages"
+msgstr ""
+
+#: lib/functions/froxlor/function.CronjobFunctions.php:263
+msgid "Updating all APS packages"
+msgstr ""
+
+#: lib/functions/froxlor/function.CronjobFunctions.php:270
+msgid "Downloading new APS packages"
+msgstr ""
+
+#: modules/admin/class.index.php:91
+msgid "search via webservice"
+msgstr ""
+
+#: modules/admin/class.index.php:123
+msgid "&infin;"
+msgstr ""
+
+#: modules/admin/class.index.php:140
+#, php-format
+msgid "You have %s unanswered support-ticket(s)"
+msgstr ""
 
 #: modules/login/class.login.php:112
 msgid "Profile language"

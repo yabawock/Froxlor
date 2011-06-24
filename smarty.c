@@ -1,3 +1,120 @@
+/* templates/Froxlor/admin/index/index.tpl */
+gettext("WARNING - Please note!");
+
+/* templates/Froxlor/admin/index/index.tpl */
+gettext("Used resources (Used by customers (assigned/available))");
+
+/* templates/Froxlor/admin/index/index.tpl */
+gettext("Customers");
+
+/* templates/Froxlor/admin/index/index.tpl */
+gettext("Domain");
+
+/* templates/Froxlor/admin/index/index.tpl */
+gettext("Subdomains");
+
+/* templates/Froxlor/admin/index/index.tpl */
+gettext("Webspace");
+
+/* templates/Froxlor/admin/index/index.tpl */
+gettext("MB");
+
+/* templates/Froxlor/admin/index/index.tpl */
+gettext("MB");
+
+/* templates/Froxlor/admin/index/index.tpl */
+gettext("MB");
+
+/* templates/Froxlor/admin/index/index.tpl */
+gettext("Traffic");
+
+/* templates/Froxlor/admin/index/index.tpl */
+gettext("GB");
+
+/* templates/Froxlor/admin/index/index.tpl */
+gettext("GB");
+
+/* templates/Froxlor/admin/index/index.tpl */
+gettext("GB");
+
+/* templates/Froxlor/admin/index/index.tpl */
+gettext("MySQL-databases");
+
+/* templates/Froxlor/admin/index/index.tpl */
+gettext("E-mail - addresses");
+
+/* templates/Froxlor/admin/index/index.tpl */
+gettext("E-Mail - accounts");
+
+/* templates/Froxlor/admin/index/index.tpl */
+gettext("E-mail - forwarders");
+
+/* templates/Froxlor/admin/index/index.tpl */
+gettext("E-mail quota");
+
+/* templates/Froxlor/admin/index/index.tpl */
+gettext("E-mail - autoresponder");
+
+/* templates/Froxlor/admin/index/index.tpl */
+gettext("APS - installations");
+
+/* templates/Froxlor/admin/index/index.tpl */
+gettext("FTP - accounts");
+
+/* templates/Froxlor/admin/index/index.tpl */
+gettext("Support - tickets");
+
+/* templates/Froxlor/admin/index/index.tpl */
+gettext("System details");
+
+/* templates/Froxlor/admin/index/index.tpl */
+gettext("Serversoftware");
+
+/* templates/Froxlor/admin/index/index.tpl */
+gettext("PHP - version");
+
+/* templates/Froxlor/admin/index/index.tpl */
+gettext("PHP - memorylimit");
+
+/* templates/Froxlor/admin/index/index.tpl */
+gettext("MySQL - server version");
+
+/* templates/Froxlor/admin/index/index.tpl */
+gettext("MySQL - client version");
+
+/* templates/Froxlor/admin/index/index.tpl */
+gettext("MySQL - webserver interface");
+
+/* templates/Froxlor/admin/index/index.tpl */
+gettext("System load");
+
+/* templates/Froxlor/admin/index/index.tpl */
+gettext("Kernel:");
+
+/* templates/Froxlor/admin/index/index.tpl */
+gettext("Uptime:");
+
+/* templates/Froxlor/admin/index/index.tpl */
+gettext("Froxlor details");
+
+/* templates/Froxlor/admin/index/index.tpl */
+gettext("Outstanding tasks:");
+
+/* templates/Froxlor/admin/index/index.tpl */
+gettext("There are currently no outstanding tasks for Froxlor");
+
+/* templates/Froxlor/admin/index/index.tpl */
+gettext("Last execution of cronjobs");
+
+/* templates/Froxlor/admin/index/index.tpl */
+gettext("Installed version");
+
+/* templates/Froxlor/admin/index/index.tpl */
+gettext("Latest version:");
+
+/* templates/Froxlor/admin/index/index.tpl */
+gettext("There is a newer version of Froxlor available");
+
 /* templates/Froxlor/admin/update/index.tpl */
 gettext("Update");
 
