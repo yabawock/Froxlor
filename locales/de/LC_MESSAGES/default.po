@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Froxlor\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-24 18:58+0100\n"
-"PO-Revision-Date: 2011-06-24 18:59+0100\n"
+"POT-Creation-Date: 2011-06-24 19:16+0100\n"
+"PO-Revision-Date: 2011-06-24 19:16+0100\n"
 "Last-Translator: Florian Aders <eleras@froxlor.org>\n"
 "Language-Team: The Froxlor team <team@froxlor.org>\n"
 "Language: \n"
@@ -918,6 +918,10 @@ msgstr "Noch kein Login"
 #: modules/admin/class.customers.php:83
 msgid "Unlock"
 msgstr "Entsperren"
+
+#: modules/admin/class.customers.php:118
+msgid "You are either not allowed to incorporate this customer or this customer does not exist"
+msgstr "Sie dürfen sich entweder nicht in diesen Kunden einloggen oder dieser Kunde existiert nicht"
 
 #: modules/login/class.login.php:111
 msgid "Profile language"
