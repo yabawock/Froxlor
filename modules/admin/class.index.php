@@ -94,38 +94,13 @@ class index
 			Froxlor::getSmarty()->assign('isnewerversion', 0);
 		}
 
-		$userinfo['customers'] = Froxlor::getUser()->getData('resources', 'customers');
-		$userinfo['domains'] = Froxlor::getUser()->getData('resources', 'domains');
 		$userinfo['diskspace'] = round(Froxlor::getUser()->getData('resources', 'diskspace') / 1024, $settings['panel']['decimal_places']);
 		$userinfo['diskspace_used'] = round(Froxlor::getUser()->getData('resources', 'diskspace_used') / 1024, $settings['panel']['decimal_places']);
 		$userinfo['traffic'] = round(Froxlor::getUser()->getData('resources', 'traffic') / (1024 * 1024), $settings['panel']['decimal_places']);
 		$userinfo['traffic_used'] = round(Froxlor::getUser()->getData('resources', 'traffic_used') / (1024 * 1024), $settings['panel']['decimal_places']);
-		$userinfo['mysqls'] = Froxlor::getUser()->getData('resources', 'mysqls');
-		$userinfo['mysqls_used'] = Froxlor::getUser()->getData('resources', 'mysqls_used');
-		$userinfo['emails'] = Froxlor::getUser()->getData('resources', 'emails');
-		$userinfo['emails_used'] = Froxlor::getUser()->getData('resources', 'emails_used');
-		$userinfo['email_accounts'] = Froxlor::getUser()->getData('resources', 'email_accounts');
-		$userinfo['email_accounts_used'] = Froxlor::getUser()->getData('resources', 'email_accounts_used');
-		$userinfo['email_forwarders'] = Froxlor::getUser()->getData('resources', 'email_forwarders');
-		$userinfo['email_forwarders_used'] = Froxlor::getUser()->getData('resources', 'email_forwarders_used');
-		$userinfo['email_quota'] = Froxlor::getUser()->getData('resources', 'email_quota');
-		$userinfo['email_quota_used'] = Froxlor::getUser()->getData('resources', 'email_quota_used');
-		$userinfo['email_autoresponder'] = Froxlor::getUser()->getData('resources', 'email_autoresponder');
-		$userinfo['email_autoresponder_used'] = Froxlor::getUser()->getData('resources', 'email_autoresponder_used');
-		$userinfo['ftps'] = Froxlor::getUser()->getData('resources', 'ftps');
-		$userinfo['ftps_used'] = Froxlor::getUser()->getData('resources', 'ftps_used');
-		$userinfo['tickets'] = Froxlor::getUser()->getData('resources', 'tickets');
-		$userinfo['tickets_used'] = Froxlor::getUser()->getData('resources', 'tickets_used');
-		$userinfo['subdomains'] = Froxlor::getUser()->getData('resources', 'subdomains');
-		$userinfo['subdomains_used'] = Froxlor::getUser()->getData('resources', 'subdomains_used');
-		$userinfo['aps_packages'] = Froxlor::getUser()->getData('resources', 'aps_packages');
-		$userinfo['aps_packages_used'] = Froxlor::getUser()->getData('resources', 'aps_packages_used');
-		$userinfo = str_replace_array('-1', _('&infin;'), $userinfo, 'customers domains diskspace traffic mysqls emails email_accounts email_forwarders email_quota email_autoresponder ftps tickets subdomains aps_packages');
 
 		Froxlor::getSmarty()->assign('userinfo', $userinfo);
-		$cronjobsLastRun = getCronjobsLastRun();
 		Froxlor::getSmarty()->assign('cron_last_runs', getCronjobsLastRun());
-		$outstandingTasks = getOutstandingTasks();
 		Froxlor::getSmarty()->assign('outstanding_tasks', getOutstandingTasks());
 
 		$opentickets = 0;

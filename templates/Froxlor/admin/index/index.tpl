@@ -16,15 +16,15 @@
 		<table>
 		<tr>
 			<td>{t}Customers{/t}</td>
-			<td>{$overview.number_customers} ({$userinfo.customers})</td>
+			<td>{$overview.number_customers} ({$user->getData('resources', 'customers')})</td>
 		</tr>
 		<tr>
 			<td>{t}Domain{/t}</td>
-			<td>{$overview.number_domains} ({$userinfo.domains})</td>
+			<td>{$overview.number_domains} ({$user->getData('resources', 'domains')})</td>
 		</tr>
 		<tr>
 			<td>{t}Subdomains{/t}</td>
-			<td>{$overview.subdomains_used} ({$userinfo.subdomains_used}/{$userinfo.subdomains})</td>
+			<td>{$overview.subdomains_used} ({$user->getData('resources', 'subdomains_used')}/{$user->getData('resources', 'subdomains')})</td>
 		</tr>
 		<tr>
 			<td>{t}Webspace{/t}</td>
@@ -36,46 +36,46 @@
 		</tr>
 		<tr>
 			<td>{t}MySQL-databases{/t}</td>
-			<td>{$overview.mysqls_used} ({$userinfo.mysqls_used}/{$userinfo.mysqls})</td>
+			<td>{$overview.mysqls_used} ({$user->getData('resources', 'mysqls_used')}/{$user->getData('resources', 'mysqls')})</td>
 		</tr>
 		<tr>
 			<td>{t}E-mail - addresses{/t}</td>
-			<td>{$overview.emails_used} ({$userinfo.emails_used}/{$userinfo.emails})</td>
+			<td>{$overview.emails_used} ({$user->getData('resources', 'emails_used')}/{$user->getData('resources', 'emails')})</td>
 		</tr>
 		<tr>
 			<td>{t}E-Mail - accounts{/t}</td>
-			<td>{$overview.email_accounts_used} ({$userinfo.email_accounts_used}/{$userinfo.email_accounts})</td>
+			<td>{$overview.email_accounts_used} ({$user->getData('resources', 'email_accounts_used')}/{$user->getData('resources', 'email_accounts')})</td>
 		</tr>
 		<tr>
 			<td>{t}E-mail - forwarders{/t}</td>
-			<td>{$overview.email_forwarders_used} ({$userinfo.email_forwarders_used}/{$userinfo.email_forwarders})</td>
+			<td>{$overview.email_forwarders_used} ({$user->getData('resources', 'email_forwarders_used')}/{$user->getData('resources', 'email_forwarders')})</td>
 		</tr>
 		{if $settings.system.mail_quota_enabled == 1}
 		<tr>
 			<td>{t}E-mail quota{/t}</td>
-			<td>{$overview.email_quota_used} ({$userinfo.email_quota_used}/{$userinfo.email_quota})</td>
+			<td>{$overview.email_quota_used} ({$user->getData('resources', 'email_quota_used')}/{$user->getData('resources', 'email_quota')})</td>
 		</tr>
 		{/if}
 		{if $settings.autoresponder.autoresponder_active == 1}
 		<tr>
 			<td>{t}E-mail - autoresponder{/t}</td>
-			<td>{$userinfo.email_autoresponder_used} ({$userinfo.email_autoresponder})</td>
+			<td>{$user->getData('resources', 'email_autoresponder_used')} ({$user->getData('resources', 'email_autoresponder')})</td>
 		</tr>
 		{/if}
 		{if (int)$settings.aps.aps_active == 1}
 		<tr>
 			<td>{t}APS - installations{/t}</td>
-			<td>{$overview.aps_packages_used} ({$userinfo.aps_packages_used}/{$userinfo.aps_packages})</td>
+			<td>{$overview.aps_packages_used} ({$user->getData('resources', 'aps_packages_used')}/{$user->getData('resources', 'aps_packages')})</td>
 		</tr>
 		{/if}
 		<tr>
 			<td>{t}FTP - accounts{/t}</td>
-			<td>{$overview.ftps_used} ({$userinfo.ftps_used}/{$userinfo.ftps})</td>
+			<td>{$overview.ftps_used} ({$user->getData('resources', 'ftps_used')}/{$user->getData('resources', 'ftps')})</td>
 		</tr>
 		{if $settings.ticket.enabled == 1}
 		<tr>
 			<td>{t}Support - tickets{/t}</td>
-			<td>{$overview.tickets_used} ({$userinfo.tickets_used}/{$userinfo.tickets})</td>
+			<td>{$overview.tickets_used} ({$user->getData('resources', 'tickets_used')}/{$user->getData('resources', 'tickets')})</td>
 		</tr>
 		{/if}
 		<tr>
