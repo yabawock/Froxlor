@@ -1,19 +1,16 @@
-$header
 <div class="messagewrapper">
-	<form action="$yesfile" method="post">
+	<form action="{$yeslink}" method="post">
 		<div class="warningcontainer bradius">
-			<div class="warningtitle">{$lng['question']['question']}</div>
+			<div class="warningtitle">{t}Question{/t}</div>
 			<div class="warning">
-				$text
+				{$text}
 				<div style="text-align:right;margin-top:10px;">
-					<input type="hidden" name="s" value="$s" />
 					<input type="hidden" name="send" value="send" />
 					{$hiddenparams}
-					<input type="submit" name="submitbutton" value="{$lng['panel']['yes']}" />&nbsp;
-					<input type="button" class="nobutton" value="{$lng['panel']['no']}" id="yesnobutton" />
+					<input type="submit" name="submitbutton" value="{t}Yes{/t}" />&nbsp;
+					<input type="button" class="nobutton" value="{t}No{/t}" id="yesnobutton" />
 				</div>
 			</div>
 		</div>
 	</form>
 </div>
-$footer

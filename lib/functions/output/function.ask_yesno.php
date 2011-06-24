@@ -25,17 +25,15 @@
  * @param array  $params     Values which will be given to $yesfile. Format: array(variable1=>value1, variable2=>value2, variable3=>value3)
  * @param string $targetname Name of the target eg Domain or eMail address etc.
  * @param int    $back_nr    Number of steps to go back when "No" is pressed
- * 
+ *
  * @author Florian Lippert <flo@syscp.org>
  * @author Froxlor team <team@froxlor.org> (2010-)
- * 
+ *
  * @return string outputs parsed question_yesno template
  */
 
-function ask_yesno($text, $yesfile, $params = array(), $targetname = '', $back_nr = 1)
+function ask_yesno($text, $linkparam, $params = array(), $targetname = '')
 {
-	global $userinfo, $db, $s, $header, $footer, $lng;
-
 	$hiddenparams = '';
 
 	if(is_array($params))
@@ -45,15 +43,16 @@ function ask_yesno($text, $yesfile, $params = array(), $targetname = '', $back_n
 			$hiddenparams.= '<input type="hidden" name="' . htmlspecialchars($field) . '" value="' . htmlspecialchars($value) . '" />' . "\n";
 		}
 	}
+	Froxlor::getSmarty()->assign('hiddenparams', $hiddenparams);
+	Froxlor::getSmarty()->assign('yeslink', Froxlor::getLinker()->getLink($linkparam));
 
 	if(isset($lng['question'][$text]))
 	{
 		$text = $lng['question'][$text];
 	}
 
-	$text = strtr($text, array('%s' => $targetname));
-	eval("echo \"" . getTemplate('misc/question_yesno', '1') . "\";");
-	exit;
+	Froxlor::getSmarty()->assign('text', strtr($text, array('%s' => $targetname)));
+	return Froxlor::getSmarty()->fetch('misc/question_yesno.tpl');
 }
 
 function ask_yesno_withcheckbox($text, $chk_text, $yesfile, $params = array(), $targetname = '', $show_checkbox = true)
@@ -74,7 +73,7 @@ function ask_yesno_withcheckbox($text, $chk_text, $yesfile, $params = array(), $
 	{
 		$text = $lng['question'][$text];
 	}
-	
+
 	if(isset($lng['question'][$chk_text]))
 	{
 		$chk_text = $lng['question'][$chk_text];
