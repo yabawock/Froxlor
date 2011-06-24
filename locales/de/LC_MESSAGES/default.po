@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Froxlor\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-24 15:55+0100\n"
-"PO-Revision-Date: 2011-06-24 15:56+0100\n"
+"POT-Creation-Date: 2011-06-24 17:42+0100\n"
+"PO-Revision-Date: 2011-06-24 17:43+0100\n"
 "Last-Translator: Florian Aders <eleras@froxlor.org>\n"
 "Language-Team: The Froxlor team <team@froxlor.org>\n"
 "Language: \n"
@@ -820,78 +820,96 @@ msgstr "Systemlog"
 msgid "Write a message"
 msgstr "Nachricht schreiben"
 
-#: modules/admin/class.index.php:91
-msgid "search via webservice"
+#: modules/admin/class.index.php:69
+msgid "Disabled"
+msgstr "Deaktiviert"
+
+#: modules/admin/class.index.php:143
+msgid "Search via webservice"
 msgstr "Via Webservice suchen"
 
-#: modules/admin/class.index.php:115
+#: modules/admin/class.index.php:171
 #, php-format
 msgid "You have %s unanswered support-ticket(s)"
 msgstr "Sie haben %s unbeantwortete Supprt - Ticket(s)"
 
-#: modules/admin/class.index.php:190
+#: modules/admin/class.index.php:188
+msgid "not available"
+msgstr "nicht verfügbar"
+
+#: modules/admin/class.index.php:255
 msgid "The old password is not correct"
 msgstr "Das alte Passwort ist nicht korrekt"
 
-#: modules/admin/class.index.php:198
-#: modules/admin/class.index.php:202
-#: modules/admin/class.index.php:206
+#: modules/admin/class.index.php:263
+#: modules/admin/class.index.php:267
+#: modules/admin/class.index.php:271
 #, php-format
 msgid "Missing input in field &quot;%s&quot;"
 msgstr "Das Feld &quot;%s&quot; darf nicht leer sein"
 
-#: modules/admin/class.index.php:198
+#: modules/admin/class.index.php:263
 msgid "Old password"
 msgstr "Altes Passwort"
 
-#: modules/admin/class.index.php:202
+#: modules/admin/class.index.php:267
 msgid "New password"
 msgstr "Neues Passwort"
 
-#: modules/admin/class.index.php:206
+#: modules/admin/class.index.php:271
 msgid "New password (confirm)"
 msgstr "Neues Passwort (bestätigen)"
 
-#: modules/admin/class.index.php:210
+#: modules/admin/class.index.php:275
 msgid "New password and confirmation do not match"
 msgstr "Das neue Passwort und die Bestätigung stimmen nicht überein"
 
-#: modules/admin/class.index.php:231
-msgid "default language"
-msgstr "Standardsprache"
+#: modules/admin/class.index.php:324
+msgid "The selected language is not supported by this system"
+msgstr "Die ausgewählte Sprache wird von diesem System nicht unterstützt"
 
-#: modules/admin/class.index.php:267
-msgid "theme"
-msgstr "theme"
+#: modules/admin/class.index.php:359
+msgid "Theme"
+msgstr "Theme"
 
-#: modules/login/class.login.php:113
+#: modules/admin/class.index.php:363
+msgid "The selected theme does not exist"
+msgstr "Das ausgewählte Theme existiert nicht"
+
+#: modules/login/class.login.php:111
 msgid "Profile language"
 msgstr "Profilsprache"
 
-#: modules/login/class.login.php:127
+#: modules/login/class.login.php:125
 msgid "Password reset successfully.<br />You now should receive an email with your new password."
 msgstr "Passwort erfolgreich zurückgesetzt.<br />Sie sollten eine E-Mail mit Ihrem neuen Passwort erhalten haben."
 
-#: modules/login/class.login.php:130
+#: modules/login/class.login.php:128
 msgid "The username or password you typed in is wrong. Please try it again!"
 msgstr "Der eingegebene Benutzername oder das Passwort ist falsch. Bitte versuchen Sie es erneut!"
 
-#: modules/login/class.login.php:133
+#: modules/login/class.login.php:131
 msgid "This account has been suspended because of too many login errors. <br />Please try again in "
 msgstr "Dieser Account wurde wegen zuvieler falscher Loginversuche deaktiviert.<br />Bitte versuchen Sie es später erneut."
 
-#: modules/login/class.login.php:137
+#: modules/login/class.login.php:135
 #, php-format
 msgid "The message to &quot;%s&quot; failed"
 msgstr "Die Meldung konnte nicht an &quot;%s&quot; versendet werden"
 
-#: modules/login/class.login.php:140
+#: modules/login/class.login.php:138
 msgid "Your account has been locked. Please contact your administrator for further information."
 msgstr "Ihr Account wurde gesperrt. Bitte kontaktieren Sie Ihren Administrator für nähere Informationen."
 
-#: modules/login/class.login.php:146
+#: modules/login/class.login.php:144
 msgid "A newer version of Froxlor has been installed but not yet set up.<br />Only the administrator can log in and finish the update."
 msgstr "Eine neuere Version von Froxlor wurde installiert, aber noch nicht eingerichtet.<br />Nur der Administrator kann sich anmelden und die Aktualisierung abschließen."
+
+#~ msgid "default language"
+#~ msgstr "Standardsprache"
+
+#~ msgid "theme"
+#~ msgstr "theme"
 
 #~ msgid "&infin;"
 #~ msgstr "&infin;"
