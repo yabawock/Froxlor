@@ -165,7 +165,7 @@ class user {
 		// creating a new user is possible
 		if ($this->_id == -1) {
 			// create a new record
-			$sql = "INSERT INTO `". TABLE_USERS ."`";
+			$sql = "INSERT INTO `". TABLE_USERS ."` SET `deactivated` = '0'";
 			$result = $this->_db->query($sql);
 			
 			if (!$result) {
