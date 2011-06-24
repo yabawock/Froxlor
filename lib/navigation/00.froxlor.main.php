@@ -27,15 +27,15 @@ return array (
 					'label' => sprintf(_('Logged in as %s'), Froxlor::getUser()->getLoginname()),
 				),
 				array (
-					'url' => array('area' => 'customer', 'section' => 'index', 'action' => 'change_password'),
+					'url' => array('area' => 'customer', 'section' => 'index', 'action' => 'changePassword'),
 					'label' => _('Change password'),
 				),
 				array (
-					'url' => array('area' => 'customer', 'section' => 'index', 'action' => 'change_language'),
+					'url' => array('area' => 'customer', 'section' => 'index', 'action' => 'changeLanguage'),
 					'label' => _('Change language'),
 				),
 				array (
-					'url' => array('area' => 'customer', 'section' => 'index', 'action' => 'change_theme'),
+					'url' => array('area' => 'customer', 'section' => 'index', 'action' => 'changeTheme'),
 					'label' => _('Change theme'),
 				),
 				array (
@@ -156,15 +156,15 @@ return array (
 					'label' => sprintf(_('Logged in as: %s'), Froxlor::getUser()->getLoginname()),
 				),
 				array (
-					'url' => array('area' => 'admin', 'section' => 'index', 'action' => 'change_password'),
+					'url' => array('area' => 'admin', 'section' => 'index', 'action' => 'changePassword'),
 					'label' => _('Change password'),
 				),
 				array (
-					'url' => array('area' => 'admin', 'section' => 'index', 'action' => 'change_language'),
+					'url' => array('area' => 'admin', 'section' => 'index', 'action' => 'changeLanguage'),
 					'label' => _('Change language'),
 				),
 				array (
-					'url' => array('area' => 'admin', 'section' => 'index', 'action' => 'change_theme'),
+					'url' => array('area' => 'admin', 'section' => 'index', 'action' => 'changeTheme'),
 					'label' => _('Change theme'),
 				),
 				array (

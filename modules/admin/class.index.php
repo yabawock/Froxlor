@@ -28,6 +28,7 @@ class adminIndex
 	 * The dashboard for the administrator. It will show the current
 	 * account status as well as the current system status.
 	 * We also display the status of the cronjobs
+	 * @return string The complete rendered body
 	 */
 	public function index()
 	{
@@ -171,7 +172,6 @@ class adminIndex
 		}
 		Froxlor::getSmarty()->assign('awaitingtickets_text', $awaitingtickets_text);
 
-
 		// Try to get the system load via various functions
 		if(function_exists('sys_getloadavg'))
 		{
@@ -234,117 +234,139 @@ class adminIndex
 		return Froxlor::getSmarty()->fetch('admin/index/index.tpl');
 	}
 
-	public function change_password()
+	/**
+	 * changePassword
+	 *
+	 * Allow the administrator to change its password, either show
+	 * the form or really change it
+	 * @return string The rendered body
+	 */
+	public function changePassword()
 	{
-		if(isset($_POST['send'])
-		&& $_POST['send'] == 'send')
+		return Froxlor::getSmarty()->fetch('admin/index/change_password.tpl');
+	}
+
+	public function changePasswordPost()
+	{
+		$old_password = validate($_POST['old_password'], 'old password');
+
+		if(md5($old_password) != Froxlor::getUser()->getData('general', 'password'))
 		{
-			$old_password = validate($_POST['old_password'], 'old password');
+			return standard_error(_('The old password is not correct'), '', array('area' => 'admin', 'section' => 'index', 'action' => 'changePassword'));
+		}
 
-			if(md5($old_password) != Froxlor::getUser()->getData('general', 'password'))
-			{
-				return standard_error(_('The old password is not correct'), '', array('area' => 'admin', 'section' => 'index', 'action' => 'change_password'));
-			}
+		$new_password = validate($_POST['new_password'], 'new password');
+		$new_password_confirm = validate($_POST['new_password_confirm'], 'new password confirm');
 
-			$new_password = validate($_POST['new_password'], 'new password');
-			$new_password_confirm = validate($_POST['new_password_confirm'], 'new password confirm');
-
-			if($old_password == '')
-			{
-				return standard_error(_('Missing input in field &quot;%s&quot;'), _('Old password'), array('area' => 'admin', 'section' => 'index', 'action' => 'change_password'));
-			}
-			elseif($new_password == '')
-			{
-				return standard_error(_('Missing input in field &quot;%s&quot;'), _('New password'), array('area' => 'admin', 'section' => 'index', 'action' => 'change_password'));
-			}
-			elseif($new_password_confirm == '')
-			{
-				return standard_error(_('Missing input in field &quot;%s&quot;'), _('New password (confirm)'), array('area' => 'admin', 'section' => 'index', 'action' => 'change_password'));
-			}
-			elseif($new_password != $new_password_confirm)
-			{
-				return standard_error(_('New password and confirmation do not match'), '', array('area' => 'admin', 'section' => 'index', 'action' => 'change_password'));
-			}
-			else
-			{
-				Froxlor::getUser()->setData('general', 'password', md5($new_password));
-				#Froxlor::getLog()->logAction(ADM_ACTION, LOG_NOTICE, 'changed password');
-				redirectTo(Froxlor::getLinker()->getLink(array('area' => 'admin', 'section' => 'index', 'action' => 'index')));
-			}
+		if($old_password == '')
+		{
+			return standard_error(_('Missing input in field &quot;%s&quot;'), _('Old password'), array('area' => 'admin', 'section' => 'index', 'action' => 'changePassword'));
+		}
+		elseif($new_password == '')
+		{
+			return standard_error(_('Missing input in field &quot;%s&quot;'), _('New password'), array('area' => 'admin', 'section' => 'index', 'action' => 'changePassword'));
+		}
+		elseif($new_password_confirm == '')
+		{
+			return standard_error(_('Missing input in field &quot;%s&quot;'), _('New password (confirm)'), array('area' => 'admin', 'section' => 'index', 'action' => 'changePassword'));
+		}
+		elseif($new_password != $new_password_confirm)
+		{
+			return standard_error(_('New password and confirmation do not match'), '', array('area' => 'admin', 'section' => 'index', 'action' => 'changePassword'));
 		}
 		else
 		{
-			return Froxlor::getSmarty()->fetch('admin/index/change_password.tpl');
+			Froxlor::getUser()->setData('general', 'password', md5($new_password));
+			#Froxlor::getLog()->logAction(ADM_ACTION, LOG_NOTICE, 'changed password');
+			redirectTo(Froxlor::getLinker()->getLink(array('area' => 'admin', 'section' => 'index', 'action' => 'index')));
 		}
 	}
 
-	public function change_language()
+	/**
+	 * change_language
+	 *
+	 * Allow the administrator to change its language,
+	 * we only show working languages on the system
+	 * @return string The rendered body
+	 */
+	public function changeLanguage()
 	{
+		$language_options = '';
 		$languages = Froxlor::getLanguage()->getWorkingLanguages();
-		if(isset($_POST['send'])
-		&& $_POST['send'] == 'send')
-		{
-			$def_language = validate($_POST['def_language'], _('default language'));
 
-			if(isset($languages[$def_language]))
-			{
-				Froxlor::getDb()->query("UPDATE `users` SET `def_language`='" . Froxlor::getDb()->escape($def_language) . "' WHERE `id`='" . (int)Froxlor::getUser()->getId() . "'");
-				Froxlor::getDb()->query("UPDATE `panel_sessions` SET `language`='" . Froxlor::getDb()->escape($def_language) . "' WHERE `hash`='" . Froxlor::getDb()->escape($s) . "'");
-			}
-
-			#Froxlor::getLog()->logAction(ADM_ACTION, LOG_NOTICE, "changed his/her default language to '" . $def_language . "'");
-			redirectTo(Froxlor::getLinker()->getLink(array('area' => 'admin', 'section' => 'index', 'action' => 'index')));
+		$default_lang = getSetting('panel', 'standardlanguage');
+		if(Froxlor::getUser()->getData('general', 'def_language') != '') {
+			$default_lang = Froxlor::getUser()->getData('general', 'def_language');
 		}
-		else
+
+		while(list($language_file, $language_name) = each($languages))
 		{
-			$language_options = '';
-
-			$default_lang = getSetting('panel', 'standardlanguage');
-			if(Froxlor::getUser()->getData('general', 'def_language') != '') {
-				$default_lang = Froxlor::getUser()->getData('general', 'def_language');
-			}
-
-			while(list($language_file, $language_name) = each($languages))
-			{
-				$language_options.= makeoption($language_name, $language_file, $default_lang, true);
-			}
-
-			Froxlor::getSmarty()->assign('language_options', $language_options);
-			return Froxlor::getSmarty()->fetch('admin/index/change_language.tpl');
+			$language_options.= makeoption($language_name, $language_file, $default_lang, true);
 		}
+
+		Froxlor::getSmarty()->assign('language_options', $language_options);
+		return Froxlor::getSmarty()->fetch('admin/index/change_language.tpl');
+
 	}
 
-	public function change_theme()
+	public function changeLanguagePost()
 	{
+		$def_language = validate($_POST['def_language'], _('Language'));
+		$languages = Froxlor::getLanguage()->getWorkingLanguages();
 
-		if(isset($_POST['send'])
-			&& $_POST['send'] == 'send'
-		) {
-			$theme = validate($_POST['theme'], _('theme'));
-
-			$db->query("UPDATE `users` SET `theme`='" . $db->escape($theme) . "' WHERE `id`='" . (int)Froxlor::getUser()->getId() . "'");
-			$db->query("UPDATE `panel_sessions` SET `theme`='" . Froxlor::getDb()->escape($theme) . "' WHERE `hash`='" . Froxlor::getDb()->escape($s) . "'");
-
-			#Froxlor::getLog()->logAction(ADM_ACTION, LOG_NOTICE, "changed his/her theme to '" . $theme . "'");
-			redirectTo(Froxlor::getLinker()->getLink(array('area' => 'admin', 'section' => 'index', 'action' => 'index')));
+		if(isset($languages[$def_language]))
+		{
+			Froxlor::getDb()->query("UPDATE `users` SET `def_language`='" . Froxlor::getDb()->escape($def_language) . "' WHERE `id`='" . (int)Froxlor::getUser()->getId() . "'");
+			Froxlor::getDb()->query("UPDATE `panel_sessions` SET `language`='" . Froxlor::getDb()->escape($def_language) . "' WHERE `userid`='" . Froxlor::getUser()->getId() . "'");
 		}
 		else
 		{
-			$theme_options = '';
-
-			$default_theme = getSetting('panel', 'default_theme');
-			if(Froxlor::getUser()->getData('general', 'theme') != '') {
-				$default_theme = Froxlor::getUser()->getData('general', 'theme');
-			}
-
-			$themes_avail = getThemes();
-			foreach($themes_avail as $t)
-			{
-				$theme_options.= makeoption($t, $t, $default_theme, true);
-			}
-
-			Froxlor::getSmarty()->assign('theme_options', $theme_options);
-			return Froxlor::getSmarty()->fetch('admin/index/change_theme.tpl');
+			return standard_error(_('The selected language is not supported by this system'), '', array('area' => 'admin', 'section' => 'index', 'action' => 'changeLanguage'));
 		}
+
+		#Froxlor::getLog()->logAction(ADM_ACTION, LOG_NOTICE, "changed his/her default language to '" . $def_language . "'");
+		redirectTo(Froxlor::getLinker()->getLink(array('area' => 'admin', 'section' => 'index', 'action' => 'index')));
+	}
+
+
+	/**
+	 * change_theme
+	 *
+	 * Allow the administrator to change the used theme.
+	 * @return string The rendered body
+	 */
+	public function changeTheme()
+	{
+		$theme_options = '';
+
+		$default_theme = getSetting('panel', 'default_theme');
+		if(Froxlor::getUser()->getData('general', 'theme') != '') {
+			$default_theme = Froxlor::getUser()->getData('general', 'theme');
+		}
+
+		$themes_avail = getThemes();
+		foreach($themes_avail as $t)
+		{
+			$theme_options.= makeoption($t, $t, $default_theme, true);
+		}
+
+		Froxlor::getSmarty()->assign('theme_options', $theme_options);
+		return Froxlor::getSmarty()->fetch('admin/index/change_theme.tpl');
+	}
+
+	public function changeThemePost()
+	{
+		$theme = validate($_POST['theme'], _('Theme'));
+
+		if (!in_array($theme, getThemes()))
+		{
+			return standard_error(_('The selected theme does not exist'), '', array('area' => 'admin', 'section' => 'index', 'action' => 'changeTheme'));
+		}
+
+		$db->query("UPDATE `users` SET `theme`='" . $db->escape($theme) . "' WHERE `id`='" . (int)Froxlor::getUser()->getId() . "'");
+		$db->query("UPDATE `panel_sessions` SET `theme`='" . Froxlor::getDb()->escape($theme) . "' WHERE `hash`='" . Froxlor::getDb()->escape($s) . "'");
+
+		#Froxlor::getLog()->logAction(ADM_ACTION, LOG_NOTICE, "changed his/her theme to '" . $theme . "'");
+		redirectTo(Froxlor::getLinker()->getLink(array('area' => 'admin', 'section' => 'index', 'action' => 'index')));
 	}
 }

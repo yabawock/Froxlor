@@ -374,6 +374,15 @@ class Loader
 		require_once("./modules/$area/class.$section.php");
 		$modulename = strtolower($area) . ucfirst($section);
 		$module = new $modulename;
+
+		if(isset($_POST['send']) && $_POST['send'] == 'send')
+		{
+			if(method_exists($module, $action . 'Post'))
+			{
+				$action .= 'Post';
+			}
+		}
+
 		if(!method_exists($module, $action))
 		{
 			$action = 'index';

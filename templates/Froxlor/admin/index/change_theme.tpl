@@ -7,7 +7,7 @@
 		</header>
 
 		<section class="tinyform bradiusodd">
-			<form method="post" action="{link area='admin' section='index' action='change_password'}" enctype="application/x-www-form-urlencoded">
+			<form method="post" action="{link area='admin' section='index' action='changeTheme'}" enctype="application/x-www-form-urlencoded">
 				<fieldset>
 				<legend>Froxlor&nbsp;-&nbsp;{t}Change theme{/t}</legend>
 				<p>
