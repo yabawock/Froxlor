@@ -28,7 +28,7 @@ class Loader
 
 	private function initialize()
 	{
-		header("Content-Type: text/html; charset=iso-8859-1");
+		header("Content-Type: text/html; charset=utf-8");
 
 		// prevent Froxlor pages from being cached
 		header("Cache-Control: no-store, no-cache, must-revalidate");
