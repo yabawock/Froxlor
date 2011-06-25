@@ -372,7 +372,7 @@ class db
 	public function array2update($array) {
 		$data = array();
 		foreach ($array as $key => $value) {
-			$data[] = "`".$key."` = '". $value ."'";;
+			$data[] = "`" . $this->escape($key) . "` = '". $this->escape($value) ."'";;
 		}
 
 		$num = count($data);

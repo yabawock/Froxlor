@@ -401,7 +401,7 @@ class user {
 	 * @return string RessourceId
 	 */
 	private function sync($area, $key) {
-		$sql = "UPDATE ". $this->area2table($area) ." SET `". $key ."` = '". $this->getData($area, $key) ."' WHERE `id` = '". $this->getId() ."';";
+		$sql = "UPDATE ". $this->area2table($area) ." SET `". $this->_db->escape($key) ."` = '". $this->_db->escape($this->getData($area, $key)) ."' WHERE `id` = '". $this->getId() ."';";
 
 		return $this->_db->query($sql);
 	}
