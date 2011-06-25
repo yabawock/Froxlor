@@ -402,8 +402,13 @@ class user {
 	 * @return string RessourceId
 	 */
 	private function sync($area, $key) {
+<<<<<<< HEAD
 		$sql = "UPDATE ". $this->area2table($area) ." SET `". $key ."` = '". $this->getData($area, $key) ."' WHERE `id` = '". $this->getId() ."';";
 		
+=======
+		$sql = "UPDATE ". $this->area2table($area) ." SET `". $this->_db->escape($key) ."` = '". $this->_db->escape($this->getData($area, $key)) ."' WHERE `id` = '". $this->getId() ."';";
+
+>>>>>>> cb5a4fa... Escape values before using them in SQL - queries, refs #821 @0h5m
 		return $this->_db->query($sql);
 	}
 	
