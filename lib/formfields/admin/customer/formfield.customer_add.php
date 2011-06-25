@@ -93,7 +93,7 @@ return array(
 						'select_var' => $gender_options
 					),
 					'company' => array(
-						'label' => _('Organization'),
+						'label' => _('Company'),
 						'type' => 'text',
 						'mandatory_ex' => true
 					),

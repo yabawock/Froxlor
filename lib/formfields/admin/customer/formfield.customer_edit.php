@@ -17,28 +17,28 @@
 
 return array(
 	'customer_edit' => array(
-		'title' => $lng['admin']['customer_edit'],
+		'title' => _('Edit customer'),
 		'image' => 'icons/user_edit.png',
 		'sections' => array(
 			'section_a' => array(
-				'title' => $lng['admin']['accountdata'],
+				'title' => _('Account data'),
 				'image' => 'icons/user_edit.png',
 				'fields' => array(
 					'loginname' => array(
-						'label' => $lng['login']['username'],
+						'label' => _('Username'),
 						'type' => 'label',
 						'value' => $result['loginname']
 					),
 					'documentroot' => array(
-						'label' => $lng['customer']['documentroot'],
+						'label' => _('Documentroot'),
 						'type' => 'label',
 						'value' => $result['documentroot']
 					),
 					'createstdsubdomain' => array(
-						'label' => $lng['admin']['stdsubdomain_add'].'?',
+						'label' => _('Create standard subdomain'),
 						'type' => 'checkbox',
 						'values' => array(
-										array ('label' => $lng['panel']['yes'], 'value' => '1')
+										array ('label' => _('Yes'), 'value' => '1')
 									),
 						'value' => array(($result['standardsubdomain'] != '0') ? '1' : '0')
 					),
@@ -46,102 +46,102 @@ return array(
 						'label' => $lng['admin']['deactivated_user'],
 						'type' => 'checkbox',
 						'values' => array(
-										array ('label' => $lng['panel']['yes'], 'value' => '1')
+										array ('label' => _('Yes'), 'value' => '1')
 									),
 						'value' => array($result['deactivated'])
 					),
 					'new_customer_password' => array(
-						'label' => $lng['login']['password'].'&nbsp;('.$lng['panel']['emptyfornochanges'].')',
+						'label' => _('Password').'&nbsp;('._('empty for no changes').')',
 						'type' => 'password'
 					),
 					'new_customer_password_suggestion' => array(
-						'label' => $lng['customer']['generated_pwd'],
+						'label' => _('Password suggestion'),
 						'type' => 'text',
 						'value' => generatePassword(),
 					),
 					'def_language' => array(
-						'label' => $lng['login']['language'],
+						'label' => _('Language'),
 						'type' => 'select',
 						'select_var' => $language_options
 					),
 					'countrycode' => array(
-						'label' => $lng['countrycode'],
+						'label' => _('Country'),
 						'type' => 'select',
 						'select_var' => $countrycode
 					)
 				)
 			),
 			'section_b' => array(
-				'title' => $lng['admin']['contactdata'],
+				'title' => _('Contact data'),
 				'image' => 'icons/user_edit.png',
 				'fields' => array(
 					'name' => array(
-						'label' => $lng['customer']['name'],
+						'label' => _('Name'),
 						'type' => 'text',
 						'mandatory_ex' => true,
 						'value' => $result['name']
 					),
 					'firstname' => array(
-						'label' => $lng['customer']['firstname'],
+						'label' => _('Firstname'),
 						'type' => 'text',
 						'mandatory_ex' => true,
 						'value' => $result['firstname']
 					),
 					'gender' => array(
-						'label' => $lng['gender']['title'],
+						'label' => _('Title'),
 						'type' => 'select',
 						'select_var' => $gender_options
 					),
 					'company' => array(
-						'label' => $lng['customer']['company'],
+						'label' => _('Company'),
 						'type' => 'text',
 						'mandatory_ex' => true,
 						'value' => $result['company']
 					),
 					'street' => array(
-						'label' => $lng['customer']['street'],
+						'label' => _('Street'),
 						'type' => 'text',
 						'value' => $result['street']
 					),
 					'zipcode' => array(
-						'label' => $lng['customer']['zipcode'],
+						'label' => _('Zipcode'),
 						'type' => 'text',
 						'value' => $result['zipcode']
 					),
 					'city' => array(
-						'label' => $lng['customer']['city'],
+						'label' => _('City'),
 						'type' => 'text',
 						'value' => $result['city']
 					),
 					'phone' => array(
-						'label' => $lng['customer']['phone'],
+						'label' => _('Phone'),
 						'type' => 'text',
 						'value' => $result['phone']
 					),
 					'fax' => array(
-						'label' => $lng['customer']['fax'],
+						'label' => _('Fax'),
 						'type' => 'text',
 						'value' => $result['fax']
 					),
 					'email' => array(
-						'label' => $lng['customer']['email'],
+						'label' => _('E-mail'),
 						'type' => 'text',
 						'mandatory' => true,
 						'value' => $result['email']
 					),
 					'customernumber' => array(
-						'label' => $lng['customer']['customernumber'],
+						'label' => _('Customer number'),
 						'type' => 'text',
 						'value' => $result['customernumber']
 					)
 				)
 			),
 			'section_c' => array(
-				'title' => $lng['admin']['servicedata'],
+				'title' => _('Service data'),
 				'image' => 'icons/user_edit.png',
 				'fields' => array(
 					'diskspace' => array(
-						'label' => $lng['customer']['diskspace'],
+						'label' => _('Webspace'),
 						'type' => 'textul',
 						'value' => $result['diskspace'],
 						'maxlength' => 6,
@@ -149,7 +149,7 @@ return array(
 						'ul_field' => $diskspace_ul
 					),
 					'traffic' => array(
-						'label' => $lng['customer']['traffic'],
+						'label' => _('Traffic'),
 						'type' => 'textul',
 						'value' => $result['traffic'],
 						'maxlength' => 4,
@@ -157,7 +157,7 @@ return array(
 						'ul_field' => $traffic_ul
 					),
 					'subdomains' => array(
-						'label' => $lng['customer']['subdomains'],
+						'label' => _('Subdomains'),
 						'type' => 'textul',
 						'value' => $result['subdomains'],
 						'maxlength' => 9,
@@ -165,7 +165,7 @@ return array(
 						'ul_field' => $subdomains_ul
 					),
 					'emails' => array(
-						'label' => $lng['customer']['emails'],
+						'label' => _('E-mail addresses'),
 						'type' => 'textul',
 						'value' => $result['emails'],
 						'maxlength' => 9,
@@ -173,7 +173,7 @@ return array(
 						'ul_field' => $emails_ul
 					),
 					'email_accounts' => array(
-						'label' => $lng['customer']['accounts'],
+						'label' => _('E-mail accounts'),
 						'type' => 'textul',
 						'value' => $result['email_accounts'],
 						'maxlength' => 9,
@@ -181,7 +181,7 @@ return array(
 						'ul_field' => $email_accounts_ul
 					),
 					'email_forwarders' => array(
-						'label' => $lng['customer']['forwarders'],
+						'label' => _('E-mail forwarders'),
 						'type' => 'textul',
 						'value' => $result['email_forwarders'],
 						'maxlength' => 9,
@@ -189,49 +189,49 @@ return array(
 						'ul_field' => $email_forwarders_ul
 					),
 					'email_quota' => array(
-						'label' => $lng['customer']['email_quota'],
+						'label' => _('E-mail quota'),
 						'type' => 'textul',
 						'value' => $result['email_quota'],
 						'maxlength' => 9,
-						'visible' => ($settings['system']['mail_quota_enabled'] == '1' ? true : false),
+						'visible' => (getSetting('system', 'mail_quota_enabled') == '1' ? true : false),
 						'mandatory' => true,
 						'ul_field' => $email_quota_ul
 					),
 					'email_autoresponder' => array(
-						'label' => $lng['customer']['autoresponder'],
+						'label' => _('E-mail autoresponder'),
 						'type' => 'textul',
 						'value' => $result['email_autoresponder'],
 						'maxlength' => 9,
-						'visible' => ($settings['autoresponder']['autoresponder_active'] == '1' ? true : false),
+						'visible' => (getSetting('autoresponder', 'autoresponder_active') == '1' ? true : false),
 						'ul_field' => $email_autoresponder_ul
 					),
 					'email_imap' => array(
-						'label' => $lng['customer']['email_imap'],
+						'label' => _('Allow IMAP for e-mail accounts'),
 						'type' => 'checkbox',
 						'values' => array(
-										array ('label' => $lng['panel']['yes'], 'value' => '1')
+										array ('label' => _('Yes'), 'value' => '1')
 									),
 						'value' => array($result['imap']),
 						'mandatory' => true
 					),
 					'email_pop3' => array(
-						'label' => $lng['customer']['email_pop3'],
+						'label' => _('Allow POP3 for e-mail accounts'),
 						'type' => 'checkbox',
 						'values' => array(
-										array ('label' => $lng['panel']['yes'], 'value' => '1')
+										array ('label' => _('Yes'), 'value' => '1')
 									),
 						'value' => array($result['pop3']),
 						'mandatory' => true
 					),
 					'ftps' => array(
-						'label' => $lng['customer']['ftps'],
+						'label' => _('FTP accounts'),
 						'type' => 'textul',
 						'value' => $result['ftps'],
 						'maxlength' => 9,
 						'ul_field' => $ftps_ul
 					),
 					'tickets' => array(
-						'label' => $lng['customer']['tickets'],
+						'label' => _('Support tickets'),
 						'type' => 'textul',
 						'value' => $result['tickets'],
 						'maxlength' => 9,
@@ -239,7 +239,7 @@ return array(
 						'ul_field' => $tickets_ul
 					),
 					'mysqls' => array(
-						'label' => $lng['customer']['mysqls'],
+						'label' => _('MySQL databases'),
 						'type' => 'textul',
 						'value' => $result['mysqls'],
 						'maxlength' => 9,
@@ -247,33 +247,36 @@ return array(
 						'ul_field' => $mysqls_ul
 					),
 					'phpenabled' => array(
-						'label' => $lng['admin']['phpenabled'].'?',
+						'label' => _('PHP enabled'),
 						'type' => 'checkbox',
 						'values' => array(
-										array ('label' => $lng['panel']['yes'], 'value' => '1')
+										array ('label' => _('Yes'), 'value' => '1')
 									),
 						'value' => array($result['phpenabled'])
 					),
 					'perlenabled' => array(
-						'label' => $lng['admin']['perlenabled'].'?',
+						'label' => _('Perl enabled'),
 						'type' => 'checkbox',
 						'values' => array(
-										array ('label' => $lng['panel']['yes'], 'value' => '1')
+										array ('label' => _('Yes'), 'value' => '1')
 									),
 						'value' => array($result['perlenabled'])
 					),
 					'backup_allowed' => array(
-						'label' => $lng['backup_allowed'].'?',
-						'type' => 'yesno',
-						'yesno_var' => $backup_allowed
+						'label' => _('Backup allowed'),
+						'type' => 'checkbox',
+						'values' => array(
+										array ('label' => _('Yes'), 'value' => '1')
+									),
+						'value' => array($result['backup_allowed'])
 					),
-					'number_of_aps_packages' => array(
-						'label' => $lng['aps']['numberofapspackages'],
+					'aps_packages' => array(
+						'label' => _('APS installations'),
 						'type' => 'textul',
 						'value' => $result['aps_packages'],
 						'maxlength' => 9,
-						'visible' => ($settings['aps']['aps_active'] == '1' ? true : false),
-						'ul_field' => $number_of_aps_packages_ul
+						'visible' => ($getSetting('aps', 'aps_active') == '1' ? true : false),
+						'ul_field' => $aps_packages_ul
 					)
 				)
 			)
