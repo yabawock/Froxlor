@@ -3,8 +3,13 @@ msgstr ""
 "Project-Id-Version: Froxlor\n"
 "Report-Msgid-Bugs-To: \n"
 <<<<<<< HEAD
+<<<<<<< HEAD
 "POT-Creation-Date: 2011-06-23 10:46+0100\n"
 "PO-Revision-Date: 2011-06-23 13:30+0100\n"
+=======
+"POT-Creation-Date: 2011-06-25 13:42+0100\n"
+"PO-Revision-Date: 2011-06-25 13:42+0100\n"
+>>>>>>> fb1889f... Updated german gettext - translation, refs #824 @0h5m
 =======
 "POT-Creation-Date: 2011-06-25 13:42+0100\n"
 "PO-Revision-Date: 2011-06-25 13:42+0100\n"
