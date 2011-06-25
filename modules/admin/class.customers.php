@@ -129,7 +129,6 @@ class adminCustomers
 		{
 			$id = (int)$_GET['id'];
 		}
-
 		if ($id == 0)
 		{
 			$_SESSION['errormessage'] = _('You need to submit the customer');
@@ -694,5 +693,149 @@ class adminCustomers
 		}
 	}
 
+	public function edit()
+	{
+		$id = 0;
+		if (isset($_GET['id']))
+		{
+			$id = (int)$_GET['id'];
+		}
+		if ($id == 0)
+		{
+			$_SESSION['errormessage'] = _('You need to submit the customer');
+			redirectTo(Froxlor::getLinker()->getLink(array('area' => 'admin', 'section' => 'customers', 'action' => 'index')));
+		}
 
+		if (Froxlor::getUser()->getData('resources', 'customers_see_all') != 1)
+		{
+			$sql = "SELECT `userid` FROM `user2admin` WHERE `userid` = '" . $id . "' AND `adminid` = '" . Froxlor::getUser()->getId() . "'";
+			$result = Froxlor::getDb()->query_first($sql);
+			if (!isset($result['userid']) || $result['userid'] != $id)
+			{
+				$_SESSION['errormessage'] = _('You don\'t have the permission to edit this customer');
+				redirectTo(Froxlor::getLinker()->getLink(array('area' => 'admin', 'section' => 'customers', 'action' => 'index')));
+			}
+		}
+		try
+		{
+			$user = new user($id);
+		}
+		catch (Exception $e)
+		{
+			$_SESSION['errormessage'] = _('The chosen customer does not exist');
+			redirectTo(Froxlor::getLinker()->getLink(array('area' => 'admin', 'section' => 'customers', 'action' => 'index')));
+		}
+
+		$language_options = '';
+		$languages = Froxlor::getLanguage()->getWorkingLanguages();
+
+		while(list($language_file, $language_name) = each($languages))
+		{
+			$language_options.= makeoption($language_name, $language_file, $user->getData('general', 'def_language'), true);
+		}
+		Froxlor::getSmarty()->assign('language_options', $language_options);
+
+		$result['traffic'] = round($result['traffic'] / (1024 * 1024), get_Setting('panel', 'decimal_places'));
+		$result['diskspace'] = round($result['diskspace'] / 1024, $settings['panel']['decimal_places']);
+		$result['email'] = $idna_convert->decode($result['email']);
+		$diskspace_ul = makecheckbox('diskspace_ul', $lng['customer']['unlimited'], '-1', false, $result['diskspace'], true, true);
+
+		if($result['diskspace'] == '-1')
+		{
+			$result['diskspace'] = '';
+		}
+
+		$traffic_ul = makecheckbox('traffic_ul', $lng['customer']['unlimited'], '-1', false, $result['traffic'], true, true);
+
+		if($result['traffic'] == '-1')
+		{
+			$result['traffic'] = '';
+		}
+
+		$subdomains_ul = makecheckbox('subdomains_ul', $lng['customer']['unlimited'], '-1', false, $result['subdomains'], true, true);
+
+		if($result['subdomains'] == '-1')
+		{
+			$result['subdomains'] = '';
+		}
+
+		$emails_ul = makecheckbox('emails_ul', $lng['customer']['unlimited'], '-1', false, $result['emails'], true, true);
+
+		if($result['emails'] == '-1')
+		{
+			$result['emails'] = '';
+		}
+
+		$email_accounts_ul = makecheckbox('email_accounts_ul', $lng['customer']['unlimited'], '-1', false, $result['email_accounts'], true, true);
+
+		if($result['email_accounts'] == '-1')
+		{
+			$result['email_accounts'] = '';
+		}
+
+		$email_forwarders_ul = makecheckbox('email_forwarders_ul', $lng['customer']['unlimited'], '-1', false, $result['email_forwarders'], true, true);
+
+		if($result['email_forwarders'] == '-1')
+		{
+			$result['email_forwarders'] = '';
+		}
+
+		$email_quota_ul = makecheckbox('email_quota_ul', $lng['customer']['unlimited'], '-1', false, $result['email_quota'], true, true);
+
+		if($result['email_quota'] == '-1')
+		{
+			$result['email_quota'] = '';
+		}
+
+		$email_autoresponder_ul = makecheckbox('email_autoresponder_ul', $lng['customer']['unlimited'], '-1', false, $result['email_autoresponder'], true, true);
+
+		if($result['email_autoresponder'] == '-1')
+		{
+			$result['email_autoresponder'] = '';
+		}
+
+		$ftps_ul = makecheckbox('ftps_ul', $lng['customer']['unlimited'], '-1', false, $result['ftps'], true, true);
+
+		if($result['ftps'] == '-1')
+		{
+			$result['ftps'] = '';
+		}
+
+		$tickets_ul = makecheckbox('tickets_ul', $lng['customer']['unlimited'], '-1', false, $result['tickets'], true, true);
+
+		if($result['tickets'] == '-1')
+		{
+			$result['tickets'] = '';
+		}
+
+		$mysqls_ul = makecheckbox('mysqls_ul', $lng['customer']['unlimited'], '-1', false, $result['mysqls'], true, true);
+
+		if($result['mysqls'] == '-1')
+		{
+			$result['mysqls'] = '';
+		}
+
+		$aps_packages_ul = makecheckbox('aps_packages_ul', $lng['customer']['unlimited'], '-1', false, $result['aps_packages'], true, true);
+
+		if($result['aps_packages'] == '-1')
+		{
+			$result['aps_packages'] = '';
+		}
+
+		$result = htmlentities_array($result);
+
+		$gender_options = makeoption('title', $lng['gender']['undef'], 0, ($result['gender'] == '0' ? true : false), true, true);
+		$gender_options .= makeoption('title', $lng['gender']['male'], 1, ($result['gender'] == '1' ? true : false), true, true);
+		$gender_options .= makeoption('title', $lng['gender']['female'], 2, ($result['gender'] == '2' ? true : false), true, true);
+
+		$countrycode = countrycode::get(true, 'countrycode');
+
+		$customer_edit_data = include_once dirname(__FILE__).'/lib/formfields/admin/customer/formfield.customer_edit.php';
+		Froxlor::getSmarty()->assign('customer_edit_form', htmlform::genHTMLForm($customer_edit_data));
+
+		$title = $customer_edit_data['customer_edit']['title'];
+		$image = $customer_edit_data['customer_edit']['image'];
+
+		return Froxlor::getSmarty()->fetch('admin/customers/edit.tpl');
+	}
 }
