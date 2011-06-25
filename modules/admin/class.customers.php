@@ -42,7 +42,7 @@ class adminCustomers
 		while($row = Froxlor::getDb()->fetch_array($result))
 		{
 			$domains = Froxlor::getDb()->query_first("SELECT COUNT(`id`) AS `domains` " . "FROM `panel_domains` WHERE `customerid`='" . (int)$row['id'] . "' AND `parentdomainid`='0' AND `id`<> '" . (int)$row['standardsubdomain'] . "'");
-			$handle = Froxlor::getDb()->query_first("SELECT `h`.* FROM `domain_handle` AS h, `user2handle` AS u2h WHERE `h`.`handleid` = `u2h`.`handleid` AND `u2h`.`userid` = '" . (int)$row['id'] . "'");
+			$handle = Froxlor::getDb()->query_first("SELECT `h`.* FROM `user_addresses` AS h, `user2handle` AS u2h WHERE `h`.`id` = `u2h`.`handleid` AND `u2h`.`userid` = '" . (int)$row['id'] . "'");
 			$admin = Froxlor::getDb()->query_first("SELECT `u`.`loginname` FROM `users` u, `user2admin` u2a WHERE `u`.`id` = `u2a`.`adminid` AND `u2a`.`userid` = '" . (int)$row['id'] . "'");
 			$row['domains'] = intval($domains['domains']);
 			$row['traffic_used'] = round($row['traffic_used'] / (1024 * 1024), getSetting('panel', 'decimal_places'));
@@ -682,6 +682,7 @@ class adminCustomers
 				inserttask('1');
 			}
 
+			$_SESSION['successmessage'] = sprintf(_('User \'%s\' successfully created'), $loginname);
 			if($sendpassword == '1')
 			{
 				$replace_arr = array(
@@ -717,18 +718,16 @@ class adminCustomers
 
 				if ($_mailerror) {
 					#Froxlor::getLog()->logAction(ADM_ACTION, LOG_ERR, "Error sending mail: " . $mailerr_msg);
-					$_SESSION['successmessage'] = sprintf(_('User \'%s\' successfully created'), $loginname);
-					$_SESSION['errormessage'] = _('E-mail could not be sent');
+					$_SESSION['errormessage'] = sprintf(_('Welcome - e-mail could not be sent for customer\'%s\''), $loginname);
 					redirectTo(Froxlor::getLinker()->getLink(array('area' => 'admin', 'section' => 'customers', 'action' => 'index')));
-
-					standard_error('errorsendingmail', $email);
 				}
 
 				Froxlor::getMail()->ClearAddresses();
 				#Froxlor::getLog()->logAction(ADM_ACTION, LOG_NOTICE, "automatically sent password to user '" . $loginname . "'");
 			}
-			$_SESSION['successmessage'] = sprintf(_('User \'%s\' successfully created'), $loginname);
 			redirectTo(Froxlor::getLinker()->getLink(array('area' => 'admin', 'section' => 'customers', 'action' => 'index')));
 		}
 	}
+
+
 }
