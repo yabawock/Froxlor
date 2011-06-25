@@ -718,7 +718,7 @@ class adminCustomers
 
 				if ($_mailerror) {
 					#Froxlor::getLog()->logAction(ADM_ACTION, LOG_ERR, "Error sending mail: " . $mailerr_msg);
-					$_SESSION['errormessage'] = sprintf(_('Welcome - e-mail could not be sent for customer\'%s\''), $loginname);
+					$_SESSION['errormessage'] = sprintf(_('Welcome - e-mail could not be sent for customer \'%s\''), $loginname);
 					redirectTo(Froxlor::getLinker()->getLink(array('area' => 'admin', 'section' => 'customers', 'action' => 'index')));
 				}
 

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Froxlor\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-25 11:43+0100\n"
-"PO-Revision-Date: 2011-06-25 11:43+0100\n"
+"POT-Creation-Date: 2011-06-25 13:42+0100\n"
+"PO-Revision-Date: 2011-06-25 13:42+0100\n"
 "Last-Translator: Florian Aders <eleras@froxlor.org>\n"
 "Language-Team: The Froxlor team <team@froxlor.org>\n"
 "Language: \n"
@@ -2069,15 +2069,15 @@ msgstr "Das Verzeichnis '%s' für diesen Kunden existiert bereits. Bitte entfern
 msgid "The customer '%1$s' could not be created: %2$s"
 msgstr "Der Kunde '%1$s' konnte nicht erstellt werden: %2$s"
 
-#: modules/admin/class.customers.php:720
-#: modules/admin/class.customers.php:730
+#: modules/admin/class.customers.php:685
 #, php-format
 msgid "User '%s' successfully created"
 msgstr "Der Benutzer '%s' wurde erfolgreich angelegt"
 
 #: modules/admin/class.customers.php:721
-msgid "E-mail could not be sent"
-msgstr "E-Mail konnte nicht versendet werden"
+#, php-format
+msgid "Welcome - e-mail could not be sent for customer '%s'"
+msgstr "Die Willkommensemail für den Kunden '%s' konnte nicht versendet werden"
 
 #: modules/admin/class.index.php:69
 msgid "Disabled"
