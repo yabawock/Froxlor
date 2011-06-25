@@ -133,7 +133,7 @@ return array(
 				'image' => 'icons/user_add.png',
 				'fields' => array(
 					'diskspace' => array(
-						'label' => _('Webspace (MB)'),
+						'label' => _('Webspace'),
 						'type' => 'textul',
 						'value' => 0,
 						'maxlength' => 6,
@@ -141,7 +141,7 @@ return array(
 						'ul_field' => $diskspace_ul
 					),
 					'traffic' => array(
-						'label' => _('Traffic (GB)'),
+						'label' => _('Traffic'),
 						'type' => 'textul',
 						'value' => 0,
 						'maxlength' => 4,
