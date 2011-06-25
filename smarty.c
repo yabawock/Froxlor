@@ -269,6 +269,12 @@ gettext("Yes");
 gettext("No");
 
 /* templates/Froxlor/index.tpl */
+gettext("Information");
+
+/* templates/Froxlor/index.tpl */
+gettext("Error");
+
+/* templates/Froxlor/index.tpl */
 gettext("the Froxlor Team");
 
 /* templates/Froxlor/webftp/webftp_edit.tpl */
