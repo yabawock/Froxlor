@@ -4,6 +4,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-06-25 13:42+0100\n"
 "PO-Revision-Date: 2011-06-25 13:42+0100\n"
+"POT-Creation-Date: 2011-06-25 13:42+0100\n"
+"PO-Revision-Date: 2011-06-25 13:42+0100\n"
 "Last-Translator: Florian Aders <eleras@froxlor.org>\n"
 "Language-Team: The Froxlor team <team@froxlor.org>\n"
 "Language: \n"
@@ -2183,3 +2185,7 @@ msgstr "Eine neuere Version von Froxlor wurde installiert, aber noch nicht einge
 
 #~ msgid "&infin;"
 #~ msgstr "&infin;"
+<<<<<<< HEAD
+=======
+>>>>>>> fb1889f... Updated german gettext - translation, refs #824 @0h5m
+>>>>>>> rrp

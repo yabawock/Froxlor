@@ -129,6 +129,7 @@ class adminCustomers
 		{
 			$id = (int)$_GET['id'];
 		}
+
 		if ($id == 0)
 		{
 			$_SESSION['errormessage'] = _('You need to submit the customer');
