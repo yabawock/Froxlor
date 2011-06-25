@@ -62,7 +62,7 @@
 								{t}Traffic:{/t}&nbsp;
 								{if $customer.row.traffic != -1}
 									<span class="progressBar" title="{$customer.row.traffic_used} / {$customer.row.traffic} GB">
-										{if (($customer.row.traffic / 100) * $trafficmax) < $customer.row.traffic_used}
+										{if (($customer.row.traffic / 100) * $maxtraffic) < $customer.row.traffic_used}
 											<span class="redbar">
 										{else}
 											<span>
