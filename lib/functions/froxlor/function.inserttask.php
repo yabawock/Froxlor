@@ -29,8 +29,6 @@
 
 function inserttask($type, $param1 = '', $param2 = '', $param3 = '', $param4 = '')
 {
-	global $db, $settings;
-
 	if($type == '1'
 	   || $type == '3'
 	   || $type == '4'
@@ -38,8 +36,8 @@ function inserttask($type, $param1 = '', $param2 = '', $param3 = '', $param4 = '
 	   || $type == '9'
 	   || $type == '10')
 	{
-		$db->query('DELETE FROM `' . TABLE_PANEL_TASKS . '` WHERE `type`="' . $type . '"');
-		$db->query('INSERT INTO `' . TABLE_PANEL_TASKS . '` (`type`) VALUES ("' . $type . '")');
+		Froxlor::getDb()->query('DELETE FROM `' . TABLE_PANEL_TASKS . '` WHERE `type`="' . $type . '"');
+		Froxlor::getDb()->query('INSERT INTO `' . TABLE_PANEL_TASKS . '` (`type`) VALUES ("' . $type . '")');
 	}
 	elseif($type == '2'
 	       && $param1 != ''
@@ -53,7 +51,7 @@ function inserttask($type, $param1 = '', $param2 = '', $param3 = '', $param4 = '
 		$data['gid'] = $param3;
 		$data['store_defaultindex'] = $param4;
 		$data = serialize($data);
-		$db->query('INSERT INTO `' . TABLE_PANEL_TASKS . '` (`type`, `data`) VALUES ("2", "' . $db->escape($data) . '")');
+		Froxlor::getDb()->query('INSERT INTO `' . TABLE_PANEL_TASKS . '` (`type`, `data`) VALUES ("2", "' . Froxlor::getDb()->escape($data) . '")');
 	}
 	elseif($type == '6'
 			&& $param1 != '')
@@ -61,7 +59,7 @@ function inserttask($type, $param1 = '', $param2 = '', $param3 = '', $param4 = '
 		$data = Array();
 		$data['loginname'] = $param1;
 		$data = serialize($data);
-		$db->query('INSERT INTO `' . TABLE_PANEL_TASKS . '` (`type`, `data`) VALUES ("6", "' . $db->escape($data) . '")');
+		Froxlor::getDb()->query('INSERT INTO `' . TABLE_PANEL_TASKS . '` (`type`, `data`) VALUES ("6", "' . Froxlor::getDb()->escape($data) . '")');
 	}
 	elseif($type == '7'
 			&& $param1 != ''
@@ -71,7 +69,7 @@ function inserttask($type, $param1 = '', $param2 = '', $param3 = '', $param4 = '
 		$data['loginname'] = $param1;
 		$data['email'] = $param2;
 		$data = serialize($data);
-		$db->query('INSERT INTO `' . TABLE_PANEL_TASKS . '` (`type`, `data`) VALUES ("7", "' . $db->escape($data) . '")');
+		Froxlor::getDb()->query('INSERT INTO `' . TABLE_PANEL_TASKS . '` (`type`, `data`) VALUES ("7", "' . Froxlor::getDb()->escape($data) . '")');
 	}
 	elseif($type == '8'
 			&& $param1 != ''
@@ -81,6 +79,6 @@ function inserttask($type, $param1 = '', $param2 = '', $param3 = '', $param4 = '
 		$data['loginname'] = $param1;
 		$data['homedir'] = $param2;
 		$data = serialize($data);
-		$db->query('INSERT INTO `' . TABLE_PANEL_TASKS . '` (`type`, `data`) VALUES ("8", "' . $db->escape($data) . '")');
+		Froxlor::getDb()->query('INSERT INTO `' . TABLE_PANEL_TASKS . '` (`type`, `data`) VALUES ("8", "' . Froxlor::getDb()->escape($data) . '")');
 	}
 }
