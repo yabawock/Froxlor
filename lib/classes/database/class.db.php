@@ -361,7 +361,7 @@ class db
 		closelog();
 		die("We are sorry, but a MySQL - error occurred. The administrator may find more information in syslog with the ID $md5");
 	}
-	
+
 	/**
 	 * Converts an array to an sql update string
 	 *
@@ -372,19 +372,20 @@ class db
 	public function array2update($array) {
 		$data = array();
 		foreach ($array as $key => $value) {
-			$data[] = "`".$key."` = `". $value ."`";;
+			$data[] = "`".$key."` = '". $value ."'";;
 		}
-		
+
 		$num = count($data);
-		
+
 		$sql = "";
 		for ($i = 0; $i < $num; $i++) {
 			$sql .= $data[$i];
-			
+
 			if (($i+1) < $num) {
 				$sql .= ", ";
 			}
 		}
+		return $sql;
 	}
 }
 
