@@ -349,6 +349,7 @@ class Loader
 				$mail->AddReplyTo($settings['panel']['adminmail_return'], $settings['panel']['adminmail_defname']);
 			}
 		}
+		Froxlor::addObject('mail', $mail);
 	}
 
 	private function execute()
