@@ -101,6 +101,11 @@ class adminCustomers
 		{
 			$id = (int)$_GET['id'];
 		}
+		if ($id == 0)
+		{
+			$_SESSION['errormessage'] = _('You need to submit the customer');
+			redirectTo(Froxlor::getLinker()->getLink(array('area' => 'admin', 'section' => 'customers', 'action' => 'index')));
+		}
 		$result = Froxlor::getDb()->query_first("SELECT `u`.`loginname` FROM `users` u, `user2admin` u2a WHERE `id`='" . $id . "' " . (Froxlor::getUser()->getData('resources', 'customers_see_all') ? '' : " AND `u2a`.`userid` = '" . $id . "' AND `u2a`.`adminid` = '" . Froxlor::getUser()->getId() . "'"));
 		$destination_user = $result['loginname'];
 
@@ -123,6 +128,11 @@ class adminCustomers
 		if (isset($_GET['id']))
 		{
 			$id = (int)$_GET['id'];
+		}
+		if ($id == 0)
+		{
+			$_SESSION['errormessage'] = _('You need to submit the customer');
+			redirectTo(Froxlor::getLinker()->getLink(array('area' => 'admin', 'section' => 'customers', 'action' => 'index')));
 		}
 		$result = Froxlor::getDb()->query_first("SELECT `u`.`loginname` FROM `users` u, `user2admin` u2a WHERE `id`='" . (int)$id . "' " . (Froxlor::getUser()->getData('resources', 'customers_see_all') ? '' : " AND `u2a`.`userid` = '" . $id . "' AND `u2a`.`adminid` = '" . Froxlor::getUser()->getId() . "'"));
 
@@ -509,17 +519,13 @@ class adminCustomers
 				$password = substr(md5(uniqid(microtime(), 1)), 12, 6);
 			}
 
-			$_theme = getSetting('panel', 'default_theme');
-
-
-
 			$newuserdata = array();
 			$newuserdata['general']['loginname'] = $loginname;
 			$newuserdata['general']['password'] = md5($password);
 			$newuserdata['general']['isadmin'] = 0;
 			$newuserdata['general']['def_language'] = $def_language;
 			$newuserdata['general']['guid'] = $guid;
-			#$newuserdata['general']['theme'] = $theme;
+			$newuserdata['general']['theme'] = getSetting('panel', 'default_theme');
 
 			foreach(array('diskspace', 'traffic', 'subdomains', 'emails', 'email_accounts', 'email_forwarders', 'email_quota', 'email_autoresponder', 'ftps', 'tickets', 'mysqls', 'aps_packages', 'documentroot', 'perlenabled', 'phpenabled','backup_allowed') as $type)
 			{
@@ -544,8 +550,6 @@ class adminCustomers
 				redirectTo(Froxlor::getLinker()->getLink($returnto));
 			}
 
-			#$_SESSION['errormessage'] = _('TODO: User adding not yet implemented');
-			#redirectTo(Froxlor::getLinker()->getLink($returnto));
 			$result = Froxlor::getDb()->query("INSERT INTO `user2admin` SET `adminid` = '" . Froxlor::getUser()->getId() . "', `userid` = '" . $newuser->getId() . "'");
 
 			Froxlor::getUser()->setData('resources', 'customers_used', Froxlor::getUser()->getData('resources', 'customers_used') + 1);
