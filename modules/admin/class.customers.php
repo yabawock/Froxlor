@@ -553,61 +553,21 @@ class adminCustomers
 			$result = Froxlor::getDb()->query("INSERT INTO `user2admin` SET `adminid` = '" . Froxlor::getUser()->getId() . "', `userid` = '" . $newuser->getId() . "'");
 
 			Froxlor::getUser()->setData('resources', 'customers_used', Froxlor::getUser()->getData('resources', 'customers_used') + 1);
-			if($mysqls != '-1')
+			foreach (array('diskspace', 'traffic', 'subdomains', 'emails', 'email_accounts', 'email_forwarders', 'email_quota', 'email_autoresponder', 'ftps', 'tickets', 'mysqls', 'aps_packages') as $type)
 			{
-				Froxlor::getUser()->setData('resources', 'mysqls_used', Froxlor::getUser()->getData('resources', 'mysqls_used') + (int)$mysqls);
-			}
-
-			if($emails != '-1')
-			{
-				Froxlor::getUser()->setData('resources', 'emails_used', Froxlor::getUser()->getData('resources', 'emails_used') + (int)$emails);
-			}
-
-			if($email_accounts != '-1')
-			{
-				Froxlor::getUser()->setData('resources', 'email_accounts_used', Froxlor::getUser()->getData('resources', 'email_accounts_used') + (int)$email_accounts);
-			}
-
-			if($email_forwarders != '-1')
-			{
-				Froxlor::getUser()->setData('resources', 'email_forwarders_used', Froxlor::getUser()->getData('resources', 'email_forwarders_used') + (int)$email_forwarders);
-			}
-
-			if($email_quota != '-1')
-			{
-				Froxlor::getUser()->setData('resources', 'email_quota_used', Froxlor::getUser()->getData('resources', 'email_quota_used') + (int)$email_quota);
-			}
-
-			if($email_autoresponder != '-1'
-				&& getSetting('autoresponder', 'autoresponder_active') == 1)
-			{
-				Froxlor::getUser()->setData('resources', 'email_autoresponder_used', Froxlor::getUser()->getData('resources', 'email_autoresponder_used') + (int)$email_autoresponder);
-			}
-
-			if($subdomains != '-1')
-			{
-				Froxlor::getUser()->setData('resources', 'subdomains_used', Froxlor::getUser()->getData('resources', 'subdomains_used') + (int)$subdomains);
-			}
-
-			if($ftps != '-1')
-			{
-				Froxlor::getUser()->setData('resources', 'ftps_used', Froxlor::getUser()->getData('resources', 'ftps_used') + (int)$ftps);
-			}
-
-			if($tickets != '-1'
-			   && getSetting('ticket', 'enabled') == 1)
-			{
-				Froxlor::getUser()->setData('resources', 'tickets_used', Froxlor::getUser()->getData('resources', 'tickets_used') + (int)$tickets);
-			}
-
-			if($diskspace != '-1')
-			{
-				Froxlor::getUser()->setData('resources', 'diskspace_used', Froxlor::getUser()->getData('resources', 'diskspace_used') + (int)$diskspace);
-			}
-
-			if($aps_packages != '-1')
-			{
-				Froxlor::getUser()->setData('resources', 'aps_packages_used', Froxlor::getUser()->getData('resources', 'aps_packages_used') + (int)$aps_packages);
+				$update = 1;
+				if ($type == 'tickets' && getSetting('ticket', 'enabled') != 1)
+				{
+					$update = 0;
+				}
+				elseif($type == 'email_autoresponder' && getSetting('autoresponder', 'autoresponder_active') != 1)
+				{
+					$update = 0;
+				}
+				if ($update && $$type != -1)
+				{
+					Froxlor::getUser()->setData('resources', $type . '_used', Froxlor::getUser()->getData('resources', $type . '_used') + (int)$$type);
+				}
 			}
 
 			Froxlor::getDb()->query("UPDATE `panel_settings` SET `value`='" . Froxlor::getDb()->escape($guid) . "' " . "WHERE `settinggroup`='system' AND `varname`='lastguid'");
