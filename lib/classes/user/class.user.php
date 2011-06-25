@@ -164,7 +164,7 @@ class user {
 		// creating a new user is possible
 		if ($this->_id == -1) {
 			// create a new record
-			$sql = "INSERT INTO `". TABLE_USERS ."` SET `deactivated` = '0'";
+			$sql = "INSERT INTO `". TABLE_USERS ."` SET `deactivated` = '0', `loginname` = '" . $this->_db->escape($data['general']['loginname']) . "'";
 			$result = $this->_db->query($sql);
 
 			if (!$result) {
@@ -177,7 +177,7 @@ class user {
 
 			// now setup user address record
 			if (!isset($data['general']['contactid'])) {
-				$sql = "INSERT INTO `". TABLE_USER_ADDRESSES ."`";
+				$sql = "INSERT INTO `". TABLE_USER_ADDRESSES ."` SET `name` = 'temp'";
 				$result = $this->_db->query($sql);
 
 				if (!$result) {
@@ -417,7 +417,7 @@ class user {
 
 		// TABLE_USER_ADDRESSES
 		$data = $this->_db->array2update($this->_data['address']);
-		$sql = "UPDATE ". TABLE_USER_ADDRESSES ." SET ". $data ." WHERE `id` = '". $this->getId() ."'";
+		$sql = "UPDATE ". TABLE_USER_ADDRESSES ." SET ". $data ." WHERE `id` = '". $this->data['general']['contactid'] ."'";
 		$this->_db->query($sql);
 
 		if ($this->isAdmin()) {
