@@ -1,9 +1,9 @@
 <tr>
 	<td{$style} class="formlabeltd">
 		<label for="{$fieldname}">{$label}{$mandatory}:
-		<if $desc != ''>
+		{if $desc != ''}
 			<br /><span style="font-size:85%;">{$desc}</span>
-		</if>
+		{/if}
 		</label>
 	</td>
 	<td>

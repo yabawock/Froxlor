@@ -1,1 +1,1 @@
-<textarea name="{$fieldname}" id="{$fieldname}" {$extras}>{$value}</textarea>
+<textarea name="{$fieldname|escape:"htmlall"}" id="{$fieldname|escape:"htmlall"}" {$extras}>{$value|escape:"htmlall"}</textarea>

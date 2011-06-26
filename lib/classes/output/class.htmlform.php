@@ -15,7 +15,7 @@
  *
  */
 
-class htmlform 
+class htmlform
 {
 	/**
 	 * internal tmp-variable to store form
@@ -40,16 +40,16 @@ class htmlform
 				/*
 				 * here be section title & image
 				 */
-				$title = $section['title'];
-				$image = $section['image'];
+				Froxlor::getSmarty()->assign('title', $section['title']);
+				Froxlor::getSmarty()->assign('image', $section['image']);
 
 				if(isset($section['visible']) && $section['visible'] === false)
 				{
 					continue;
 				}
-	
+
 				if (!isset($section['nobuttons']) || $section['nobuttons'] == false) {
-					eval("self::\$_form .= \"" . getTemplate("misc/form/table_section", "1") . "\";");
+					self::$_form .= Froxlor::getSmarty()->fetch('misc/form/table_section.tpl');
 				} else {
 					$nob = true;
 				}
@@ -63,20 +63,21 @@ class htmlform
 					}
 
 					if ($nexto === false || (isset($fielddata['next_to']) && $nexto['field'] != $fielddata['next_to'])) {
-						$label = $fielddata['label'];
-						$desc = (isset($fielddata['desc']) ? $fielddata['desc'] : '');
-						$style = (isset($fielddata['style']) ? ' style="'.$fielddata['style'].'"' : '');
-						$mandatory = self::_getMandatoryFlag($fielddata);
+						Froxlor::getSmarty()->assign('label', $fielddata['label']);
+						Froxlor::getSmarty()->assign('desc', (isset($fielddata['desc']) ? $fielddata['desc'] : ''));
+						Froxlor::getSmarty()->assign('style', (isset($fielddata['style']) ? ' style="'.$fielddata['style'].'"' : ''));
+						Froxlor::getSmarty()->assign('mandatory', self::_getMandatoryFlag($fielddata));
 						$data_field = self::_parseDataField($fieldname, $fielddata);
 						//$data_field = str_replace("\n", "", $data_field);
 						$data_field = str_replace("\t", "", $data_field);
 						if (isset($fielddata['has_nextto'])) {
-							$nexto = array('field' => $fieldname);
+							$nextto = array('field' => $fieldname);
 							$data_field.='{NEXTTOFIELD_'.$fieldname.'}';
 						} else {
 							$nexto = false;
 						}
-						eval("self::\$_form .= \"" . getTemplate("misc/form/table_row", "1") . "\";");
+						Froxlor::getSmarty()->assign('data_field', $data_field);
+						self::$_form .= Froxlor::getSmarty()->fetch('misc/form/table_row.tpl');
 					} else {
 						$data_field = self::_parseDataField($fieldname, $fielddata);
 						//$data_field = str_replace("\n", "", $data_field);
@@ -95,7 +96,7 @@ class htmlform
 
 		// add save/reset buttons at the end of the form
 		if (!$nob) {
-			eval("self::\$_form .= \"" . getTemplate("misc/form/table_end", "1") . "\";");
+			self::$_form .= Froxlor::getSmarty()->fetch('misc/form/table_end.tpl');
 		}
 
 		return self::$_form;
@@ -158,15 +159,24 @@ class htmlform
 		} else {
 			$value = '';
 		}
-		
+
+		if ($value == '-1' && $unlimited == true)
+		{
+			$value = '';
+		}
+
 		$ulfield = ($unlimited == true ? '&nbsp;'.$data['ul_field'] : '');
 		if(isset($data['display']) && $data['display'] != '')
 		{
 			$ulfield = '<strong>'.$data['display'].'</strong>';
 		}
 
-		eval("\$return = \"" . getTemplate("misc/form/input_text", "1") . "\";");
-		return $return;
+		Froxlor::getSmarty()->assign('fieldname', $fieldname);
+		Froxlor::getSmarty()->assign('type', $type);
+		Froxlor::getSmarty()->assign('extras', $extras);
+		Froxlor::getSmarty()->assign('value', $value);
+		Froxlor::getSmarty()->assign('ulfield', $ulfield);
+		return Froxlor::getSmarty()->fetch('misc/form/input_text.tpl');
 	}
 
 	private static function _textArea($fieldname = '', $data = array())
@@ -179,7 +189,7 @@ class htmlform
 		if(isset($data['rows'])) {
 			$extras .= ' rows="'.$data['rows'].'"';
 		}
-		
+
 		// add support to save reloaded forms
 		if (isset($data['value'])) {
 			$value = $data['value'];
@@ -190,15 +200,17 @@ class htmlform
 		}
 		trim($value);
 
-		eval("\$return = \"" . getTemplate("misc/form/input_textarea", "1") . "\";");
-		return $return;
+		Froxlor::getSmarty()->assign('fieldname', $fieldname);
+		Froxlor::getSmarty()->assign('extras', $extras);
+		Froxlor::getSmarty()->assign('value', $value);
+		return Froxlor::getSmarty()->fetch('misc/form/input_textarea.tpl');
 	}
 
 	private static function _yesnoBox($data = array())
 	{
 		return $data['yesno_var'];
 	}
-	
+
 	private static function _labelField($data = array())
 	{
 		return $data['value'];
@@ -214,19 +226,19 @@ class htmlform
 		} else {
 			$select_var = '';
 		}
-		
-		return '<select 
-			id="'.$fieldname.'" 
-			name="'.$fieldname.'" 
+
+		return '<select
+			id="'.htmlspecialchars($fieldname).'"
+			name="'.htmlspecialchars($fieldname).'"
 			'.(isset($data['class']) ? ' class="'.$data['class'] .'" ' : '').'
 			>'
 			.$select_var.
 			'</select>';
 	}
-	
+
 	/**
 	 * Function to generate checkboxes.
-	 * 
+	 *
 	 * <code>
 	 * $data = array(
      *                       'label' => $lng['customer']['email_imap'],
@@ -240,7 +252,7 @@ class htmlform
      *                       'mandatory' => true
      *          )
 	 * </code>
-	 * 
+	 *
 	 * @param string $fieldname contains the fieldname
 	 * @param array $data contains the data array
 	 */
@@ -251,7 +263,7 @@ class htmlform
 		} else {
 			$checked = array();
 		}
-		
+
 		if (isset($_SESSION['requestData'])) {
 			if(isset($_SESSION['requestData'][$fieldname])) {
 				$checked = array($_SESSION['requestData'][$fieldname]);
@@ -259,14 +271,14 @@ class htmlform
 				$checked = array();
 			}
 		}
-		
+
 		// default value is none, so the checkbox isn't an array
 		$isArray = '';
-		
+
 		if (count($data['values']) > 1) {
 			$isArray = '[]';
 		}
-		
+
 		// will contain the output
 		$output = "";
 		foreach($data['values'] as $val) {
@@ -279,11 +291,11 @@ class htmlform
 					break;
 				}
 			}
-			
-			$output .= '<label><input type="checkbox" name="'.$fieldname.$isArray.'" value="'.$val['value'].'" '.$isChecked.'/>'.$key.'</label>';
+
+			$output .= '<label><input type="checkbox" name="'.$fieldname.$isArray.'" value="'.htmlspecialchars($val['value']).'" '.$isChecked.'/>'.htmlspecialchars($key).'</label>';
 		}
-		
+
 		return $output;
 	}
-	
+
 }
