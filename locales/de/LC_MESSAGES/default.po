@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Froxlor\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-26 13:03+0100\n"
-"PO-Revision-Date: 2011-06-26 13:05+0100\n"
+"POT-Creation-Date: 2011-06-26 15:04+0100\n"
+"PO-Revision-Date: 2011-06-26 15:04+0100\n"
 "Last-Translator: Florian Aders <eleras@froxlor.org>\n"
 "Language-Team: The Froxlor team <team@froxlor.org>\n"
 "Language: \n"
@@ -1519,7 +1519,7 @@ msgstr ""
 
 #: lib/classes/country/countries.inc.php:221
 msgid "Tanzania, United Republic of"
-msgstr ""
+msgstr "Tansania, Vereinigte Republik"
 
 #: lib/classes/country/countries.inc.php:222
 msgid "Thailand"
@@ -1587,11 +1587,11 @@ msgstr "Vereinigte Staaten von Amerika"
 
 #: lib/classes/country/countries.inc.php:238
 msgid "United States Minor Outlying Islands"
-msgstr ""
+msgstr "United States Minor Outlying Islands"
 
 #: lib/classes/country/countries.inc.php:239
-msgid "Uruguay"
-msgstr ""
+msgid "Uruguay, Oriental Republic of"
+msgstr "Kroatien, RepublikUruguay, Republik Östlich des"
 
 #: lib/classes/country/countries.inc.php:240
 msgid "Uzbekistan"
@@ -1606,8 +1606,8 @@ msgid "Venezuela, Bolivarian Republic of"
 msgstr ""
 
 #: lib/classes/country/countries.inc.php:243
-msgid "Viet Nam"
-msgstr ""
+msgid "Vietnam, Socialist Republic of"
+msgstr "Vietnam, Sozialistische Republik"
 
 #: lib/classes/country/countries.inc.php:244
 msgid "Virgin Islands, British"
@@ -1626,16 +1626,16 @@ msgid "Western Sahara"
 msgstr ""
 
 #: lib/classes/country/countries.inc.php:248
-msgid "Yemen"
-msgstr ""
+msgid "Yemen, Republic of"
+msgstr "Jemen, Republik"
 
 #: lib/classes/country/countries.inc.php:249
-msgid "Zambia"
-msgstr ""
+msgid "Zambia, Republic of"
+msgstr "Sambia, Republik"
 
 #: lib/classes/country/countries.inc.php:250
-msgid "Zimbabwe"
-msgstr ""
+msgid "Zimbabwe, Republic of"
+msgstr "Simbabwe, Republik"
 
 #: lib/classes/general/class.Loader.php:305
 msgid "Overview"
@@ -2041,8 +2041,8 @@ msgstr "Entsperren"
 
 #: modules/admin/class.customers.php:106
 #: modules/admin/class.customers.php:134
-#: modules/admin/class.customers.php:705
-#: modules/admin/class.customers.php:770
+#: modules/admin/class.customers.php:698
+#: modules/admin/class.customers.php:764
 msgid "You need to submit the customer"
 msgstr "Sie müssen die Kunden - ID übergeben"
 
@@ -2072,23 +2072,27 @@ msgid "You may not add more than %s customers"
 msgstr "Sie dürfen nicht mehr als %s Kunden haben"
 
 #: modules/admin/class.customers.php:198
-#: modules/admin/class.customers.php:746
+#: modules/admin/class.customers.php:739
 msgid "Male"
 msgstr "Männlich"
 
 #: modules/admin/class.customers.php:199
-#: modules/admin/class.customers.php:747
+#: modules/admin/class.customers.php:740
 msgid "Female"
 msgstr "Weiblich"
 
-#: modules/admin/class.customers.php:432
+#: modules/admin/class.customers.php:425
+#: modules/admin/class.customers.php:896
 #, php-format
 msgid "You may not allocate more resources for the resource '%s' than you have"
 msgstr "Sie dürfen für die Ressource '%s' nicht mehr vergeben als Sie selber besitzen"
 
-#: modules/admin/class.customers.php:439
-#: modules/admin/class.customers.php:444
-#: modules/admin/class.customers.php:449
+#: modules/admin/class.customers.php:432
+#: modules/admin/class.customers.php:437
+#: modules/admin/class.customers.php:442
+#: modules/admin/class.customers.php:904
+#: modules/admin/class.customers.php:909
+#: modules/admin/class.customers.php:914
 #: modules/admin/class.index.php:266
 #: modules/admin/class.index.php:271
 #: modules/admin/class.index.php:276
@@ -2096,55 +2100,61 @@ msgstr "Sie dürfen für die Ressource '%s' nicht mehr vergeben als Sie selber b
 msgid "Missing input in field '%s'"
 msgstr "Das Feld '%s' darf nicht leer sein"
 
-#: modules/admin/class.customers.php:454
+#: modules/admin/class.customers.php:447
+#: modules/admin/class.customers.php:919
 #, php-format
 msgid "The entered e-mail address '%s' is wrong"
 msgstr "Die eingegebene E-Mail - Adresse '%s' ist ungültig"
 
-#: modules/admin/class.customers.php:469
+#: modules/admin/class.customers.php:462
 #, php-format
 msgid "You cannot create accounts which are similar to system accounts (as for example begin with '%s'). Please enter another account name."
 msgstr "Sie können keinen Account erstellen, welche Systemaccounts ähnlich sind (z.B. mit '%s' anfangen). Bitte wählen Sie einen anderen Accountnamen."
 
-#: modules/admin/class.customers.php:484
+#: modules/admin/class.customers.php:477
 #, php-format
 msgid "An account called '%s' already exists"
 msgstr "Ein Account mit dem Namen '%s' existiert bereits"
 
-#: modules/admin/class.customers.php:489
+#: modules/admin/class.customers.php:482
 #, php-format
 msgid "The chosen account name '%s' contains invalid characters"
 msgstr "Der gewählt Accountname '%s' enthält ungültige Zeichen"
 
-#: modules/admin/class.customers.php:498
+#: modules/admin/class.customers.php:491
 #, php-format
 msgid "The directory '%s' already exists for this customer. Please remove this before adding the customer again."
 msgstr "Das Verzeichnis '%s' für diesen Kunden existiert bereits. Bitte entfernen Sie es becor Sie diesen Kunden erneut anlegen."
 
-#: modules/admin/class.customers.php:549
+#: modules/admin/class.customers.php:542
 #, php-format
 msgid "The customer '%1$s' could not be created: %2$s"
 msgstr "Der Kunde '%1$s' konnte nicht erstellt werden: %2$s"
 
-#: modules/admin/class.customers.php:649
+#: modules/admin/class.customers.php:642
 #, php-format
 msgid "User '%s' successfully created"
 msgstr "Der Benutzer '%s' wurde erfolgreich angelegt"
 
-#: modules/admin/class.customers.php:685
+#: modules/admin/class.customers.php:678
 #, php-format
 msgid "Welcome - e-mail could not be sent for customer '%s'"
 msgstr "Die Willkommensemail für den Kunden '%s' konnte nicht versendet werden"
 
-#: modules/admin/class.customers.php:715
-#: modules/admin/class.customers.php:781
+#: modules/admin/class.customers.php:708
+#: modules/admin/class.customers.php:775
 msgid "You don't have the permission to edit this customer"
 msgstr "Sie haben nicht die erforderlichen Berechtigungen um diesen Kunden zu bearbeiten"
 
-#: modules/admin/class.customers.php:725
-#: modules/admin/class.customers.php:791
+#: modules/admin/class.customers.php:718
+#: modules/admin/class.customers.php:785
 msgid "The chosen customer does not exist"
 msgstr "Der ausgewählte Kunde existiert nicht"
+
+#: modules/admin/class.customers.php:1086
+#, php-format
+msgid "The customer '%s' was updated successfully"
+msgstr "Der Kunde '%1$s' wurde erfolgreich aktualisiert"
 
 #: modules/admin/class.index.php:69
 msgid "Disabled"
