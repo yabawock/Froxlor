@@ -22,7 +22,7 @@ body {
 	padding: 0;
 }
 
-article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section { 
+article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section {
     display:block;
 }
 
@@ -35,7 +35,7 @@ article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section {
 }
 
 header img {
-	padding: 5px 0 5px 10px;	
+	padding: 5px 0 5px 10px;
 }
 
 h1 {
@@ -263,7 +263,7 @@ p.submit {
 .messagewrapper {
 	width: 650px;
 	margin: 0 auto;
-	padding: 120px 0 0 0; 
+	padding: 120px 0 0 0;
 	overflow: hidden;
 }
 
@@ -308,8 +308,12 @@ p.submit {
 	color: #c00 !important;
 }
 
-/* 
- * warning message display 
+.formerror {
+	background-color: #FFDCCD !important;
+}
+
+/*
+ * warning message display
  */
 .warningcontainer {
 	background: url('../../images/Froxlor/icons/warning.png') 10px center no-repeat #fffecc;
@@ -329,8 +333,8 @@ p.submit {
 	color: #D57D00 !important;
 }
 
-/* 
- * success message display 
+/*
+ * success message display
  */
 .successcontainer {
 	background: url('../../images/Froxlor/icons/ok.png') 10px center no-repeat #E2F9E3;
@@ -350,8 +354,8 @@ p.submit {
 	font-weight: normal !important;
 }
 
-/* 
- * neutral/info message display 
+/*
+ * neutral/info message display
  */
 .neutralcontainer {
 	background: url('../../images/Froxlor/icons/info.png') 10px center no-repeat #d2eaf6;
@@ -505,7 +509,7 @@ table tbody td {
 .overviewcustomerextras {
 	line-height: 15px;
 	font-size: 10px;
-	width: 300px; 
+	width: 300px;
 	float: left;
 	padding-top: 8px;
 	padding-bottom: 12px;
@@ -650,8 +654,8 @@ select {
 }
 
 .overviewheading {
-	vertical-align: top; 
-	line-height: 36px; 
+	vertical-align: top;
+	line-height: 36px;
 	height: 36px;
 }
 
@@ -673,7 +677,7 @@ select {
 	width:200px;
 	height:15px;
 	background:url('../../images/Froxlor/bar.gif') no-repeat 0 0;
-	top:8px; 
+	top:8px;
 	left:8px;
 	overflow:hidden;
 	text-indent:-8000px;
@@ -697,7 +701,7 @@ select {
 }
 
 .maintable {
-	width: 90%;	
+	width: 90%;
 }
 
 .update_progess
@@ -715,13 +719,13 @@ select {
         margin-left: 15px;
 }
 
-.preconfigitem 
+.preconfigitem
 {
         padding: 0.15em;
         border-bottom: 1px solid #cccccc;
 }
 
-.preconfdesc 
+.preconfdesc
 {
         display: block;
         margin-bottom: 0.5em;
