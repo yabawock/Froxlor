@@ -2,10 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Froxlor\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-25 13:42+0100\n"
-"PO-Revision-Date: 2011-06-25 13:42+0100\n"
-"POT-Creation-Date: 2011-06-25 13:42+0100\n"
-"PO-Revision-Date: 2011-06-25 13:42+0100\n"
+"POT-Creation-Date: 2011-06-26 13:03+0100\n"
+"PO-Revision-Date: 2011-06-26 13:05+0100\n"
 "Last-Translator: Florian Aders <eleras@froxlor.org>\n"
 "Language-Team: The Froxlor team <team@froxlor.org>\n"
 "Language: \n"
@@ -19,442 +17,454 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 
 #: smarty.c:2
-#: smarty.c:98
-msgid "Customers"
-msgstr "Kunden"
-
-#: smarty.c:5
-#: smarty.c:41
-msgid "Create customer"
-msgstr "Kunden anlegen"
-
-#: smarty.c:8
-msgid "Name"
-msgstr "Name"
-
-#: smarty.c:11
-msgid "Firstname"
-msgstr "Vorname"
-
-#: smarty.c:14
-#: smarty.c:224
-#: smarty.c:251
-msgid "Username"
-msgstr "Benutzername"
-
-#: smarty.c:17
-msgid "Admin"
-msgstr "Admin"
-
-#: smarty.c:20
-#: smarty.c:332
-msgid "Options"
-msgstr "Optionen"
-
-#: smarty.c:23
-msgid "Webspace:"
-msgstr "Webspace:"
-
-#: smarty.c:26
-#: smarty.c:32
-msgid "Unlimited"
-msgstr "Unbegrenzt"
-
-#: smarty.c:29
-msgid "Traffic:"
-msgstr "Traffic:"
-
-#: smarty.c:35
-#: smarty.c:380
-msgid "Edit"
-msgstr "Bearbeiten"
-
-#: smarty.c:38
-#: smarty.c:368
-#: smarty.c:374
-#: smarty.c:389
-#: smarty.c:401
-msgid "Delete"
-msgstr "Löschen"
-
-#: smarty.c:44
+#: smarty.c:50
 msgid "This value is mandatory"
 msgstr "Dieses Feld muss ausgefüllt werden"
 
-#: smarty.c:47
+#: smarty.c:5
+#: smarty.c:53
 msgid "Either &quot;name&quot; and &quot;firstname&quot; or &quot;company&quot; must be filled"
 msgstr "Entweder &quot;Name&quot; und &quot;Vorname&quot; oder &quot;Firma&quot; muss ausgefüllt werden"
 
-#: smarty.c:50
-#: smarty.c:53
+#: smarty.c:8
+#: smarty.c:104
+msgid "Customers"
+msgstr "Kunden"
+
+#: smarty.c:11
+#: smarty.c:47
+msgid "Create customer"
+msgstr "Kunden anlegen"
+
+#: smarty.c:14
+msgid "Name"
+msgstr "Name"
+
+#: smarty.c:17
+msgid "Firstname"
+msgstr "Vorname"
+
+#: smarty.c:20
+#: smarty.c:230
+#: smarty.c:257
+msgid "Username"
+msgstr "Benutzername"
+
+#: smarty.c:23
+msgid "Admin"
+msgstr "Admin"
+
+#: smarty.c:26
+#: smarty.c:350
+msgid "Options"
+msgstr "Optionen"
+
+#: smarty.c:29
+msgid "Webspace:"
+msgstr "Webspace:"
+
+#: smarty.c:32
+#: smarty.c:38
+msgid "Unlimited"
+msgstr "Unbegrenzt"
+
+#: smarty.c:35
+msgid "Traffic:"
+msgstr "Traffic:"
+
+#: smarty.c:41
+#: smarty.c:398
+msgid "Edit"
+msgstr "Bearbeiten"
+
+#: smarty.c:44
+#: smarty.c:386
+#: smarty.c:392
+#: smarty.c:407
+#: smarty.c:419
+msgid "Delete"
+msgstr "Löschen"
+
+#: smarty.c:56
 #: smarty.c:59
+#: smarty.c:65
 msgid "Change language"
 msgstr "Sprache ändern"
 
-#: smarty.c:56
+#: smarty.c:62
 msgid "Language:"
 msgstr "Sprache"
 
-#: smarty.c:62
-#: smarty.c:65
-#: smarty.c:77
+#: smarty.c:68
+#: smarty.c:71
+#: smarty.c:83
 msgid "Change password"
 msgstr "Passwort ändern"
 
-#: smarty.c:68
+#: smarty.c:74
 msgid "Old password:"
 msgstr "Altes Passwort:"
 
-#: smarty.c:71
+#: smarty.c:77
 msgid "New password:"
 msgstr "Neues Passwort:"
 
-#: smarty.c:74
+#: smarty.c:80
 msgid "New password (confirm):"
 msgstr "Neues Passwort (bestätigen):"
 
-#: smarty.c:80
-#: smarty.c:83
+#: smarty.c:86
 #: smarty.c:89
+#: smarty.c:95
 msgid "Change theme"
 msgstr "Theme ändern"
 
-#: smarty.c:86
+#: smarty.c:92
 msgid "Theme:"
 msgstr "Theme:"
 
-#: smarty.c:92
+#: smarty.c:98
 msgid "WARNING - Please note!"
 msgstr "WARNUNG - Bitte beachten!"
 
-#: smarty.c:95
+#: smarty.c:101
 msgid "Used resources (Used by customers (assigned/available))"
 msgstr "Verbrauchte Ressourcen (Von Kunden verwendet (zugewiesen/verfügbar))"
 
-#: smarty.c:101
+#: smarty.c:107
 msgid "Domain"
 msgstr "Domain"
 
-#: smarty.c:104
+#: smarty.c:110
 msgid "Subdomains"
 msgstr "Subdomains"
 
-#: smarty.c:107
+#: smarty.c:113
 msgid "Webspace"
 msgstr "Webspace"
 
-#: smarty.c:110
-#: smarty.c:113
 #: smarty.c:116
+#: smarty.c:119
+#: smarty.c:122
 msgid "MB"
 msgstr "MB"
 
-#: smarty.c:119
+#: smarty.c:125
 msgid "Traffic"
 msgstr "Traffic"
 
-#: smarty.c:122
-#: smarty.c:125
 #: smarty.c:128
+#: smarty.c:131
+#: smarty.c:134
 msgid "GB"
 msgstr "GB"
 
-#: smarty.c:131
+#: smarty.c:137
 msgid "MySQL-databases"
 msgstr "MySQL - Datenbanken"
 
-#: smarty.c:134
+#: smarty.c:140
 msgid "E-mail - addresses"
 msgstr "E-Mail - Adressen"
 
-#: smarty.c:137
+#: smarty.c:143
 msgid "E-Mail - accounts"
 msgstr "E-Mail - Konten"
 
-#: smarty.c:140
+#: smarty.c:146
 msgid "E-mail - forwarders"
 msgstr "E-Mail - Weiterleitungen"
 
-#: smarty.c:143
+#: smarty.c:149
 msgid "E-mail quota"
 msgstr "E-Mail - Quota"
 
-#: smarty.c:146
+#: smarty.c:152
 msgid "E-mail - autoresponder"
 msgstr "E-Mail - Autoresponder"
 
-#: smarty.c:149
+#: smarty.c:155
 msgid "APS - installations"
 msgstr "APS - Installationen"
 
-#: smarty.c:152
+#: smarty.c:158
 msgid "FTP - accounts"
 msgstr "FTP - Konten"
 
-#: smarty.c:155
+#: smarty.c:161
 msgid "Support - tickets"
 msgstr "Support - Tickets"
 
-#: smarty.c:158
+#: smarty.c:164
 msgid "System details"
 msgstr "Systemdetails"
 
-#: smarty.c:161
+#: smarty.c:167
 msgid "Serversoftware"
 msgstr "Serversoftware"
 
-#: smarty.c:164
+#: smarty.c:170
 msgid "PHP - version"
 msgstr "PHP - Version"
 
-#: smarty.c:167
+#: smarty.c:173
 msgid "PHP - memorylimit"
 msgstr "PHP - Speicherlimit"
 
-#: smarty.c:170
+#: smarty.c:176
 msgid "MySQL - server version"
 msgstr "MySQL - Serverversion"
 
-#: smarty.c:173
+#: smarty.c:179
 msgid "MySQL - client version"
 msgstr "MySQL - Clientversion"
 
-#: smarty.c:176
+#: smarty.c:182
 msgid "MySQL - webserver interface"
 msgstr "MySQL - Webserver Interface"
 
-#: smarty.c:179
+#: smarty.c:185
 msgid "System load"
 msgstr "Systemlast"
 
-#: smarty.c:182
+#: smarty.c:188
 msgid "Kernel:"
 msgstr "Kernel:"
 
-#: smarty.c:185
+#: smarty.c:191
 msgid "Uptime:"
 msgstr "Uptime:"
 
-#: smarty.c:188
+#: smarty.c:194
 msgid "Froxlor details"
 msgstr "Froxlor details"
 
-#: smarty.c:191
+#: smarty.c:197
 msgid "Outstanding tasks:"
 msgstr "Ausstehende Aufgaben:"
 
-#: smarty.c:194
+#: smarty.c:200
 msgid "There are currently no outstanding tasks for Froxlor"
 msgstr "Derzeit sind keine Aufgaben in Froxlor ausstehend"
 
-#: smarty.c:197
+#: smarty.c:203
 msgid "Last execution of cronjobs"
 msgstr "Letzte Ausführung der Cronjobs"
 
-#: smarty.c:200
+#: smarty.c:206
 msgid "Installed version"
 msgstr "Installierte Version"
 
-#: smarty.c:203
+#: smarty.c:209
 msgid "Latest version:"
 msgstr "Aktuellste Version:"
 
-#: smarty.c:206
+#: smarty.c:212
 msgid "There is a newer version of Froxlor available"
 msgstr "Es ist eine aktuelle Version von Froxlor verfügbar"
 
-#: smarty.c:209
+#: smarty.c:215
 msgid "Update"
 msgstr "Update"
 
-#: smarty.c:212
+#: smarty.c:218
 msgid "Proceed"
 msgstr "Fortfahren"
 
-#: smarty.c:215
-#: smarty.c:272
+#: smarty.c:221
+#: smarty.c:290
 msgid "Information"
 msgstr "Information"
 
-#: smarty.c:218
-#: smarty.c:245
-#: smarty.c:260
-#: smarty.c:275
-#: smarty.c:287
-#: smarty.c:302
-#: smarty.c:386
+#: smarty.c:224
+#: smarty.c:251
+#: smarty.c:266
+#: smarty.c:293
+#: smarty.c:305
+#: smarty.c:320
+#: smarty.c:404
 msgid "Error"
 msgstr "Fehler"
 
-#: smarty.c:221
+#: smarty.c:227
 msgid "Froxlor - Login"
 msgstr "Froxlor - Login"
 
-#: smarty.c:227
-#: smarty.c:254
+#: smarty.c:233
+#: smarty.c:260
 msgid "Password"
 msgstr "Passwort"
 
-#: smarty.c:230
+#: smarty.c:236
 msgid "Language"
 msgstr "Sprache"
 
-#: smarty.c:233
-#: smarty.c:257
+#: smarty.c:239
+#: smarty.c:263
 msgid "Login"
 msgstr "Login"
 
-#: smarty.c:236
+#: smarty.c:242
 msgid "Forgot password"
 msgstr "Passwort vergessen"
 
-#: smarty.c:239
+#: smarty.c:245
 msgid "Froxlor Server Management Panel"
 msgstr "Froxlor Server Management Panel"
 
-#: smarty.c:242
-#: smarty.c:284
-#: smarty.c:299
-#: smarty.c:383
+#: smarty.c:248
+#: smarty.c:302
+#: smarty.c:317
+#: smarty.c:401
 msgid "Success"
 msgstr "Erfolgreich"
 
-#: smarty.c:248
+#: smarty.c:254
 msgid "Froxlor - WebFTP - Login"
 msgstr "Froxlor - WebFTP - Login"
 
-#: smarty.c:263
+#: smarty.c:269
+#: smarty.c:275
+msgid "Reset"
+msgstr "Zurücksetzen"
+
+#: smarty.c:272
+#: smarty.c:278
+msgid "Save"
+msgstr "Speichern"
+
+#: smarty.c:281
 msgid "Question"
 msgstr "Frage"
 
-#: smarty.c:266
-#: smarty.c:413
+#: smarty.c:284
+#: smarty.c:431
 msgid "Yes"
 msgstr "Ja"
 
-#: smarty.c:269
-#: smarty.c:416
+#: smarty.c:287
+#: smarty.c:434
 msgid "No"
 msgstr "Nein"
 
-#: smarty.c:278
+#: smarty.c:296
 msgid "the Froxlor Team"
 msgstr "das Froxlor Team"
 
-#: smarty.c:281
+#: smarty.c:299
 msgid "Editing"
 msgstr "Bearbeiten"
 
-#: smarty.c:290
 #: smarty.c:308
+#: smarty.c:326
 msgid "Save file"
 msgstr "Datei speichern"
 
-#: smarty.c:293
 #: smarty.c:311
+#: smarty.c:329
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: smarty.c:296
+#: smarty.c:314
 msgid "Creating a file in"
 msgstr "Erstellt eine Datei in"
 
-#: smarty.c:305
-#: smarty.c:314
+#: smarty.c:323
+#: smarty.c:332
 msgid "Filename"
 msgstr "Dateiname"
 
-#: smarty.c:317
+#: smarty.c:335
 msgid "Size"
 msgstr "Größe"
 
-#: smarty.c:320
+#: smarty.c:338
 msgid "Date"
 msgstr "Datum"
 
-#: smarty.c:323
+#: smarty.c:341
 msgid "Permissions"
 msgstr "Berechtigungen"
 
-#: smarty.c:326
+#: smarty.c:344
 msgid "User"
 msgstr "Benutzer"
 
-#: smarty.c:329
+#: smarty.c:347
 msgid "Group"
 msgstr "Gruppe"
 
-#: smarty.c:335
+#: smarty.c:353
 msgid "Files"
 msgstr "Dateien"
 
-#: smarty.c:338
+#: smarty.c:356
 msgid "Complete filesize"
 msgstr "Komplette Dateigröße"
 
-#: smarty.c:341
+#: smarty.c:359
 msgid "Symlinks"
 msgstr "Symlinks"
 
-#: smarty.c:344
+#: smarty.c:362
 msgid "Directories"
 msgstr "Verzeichnisse"
 
-#: smarty.c:347
+#: smarty.c:365
 msgid "Complete directorysize"
 msgstr "Komplette Verzeichnisgröße"
 
-#: smarty.c:350
+#: smarty.c:368
 msgid "Basic operations"
 msgstr "Standard Operationen"
 
-#: smarty.c:353
+#: smarty.c:371
 msgid "Change dir"
 msgstr "Verzeichnis wechseln"
 
-#: smarty.c:356
+#: smarty.c:374
 msgid "Create dir"
 msgstr "Verzeichnis erstellen"
 
-#: smarty.c:359
+#: smarty.c:377
 msgid "Create new file in current directory"
 msgstr "Neue Datei in aktuellem Verzeichnis erstellen"
 
-#: smarty.c:362
+#: smarty.c:380
 msgid "Upload files"
 msgstr "Dateien hochladen"
 
-#: smarty.c:365
+#: smarty.c:383
 msgid "Upload file(s)"
 msgstr "Datei(en) hochladen"
 
-#: smarty.c:371
-#: smarty.c:377
-#: smarty.c:392
+#: smarty.c:389
+#: smarty.c:395
+#: smarty.c:410
 msgid "Rename"
 msgstr "Umbenennen"
 
-#: smarty.c:395
+#: smarty.c:413
 msgid "Symbolic link to"
 msgstr "Symlink nach"
 
-#: smarty.c:398
+#: smarty.c:416
 msgid "Selected file(s)"
 msgstr "Markierte Datei(en)"
 
-#: smarty.c:404
+#: smarty.c:422
 msgid "Change permission to"
 msgstr "Berechtigungen ändern zu"
 
-#: smarty.c:407
+#: smarty.c:425
 msgid "Move to"
 msgstr "Verschieben nach"
 
-#: smarty.c:410
+#: smarty.c:428
 msgid "Do it"
 msgstr "Tu es"
 
-#: smarty.c:419
+#: smarty.c:437
 msgid "Rename / Move"
 msgstr "Umbenennen / Verschieben"
 
@@ -1645,10 +1655,12 @@ msgid "Froxlor update"
 msgstr "Froxlor Update"
 
 #: lib/formfields/admin/customer/formfield.customer_add.php:24
+#: lib/formfields/admin/customer/formfield.customer_edit.php:24
 msgid "Account data"
 msgstr "Kontodaten"
 
 #: lib/formfields/admin/customer/formfield.customer_add.php:32
+#: lib/formfields/admin/customer/formfield.customer_edit.php:38
 msgid "Create standard subdomain"
 msgstr "Standard Subdomain erstellen"
 
@@ -1657,6 +1669,7 @@ msgid "Store default index file to customers docroot"
 msgstr "Standard index.html in dem neuem Kundenverzeichnis ablegen"
 
 #: lib/formfields/admin/customer/formfield.customer_add.php:52
+#: lib/formfields/admin/customer/formfield.customer_edit.php:58
 msgid "Password suggestion"
 msgstr "Passwortvorschlag"
 
@@ -1665,112 +1678,145 @@ msgid "Send password"
 msgstr "Passwort senden"
 
 #: lib/formfields/admin/customer/formfield.customer_add.php:70
+#: lib/formfields/admin/customer/formfield.customer_edit.php:68
 msgid "Country"
 msgstr "Land"
 
 #: lib/formfields/admin/customer/formfield.customer_add.php:77
+#: lib/formfields/admin/customer/formfield.customer_edit.php:75
 msgid "Contact data"
 msgstr "Kontaktdaten"
 
 #: lib/formfields/admin/customer/formfield.customer_add.php:91
+#: lib/formfields/admin/customer/formfield.customer_edit.php:91
 msgid "Title"
 msgstr "Titel"
 
 #: lib/formfields/admin/customer/formfield.customer_add.php:96
-msgid "Organization"
+#: lib/formfields/admin/customer/formfield.customer_edit.php:96
+msgid "Company"
 msgstr "Firma"
 
 #: lib/formfields/admin/customer/formfield.customer_add.php:101
+#: lib/formfields/admin/customer/formfield.customer_edit.php:102
 msgid "Street"
 msgstr "Straße"
 
 #: lib/formfields/admin/customer/formfield.customer_add.php:105
+#: lib/formfields/admin/customer/formfield.customer_edit.php:107
 msgid "Zipcode"
 msgstr "Postleitzahl"
 
 #: lib/formfields/admin/customer/formfield.customer_add.php:109
+#: lib/formfields/admin/customer/formfield.customer_edit.php:112
 msgid "City"
 msgstr "Stadt"
 
 #: lib/formfields/admin/customer/formfield.customer_add.php:113
+#: lib/formfields/admin/customer/formfield.customer_edit.php:117
 msgid "Phone"
 msgstr "Telefon"
 
 #: lib/formfields/admin/customer/formfield.customer_add.php:117
+#: lib/formfields/admin/customer/formfield.customer_edit.php:122
 msgid "Fax"
 msgstr "Fax"
 
 #: lib/formfields/admin/customer/formfield.customer_add.php:121
+#: lib/formfields/admin/customer/formfield.customer_edit.php:127
 msgid "E-mail"
 msgstr "E-Mail"
 
 #: lib/formfields/admin/customer/formfield.customer_add.php:126
+#: lib/formfields/admin/customer/formfield.customer_edit.php:133
 msgid "Customer number"
 msgstr "Kundennummer"
 
 #: lib/formfields/admin/customer/formfield.customer_add.php:132
+#: lib/formfields/admin/customer/formfield.customer_edit.php:140
 msgid "Service data"
 msgstr "Servicedaten"
 
-#: lib/formfields/admin/customer/formfield.customer_add.php:136
-msgid "Webspace (MB)"
-msgstr "Webspace (MB)"
-
-#: lib/formfields/admin/customer/formfield.customer_add.php:144
-msgid "Traffic (GB)"
-msgstr "Traffic (GB)"
-
 #: lib/formfields/admin/customer/formfield.customer_add.php:160
+#: lib/formfields/admin/customer/formfield.customer_edit.php:168
 msgid "E-mail addresses"
 msgstr "E-Mail - Adressen"
 
 #: lib/formfields/admin/customer/formfield.customer_add.php:168
+#: lib/formfields/admin/customer/formfield.customer_edit.php:176
 msgid "E-mail accounts"
 msgstr "E-Mail - Konten"
 
 #: lib/formfields/admin/customer/formfield.customer_add.php:176
+#: lib/formfields/admin/customer/formfield.customer_edit.php:184
 msgid "E-mail forwarders"
 msgstr "E-Mail - Weiterleitungen"
 
 #: lib/formfields/admin/customer/formfield.customer_add.php:193
+#: lib/formfields/admin/customer/formfield.customer_edit.php:201
 msgid "E-mail autoresponder"
 msgstr "E-Mail Autoresponder"
 
 #: lib/formfields/admin/customer/formfield.customer_add.php:201
+#: lib/formfields/admin/customer/formfield.customer_edit.php:209
 msgid "Allow IMAP for e-mail accounts"
 msgstr "IMAP für E-Mail - Accounts erlauben"
 
 #: lib/formfields/admin/customer/formfield.customer_add.php:210
+#: lib/formfields/admin/customer/formfield.customer_edit.php:218
 msgid "Allow POP3 for e-mail accounts"
 msgstr "POP3 für E-Mail - Accounts erlauben"
 
 #: lib/formfields/admin/customer/formfield.customer_add.php:219
+#: lib/formfields/admin/customer/formfield.customer_edit.php:227
 msgid "FTP accounts"
 msgstr "FTP - Konten"
 
 #: lib/formfields/admin/customer/formfield.customer_add.php:226
+#: lib/formfields/admin/customer/formfield.customer_edit.php:234
 msgid "Support tickets"
 msgstr "Support - Tickets"
 
 #: lib/formfields/admin/customer/formfield.customer_add.php:234
+#: lib/formfields/admin/customer/formfield.customer_edit.php:242
 msgid "MySQL databases"
 msgstr "MySQL - Datenbanken"
 
 #: lib/formfields/admin/customer/formfield.customer_add.php:242
+#: lib/formfields/admin/customer/formfield.customer_edit.php:250
 msgid "PHP enabled"
 msgstr "PHP aktiviert"
 
 #: lib/formfields/admin/customer/formfield.customer_add.php:250
+#: lib/formfields/admin/customer/formfield.customer_edit.php:258
 msgid "Perl enabled"
 msgstr "Perl aktiviert"
 
 #: lib/formfields/admin/customer/formfield.customer_add.php:257
+#: lib/formfields/admin/customer/formfield.customer_edit.php:266
 msgid "Backup allowed"
 msgstr "Backup erlauben"
 
 #: lib/formfields/admin/customer/formfield.customer_add.php:265
+#: lib/formfields/admin/customer/formfield.customer_edit.php:274
 msgid "APS installations"
 msgstr "APS - Installationen"
+
+#: lib/formfields/admin/customer/formfield.customer_edit.php:20
+msgid "Edit customer"
+msgstr "Kunden bearbeiten"
+
+#: lib/formfields/admin/customer/formfield.customer_edit.php:33
+msgid "Documentroot"
+msgstr "Documentroot"
+
+#: lib/formfields/admin/customer/formfield.customer_edit.php:46
+msgid "Deactivated"
+msgstr "Gesperrt"
+
+#: lib/formfields/admin/customer/formfield.customer_edit.php:54
+msgid "empty for no changes"
+msgstr "Leer für keine Änderung"
 
 #: lib/functions/froxlor/function.CronjobFunctions.php:120
 msgid "No execution yet"
@@ -1993,47 +2039,56 @@ msgstr "Noch kein Login"
 msgid "Unlock"
 msgstr "Entsperren"
 
-#: modules/admin/class.customers.php:116
+#: modules/admin/class.customers.php:106
+#: modules/admin/class.customers.php:134
+#: modules/admin/class.customers.php:705
+#: modules/admin/class.customers.php:770
+msgid "You need to submit the customer"
+msgstr "Sie müssen die Kunden - ID übergeben"
+
+#: modules/admin/class.customers.php:121
 msgid "You are either not allowed to incorporate this customer or this customer does not exist"
 msgstr "Sie dürfen sich entweder nicht in diesen Kunden einloggen oder dieser Kunde existiert nicht"
 
-#: modules/admin/class.customers.php:131
+#: modules/admin/class.customers.php:141
 #, php-format
 msgid "Do you really want to unlock customer %s?"
 msgstr "Möchten Sie wirklich den Kunden %s entsperren?"
 
-#: modules/admin/class.customers.php:133
-#: modules/admin/class.customers.php:152
+#: modules/admin/class.customers.php:143
+#: modules/admin/class.customers.php:162
 msgid "You are either not allowed to unlock this customer or this customer does not exist"
 msgstr "Sie dürfen entweder diesen Kunden nicht entsperren oder dieser Kunde existiert nicht"
 
-#: modules/admin/class.customers.php:149
+#: modules/admin/class.customers.php:159
 #, php-format
 msgid "User %s successfully unlocked"
 msgstr "Benutzer %s erfolgreich entsperrt"
 
-#: modules/admin/class.customers.php:160
-#: modules/admin/class.customers.php:206
+#: modules/admin/class.customers.php:170
+#: modules/admin/class.customers.php:216
 #, php-format
 msgid "You may not add more than %s customers"
 msgstr "Sie dürfen nicht mehr als %s Kunden haben"
 
-#: modules/admin/class.customers.php:188
+#: modules/admin/class.customers.php:198
+#: modules/admin/class.customers.php:746
 msgid "Male"
 msgstr "Männlich"
 
-#: modules/admin/class.customers.php:189
+#: modules/admin/class.customers.php:199
+#: modules/admin/class.customers.php:747
 msgid "Female"
 msgstr "Weiblich"
 
-#: modules/admin/class.customers.php:422
+#: modules/admin/class.customers.php:432
 #, php-format
 msgid "You may not allocate more resources for the resource '%s' than you have"
 msgstr "Sie dürfen für die Ressource '%s' nicht mehr vergeben als Sie selber besitzen"
 
-#: modules/admin/class.customers.php:429
-#: modules/admin/class.customers.php:434
 #: modules/admin/class.customers.php:439
+#: modules/admin/class.customers.php:444
+#: modules/admin/class.customers.php:449
 #: modules/admin/class.index.php:266
 #: modules/admin/class.index.php:271
 #: modules/admin/class.index.php:276
@@ -2041,45 +2096,55 @@ msgstr "Sie dürfen für die Ressource '%s' nicht mehr vergeben als Sie selber b
 msgid "Missing input in field '%s'"
 msgstr "Das Feld '%s' darf nicht leer sein"
 
-#: modules/admin/class.customers.php:444
+#: modules/admin/class.customers.php:454
 #, php-format
 msgid "The entered e-mail address '%s' is wrong"
 msgstr "Die eingegebene E-Mail - Adresse '%s' ist ungültig"
 
-#: modules/admin/class.customers.php:459
+#: modules/admin/class.customers.php:469
 #, php-format
 msgid "You cannot create accounts which are similar to system accounts (as for example begin with '%s'). Please enter another account name."
 msgstr "Sie können keinen Account erstellen, welche Systemaccounts ähnlich sind (z.B. mit '%s' anfangen). Bitte wählen Sie einen anderen Accountnamen."
 
-#: modules/admin/class.customers.php:474
+#: modules/admin/class.customers.php:484
 #, php-format
 msgid "An account called '%s' already exists"
 msgstr "Ein Account mit dem Namen '%s' existiert bereits"
 
-#: modules/admin/class.customers.php:479
+#: modules/admin/class.customers.php:489
 #, php-format
 msgid "The chosen account name '%s' contains invalid characters"
 msgstr "Der gewählt Accountname '%s' enthält ungültige Zeichen"
 
-#: modules/admin/class.customers.php:488
+#: modules/admin/class.customers.php:498
 #, php-format
 msgid "The directory '%s' already exists for this customer. Please remove this before adding the customer again."
 msgstr "Das Verzeichnis '%s' für diesen Kunden existiert bereits. Bitte entfernen Sie es becor Sie diesen Kunden erneut anlegen."
 
-#: modules/admin/class.customers.php:543
+#: modules/admin/class.customers.php:549
 #, php-format
 msgid "The customer '%1$s' could not be created: %2$s"
 msgstr "Der Kunde '%1$s' konnte nicht erstellt werden: %2$s"
 
-#: modules/admin/class.customers.php:685
+#: modules/admin/class.customers.php:649
 #, php-format
 msgid "User '%s' successfully created"
 msgstr "Der Benutzer '%s' wurde erfolgreich angelegt"
 
-#: modules/admin/class.customers.php:721
+#: modules/admin/class.customers.php:685
 #, php-format
 msgid "Welcome - e-mail could not be sent for customer '%s'"
 msgstr "Die Willkommensemail für den Kunden '%s' konnte nicht versendet werden"
+
+#: modules/admin/class.customers.php:715
+#: modules/admin/class.customers.php:781
+msgid "You don't have the permission to edit this customer"
+msgstr "Sie haben nicht die erforderlichen Berechtigungen um diesen Kunden zu bearbeiten"
+
+#: modules/admin/class.customers.php:725
+#: modules/admin/class.customers.php:791
+msgid "The chosen customer does not exist"
+msgstr "Der ausgewählte Kunde existiert nicht"
 
 #: modules/admin/class.index.php:69
 msgid "Disabled"
@@ -2171,6 +2236,15 @@ msgstr "Ihr Account wurde gesperrt. Bitte kontaktieren Sie Ihren Administrator f
 msgid "A newer version of Froxlor has been installed but not yet set up.<br />Only the administrator can log in and finish the update."
 msgstr "Eine neuere Version von Froxlor wurde installiert, aber noch nicht eingerichtet.<br />Nur der Administrator kann sich anmelden und die Aktualisierung abschließen."
 
+#~ msgid "Organization"
+#~ msgstr "Firma"
+
+#~ msgid "Webspace (MB)"
+#~ msgstr "Webspace (MB)"
+
+#~ msgid "Traffic (GB)"
+#~ msgstr "Traffic (GB)"
+
 #~ msgid "Cameroon"
 #~ msgstr "Kamerun"
 
@@ -2185,7 +2259,3 @@ msgstr "Eine neuere Version von Froxlor wurde installiert, aber noch nicht einge
 
 #~ msgid "&infin;"
 #~ msgstr "&infin;"
-<<<<<<< HEAD
-=======
->>>>>>> fb1889f... Updated german gettext - translation, refs #824 @0h5m
->>>>>>> rrp

@@ -1,3 +1,9 @@
+/* templates/Froxlor/admin/customers/customers_add.tpl */
+gettext("This value is mandatory");
+
+/* templates/Froxlor/admin/customers/customers_add.tpl */
+gettext("Either &quot;name&quot; and &quot;firstname&quot; or &quot;company&quot; must be filled");
+
 /* templates/Froxlor/admin/customers/index.tpl */
 gettext("Customers");
 
@@ -40,10 +46,10 @@ gettext("Delete");
 /* templates/Froxlor/admin/customers/index.tpl */
 gettext("Create customer");
 
-/* templates/Froxlor/admin/customers/customers_add.tpl */
+/* templates/Froxlor/admin/customers/customers_edit.tpl */
 gettext("This value is mandatory");
 
-/* templates/Froxlor/admin/customers/customers_add.tpl */
+/* templates/Froxlor/admin/customers/customers_edit.tpl */
 gettext("Either &quot;name&quot; and &quot;firstname&quot; or &quot;company&quot; must be filled");
 
 /* templates/Froxlor/admin/index/change_language.tpl */
@@ -258,6 +264,18 @@ gettext("Login");
 
 /* templates/Froxlor/misc/error.tpl */
 gettext("Error");
+
+/* templates/Froxlor/misc/form/table_end.tpl */
+gettext("Reset");
+
+/* templates/Froxlor/misc/form/table_end.tpl */
+gettext("Save");
+
+/* templates/Froxlor/misc/form/table_section.tpl */
+gettext("Reset");
+
+/* templates/Froxlor/misc/form/table_section.tpl */
+gettext("Save");
 
 /* templates/Froxlor/misc/question_yesno.tpl */
 gettext("Question");
