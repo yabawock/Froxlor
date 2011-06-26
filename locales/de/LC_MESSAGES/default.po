@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Froxlor\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-26 15:04+0100\n"
-"PO-Revision-Date: 2011-06-26 15:08+0100\n"
+"POT-Creation-Date: 2011-06-26 20:17+0100\n"
+"PO-Revision-Date: 2011-06-26 20:20+0100\n"
 "Last-Translator: Florian Aders <eleras@froxlor.org>\n"
 "Language-Team: The Froxlor team <team@froxlor.org>\n"
 "Language: \n"
@@ -1654,150 +1654,183 @@ msgstr "Server"
 msgid "Froxlor update"
 msgstr "Froxlor Update"
 
+#: lib/classes/validate/class.validateForm.php:53
+msgid "Unlimited needs to be boolean (0|1)"
+msgstr "Unbegrenzt muss boolean sein (0|1)"
+
+#: lib/classes/validate/class.validateForm.php:85
+#, php-format
+msgid "The minimum required length for this field is %d"
+msgstr "Die Mindestlänge für dieses Feld beträgt %d Zeichen"
+
+#: lib/classes/validate/class.validateForm.php:92
+#, php-format
+msgid "The maximum allowed length for this field is %d"
+msgstr "Die Maximallänge für dieses Feld beträgt %d Zeichen"
+
+#: lib/classes/validate/class.validateForm.php:99
+#, php-format
+msgid "The value has to be greater than %d"
+msgstr "Der Wert dieses Feldes muss größer als %d sein"
+
+#: lib/classes/validate/class.validateForm.php:106
+#, php-format
+msgid "The value has to be smaller than %d"
+msgstr "Der Wert dieses Feldes muss kleiner sein als %d"
+
+#: lib/classes/validate/class.validateForm.php:115
+msgid "The value has to be an e-mail"
+msgstr "Diese Feld muss eine E-Mail - Adresse beinhalten"
+
+#: lib/classes/validate/class.validateForm.php:123
+#, php-format
+msgid "The value does not match the required format: %s"
+msgstr "Der Wert dieses Feldes entspricht nicht dem erwarteten Format: %s"
+
 #: lib/formfields/admin/customer/formfield.customer_add.php:24
 #: lib/formfields/admin/customer/formfield.customer_edit.php:24
 msgid "Account data"
 msgstr "Kontodaten"
 
-#: lib/formfields/admin/customer/formfield.customer_add.php:32
+#: lib/formfields/admin/customer/formfield.customer_add.php:37
 #: lib/formfields/admin/customer/formfield.customer_edit.php:38
 msgid "Create standard subdomain"
 msgstr "Standard Subdomain erstellen"
 
-#: lib/formfields/admin/customer/formfield.customer_add.php:40
+#: lib/formfields/admin/customer/formfield.customer_add.php:50
 msgid "Store default index file to customers docroot"
 msgstr "Standard index.html in dem neuem Kundenverzeichnis ablegen"
 
-#: lib/formfields/admin/customer/formfield.customer_add.php:52
+#: lib/formfields/admin/customer/formfield.customer_add.php:67
 #: lib/formfields/admin/customer/formfield.customer_edit.php:58
 msgid "Password suggestion"
 msgstr "Passwortvorschlag"
 
-#: lib/formfields/admin/customer/formfield.customer_add.php:57
+#: lib/formfields/admin/customer/formfield.customer_add.php:72
 msgid "Send password"
 msgstr "Passwort senden"
 
-#: lib/formfields/admin/customer/formfield.customer_add.php:70
+#: lib/formfields/admin/customer/formfield.customer_add.php:90
 #: lib/formfields/admin/customer/formfield.customer_edit.php:68
 msgid "Country"
 msgstr "Land"
 
-#: lib/formfields/admin/customer/formfield.customer_add.php:77
+#: lib/formfields/admin/customer/formfield.customer_add.php:97
 #: lib/formfields/admin/customer/formfield.customer_edit.php:75
 msgid "Contact data"
 msgstr "Kontaktdaten"
 
-#: lib/formfields/admin/customer/formfield.customer_add.php:91
+#: lib/formfields/admin/customer/formfield.customer_add.php:111
 #: lib/formfields/admin/customer/formfield.customer_edit.php:91
 msgid "Title"
 msgstr "Titel"
 
-#: lib/formfields/admin/customer/formfield.customer_add.php:96
+#: lib/formfields/admin/customer/formfield.customer_add.php:116
 #: lib/formfields/admin/customer/formfield.customer_edit.php:96
 msgid "Company"
 msgstr "Firma"
 
-#: lib/formfields/admin/customer/formfield.customer_add.php:101
+#: lib/formfields/admin/customer/formfield.customer_add.php:121
 #: lib/formfields/admin/customer/formfield.customer_edit.php:102
 msgid "Street"
 msgstr "Straße"
 
-#: lib/formfields/admin/customer/formfield.customer_add.php:105
+#: lib/formfields/admin/customer/formfield.customer_add.php:125
 #: lib/formfields/admin/customer/formfield.customer_edit.php:107
 msgid "Zipcode"
 msgstr "Postleitzahl"
 
-#: lib/formfields/admin/customer/formfield.customer_add.php:109
+#: lib/formfields/admin/customer/formfield.customer_add.php:129
 #: lib/formfields/admin/customer/formfield.customer_edit.php:112
 msgid "City"
 msgstr "Stadt"
 
-#: lib/formfields/admin/customer/formfield.customer_add.php:113
+#: lib/formfields/admin/customer/formfield.customer_add.php:133
 #: lib/formfields/admin/customer/formfield.customer_edit.php:117
 msgid "Phone"
 msgstr "Telefon"
 
-#: lib/formfields/admin/customer/formfield.customer_add.php:117
+#: lib/formfields/admin/customer/formfield.customer_add.php:137
 #: lib/formfields/admin/customer/formfield.customer_edit.php:122
 msgid "Fax"
 msgstr "Fax"
 
-#: lib/formfields/admin/customer/formfield.customer_add.php:121
+#: lib/formfields/admin/customer/formfield.customer_add.php:141
 #: lib/formfields/admin/customer/formfield.customer_edit.php:127
 msgid "E-mail"
 msgstr "E-Mail"
 
-#: lib/formfields/admin/customer/formfield.customer_add.php:126
+#: lib/formfields/admin/customer/formfield.customer_add.php:146
 #: lib/formfields/admin/customer/formfield.customer_edit.php:133
 msgid "Customer number"
 msgstr "Kundennummer"
 
-#: lib/formfields/admin/customer/formfield.customer_add.php:132
+#: lib/formfields/admin/customer/formfield.customer_add.php:152
 #: lib/formfields/admin/customer/formfield.customer_edit.php:140
 msgid "Service data"
 msgstr "Servicedaten"
 
-#: lib/formfields/admin/customer/formfield.customer_add.php:160
+#: lib/formfields/admin/customer/formfield.customer_add.php:180
 #: lib/formfields/admin/customer/formfield.customer_edit.php:168
 msgid "E-mail addresses"
 msgstr "E-Mail - Adressen"
 
-#: lib/formfields/admin/customer/formfield.customer_add.php:168
+#: lib/formfields/admin/customer/formfield.customer_add.php:188
 #: lib/formfields/admin/customer/formfield.customer_edit.php:176
 msgid "E-mail accounts"
 msgstr "E-Mail - Konten"
 
-#: lib/formfields/admin/customer/formfield.customer_add.php:176
+#: lib/formfields/admin/customer/formfield.customer_add.php:196
 #: lib/formfields/admin/customer/formfield.customer_edit.php:184
 msgid "E-mail forwarders"
 msgstr "E-Mail - Weiterleitungen"
 
-#: lib/formfields/admin/customer/formfield.customer_add.php:193
+#: lib/formfields/admin/customer/formfield.customer_add.php:213
 #: lib/formfields/admin/customer/formfield.customer_edit.php:201
 msgid "E-mail autoresponder"
 msgstr "E-Mail Autoresponder"
 
-#: lib/formfields/admin/customer/formfield.customer_add.php:201
+#: lib/formfields/admin/customer/formfield.customer_add.php:221
 #: lib/formfields/admin/customer/formfield.customer_edit.php:209
 msgid "Allow IMAP for e-mail accounts"
 msgstr "IMAP für E-Mail - Accounts erlauben"
 
-#: lib/formfields/admin/customer/formfield.customer_add.php:210
+#: lib/formfields/admin/customer/formfield.customer_add.php:230
 #: lib/formfields/admin/customer/formfield.customer_edit.php:218
 msgid "Allow POP3 for e-mail accounts"
 msgstr "POP3 für E-Mail - Accounts erlauben"
 
-#: lib/formfields/admin/customer/formfield.customer_add.php:219
+#: lib/formfields/admin/customer/formfield.customer_add.php:239
 #: lib/formfields/admin/customer/formfield.customer_edit.php:227
 msgid "FTP accounts"
 msgstr "FTP - Konten"
 
-#: lib/formfields/admin/customer/formfield.customer_add.php:226
+#: lib/formfields/admin/customer/formfield.customer_add.php:246
 #: lib/formfields/admin/customer/formfield.customer_edit.php:234
 msgid "Support tickets"
 msgstr "Support - Tickets"
 
-#: lib/formfields/admin/customer/formfield.customer_add.php:234
+#: lib/formfields/admin/customer/formfield.customer_add.php:254
 #: lib/formfields/admin/customer/formfield.customer_edit.php:242
 msgid "MySQL databases"
 msgstr "MySQL - Datenbanken"
 
-#: lib/formfields/admin/customer/formfield.customer_add.php:242
+#: lib/formfields/admin/customer/formfield.customer_add.php:262
 #: lib/formfields/admin/customer/formfield.customer_edit.php:250
 msgid "PHP enabled"
 msgstr "PHP aktiviert"
 
-#: lib/formfields/admin/customer/formfield.customer_add.php:250
+#: lib/formfields/admin/customer/formfield.customer_add.php:270
 #: lib/formfields/admin/customer/formfield.customer_edit.php:258
 msgid "Perl enabled"
 msgstr "Perl aktiviert"
 
-#: lib/formfields/admin/customer/formfield.customer_add.php:257
+#: lib/formfields/admin/customer/formfield.customer_add.php:277
 #: lib/formfields/admin/customer/formfield.customer_edit.php:266
 msgid "Backup allowed"
 msgstr "Backup erlauben"
 
-#: lib/formfields/admin/customer/formfield.customer_add.php:265
+#: lib/formfields/admin/customer/formfield.customer_add.php:285
 #: lib/formfields/admin/customer/formfield.customer_edit.php:274
 msgid "APS installations"
 msgstr "APS - Installationen"
@@ -2041,8 +2074,8 @@ msgstr "Entsperren"
 
 #: modules/admin/class.customers.php:106
 #: modules/admin/class.customers.php:134
-#: modules/admin/class.customers.php:698
-#: modules/admin/class.customers.php:764
+#: modules/admin/class.customers.php:629
+#: modules/admin/class.customers.php:695
 msgid "You need to submit the customer"
 msgstr "Sie müssen die Kunden - ID übergeben"
 
@@ -2072,86 +2105,83 @@ msgid "You may not add more than %s customers"
 msgstr "Sie dürfen nicht mehr als %s Kunden haben"
 
 #: modules/admin/class.customers.php:198
-#: modules/admin/class.customers.php:739
+#: modules/admin/class.customers.php:670
 msgid "Male"
 msgstr "Männlich"
 
 #: modules/admin/class.customers.php:199
-#: modules/admin/class.customers.php:740
+#: modules/admin/class.customers.php:671
 msgid "Female"
 msgstr "Weiblich"
 
-#: modules/admin/class.customers.php:425
-#: modules/admin/class.customers.php:896
+#: modules/admin/class.customers.php:355
+#: modules/admin/class.customers.php:827
 #, php-format
 msgid "You may not allocate more resources for the resource '%s' than you have"
 msgstr "Sie dürfen für die Ressource '%s' nicht mehr vergeben als Sie selber besitzen"
 
-#: modules/admin/class.customers.php:432
-#: modules/admin/class.customers.php:437
-#: modules/admin/class.customers.php:442
-#: modules/admin/class.customers.php:904
-#: modules/admin/class.customers.php:909
-#: modules/admin/class.customers.php:914
-#: modules/admin/class.index.php:266
-#: modules/admin/class.index.php:271
-#: modules/admin/class.index.php:276
+#: modules/admin/class.customers.php:363
+#: modules/admin/class.customers.php:368
+#: modules/admin/class.customers.php:373
+#: modules/admin/class.customers.php:835
+#: modules/admin/class.customers.php:840
+#: modules/admin/class.customers.php:845
 #, php-format
 msgid "Missing input in field '%s'"
 msgstr "Das Feld '%s' darf nicht leer sein"
 
-#: modules/admin/class.customers.php:447
-#: modules/admin/class.customers.php:919
+#: modules/admin/class.customers.php:378
+#: modules/admin/class.customers.php:850
 #, php-format
 msgid "The entered e-mail address '%s' is wrong"
 msgstr "Die eingegebene E-Mail - Adresse '%s' ist ungültig"
 
-#: modules/admin/class.customers.php:462
+#: modules/admin/class.customers.php:393
 #, php-format
 msgid "You cannot create accounts which are similar to system accounts (as for example begin with '%s'). Please enter another account name."
 msgstr "Sie können keinen Account erstellen, welche Systemaccounts ähnlich sind (z.B. mit '%s' anfangen). Bitte wählen Sie einen anderen Accountnamen."
 
-#: modules/admin/class.customers.php:477
+#: modules/admin/class.customers.php:408
 #, php-format
 msgid "An account called '%s' already exists"
 msgstr "Ein Account mit dem Namen '%s' existiert bereits"
 
-#: modules/admin/class.customers.php:482
+#: modules/admin/class.customers.php:413
 #, php-format
 msgid "The chosen account name '%s' contains invalid characters"
 msgstr "Der gewählt Accountname '%s' enthält ungültige Zeichen"
 
-#: modules/admin/class.customers.php:491
+#: modules/admin/class.customers.php:422
 #, php-format
 msgid "The directory '%s' already exists for this customer. Please remove this before adding the customer again."
 msgstr "Das Verzeichnis '%s' für diesen Kunden existiert bereits. Bitte entfernen Sie es becor Sie diesen Kunden erneut anlegen."
 
-#: modules/admin/class.customers.php:542
+#: modules/admin/class.customers.php:473
 #, php-format
 msgid "The customer '%1$s' could not be created: %2$s"
 msgstr "Der Kunde '%1$s' konnte nicht erstellt werden: %2$s"
 
-#: modules/admin/class.customers.php:642
+#: modules/admin/class.customers.php:573
 #, php-format
 msgid "User '%s' successfully created"
 msgstr "Der Benutzer '%s' wurde erfolgreich angelegt"
 
-#: modules/admin/class.customers.php:678
+#: modules/admin/class.customers.php:609
 #, php-format
 msgid "Welcome - e-mail could not be sent for customer '%s'"
 msgstr "Die Willkommensemail für den Kunden '%s' konnte nicht versendet werden"
 
-#: modules/admin/class.customers.php:708
-#: modules/admin/class.customers.php:775
+#: modules/admin/class.customers.php:639
+#: modules/admin/class.customers.php:706
 msgid "You don't have the permission to edit this customer"
 msgstr "Sie haben nicht die erforderlichen Berechtigungen um diesen Kunden zu bearbeiten"
 
-#: modules/admin/class.customers.php:718
-#: modules/admin/class.customers.php:785
+#: modules/admin/class.customers.php:649
+#: modules/admin/class.customers.php:716
 msgid "The chosen customer does not exist"
 msgstr "Der ausgewählte Kunde existiert nicht"
 
-#: modules/admin/class.customers.php:1086
+#: modules/admin/class.customers.php:1017
 #, php-format
 msgid "The customer '%s' was updated successfully"
 msgstr "Der Kunde '%1$s' wurde erfolgreich aktualisiert"
