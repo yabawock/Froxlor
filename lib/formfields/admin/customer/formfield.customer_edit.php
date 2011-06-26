@@ -27,12 +27,12 @@ return array(
 					'loginname' => array(
 						'label' => _('Username'),
 						'type' => 'label',
-						'value' => $result['loginname']
+						'value' => $user->getLoginname()
 					),
 					'documentroot' => array(
 						'label' => _('Documentroot'),
 						'type' => 'label',
-						'value' => $result['documentroot']
+						'value' => $user->getData('resources', 'documentroot')
 					),
 					'createstdsubdomain' => array(
 						'label' => _('Create standard subdomain'),
@@ -40,15 +40,15 @@ return array(
 						'values' => array(
 										array ('label' => _('Yes'), 'value' => '1')
 									),
-						'value' => array(($result['standardsubdomain'] != '0') ? '1' : '0')
+						'value' => array(($user->getData('resources', 'standardsubdomain') != '0') ? '1' : '0')
 					),
 					'deactivated' => array(
-						'label' => $lng['admin']['deactivated_user'],
+						'label' => _('Deactivated'),
 						'type' => 'checkbox',
 						'values' => array(
 										array ('label' => _('Yes'), 'value' => '1')
 									),
-						'value' => array($result['deactivated'])
+						'value' => array($user->isDeactivated())
 					),
 					'new_customer_password' => array(
 						'label' => _('Password').'&nbsp;('._('empty for no changes').')',
@@ -79,13 +79,13 @@ return array(
 						'label' => _('Name'),
 						'type' => 'text',
 						'mandatory_ex' => true,
-						'value' => $result['name']
+						'value' => $user->getData('address', 'name')
 					),
 					'firstname' => array(
 						'label' => _('Firstname'),
 						'type' => 'text',
 						'mandatory_ex' => true,
-						'value' => $result['firstname']
+						'value' => $user->getData('address', 'firstname')
 					),
 					'gender' => array(
 						'label' => _('Title'),
@@ -96,43 +96,43 @@ return array(
 						'label' => _('Company'),
 						'type' => 'text',
 						'mandatory_ex' => true,
-						'value' => $result['company']
+						'value' => $user->getData('address', 'company')
 					),
 					'street' => array(
 						'label' => _('Street'),
 						'type' => 'text',
-						'value' => $result['street']
+						'value' => $user->getData('address', 'street')
 					),
 					'zipcode' => array(
 						'label' => _('Zipcode'),
 						'type' => 'text',
-						'value' => $result['zipcode']
+						'value' => $user->getData('address', 'zipcode')
 					),
 					'city' => array(
 						'label' => _('City'),
 						'type' => 'text',
-						'value' => $result['city']
+						'value' => $user->getData('address', 'city')
 					),
 					'phone' => array(
 						'label' => _('Phone'),
 						'type' => 'text',
-						'value' => $result['phone']
+						'value' => $user->getData('address', 'phone')
 					),
 					'fax' => array(
 						'label' => _('Fax'),
 						'type' => 'text',
-						'value' => $result['fax']
+						'value' => $user->getData('address', 'fax')
 					),
 					'email' => array(
 						'label' => _('E-mail'),
 						'type' => 'text',
 						'mandatory' => true,
-						'value' => $result['email']
+						'value' => $idna_convert->decode($user->getData('address', 'email'))
 					),
 					'customernumber' => array(
 						'label' => _('Customer number'),
 						'type' => 'text',
-						'value' => $result['customernumber']
+						'value' => $user->getData('general', 'customernumber')
 					)
 				)
 			),
@@ -143,7 +143,7 @@ return array(
 					'diskspace' => array(
 						'label' => _('Webspace'),
 						'type' => 'textul',
-						'value' => $result['diskspace'],
+						'value' => $user->getData('resources', 'diskspace'),
 						'maxlength' => 6,
 						'mandatory' => true,
 						'ul_field' => $diskspace_ul
@@ -151,7 +151,7 @@ return array(
 					'traffic' => array(
 						'label' => _('Traffic'),
 						'type' => 'textul',
-						'value' => $result['traffic'],
+						'value' => $user->getData('resources', 'traffic'),
 						'maxlength' => 4,
 						'mandatory' => true,
 						'ul_field' => $traffic_ul
@@ -159,7 +159,7 @@ return array(
 					'subdomains' => array(
 						'label' => _('Subdomains'),
 						'type' => 'textul',
-						'value' => $result['subdomains'],
+						'value' => $user->getData('resources', 'subdomains'),
 						'maxlength' => 9,
 						'mandatory' => true,
 						'ul_field' => $subdomains_ul
@@ -167,7 +167,7 @@ return array(
 					'emails' => array(
 						'label' => _('E-mail addresses'),
 						'type' => 'textul',
-						'value' => $result['emails'],
+						'value' => $user->getData('resources', 'emails'),
 						'maxlength' => 9,
 						'mandatory' => true,
 						'ul_field' => $emails_ul
@@ -175,7 +175,7 @@ return array(
 					'email_accounts' => array(
 						'label' => _('E-mail accounts'),
 						'type' => 'textul',
-						'value' => $result['email_accounts'],
+						'value' => $user->getData('resources', 'email_accounts'),
 						'maxlength' => 9,
 						'mandatory' => true,
 						'ul_field' => $email_accounts_ul
@@ -183,7 +183,7 @@ return array(
 					'email_forwarders' => array(
 						'label' => _('E-mail forwarders'),
 						'type' => 'textul',
-						'value' => $result['email_forwarders'],
+						'value' => $user->getData('resources', 'email_forwarders'),
 						'maxlength' => 9,
 						'mandatory' => true,
 						'ul_field' => $email_forwarders_ul
@@ -191,7 +191,7 @@ return array(
 					'email_quota' => array(
 						'label' => _('E-mail quota'),
 						'type' => 'textul',
-						'value' => $result['email_quota'],
+						'value' => $user->getData('resources', 'email_quota'),
 						'maxlength' => 9,
 						'visible' => (getSetting('system', 'mail_quota_enabled') == '1' ? true : false),
 						'mandatory' => true,
@@ -200,7 +200,7 @@ return array(
 					'email_autoresponder' => array(
 						'label' => _('E-mail autoresponder'),
 						'type' => 'textul',
-						'value' => $result['email_autoresponder'],
+						'value' => $user->getData('resources', 'email_autoresponder'),
 						'maxlength' => 9,
 						'visible' => (getSetting('autoresponder', 'autoresponder_active') == '1' ? true : false),
 						'ul_field' => $email_autoresponder_ul
@@ -211,7 +211,7 @@ return array(
 						'values' => array(
 										array ('label' => _('Yes'), 'value' => '1')
 									),
-						'value' => array($result['imap']),
+						'value' => array($user->getData('resources', 'imap')),
 						'mandatory' => true
 					),
 					'email_pop3' => array(
@@ -220,28 +220,28 @@ return array(
 						'values' => array(
 										array ('label' => _('Yes'), 'value' => '1')
 									),
-						'value' => array($result['pop3']),
+						'value' => array($user->getData('resources', 'pop3')),
 						'mandatory' => true
 					),
 					'ftps' => array(
 						'label' => _('FTP accounts'),
 						'type' => 'textul',
-						'value' => $result['ftps'],
+						'value' => $user->getData('resources', 'ftps'),
 						'maxlength' => 9,
 						'ul_field' => $ftps_ul
 					),
 					'tickets' => array(
 						'label' => _('Support tickets'),
 						'type' => 'textul',
-						'value' => $result['tickets'],
+						'value' => $user->getData('resources', 'tickets'),
 						'maxlength' => 9,
-						'visible' => ($settings['ticket']['enabled'] == '1' ? true : false),
+						'visible' => (getSetting('ticket', 'enabled') == '1' ? true : false),
 						'ul_field' => $tickets_ul
 					),
 					'mysqls' => array(
 						'label' => _('MySQL databases'),
 						'type' => 'textul',
-						'value' => $result['mysqls'],
+						'value' => $user->getData('resources', 'mysqls'),
 						'maxlength' => 9,
 						'mandatory' => true,
 						'ul_field' => $mysqls_ul
@@ -252,7 +252,7 @@ return array(
 						'values' => array(
 										array ('label' => _('Yes'), 'value' => '1')
 									),
-						'value' => array($result['phpenabled'])
+						'value' => array($user->getData('resources', 'phpenabled'))
 					),
 					'perlenabled' => array(
 						'label' => _('Perl enabled'),
@@ -260,7 +260,7 @@ return array(
 						'values' => array(
 										array ('label' => _('Yes'), 'value' => '1')
 									),
-						'value' => array($result['perlenabled'])
+						'value' => array($user->getData('resources', 'perlenabled'))
 					),
 					'backup_allowed' => array(
 						'label' => _('Backup allowed'),
@@ -268,14 +268,14 @@ return array(
 						'values' => array(
 										array ('label' => _('Yes'), 'value' => '1')
 									),
-						'value' => array($result['backup_allowed'])
+						'value' => array($user->getData('resources', 'backup_allowed'))
 					),
 					'aps_packages' => array(
 						'label' => _('APS installations'),
 						'type' => 'textul',
-						'value' => $result['aps_packages'],
+						'value' => $user->getData('resources', 'aps_packages'),
 						'maxlength' => 9,
-						'visible' => ($getSetting('aps', 'aps_active') == '1' ? true : false),
+						'visible' => (getSetting('aps', 'aps_active') == '1' ? true : false),
 						'ul_field' => $aps_packages_ul
 					)
 				)
