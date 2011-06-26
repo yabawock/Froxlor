@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Froxlor\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-06-26 15:04+0100\n"
-"PO-Revision-Date: 2011-06-26 15:04+0100\n"
+"PO-Revision-Date: 2011-06-26 15:08+0100\n"
 "Last-Translator: Florian Aders <eleras@froxlor.org>\n"
 "Language-Team: The Froxlor team <team@froxlor.org>\n"
 "Language: \n"
@@ -1591,7 +1591,7 @@ msgstr "United States Minor Outlying Islands"
 
 #: lib/classes/country/countries.inc.php:239
 msgid "Uruguay, Oriental Republic of"
-msgstr "Kroatien, RepublikUruguay, Republik Östlich des"
+msgstr "Uruguay, Republik Östlich des"
 
 #: lib/classes/country/countries.inc.php:240
 msgid "Uzbekistan"
