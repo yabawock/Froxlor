@@ -27,7 +27,7 @@ class countrycode
 		$output = '';
 
 		include_once(dirname(__FILE__) . '/countries.inc.php');
-		asort($country);
+		asort($country, SORT_LOCALE_STRING);
 		if (!$asOptions)
 		{
 			return $country;
