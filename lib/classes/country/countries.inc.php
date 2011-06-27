@@ -1,4 +1,5 @@
 <?php
+textdomain('countries');
 // Country code (ISO-3166-2)
 $country['AF'] = _('Afghanistan');
 $country['AX'] = _('Aland Islands');
@@ -248,3 +249,4 @@ $country['EH'] = _('Western Sahara');
 $country['YE'] = _('Yemen, Republic of');
 $country['ZM'] = _('Zambia, Republic of');
 $country['ZW'] = _('Zimbabwe, Republic of');
+textdomain('default');

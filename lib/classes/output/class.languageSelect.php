@@ -118,6 +118,7 @@ class languageSelect
 	{
 		setLocale(LC_ALL,'en_US.utf8');
 		bindtextdomain('default','./locales/');
+		bindtextdomain('countries','./locales/');
 		textdomain('default');
 		if (!empty($lang))
 		{

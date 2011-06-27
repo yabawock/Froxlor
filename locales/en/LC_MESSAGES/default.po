@@ -1,0 +1,1168 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-06-27 17:00+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: lib/classes/general/class.Loader.php:305
+#: lib/navigation/00.froxlor.main.php:24
+#: lib/navigation/00.froxlor.main.php:153
+msgid "Overview"
+msgstr ""
+
+#: lib/classes/general/class.Loader.php:308
+#: lib/navigation/00.froxlor.main.php:156
+#, php-format
+msgid "Logged in as: %s"
+msgstr ""
+
+#: lib/classes/general/class.Loader.php:312
+#: lib/navigation/00.froxlor.main.php:43
+#: lib/navigation/00.froxlor.main.php:172 webftp.php:894
+msgid "Logout"
+msgstr ""
+
+#: lib/classes/general/class.Loader.php:317
+#: lib/navigation/00.froxlor.main.php:209
+msgid "Server"
+msgstr ""
+
+#: lib/classes/general/class.Loader.php:322
+msgid "Froxlor update"
+msgstr ""
+
+#: lib/classes/validate/class.validateForm.php:52
+#: templates_c/2d626c03415e314694e9da92d22bf99f73434d07.file.index.tpl.php:92
+#: templates_c/2d626c03415e314694e9da92d22bf99f73434d07.file.index.tpl.php:113
+#: modules/admin/class.customers.php:184 modules/admin/class.customers.php:185
+#: modules/admin/class.customers.php:186 modules/admin/class.customers.php:187
+#: modules/admin/class.customers.php:188 modules/admin/class.customers.php:189
+#: modules/admin/class.customers.php:190 modules/admin/class.customers.php:191
+#: modules/admin/class.customers.php:192 modules/admin/class.customers.php:193
+#: modules/admin/class.customers.php:194 modules/admin/class.customers.php:195
+#: modules/admin/class.customers.php:667
+msgid "Unlimited"
+msgstr ""
+
+#: lib/classes/validate/class.validateForm.php:53
+msgid "Unlimited needs to be boolean (0|1)"
+msgstr ""
+
+#: lib/classes/validate/class.validateForm.php:85
+#, php-format
+msgid "The minimum required length for this field is %d"
+msgstr ""
+
+#: lib/classes/validate/class.validateForm.php:92
+#, php-format
+msgid "The maximum allowed length for this field is %d"
+msgstr ""
+
+#: lib/classes/validate/class.validateForm.php:99
+#, php-format
+msgid "The value has to be greater than %d"
+msgstr ""
+
+#: lib/classes/validate/class.validateForm.php:106
+#, php-format
+msgid "The value has to be smaller than %d"
+msgstr ""
+
+#: lib/classes/validate/class.validateForm.php:115
+msgid "The value has to be an e-mail"
+msgstr ""
+
+#: lib/classes/validate/class.validateForm.php:123
+#, php-format
+msgid "The value does not match the required format: %s"
+msgstr ""
+
+#: lib/formfields/admin/customer/formfield.customer_add.php:20
+#: templates_c/2d626c03415e314694e9da92d22bf99f73434d07.file.index.tpl.php:38
+#: templates_c/2d626c03415e314694e9da92d22bf99f73434d07.file.index.tpl.php:150
+msgid "Create customer"
+msgstr ""
+
+#: lib/formfields/admin/customer/formfield.customer_add.php:24
+#: lib/formfields/admin/customer/formfield.customer_edit.php:24
+msgid "Account data"
+msgstr ""
+
+#: lib/formfields/admin/customer/formfield.customer_add.php:28
+#: lib/formfields/admin/customer/formfield.customer_edit.php:28
+#: templates_c/9820772c962ac06a73b947cb3061996356c3f61c.file.login.tpl.php:55
+#: templates_c/2d626c03415e314694e9da92d22bf99f73434d07.file.index.tpl.php:48
+msgid "Username"
+msgstr ""
+
+#: lib/formfields/admin/customer/formfield.customer_add.php:37
+#: lib/formfields/admin/customer/formfield.customer_edit.php:38
+msgid "Create standard subdomain"
+msgstr ""
+
+#: lib/formfields/admin/customer/formfield.customer_add.php:40
+#: lib/formfields/admin/customer/formfield.customer_add.php:53
+#: lib/formfields/admin/customer/formfield.customer_add.php:75
+#: lib/formfields/admin/customer/formfield.customer_add.php:224
+#: lib/formfields/admin/customer/formfield.customer_add.php:233
+#: lib/formfields/admin/customer/formfield.customer_add.php:265
+#: lib/formfields/admin/customer/formfield.customer_add.php:273
+#: lib/formfields/admin/customer/formfield.customer_add.php:280
+#: lib/formfields/admin/customer/formfield.customer_edit.php:41
+#: lib/formfields/admin/customer/formfield.customer_edit.php:49
+#: lib/formfields/admin/customer/formfield.customer_edit.php:212
+#: lib/formfields/admin/customer/formfield.customer_edit.php:221
+#: lib/formfields/admin/customer/formfield.customer_edit.php:253
+#: lib/formfields/admin/customer/formfield.customer_edit.php:261
+#: lib/formfields/admin/customer/formfield.customer_edit.php:269
+msgid "Yes"
+msgstr ""
+
+#: lib/formfields/admin/customer/formfield.customer_add.php:50
+msgid "Store default index file to customers docroot"
+msgstr ""
+
+#: lib/formfields/admin/customer/formfield.customer_add.php:63
+#: lib/formfields/admin/customer/formfield.customer_edit.php:54
+#: templates_c/9820772c962ac06a73b947cb3061996356c3f61c.file.login.tpl.php:59
+msgid "Password"
+msgstr ""
+
+#: lib/formfields/admin/customer/formfield.customer_add.php:67
+#: lib/formfields/admin/customer/formfield.customer_edit.php:58
+msgid "Password suggestion"
+msgstr ""
+
+#: lib/formfields/admin/customer/formfield.customer_add.php:72
+msgid "Send password"
+msgstr ""
+
+#: lib/formfields/admin/customer/formfield.customer_add.php:85
+#: lib/formfields/admin/customer/formfield.customer_edit.php:63
+#: templates_c/9820772c962ac06a73b947cb3061996356c3f61c.file.login.tpl.php:63
+#: modules/admin/class.index.php:325
+msgid "Language"
+msgstr ""
+
+#: lib/formfields/admin/customer/formfield.customer_add.php:90
+#: lib/formfields/admin/customer/formfield.customer_edit.php:68
+msgid "Country"
+msgstr ""
+
+#: lib/formfields/admin/customer/formfield.customer_add.php:97
+#: lib/formfields/admin/customer/formfield.customer_edit.php:75
+msgid "Contact data"
+msgstr ""
+
+#: lib/formfields/admin/customer/formfield.customer_add.php:101
+#: lib/formfields/admin/customer/formfield.customer_edit.php:79
+#: templates_c/2d626c03415e314694e9da92d22bf99f73434d07.file.index.tpl.php:46
+#: modules/admin/class.customers.php:363 modules/admin/class.customers.php:835
+msgid "Name"
+msgstr ""
+
+#: lib/formfields/admin/customer/formfield.customer_add.php:106
+#: lib/formfields/admin/customer/formfield.customer_edit.php:85
+#: templates_c/2d626c03415e314694e9da92d22bf99f73434d07.file.index.tpl.php:47
+#: modules/admin/class.customers.php:368 modules/admin/class.customers.php:840
+msgid "Firstname"
+msgstr ""
+
+#: lib/formfields/admin/customer/formfield.customer_add.php:111
+#: lib/formfields/admin/customer/formfield.customer_edit.php:91
+msgid "Title"
+msgstr ""
+
+#: lib/formfields/admin/customer/formfield.customer_add.php:116
+#: lib/formfields/admin/customer/formfield.customer_edit.php:96
+msgid "Company"
+msgstr ""
+
+#: lib/formfields/admin/customer/formfield.customer_add.php:121
+#: lib/formfields/admin/customer/formfield.customer_edit.php:102
+msgid "Street"
+msgstr ""
+
+#: lib/formfields/admin/customer/formfield.customer_add.php:125
+#: lib/formfields/admin/customer/formfield.customer_edit.php:107
+msgid "Zipcode"
+msgstr ""
+
+#: lib/formfields/admin/customer/formfield.customer_add.php:129
+#: lib/formfields/admin/customer/formfield.customer_edit.php:112
+msgid "City"
+msgstr ""
+
+#: lib/formfields/admin/customer/formfield.customer_add.php:133
+#: lib/formfields/admin/customer/formfield.customer_edit.php:117
+msgid "Phone"
+msgstr ""
+
+#: lib/formfields/admin/customer/formfield.customer_add.php:137
+#: lib/formfields/admin/customer/formfield.customer_edit.php:122
+msgid "Fax"
+msgstr ""
+
+#: lib/formfields/admin/customer/formfield.customer_add.php:141
+#: lib/formfields/admin/customer/formfield.customer_edit.php:127
+#: lib/navigation/00.froxlor.main.php:49 modules/admin/class.customers.php:373
+#: modules/admin/class.customers.php:845
+msgid "E-mail"
+msgstr ""
+
+#: lib/formfields/admin/customer/formfield.customer_add.php:146
+#: lib/formfields/admin/customer/formfield.customer_edit.php:133
+msgid "Customer number"
+msgstr ""
+
+#: lib/formfields/admin/customer/formfield.customer_add.php:152
+#: lib/formfields/admin/customer/formfield.customer_edit.php:140
+msgid "Service data"
+msgstr ""
+
+#: lib/formfields/admin/customer/formfield.customer_add.php:156
+#: lib/formfields/admin/customer/formfield.customer_edit.php:144
+#: templates_c/c7c2b8585dc5f697bef6b1d0b22817ab1dab8fb5.file.index.tpl.php:58
+msgid "Webspace"
+msgstr ""
+
+#: lib/formfields/admin/customer/formfield.customer_add.php:164
+#: lib/formfields/admin/customer/formfield.customer_edit.php:152
+#: lib/navigation/00.froxlor.main.php:141
+#: lib/navigation/00.froxlor.main.php:198
+#: templates_c/c7c2b8585dc5f697bef6b1d0b22817ab1dab8fb5.file.index.tpl.php:65
+msgid "Traffic"
+msgstr ""
+
+#: lib/formfields/admin/customer/formfield.customer_add.php:172
+#: lib/formfields/admin/customer/formfield.customer_edit.php:160
+#: templates_c/c7c2b8585dc5f697bef6b1d0b22817ab1dab8fb5.file.index.tpl.php:51
+msgid "Subdomains"
+msgstr ""
+
+#: lib/formfields/admin/customer/formfield.customer_add.php:180
+#: lib/formfields/admin/customer/formfield.customer_edit.php:168
+msgid "E-mail addresses"
+msgstr ""
+
+#: lib/formfields/admin/customer/formfield.customer_add.php:188
+#: lib/formfields/admin/customer/formfield.customer_edit.php:176
+msgid "E-mail accounts"
+msgstr ""
+
+#: lib/formfields/admin/customer/formfield.customer_add.php:196
+#: lib/formfields/admin/customer/formfield.customer_edit.php:184
+msgid "E-mail forwarders"
+msgstr ""
+
+#: lib/formfields/admin/customer/formfield.customer_add.php:204
+#: lib/formfields/admin/customer/formfield.customer_edit.php:192
+#: templates_c/c7c2b8585dc5f697bef6b1d0b22817ab1dab8fb5.file.index.tpl.php:101
+msgid "E-mail quota"
+msgstr ""
+
+#: lib/formfields/admin/customer/formfield.customer_add.php:213
+#: lib/formfields/admin/customer/formfield.customer_edit.php:201
+#: lib/functions/froxlor/function.CronjobFunctions.php:131
+msgid "E-mail autoresponder"
+msgstr ""
+
+#: lib/formfields/admin/customer/formfield.customer_add.php:221
+#: lib/formfields/admin/customer/formfield.customer_edit.php:209
+msgid "Allow IMAP for e-mail accounts"
+msgstr ""
+
+#: lib/formfields/admin/customer/formfield.customer_add.php:230
+#: lib/formfields/admin/customer/formfield.customer_edit.php:218
+msgid "Allow POP3 for e-mail accounts"
+msgstr ""
+
+#: lib/formfields/admin/customer/formfield.customer_add.php:239
+#: lib/formfields/admin/customer/formfield.customer_edit.php:227
+msgid "FTP accounts"
+msgstr ""
+
+#: lib/formfields/admin/customer/formfield.customer_add.php:246
+#: lib/formfields/admin/customer/formfield.customer_edit.php:234
+msgid "Support tickets"
+msgstr ""
+
+#: lib/formfields/admin/customer/formfield.customer_add.php:254
+#: lib/formfields/admin/customer/formfield.customer_edit.php:242
+msgid "MySQL databases"
+msgstr ""
+
+#: lib/formfields/admin/customer/formfield.customer_add.php:262
+#: lib/formfields/admin/customer/formfield.customer_edit.php:250
+msgid "PHP enabled"
+msgstr ""
+
+#: lib/formfields/admin/customer/formfield.customer_add.php:270
+#: lib/formfields/admin/customer/formfield.customer_edit.php:258
+msgid "Perl enabled"
+msgstr ""
+
+#: lib/formfields/admin/customer/formfield.customer_add.php:277
+#: lib/formfields/admin/customer/formfield.customer_edit.php:266
+msgid "Backup allowed"
+msgstr ""
+
+#: lib/formfields/admin/customer/formfield.customer_add.php:285
+#: lib/formfields/admin/customer/formfield.customer_edit.php:274
+msgid "APS installations"
+msgstr ""
+
+#: lib/formfields/admin/customer/formfield.customer_edit.php:20
+msgid "Edit customer"
+msgstr ""
+
+#: lib/formfields/admin/customer/formfield.customer_edit.php:33
+msgid "Documentroot"
+msgstr ""
+
+#: lib/formfields/admin/customer/formfield.customer_edit.php:46
+msgid "Deactivated"
+msgstr ""
+
+#: lib/formfields/admin/customer/formfield.customer_edit.php:54
+msgid "empty for no changes"
+msgstr ""
+
+#: lib/functions/froxlor/function.CronjobFunctions.php:120
+msgid "No execution yet"
+msgstr ""
+
+#: lib/functions/froxlor/function.CronjobFunctions.php:129
+msgid "APS installer"
+msgstr ""
+
+#: lib/functions/froxlor/function.CronjobFunctions.php:130
+msgid "Updating APS packages"
+msgstr ""
+
+#: lib/functions/froxlor/function.CronjobFunctions.php:132
+msgid "Backing up files"
+msgstr ""
+
+#: lib/functions/froxlor/function.CronjobFunctions.php:133
+msgid "Generating of configfiles"
+msgstr ""
+
+#: lib/functions/froxlor/function.CronjobFunctions.php:134
+msgid "Archiving old tickets"
+msgstr ""
+
+#: lib/functions/froxlor/function.CronjobFunctions.php:135
+msgid "Traffic calculation"
+msgstr ""
+
+#: lib/functions/froxlor/function.CronjobFunctions.php:136
+msgid "Send reports about web- and traffic-usage"
+msgstr ""
+
+#: lib/functions/froxlor/function.CronjobFunctions.php:137
+msgid "Resetting ticket counter"
+msgstr ""
+
+#: lib/functions/froxlor/function.CronjobFunctions.php:176
+msgid "Rebuilding webserver-configuration"
+msgstr ""
+
+#: lib/functions/froxlor/function.CronjobFunctions.php:188
+#, php-format
+msgid "Adding new customer %s"
+msgstr ""
+
+#: lib/functions/froxlor/function.CronjobFunctions.php:195
+msgid "Rebuilding bind-configuration"
+msgstr ""
+
+#: lib/functions/froxlor/function.CronjobFunctions.php:202
+msgid "Creating directory for new ftp-user"
+msgstr ""
+
+#: lib/functions/froxlor/function.CronjobFunctions.php:214
+#, php-format
+msgid "Deleting files of customer %s"
+msgstr ""
+
+#: lib/functions/froxlor/function.CronjobFunctions.php:221
+msgid "Set quota on filesystem"
+msgstr ""
+
+#: lib/functions/froxlor/function.CronjobFunctions.php:235
+msgid "Installing one or more APS packages"
+msgstr ""
+
+#: lib/functions/froxlor/function.CronjobFunctions.php:242
+msgid "Removing one or more APS packages"
+msgstr ""
+
+#: lib/functions/froxlor/function.CronjobFunctions.php:249
+msgid "Reconfigurating one or more APS packages"
+msgstr ""
+
+#: lib/functions/froxlor/function.CronjobFunctions.php:256
+msgid "Upgrading one or more APS packages"
+msgstr ""
+
+#: lib/functions/froxlor/function.CronjobFunctions.php:263
+msgid "Updating all APS packages"
+msgstr ""
+
+#: lib/functions/froxlor/function.CronjobFunctions.php:270
+msgid "Downloading new APS packages"
+msgstr ""
+
+#: lib/functions/output/function.standard_error.php:43
+msgid "Back"
+msgstr ""
+
+#: lib/navigation/00.froxlor.main.php:27
+#, php-format
+msgid "Logged in as %s"
+msgstr ""
+
+#: lib/navigation/00.froxlor.main.php:31
+#: lib/navigation/00.froxlor.main.php:160
+msgid "Change password"
+msgstr ""
+
+#: lib/navigation/00.froxlor.main.php:35
+#: lib/navigation/00.froxlor.main.php:164
+#: templates_c/c64e22a194b05cb68dbb221a0645f3bcd95fa9a3.file.change_language.tpl.php:24
+#: templates_c/c64e22a194b05cb68dbb221a0645f3bcd95fa9a3.file.change_language.tpl.php:32
+#: templates_c/c64e22a194b05cb68dbb221a0645f3bcd95fa9a3.file.change_language.tpl.php:40
+msgid "Change language"
+msgstr ""
+
+#: lib/navigation/00.froxlor.main.php:39
+#: lib/navigation/00.froxlor.main.php:168
+#: templates_c/d47876a945dfc08c684bf1ba89e96d08da17e690.file.change_theme.tpl.php:24
+#: templates_c/d47876a945dfc08c684bf1ba89e96d08da17e690.file.change_theme.tpl.php:32
+#: templates_c/d47876a945dfc08c684bf1ba89e96d08da17e690.file.change_theme.tpl.php:40
+msgid "Change theme"
+msgstr ""
+
+#: lib/navigation/00.froxlor.main.php:53
+msgid "Addresses"
+msgstr ""
+
+#: lib/navigation/00.froxlor.main.php:58
+msgid "Create e-mail address"
+msgstr ""
+
+#: lib/navigation/00.froxlor.main.php:63
+msgid "Autoresponder"
+msgstr ""
+
+#: lib/navigation/00.froxlor.main.php:70
+msgid "Webmail"
+msgstr ""
+
+#: lib/navigation/00.froxlor.main.php:78
+msgid "MySQL"
+msgstr ""
+
+#: lib/navigation/00.froxlor.main.php:82
+msgid "Databases"
+msgstr ""
+
+#: lib/navigation/00.froxlor.main.php:88
+msgid "phpMyAdmin"
+msgstr ""
+
+#: lib/navigation/00.froxlor.main.php:96
+#: lib/navigation/00.froxlor.main.php:187
+msgid "Domains"
+msgstr ""
+
+#: lib/navigation/00.froxlor.main.php:100
+#: lib/navigation/00.froxlor.main.php:219
+msgid "Settings"
+msgstr ""
+
+#: lib/navigation/00.froxlor.main.php:106
+msgid "FTP"
+msgstr ""
+
+#: lib/navigation/00.froxlor.main.php:110
+msgid "Accounts"
+msgstr ""
+
+#: lib/navigation/00.froxlor.main.php:115
+msgid "WebFTP"
+msgstr ""
+
+#: lib/navigation/00.froxlor.main.php:122
+msgid "Extras"
+msgstr ""
+
+#: lib/navigation/00.froxlor.main.php:126
+msgid "Directory protection"
+msgstr ""
+
+#: lib/navigation/00.froxlor.main.php:130
+msgid "Path options"
+msgstr ""
+
+#: lib/navigation/00.froxlor.main.php:134
+msgid "Backup"
+msgstr ""
+
+#: lib/navigation/00.froxlor.main.php:145
+msgid "Current month"
+msgstr ""
+
+#: lib/navigation/00.froxlor.main.php:177
+msgid "Resources"
+msgstr ""
+
+#: lib/navigation/00.froxlor.main.php:182
+#: lib/navigation/00.froxlor.main.php:203
+#: templates_c/c7c2b8585dc5f697bef6b1d0b22817ab1dab8fb5.file.index.tpl.php:39
+#: templates_c/2d626c03415e314694e9da92d22bf99f73434d07.file.index.tpl.php:24
+msgid "Customers"
+msgstr ""
+
+#: lib/navigation/00.froxlor.main.php:192
+msgid "Admins"
+msgstr ""
+
+#: lib/navigation/00.froxlor.main.php:214
+msgid "Configuration"
+msgstr ""
+
+#: lib/navigation/00.froxlor.main.php:224
+msgid "IPs and ports"
+msgstr ""
+
+#: lib/navigation/00.froxlor.main.php:229
+msgid "Cronjob settings"
+msgstr ""
+
+#: lib/navigation/00.froxlor.main.php:234
+msgid "Rebuild config files"
+msgstr ""
+
+#: lib/navigation/00.froxlor.main.php:239
+msgid "Recalculate resource usage"
+msgstr ""
+
+#: lib/navigation/00.froxlor.main.php:244
+msgid "PHP configurations"
+msgstr ""
+
+#: lib/navigation/00.froxlor.main.php:257
+msgid "Miscellaneous"
+msgstr ""
+
+#: lib/navigation/00.froxlor.main.php:261
+msgid "E-Mail & file templates"
+msgstr ""
+
+#: lib/navigation/00.froxlor.main.php:265
+msgid "System logging"
+msgstr ""
+
+#: lib/navigation/00.froxlor.main.php:271
+msgid "Write a message"
+msgstr ""
+
+#: webftp.php:174
+msgid "Successfully logged out"
+msgstr ""
+
+#: webftp.php:286 webftp.php:293 webftp.php:373
+#, php-format
+msgid "Directory change to '%1$s' failed!"
+msgstr ""
+
+#: webftp.php:300 webftp.php:312 webftp.php:318 webftp.php:369
+#, php-format
+msgid "current folder = [%1$s]"
+msgstr ""
+
+#: webftp.php:414
+#, php-format
+msgid "<strong>File '%1$s' is to big!</strong> (max. %2$u bytes)<br />"
+msgstr ""
+
+#: webftp.php:429
+#, php-format
+msgid "<br />File '%1$s' couldn't be uploaded!"
+msgstr ""
+
+#: webftp.php:433
+#, php-format
+msgid "<br />File '%1$s' was successfully uploaded!"
+msgstr ""
+
+#: webftp.php:443
+#, php-format
+msgid "<br />Directory '%1$s' deleted!"
+msgstr ""
+
+#: webftp.php:447
+#, php-format
+msgid "<br />Directory '%1$s' couldn't be deleted!"
+msgstr ""
+
+#: webftp.php:453 webftp.php:570
+#, php-format
+msgid "<br />'%1$s' deleted!"
+msgstr ""
+
+#: webftp.php:457 webftp.php:574
+#, php-format
+msgid "<br />'%1$s' couldn't be deleted!"
+msgstr ""
+
+#: webftp.php:465
+#, php-format
+msgid "'%1$s' renamed to '%2$s'"
+msgstr ""
+
+#: webftp.php:469
+#, php-format
+msgid "'%1$s' couldn't be renamed to '%2$s'!"
+msgstr ""
+
+#: webftp.php:474
+#, php-format
+msgid "File '%1$s' rename/move to"
+msgstr ""
+
+#: webftp.php:480
+#, php-format
+msgid "Directory '%1$s' created"
+msgstr ""
+
+#: webftp.php:484
+#, php-format
+msgid "Directory '%1$s' couldn't be created!"
+msgstr ""
+
+#: webftp.php:499 webftp.php:530
+#, php-format
+msgid "<br />The permission '%1$s' you entered is not valid!"
+msgstr ""
+
+#: webftp.php:506 webftp.php:541
+#, php-format
+msgid "<br />The permission of '%1$s' is set to '%2$s'!"
+msgstr ""
+
+#: webftp.php:510 webftp.php:545
+#, php-format
+msgid "<br />The permission of '%1$s' couldn't be set to '%2$s'!"
+msgstr ""
+
+#: webftp.php:594
+#, php-format
+msgid "<br />File '%1$s' moved"
+msgstr ""
+
+#: webftp.php:598
+#, php-format
+msgid "<br />File '%1$s' couldn't be moved"
+msgstr ""
+
+#: webftp.php:605
+#, php-format
+msgid "The directory '%1$s' doesn't exist"
+msgstr ""
+
+#: webftp.php:649
+#, php-format
+msgid "File '%1$s' couldn't be downloaded!"
+msgstr ""
+
+#: webftp.php:686
+#, php-format
+msgid "File '%1$s' couldn't be saved!"
+msgstr ""
+
+#: webftp.php:690
+#, php-format
+msgid "File '%1$s' was saved succesfully!"
+msgstr ""
+
+#: webftp.php:697
+#, php-format
+msgid "Files with these extension can't be created/edited!"
+msgstr ""
+
+#: webftp.php:705
+msgid "Please enter a filename!"
+msgstr ""
+
+#: webftp.php:855
+#, php-format
+msgid "Connected to %1$s"
+msgstr ""
+
+#: webftp.php:874
+msgid "Do you really want to delete the selected files?"
+msgstr ""
+
+#: webftp.php:878
+#, php-format
+msgid "Do you really want to move the selected files to '%1$s'?"
+msgstr ""
+
+#: webftp.php:883
+#, php-format
+msgid ""
+"Do you really want to set the permission of the selected files to '%1$s'?"
+msgstr ""
+
+#: webftp.php:896
+msgid "Switch to BINARY mode"
+msgstr ""
+
+#: webftp.php:898
+msgid "Switch to ASCII mode"
+msgstr ""
+
+#: webftp.php:900
+msgid "Main"
+msgstr ""
+
+#: webftp.php:906
+msgid "Login failed, please try again"
+msgstr ""
+
+#: templates_c/9820772c962ac06a73b947cb3061996356c3f61c.file.login.tpl.php:35
+#: templates_c/170d6af2e60ab7135572ce8719fd852492878cbb.file.index.tpl.php:60
+msgid "Information"
+msgstr ""
+
+#: templates_c/9820772c962ac06a73b947cb3061996356c3f61c.file.login.tpl.php:43
+#: templates_c/170d6af2e60ab7135572ce8719fd852492878cbb.file.index.tpl.php:68
+msgid "Error"
+msgstr ""
+
+#: templates_c/9820772c962ac06a73b947cb3061996356c3f61c.file.login.tpl.php:53
+msgid "Froxlor - Login"
+msgstr ""
+
+#: templates_c/9820772c962ac06a73b947cb3061996356c3f61c.file.login.tpl.php:69
+msgid "Login"
+msgstr ""
+
+#: templates_c/9820772c962ac06a73b947cb3061996356c3f61c.file.login.tpl.php:77
+msgid "Forgot password"
+msgstr ""
+
+#: templates_c/170d6af2e60ab7135572ce8719fd852492878cbb.file.index.tpl.php:84
+msgid "the Froxlor Team"
+msgstr ""
+
+#: templates_c/c7c2b8585dc5f697bef6b1d0b22817ab1dab8fb5.file.index.tpl.php:26
+msgid "WARNING - Please note!"
+msgstr ""
+
+#: templates_c/c7c2b8585dc5f697bef6b1d0b22817ab1dab8fb5.file.index.tpl.php:36
+msgid "Used resources (Used by customers (assigned/available))"
+msgstr ""
+
+#: templates_c/c7c2b8585dc5f697bef6b1d0b22817ab1dab8fb5.file.index.tpl.php:45
+msgid "Domain"
+msgstr ""
+
+#: templates_c/c7c2b8585dc5f697bef6b1d0b22817ab1dab8fb5.file.index.tpl.php:60
+#: templates_c/c7c2b8585dc5f697bef6b1d0b22817ab1dab8fb5.file.index.tpl.php:61
+#: templates_c/c7c2b8585dc5f697bef6b1d0b22817ab1dab8fb5.file.index.tpl.php:62
+msgid "MB"
+msgstr ""
+
+#: templates_c/c7c2b8585dc5f697bef6b1d0b22817ab1dab8fb5.file.index.tpl.php:67
+#: templates_c/c7c2b8585dc5f697bef6b1d0b22817ab1dab8fb5.file.index.tpl.php:68
+#: templates_c/c7c2b8585dc5f697bef6b1d0b22817ab1dab8fb5.file.index.tpl.php:69
+msgid "GB"
+msgstr ""
+
+#: templates_c/c7c2b8585dc5f697bef6b1d0b22817ab1dab8fb5.file.index.tpl.php:72
+msgid "MySQL-databases"
+msgstr ""
+
+#: templates_c/c7c2b8585dc5f697bef6b1d0b22817ab1dab8fb5.file.index.tpl.php:79
+msgid "E-mail - addresses"
+msgstr ""
+
+#: templates_c/c7c2b8585dc5f697bef6b1d0b22817ab1dab8fb5.file.index.tpl.php:86
+msgid "E-Mail - accounts"
+msgstr ""
+
+#: templates_c/c7c2b8585dc5f697bef6b1d0b22817ab1dab8fb5.file.index.tpl.php:93
+msgid "E-mail - forwarders"
+msgstr ""
+
+#: templates_c/c7c2b8585dc5f697bef6b1d0b22817ab1dab8fb5.file.index.tpl.php:110
+msgid "E-mail - autoresponder"
+msgstr ""
+
+#: templates_c/c7c2b8585dc5f697bef6b1d0b22817ab1dab8fb5.file.index.tpl.php:118
+msgid "APS - installations"
+msgstr ""
+
+#: templates_c/c7c2b8585dc5f697bef6b1d0b22817ab1dab8fb5.file.index.tpl.php:126
+msgid "FTP - accounts"
+msgstr ""
+
+#: templates_c/c7c2b8585dc5f697bef6b1d0b22817ab1dab8fb5.file.index.tpl.php:134
+msgid "Support - tickets"
+msgstr ""
+
+#: templates_c/c7c2b8585dc5f697bef6b1d0b22817ab1dab8fb5.file.index.tpl.php:147
+msgid "System details"
+msgstr ""
+
+#: templates_c/c7c2b8585dc5f697bef6b1d0b22817ab1dab8fb5.file.index.tpl.php:150
+msgid "Serversoftware"
+msgstr ""
+
+#: templates_c/c7c2b8585dc5f697bef6b1d0b22817ab1dab8fb5.file.index.tpl.php:155
+msgid "PHP - version"
+msgstr ""
+
+#: templates_c/c7c2b8585dc5f697bef6b1d0b22817ab1dab8fb5.file.index.tpl.php:160
+msgid "PHP - memorylimit"
+msgstr ""
+
+#: templates_c/c7c2b8585dc5f697bef6b1d0b22817ab1dab8fb5.file.index.tpl.php:165
+msgid "MySQL - server version"
+msgstr ""
+
+#: templates_c/c7c2b8585dc5f697bef6b1d0b22817ab1dab8fb5.file.index.tpl.php:170
+msgid "MySQL - client version"
+msgstr ""
+
+#: templates_c/c7c2b8585dc5f697bef6b1d0b22817ab1dab8fb5.file.index.tpl.php:175
+msgid "MySQL - webserver interface"
+msgstr ""
+
+#: templates_c/c7c2b8585dc5f697bef6b1d0b22817ab1dab8fb5.file.index.tpl.php:180
+msgid "System load"
+msgstr ""
+
+#: templates_c/c7c2b8585dc5f697bef6b1d0b22817ab1dab8fb5.file.index.tpl.php:186
+msgid "Kernel:"
+msgstr ""
+
+#: templates_c/c7c2b8585dc5f697bef6b1d0b22817ab1dab8fb5.file.index.tpl.php:193
+msgid "Uptime:"
+msgstr ""
+
+#: templates_c/c7c2b8585dc5f697bef6b1d0b22817ab1dab8fb5.file.index.tpl.php:204
+msgid "Froxlor details"
+msgstr ""
+
+#: templates_c/c7c2b8585dc5f697bef6b1d0b22817ab1dab8fb5.file.index.tpl.php:207
+msgid "Outstanding tasks:"
+msgstr ""
+
+#: templates_c/c7c2b8585dc5f697bef6b1d0b22817ab1dab8fb5.file.index.tpl.php:218
+msgid "There are currently no outstanding tasks for Froxlor"
+msgstr ""
+
+#: templates_c/c7c2b8585dc5f697bef6b1d0b22817ab1dab8fb5.file.index.tpl.php:223
+msgid "Last execution of cronjobs"
+msgstr ""
+
+#: templates_c/c7c2b8585dc5f697bef6b1d0b22817ab1dab8fb5.file.index.tpl.php:238
+msgid "Installed version"
+msgstr ""
+
+#: templates_c/c7c2b8585dc5f697bef6b1d0b22817ab1dab8fb5.file.index.tpl.php:244
+msgid "Latest version:"
+msgstr ""
+
+#: templates_c/c7c2b8585dc5f697bef6b1d0b22817ab1dab8fb5.file.index.tpl.php:257
+msgid "There is a newer version of Froxlor available"
+msgstr ""
+
+#: templates_c/2d626c03415e314694e9da92d22bf99f73434d07.file.index.tpl.php:49
+msgid "Admin"
+msgstr ""
+
+#: templates_c/2d626c03415e314694e9da92d22bf99f73434d07.file.index.tpl.php:51
+msgid "Options"
+msgstr ""
+
+#: templates_c/2d626c03415e314694e9da92d22bf99f73434d07.file.index.tpl.php:77
+msgid "Webspace:"
+msgstr ""
+
+#: templates_c/2d626c03415e314694e9da92d22bf99f73434d07.file.index.tpl.php:98
+msgid "Traffic:"
+msgstr ""
+
+#: templates_c/2d626c03415e314694e9da92d22bf99f73434d07.file.index.tpl.php:128
+msgid "Edit"
+msgstr ""
+
+#: templates_c/2d626c03415e314694e9da92d22bf99f73434d07.file.index.tpl.php:132
+msgid "Delete"
+msgstr ""
+
+#: templates_c/bd8c36d0e7697462abdc5f7db73a12a05e643085.file.customers_edit.tpl.php:59
+#: templates_c/5fcc9842a633f2fbcbf55ed8a317132b71046ea2.file.customers_add.tpl.php:57
+msgid "This value is mandatory"
+msgstr ""
+
+#: templates_c/bd8c36d0e7697462abdc5f7db73a12a05e643085.file.customers_edit.tpl.php:60
+#: templates_c/5fcc9842a633f2fbcbf55ed8a317132b71046ea2.file.customers_add.tpl.php:58
+msgid ""
+"Either &quot;name&quot; and &quot;firstname&quot; or &quot;company&quot; "
+"must be filled"
+msgstr ""
+
+#: templates_c/2aedbc0d973bfb4cdcee45c1990ce2e57f2fe244.file.table_end.tpl.php:22
+#: templates_c/a9f81ec7fc0c9bd2a327f68147c0149e5c511226.file.table_section.tpl.php:28
+msgid "Reset"
+msgstr ""
+
+#: templates_c/2aedbc0d973bfb4cdcee45c1990ce2e57f2fe244.file.table_end.tpl.php:23
+#: templates_c/a9f81ec7fc0c9bd2a327f68147c0149e5c511226.file.table_section.tpl.php:29
+msgid "Save"
+msgstr ""
+
+#: templates_c/c64e22a194b05cb68dbb221a0645f3bcd95fa9a3.file.change_language.tpl.php:34
+msgid "Language:"
+msgstr ""
+
+#: templates_c/d47876a945dfc08c684bf1ba89e96d08da17e690.file.change_theme.tpl.php:34
+msgid "Theme:"
+msgstr ""
+
+#: modules/admin/class.customers.php:61
+msgid "No login yet"
+msgstr ""
+
+#: modules/admin/class.customers.php:83
+msgid "Unlock"
+msgstr ""
+
+#: modules/admin/class.customers.php:106 modules/admin/class.customers.php:134
+#: modules/admin/class.customers.php:629 modules/admin/class.customers.php:695
+msgid "You need to submit the customer"
+msgstr ""
+
+#: modules/admin/class.customers.php:121
+msgid ""
+"You are either not allowed to incorporate this customer or this customer "
+"does not exist"
+msgstr ""
+
+#: modules/admin/class.customers.php:141
+#, php-format
+msgid "Do you really want to unlock customer %s?"
+msgstr ""
+
+#: modules/admin/class.customers.php:143 modules/admin/class.customers.php:162
+msgid ""
+"You are either not allowed to unlock this customer or this customer does not "
+"exist"
+msgstr ""
+
+#: modules/admin/class.customers.php:159
+#, php-format
+msgid "User %s successfully unlocked"
+msgstr ""
+
+#: modules/admin/class.customers.php:170 modules/admin/class.customers.php:216
+#, php-format
+msgid "You may not add more than %s customers"
+msgstr ""
+
+#: modules/admin/class.customers.php:198 modules/admin/class.customers.php:670
+msgid "Male"
+msgstr ""
+
+#: modules/admin/class.customers.php:199 modules/admin/class.customers.php:671
+msgid "Female"
+msgstr ""
+
+#: modules/admin/class.customers.php:355 modules/admin/class.customers.php:827
+#, php-format
+msgid "You may not allocate more resources for the resource '%s' than you have"
+msgstr ""
+
+#: modules/admin/class.customers.php:363 modules/admin/class.customers.php:368
+#: modules/admin/class.customers.php:373 modules/admin/class.customers.php:835
+#: modules/admin/class.customers.php:840 modules/admin/class.customers.php:845
+#: modules/admin/class.index.php:266 modules/admin/class.index.php:271
+#: modules/admin/class.index.php:276
+#, php-format
+msgid "Missing input in field '%s'"
+msgstr ""
+
+#: modules/admin/class.customers.php:378 modules/admin/class.customers.php:850
+#, php-format
+msgid "The entered e-mail address '%s' is wrong"
+msgstr ""
+
+#: modules/admin/class.customers.php:393
+#, php-format
+msgid ""
+"You cannot create accounts which are similar to system accounts (as for "
+"example begin with '%s'). Please enter another account name."
+msgstr ""
+
+#: modules/admin/class.customers.php:408
+#, php-format
+msgid "An account called '%s' already exists"
+msgstr ""
+
+#: modules/admin/class.customers.php:413
+#, php-format
+msgid "The chosen account name '%s' contains invalid characters"
+msgstr ""
+
+#: modules/admin/class.customers.php:422
+#, php-format
+msgid ""
+"The directory '%s' already exists for this customer. Please remove this "
+"before adding the customer again."
+msgstr ""
+
+#: modules/admin/class.customers.php:473
+#, php-format
+msgid "The customer '%1$s' could not be created: %2$s"
+msgstr ""
+
+#: modules/admin/class.customers.php:573
+#, php-format
+msgid "User '%s' successfully created"
+msgstr ""
+
+#: modules/admin/class.customers.php:609
+#, php-format
+msgid "Welcome - e-mail could not be sent for customer '%s'"
+msgstr ""
+
+#: modules/admin/class.customers.php:639 modules/admin/class.customers.php:706
+msgid "You don't have the permission to edit this customer"
+msgstr ""
+
+#: modules/admin/class.customers.php:649 modules/admin/class.customers.php:716
+msgid "The chosen customer does not exist"
+msgstr ""
+
+#: modules/admin/class.customers.php:1017
+#, php-format
+msgid "The customer '%s' was updated successfully"
+msgstr ""
+
+#: modules/admin/class.index.php:69
+msgid "Disabled"
+msgstr ""
+
+#: modules/admin/class.index.php:143
+msgid "Search via webservice"
+msgstr ""
+
+#: modules/admin/class.index.php:171
+#, php-format
+msgid "You have %s unanswered support-ticket(s)"
+msgstr ""
+
+#: modules/admin/class.index.php:188
+msgid "not available"
+msgstr ""
+
+#: modules/admin/class.index.php:257
+msgid "The old password is not correct"
+msgstr ""
+
+#: modules/admin/class.index.php:266
+msgid "Old password"
+msgstr ""
+
+#: modules/admin/class.index.php:271
+msgid "New password"
+msgstr ""
+
+#: modules/admin/class.index.php:276
+msgid "New password (confirm)"
+msgstr ""
+
+#: modules/admin/class.index.php:281
+msgid "New password and confirmation do not match"
+msgstr ""
+
+#: modules/admin/class.index.php:288
+msgid "Your changed password was saved"
+msgstr ""
+
+#: modules/admin/class.index.php:335
+msgid "The selected language is not supported by this system"
+msgstr ""
+
+#: modules/admin/class.index.php:340
+msgid "Your chosen language was activated"
+msgstr ""
+
+#: modules/admin/class.index.php:373
+msgid "Theme"
+msgstr ""
+
+#: modules/admin/class.index.php:377
+msgid "The selected theme does not exist"
+msgstr ""
+
+#: modules/admin/class.index.php:386
+msgid "Your chosen theme was activated"
+msgstr ""
+
+#: modules/login/class.login.php:111
+msgid "Profile language"
+msgstr ""
+
+#: modules/login/class.login.php:125
+msgid ""
+"Password reset successfully.<br />You now should receive an email with your "
+"new password."
+msgstr ""
+
+#: modules/login/class.login.php:128
+msgid "The username or password you typed in is wrong. Please try it again!"
+msgstr ""
+
+#: modules/login/class.login.php:131
+msgid ""
+"This account has been suspended because of too many login errors. <br /"
+">Please try again in "
+msgstr ""
+
+#: modules/login/class.login.php:135
+#, php-format
+msgid "The message to &quot;%s&quot; failed"
+msgstr ""
+
+#: modules/login/class.login.php:138
+msgid ""
+"Your account has been locked. Please contact your administrator for further "
+"information."
+msgstr ""
+
+#: modules/login/class.login.php:144
+msgid ""
+"A newer version of Froxlor has been installed but not yet set up.<br />Only "
+"the administrator can log in and finish the update."
+msgstr ""
