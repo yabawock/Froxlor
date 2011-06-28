@@ -1,0 +1,1010 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-06-27 17:00+0200\n"
+"PO-Revision-Date: 2011-06-28 20:04+0200\n"
+"Last-Translator: Florian <eleras@froxlor.org>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Pootle 2.0.5\n"
+
+#: lib/classes/country/countries.inc.php:43
+msgid "Canada"
+msgstr "Canada"
+
+#: lib/classes/country/countries.inc.php:130
+msgid "Libyan Arab Jamahiriya"
+msgstr "Libye"
+
+#: lib/classes/country/countries.inc.php:197
+msgid "Sao Tome and Principe"
+msgstr "Sao Tomé-et-Principe"
+
+#: lib/classes/country/countries.inc.php:77
+msgid "Fiji"
+msgstr "Fidji"
+
+#: lib/classes/country/countries.inc.php:231
+msgid "Turkmenistan"
+msgstr "Turkménistan"
+
+#: lib/classes/country/countries.inc.php:238
+msgid "United States of America"
+msgstr "États-Unis"
+
+#: lib/classes/country/countries.inc.php:132
+msgid "Lithuania"
+msgstr "Lituanie"
+
+#: lib/classes/country/countries.inc.php:193
+msgid "Saint Pierre and Miquelon"
+msgstr "Saint-Pierre-et-Miquelon"
+
+#: lib/classes/country/countries.inc.php:74
+msgid "Ethiopia"
+msgstr "Éthiopie"
+
+#: lib/classes/country/countries.inc.php:16
+msgid "Aruba"
+msgstr "Aruba"
+
+#: lib/classes/country/countries.inc.php:175
+msgid "Papua New Guinea"
+msgstr "Papouasie-Nouvelle-Guinée"
+
+#: lib/classes/country/countries.inc.php:216
+msgid "Swaziland"
+msgstr "Swaziland"
+
+#: lib/classes/country/countries.inc.php:97
+msgid "Guinea-Bissau"
+msgstr "Guinée-Bissau"
+
+#: lib/classes/country/countries.inc.php:14
+msgid "Argentina"
+msgstr "Argentine"
+
+#: lib/classes/country/countries.inc.php:47
+msgid "Chad, Republic of"
+msgstr "Tchad"
+
+#: lib/classes/country/countries.inc.php:39
+msgid "Burkina Faso"
+msgstr "Burkina Faso"
+
+#: lib/classes/country/countries.inc.php:87
+msgid "Ghana"
+msgstr "Ghana"
+
+#: lib/classes/country/countries.inc.php:198
+msgid "Saudi Arabia"
+msgstr "Arabie saoudite"
+
+#: lib/classes/country/countries.inc.php:251
+msgid "Zimbabwe, Republic of"
+msgstr "Zimbabwe"
+
+#: lib/classes/country/countries.inc.php:8
+msgid "American Samoa"
+msgstr "Samoa américaines"
+
+#: lib/classes/country/countries.inc.php:239
+msgid "United States Minor Outlying Islands"
+msgstr "Îles mineures éloignées des États-Unis"
+
+#: lib/classes/country/countries.inc.php:179
+msgid "Pitcairn"
+msgstr "Îles Pitcairn"
+
+#: lib/classes/country/countries.inc.php:94
+msgid "Guatemala"
+msgstr "Guatemala"
+
+#: lib/classes/country/countries.inc.php:32
+msgid "Bosnia and Herzegovina"
+msgstr "Bosnie-Herzégovine"
+
+#: lib/classes/country/countries.inc.php:123
+msgid "Kuwait"
+msgstr "Koweït"
+
+#: lib/classes/country/countries.inc.php:186
+msgid "Russian Federation"
+msgstr "Russie"
+
+#: lib/classes/country/countries.inc.php:117
+msgid "Jordan"
+msgstr "Jordanie"
+
+#: lib/classes/country/countries.inc.php:188
+msgid "Saint Barthelemy"
+msgstr "Saint-Barthélemy"
+
+#: lib/classes/country/countries.inc.php:245
+msgid "Virgin Islands, British"
+msgstr "Îles Vierges britanniques"
+
+#: lib/classes/country/countries.inc.php:66
+msgid "Dominica"
+msgstr "Dominique"
+
+#: lib/classes/country/countries.inc.php:129
+msgid "Liberia"
+msgstr "Liberia"
+
+#: lib/classes/country/countries.inc.php:139
+msgid "Maldives"
+msgstr "Maldives"
+
+#: lib/classes/country/countries.inc.php:148
+msgid "Micronesia, Federated States of"
+msgstr "Micronésie"
+
+#: lib/classes/country/countries.inc.php:171
+msgid "Pakistan"
+msgstr "Pakistan"
+
+#: lib/classes/country/countries.inc.php:170
+msgid "Oman"
+msgstr "Oman"
+
+#: lib/classes/country/countries.inc.php:135
+msgid "Macedonia, The Former Yugoslav Republic of"
+msgstr "Macédoine"
+
+#: lib/classes/country/countries.inc.php:144
+msgid "Mauritania"
+msgstr "Mauritanie"
+
+#: lib/classes/country/countries.inc.php:90
+msgid "Greenland"
+msgstr "Groenland"
+
+#: lib/classes/country/countries.inc.php:80
+msgid "French Guiana"
+msgstr "Guyane"
+
+#: lib/classes/country/countries.inc.php:166
+msgid "Niue"
+msgstr "Niue"
+
+#: lib/classes/country/countries.inc.php:150
+msgid "Monaco"
+msgstr "Monaco"
+
+#: lib/classes/country/countries.inc.php:247
+msgid "Wallis and Futuna"
+msgstr "Wallis-et-Futuna"
+
+#: lib/classes/country/countries.inc.php:162
+msgid "New Zealand"
+msgstr "Nouvelle-Zélande"
+
+#: lib/classes/country/countries.inc.php:116
+msgid "Jersey"
+msgstr "Jersey"
+
+#: lib/classes/country/countries.inc.php:114
+msgid "Jamaica"
+msgstr "Jamaïque"
+
+#: lib/classes/country/countries.inc.php:6
+msgid "Albania"
+msgstr "Albanie"
+
+#: lib/classes/country/countries.inc.php:195
+msgid "Samoa"
+msgstr "Samoa"
+
+#: lib/classes/country/countries.inc.php:54
+msgid "Congo, Republic of the"
+msgstr "Congo-Brazzaville"
+
+#: lib/classes/country/countries.inc.php:71
+msgid "Equatorial Guinea"
+msgstr "Guinée équatoriale"
+
+#: lib/classes/country/countries.inc.php:167
+msgid "Norfolk Island"
+msgstr "Norfolk"
+
+#: lib/classes/country/countries.inc.php:236
+msgid "United Arab Emirates"
+msgstr "Émirats arabes unis"
+
+#: lib/classes/country/countries.inc.php:93
+msgid "Guam"
+msgstr "Guam"
+
+#: lib/classes/country/countries.inc.php:50
+msgid "Christmas Island, Territory of"
+msgstr "Île Christmas"
+
+#: lib/classes/country/countries.inc.php:19
+msgid "Azerbaijan"
+msgstr "Azerbaïdjan"
+
+#: lib/classes/country/countries.inc.php:128
+msgid "Lesotho"
+msgstr "Lesotho"
+
+#: lib/classes/country/countries.inc.php:194
+msgid "Saint Vincent and the Grenadines"
+msgstr "Saint-Vincent-et-les-Grenadines"
+
+#: lib/classes/country/countries.inc.php:119
+msgid "Kenya"
+msgstr "Kenya"
+
+#: lib/classes/country/countries.inc.php:134
+msgid "Macao"
+msgstr "Macao"
+
+#: lib/classes/country/countries.inc.php:230
+msgid "Turkey"
+msgstr "Turquie"
+
+#: lib/classes/country/countries.inc.php:4
+msgid "Afghanistan"
+msgstr "Afghanistan"
+
+#: lib/classes/country/countries.inc.php:250
+msgid "Zambia, Republic of"
+msgstr "Zambie"
+
+#: lib/classes/country/countries.inc.php:168
+msgid "Northern Mariana Islands"
+msgstr "Îles Mariannes du Nord"
+
+#: lib/classes/country/countries.inc.php:44
+msgid "Cape Verde, Republic of"
+msgstr "Cap-Vert"
+
+#: lib/classes/country/countries.inc.php:207
+msgid "Solomon Islands"
+msgstr "Salomon"
+
+#: lib/classes/country/countries.inc.php:106
+msgid "India"
+msgstr "Inde"
+
+#: lib/classes/country/countries.inc.php:191
+msgid "Saint Lucia"
+msgstr "Sainte-Lucie"
+
+#: lib/classes/country/countries.inc.php:104
+msgid "Hungary"
+msgstr "Hongrie"
+
+#: lib/classes/country/countries.inc.php:196
+msgid "San Marino"
+msgstr "Saint-Marin"
+
+#: lib/classes/country/countries.inc.php:81
+msgid "French Polynesia"
+msgstr "Polynésie française"
+
+#: lib/classes/country/countries.inc.php:79
+msgid "France"
+msgstr "France"
+
+#: lib/classes/country/countries.inc.php:219
+msgid "Syrian Arab Republic"
+msgstr "Syrie"
+
+#: lib/classes/country/countries.inc.php:187
+msgid "Rwanda"
+msgstr "Rwanda"
+
+#: lib/classes/country/countries.inc.php:205
+msgid "Slovakia"
+msgstr "Slovaquie"
+
+#: lib/classes/country/countries.inc.php:208
+msgid "Somalia"
+msgstr "Somalie"
+
+#: lib/classes/country/countries.inc.php:177
+msgid "Peru"
+msgstr "Pérou"
+
+#: lib/classes/country/countries.inc.php:242
+msgid "Vanuatu"
+msgstr "Vanuatu"
+
+#: lib/classes/country/countries.inc.php:158
+msgid "Nauru"
+msgstr "Nauru"
+
+#: lib/classes/country/countries.inc.php:201
+msgid "Seychelles"
+msgstr "Seychelles"
+
+#: lib/classes/country/countries.inc.php:169
+msgid "Norway"
+msgstr "Norvège"
+
+#: lib/classes/country/countries.inc.php:137
+msgid "Malawi"
+msgstr "Malawi"
+
+#: lib/classes/country/countries.inc.php:56
+msgid "Cook Islands"
+msgstr "Îles Cook"
+
+#: lib/classes/country/countries.inc.php:27
+msgid "Benin"
+msgstr "Bénin"
+
+#: lib/classes/country/countries.inc.php:60
+msgid "Cuba"
+msgstr "Cuba"
+
+#: lib/classes/country/countries.inc.php:152
+msgid "Montenegro"
+msgstr "Monténégro"
+
+#: lib/classes/country/countries.inc.php:190
+msgid "Saint Kitts and Nevis"
+msgstr "Saint-Christophe-et-Niévès"
+
+#: lib/classes/country/countries.inc.php:225
+msgid "Togo"
+msgstr "Togo"
+
+#: lib/classes/country/countries.inc.php:100
+msgid "Heard Island and McDonald Islands"
+msgstr "Îles Heard-et-MacDonald"
+
+#: lib/classes/country/countries.inc.php:49
+msgid "China"
+msgstr "Chine"
+
+#: lib/classes/country/countries.inc.php:15
+msgid "Armenia"
+msgstr "Arménie"
+
+#: lib/classes/country/countries.inc.php:53
+msgid "Comoros, Union of the"
+msgstr "Comores"
+
+#: lib/classes/country/countries.inc.php:224
+msgid "Timor-Leste"
+msgstr "Timor oriental"
+
+#: lib/classes/country/countries.inc.php:67
+msgid "Dominican Republic"
+msgstr "République dominicaine"
+
+#: lib/classes/country/countries.inc.php:235
+msgid "Ukraine"
+msgstr "Ukraine"
+
+#: lib/classes/country/countries.inc.php:21
+msgid "Bahrain"
+msgstr "Bahreïn"
+
+#: lib/classes/country/countries.inc.php:227
+msgid "Tonga"
+msgstr "Tonga"
+
+#: lib/classes/country/countries.inc.php:78
+msgid "Finland"
+msgstr "Finlande"
+
+#: lib/classes/country/countries.inc.php:248
+msgid "Western Sahara"
+msgstr "Sahara occidental"
+
+#: lib/classes/country/countries.inc.php:45
+msgid "Cayman Islands"
+msgstr "Îles Caïmans"
+
+#: lib/classes/country/countries.inc.php:46
+msgid "Central African Republic"
+msgstr "République centrafricaine"
+
+#: lib/classes/country/countries.inc.php:145
+msgid "Mauritius"
+msgstr "Maurice"
+
+#: lib/classes/country/countries.inc.php:131
+msgid "Liechtenstein"
+msgstr "Liechtenstein"
+
+#: lib/classes/country/countries.inc.php:17
+msgid "Australia"
+msgstr "Australie"
+
+#: lib/classes/country/countries.inc.php:140
+msgid "Mali"
+msgstr "Mali"
+
+#: lib/classes/country/countries.inc.php:38
+msgid "Bulgaria"
+msgstr "Bulgarie"
+
+#: lib/classes/country/countries.inc.php:185
+msgid "Romania"
+msgstr "Roumanie"
+
+#: lib/classes/country/countries.inc.php:10
+msgid "Angola"
+msgstr "Angola"
+
+#: lib/classes/country/countries.inc.php:82
+msgid "French Southern Territories"
+msgstr "Terres australes et antarctiques françaises"
+
+#: lib/classes/country/countries.inc.php:181
+msgid "Portugal"
+msgstr "Portugal"
+
+#: lib/classes/country/countries.inc.php:209
+msgid "South Africa"
+msgstr "Afrique du Sud"
+
+#: lib/classes/country/countries.inc.php:226
+msgid "Tokelau"
+msgstr "Tokelau"
+
+#: lib/classes/country/countries.inc.php:221
+msgid "Tajikistan"
+msgstr "Tadjikistan"
+
+#: lib/classes/country/countries.inc.php:210
+msgid "South Georgia and the South Sandwich Islands"
+msgstr "Géorgie du Sud-et-les Îles Sandwich du Sud"
+
+#: lib/classes/country/countries.inc.php:217
+msgid "Sweden"
+msgstr "Suède"
+
+#: lib/classes/country/countries.inc.php:243
+msgid "Venezuela, Bolivarian Republic of"
+msgstr "Venezuela"
+
+#: lib/classes/country/countries.inc.php:189
+msgid "Saint Helena, Ascension and Tristan Da Cunha"
+msgstr "Sainte-Hélène, Ascension et Tristan da Cunha"
+
+#: lib/classes/country/countries.inc.php:138
+msgid "Malaysia"
+msgstr "Malaisie"
+
+#: lib/classes/country/countries.inc.php:18
+msgid "Austria"
+msgstr "Autriche"
+
+#: lib/classes/country/countries.inc.php:249
+msgid "Yemen, Republic of"
+msgstr "Yémen"
+
+#: lib/classes/country/countries.inc.php:155
+msgid "Mozambique"
+msgstr "Mozambique"
+
+#: lib/classes/country/countries.inc.php:31
+msgid "Caribbean Netherlands (Bonaire, Saint Eustatius and Saba)"
+msgstr "Bonaire, Saint-Eustache et Saba"
+
+#: lib/classes/country/countries.inc.php:234
+msgid "Uganda"
+msgstr "Ouganda"
+
+#: lib/classes/country/countries.inc.php:115
+msgid "Japan"
+msgstr "Japon"
+
+#: lib/classes/country/countries.inc.php:164
+msgid "Niger"
+msgstr "Niger"
+
+#: lib/classes/country/countries.inc.php:35
+msgid "Brazil"
+msgstr "Brésil"
+
+#: lib/classes/country/countries.inc.php:33
+msgid "Botswana, Republic of"
+msgstr "Botswana"
+
+#: lib/classes/country/countries.inc.php:121
+msgid "Korea, Democratic People's Republic of"
+msgstr "Corée du Nord"
+
+#: lib/classes/country/countries.inc.php:76
+msgid "Faroe Islands"
+msgstr "Îles Féroé"
+
+#: lib/classes/country/countries.inc.php:96
+msgid "Guinea"
+msgstr "Guinée"
+
+#: lib/classes/country/countries.inc.php:174
+msgid "Panama"
+msgstr "Panamá"
+
+#: lib/classes/country/countries.inc.php:122
+msgid "Korea, Republic of"
+msgstr "Corée du Sud"
+
+#: lib/classes/country/countries.inc.php:183
+msgid "Qatar"
+msgstr "Qatar"
+
+#: lib/classes/country/countries.inc.php:133
+msgid "Luxembourg"
+msgstr "Luxembourg"
+
+#: lib/classes/country/countries.inc.php:246
+msgid "Virgin Islands, U.S."
+msgstr "Îles Vierges des États-Unis"
+
+#: lib/classes/country/countries.inc.php:20
+msgid "Bahamas"
+msgstr "Bahamas"
+
+#: lib/classes/country/countries.inc.php:88
+msgid "Gibraltar"
+msgstr "Gibraltar"
+
+#: lib/classes/country/countries.inc.php:110
+msgid "Ireland"
+msgstr "Irlande"
+
+#: lib/classes/country/countries.inc.php:172
+msgid "Palau"
+msgstr "Palaos"
+
+#: lib/classes/country/countries.inc.php:165
+msgid "Nigeria"
+msgstr "Nigeria"
+
+#: lib/classes/country/countries.inc.php:68
+msgid "Ecuador"
+msgstr "Équateur"
+
+#: lib/classes/country/countries.inc.php:22
+msgid "Bangladesh"
+msgstr "Bangladesh"
+
+#: lib/classes/country/countries.inc.php:24
+msgid "Belarus"
+msgstr "Biélorussie"
+
+#: lib/classes/country/countries.inc.php:37
+msgid "Brunei Darussalam, State of"
+msgstr "Brunei"
+
+#: lib/classes/country/countries.inc.php:7
+msgid "Algeria"
+msgstr "Algérie"
+
+#: lib/classes/country/countries.inc.php:206
+msgid "Slovenia"
+msgstr "Slovénie"
+
+#: lib/classes/country/countries.inc.php:70
+msgid "El Salvador"
+msgstr "Salvador"
+
+#: lib/classes/country/countries.inc.php:233
+msgid "Tuvalu"
+msgstr "Tuvalu"
+
+#: lib/classes/country/countries.inc.php:63
+msgid "Czech Republic"
+msgstr "République tchèque"
+
+#: lib/classes/country/countries.inc.php:52
+msgid "Colombia, Republic of"
+msgstr "Colombie"
+
+#: lib/classes/country/countries.inc.php:182
+msgid "Puerto Rico"
+msgstr "Porto Rico"
+
+#: lib/classes/country/countries.inc.php:25
+msgid "Belgium"
+msgstr "Belgique"
+
+#: lib/classes/country/countries.inc.php:142
+msgid "Marshall Islands"
+msgstr "Marshall"
+
+#: lib/classes/country/countries.inc.php:99
+msgid "Haiti"
+msgstr "Haïti"
+
+#: lib/classes/country/countries.inc.php:26
+msgid "Belize"
+msgstr "Belize"
+
+#: lib/classes/country/countries.inc.php:103
+msgid "Hong Kong"
+msgstr "Hong Kong"
+
+#: lib/classes/country/countries.inc.php:202
+msgid "Sierra Leone"
+msgstr "Sierra Leone"
+
+#: lib/classes/country/countries.inc.php:85
+msgid "Georgia"
+msgstr "Géorgie"
+
+#: lib/classes/country/countries.inc.php:125
+msgid "Lao People's Democratic Republic"
+msgstr "Laos"
+
+#: lib/classes/country/countries.inc.php:48
+msgid "Chile, Republic of"
+msgstr "Chili"
+
+#: lib/classes/country/countries.inc.php:84
+msgid "Gambia"
+msgstr "Gambie"
+
+#: lib/classes/country/countries.inc.php:178
+msgid "Philippines"
+msgstr "Philippines"
+
+#: lib/classes/country/countries.inc.php:232
+msgid "Turks and Caicos Islands"
+msgstr "Îles Turques-et-Caïques"
+
+#: lib/classes/country/countries.inc.php:154
+msgid "Morocco"
+msgstr "Maroc"
+
+#: lib/classes/country/countries.inc.php:157
+msgid "Namibia"
+msgstr "Namibie"
+
+#: lib/classes/country/countries.inc.php:151
+msgid "Mongolia"
+msgstr "Mongolie"
+
+#: lib/classes/country/countries.inc.php:95
+msgid "Guernsey"
+msgstr "Guernesey"
+
+#: lib/classes/country/countries.inc.php:120
+msgid "Kiribati"
+msgstr "Kiribati"
+
+#: lib/classes/country/countries.inc.php:218
+msgid "Switzerland"
+msgstr "Suisse"
+
+#: lib/classes/country/countries.inc.php:91
+msgid "Grenada"
+msgstr "Grenade"
+
+#: lib/classes/country/countries.inc.php:220
+msgid "Taiwan, Province of China"
+msgstr "Taïwan (République de Chine)"
+
+#: lib/classes/country/countries.inc.php:111
+msgid "Isle of Man"
+msgstr "Île de Man"
+
+#: lib/classes/country/countries.inc.php:222
+msgid "Tanzania, United Republic of"
+msgstr "Tanzanie"
+
+#: lib/classes/country/countries.inc.php:73
+msgid "Estonia"
+msgstr "Estonie"
+
+#: lib/classes/country/countries.inc.php:244
+msgid "Vietnam, Socialist Republic of"
+msgstr "Viêt Nam"
+
+#: lib/classes/country/countries.inc.php:34
+msgid "Bouvet Island"
+msgstr "Île Bouvet"
+
+#: lib/classes/country/countries.inc.php:127
+msgid "Lebanon"
+msgstr "Liban"
+
+#: lib/classes/country/countries.inc.php:215
+msgid "Svalbard and Jan Mayen"
+msgstr "Svalbard et île Jan Mayen"
+
+#: lib/classes/country/countries.inc.php:241
+msgid "Uzbekistan"
+msgstr "Ouzbékistan"
+
+#: lib/classes/country/countries.inc.php:229
+msgid "Tunisia"
+msgstr "Tunisie"
+
+#: lib/classes/country/countries.inc.php:75
+msgid "Falkland Islands (Malvinas)"
+msgstr "Îles Malouines"
+
+#: lib/classes/country/countries.inc.php:101
+msgid "Holy See (Vatican City State)"
+msgstr "Saint-Siège (État de la Cité du Vatican)"
+
+#: lib/classes/country/countries.inc.php:13
+msgid "Antigua and Barbuda"
+msgstr "Antigua-et-Barbuda"
+
+#: lib/classes/country/countries.inc.php:211
+msgid "Spain"
+msgstr "Espagne"
+
+#: lib/classes/country/countries.inc.php:184
+msgid "Reunion"
+msgstr "La Réunion"
+
+#: lib/classes/country/countries.inc.php:62
+msgid "Cyprus"
+msgstr "Chypre"
+
+#: lib/classes/country/countries.inc.php:23
+msgid "Barbados"
+msgstr "Barbade"
+
+#: lib/classes/country/countries.inc.php:136
+msgid "Madagascar"
+msgstr "Madagascar"
+
+#: lib/classes/country/countries.inc.php:113
+msgid "Italy"
+msgstr "Italie"
+
+#: lib/classes/country/countries.inc.php:61
+msgid "Curacao"
+msgstr "Curaçao"
+
+#: lib/classes/country/countries.inc.php:29
+msgid "Bhutan"
+msgstr "Bhoutan"
+
+#: lib/classes/country/countries.inc.php:213
+msgid "Sudan"
+msgstr "Soudan"
+
+#: lib/classes/country/countries.inc.php:30
+msgid "Bolivia, Plurinational State of"
+msgstr "Bolivie"
+
+#: lib/classes/country/countries.inc.php:159
+msgid "Nepal"
+msgstr "Népal"
+
+#: lib/classes/country/countries.inc.php:141
+msgid "Malta"
+msgstr "Malte"
+
+#: lib/classes/country/countries.inc.php:160
+msgid "Netherlands"
+msgstr "Pays-Bas"
+
+#: lib/classes/country/countries.inc.php:28
+msgid "Bermuda"
+msgstr "Bermudes"
+
+#: lib/classes/country/countries.inc.php:214
+msgid "Suriname"
+msgstr "Suriname"
+
+#: lib/classes/country/countries.inc.php:58
+msgid "Cote d'Ivoire, Republic of"
+msgstr "Côte d'Ivoire"
+
+#: lib/classes/country/countries.inc.php:42
+msgid "Cameroon, Republic of"
+msgstr "Cameroun"
+
+#: lib/classes/country/countries.inc.php:11
+msgid "Anguilla"
+msgstr "Anguilla"
+
+#: lib/classes/country/countries.inc.php:223
+msgid "Thailand"
+msgstr "Thaïlande"
+
+#: lib/classes/country/countries.inc.php:5
+msgid "Aland Islands"
+msgstr "Åland"
+
+#: lib/classes/country/countries.inc.php:112
+msgid "Israel"
+msgstr "Israël"
+
+#: lib/classes/country/countries.inc.php:107
+msgid "Indonesia"
+msgstr "Indonésie"
+
+#: lib/classes/country/countries.inc.php:105
+msgid "Iceland"
+msgstr "Islande"
+
+#: lib/classes/country/countries.inc.php:40
+msgid "Burundi, Republic of"
+msgstr "Burundi"
+
+#: lib/classes/country/countries.inc.php:199
+msgid "Senegal"
+msgstr "Sénégal"
+
+#: lib/classes/country/countries.inc.php:59
+msgid "Croatia, Republic of"
+msgstr "Croatie"
+
+#: lib/classes/country/countries.inc.php:228
+msgid "Trinidad and Tobago"
+msgstr "Trinité-et-Tobago"
+
+#: lib/classes/country/countries.inc.php:86
+msgid "Germany"
+msgstr "Allemagne"
+
+#: lib/classes/country/countries.inc.php:143
+msgid "Martinique"
+msgstr "Martinique"
+
+#: lib/classes/country/countries.inc.php:108
+msgid "Iran, Islamic Republic of"
+msgstr "Iran"
+
+#: lib/classes/country/countries.inc.php:118
+msgid "Kazakhstan"
+msgstr "Kazakhstan"
+
+#: lib/classes/country/countries.inc.php:180
+msgid "Poland"
+msgstr "Pologne"
+
+#: lib/classes/country/countries.inc.php:149
+msgid "Moldova, Republic of"
+msgstr "Moldavie"
+
+#: lib/classes/country/countries.inc.php:65
+msgid "Djibouti"
+msgstr "Djibouti"
+
+#: lib/classes/country/countries.inc.php:72
+msgid "Eritrea"
+msgstr "Érythrée"
+
+#: lib/classes/country/countries.inc.php:124
+msgid "Kyrgyzstan"
+msgstr "Kirghizistan"
+
+#: lib/classes/country/countries.inc.php:55
+msgid "Congo, The Democratic Republic of the"
+msgstr "Congo, République démocratique du"
+
+#: lib/classes/country/countries.inc.php:64
+msgid "Denmark"
+msgstr "Danemark"
+
+#: lib/classes/country/countries.inc.php:146
+msgid "Mayotte"
+msgstr "Mayotte"
+
+#: lib/classes/country/countries.inc.php:109
+msgid "Iraq"
+msgstr "Irak"
+
+#: lib/classes/country/countries.inc.php:153
+msgid "Montserrat"
+msgstr "Montserrat"
+
+#: lib/classes/country/countries.inc.php:161
+msgid "New Caledonia"
+msgstr "Nouvelle-Calédonie"
+
+#: lib/classes/country/countries.inc.php:9
+msgid "Andorra"
+msgstr "Andorre"
+
+#: lib/classes/country/countries.inc.php:36
+msgid "British Indian Ocean Territory"
+msgstr "Territoire britannique de l'océan Indien"
+
+#: lib/classes/country/countries.inc.php:212
+msgid "Sri Lanka"
+msgstr "Sri Lanka"
+
+#: lib/classes/country/countries.inc.php:126
+msgid "Latvia"
+msgstr "Lettonie"
+
+#: lib/classes/country/countries.inc.php:204
+msgid "Sint Maarten (Dutch Part)"
+msgstr "Saint-Martin"
+
+#: lib/classes/country/countries.inc.php:98
+msgid "Guyana"
+msgstr "Guyana"
+
+#: lib/classes/country/countries.inc.php:92
+msgid "Guadeloupe"
+msgstr "Guadeloupe"
+
+#: lib/classes/country/countries.inc.php:51
+msgid "Cocos (Keeling) Islands, Territory of the"
+msgstr "Îles Cocos"
+
+#: lib/classes/country/countries.inc.php:57
+msgid "Costa Rica, Republic of"
+msgstr "Costa Rica"
+
+#: lib/classes/country/countries.inc.php:192
+msgid "Saint Martin (French Part)"
+msgstr "Saint-Martin (Antilles françaises)"
+
+#: lib/classes/country/countries.inc.php:102
+msgid "Honduras"
+msgstr "Honduras"
+
+#: lib/classes/country/countries.inc.php:156
+msgid "Myanmar"
+msgstr "Myanmar"
+
+#: lib/classes/country/countries.inc.php:147
+msgid "Mexico"
+msgstr "Mexique"
+
+#: lib/classes/country/countries.inc.php:69
+msgid "Egypt"
+msgstr "Égypte"
+
+#: lib/classes/country/countries.inc.php:163
+msgid "Nicaragua"
+msgstr "Nicaragua"
+
+#: lib/classes/country/countries.inc.php:240
+msgid "Uruguay, Oriental Republic of"
+msgstr "Ouganda"
+
+#: lib/classes/country/countries.inc.php:203
+msgid "Singapore"
+msgstr "Singapour"
+
+#: lib/classes/country/countries.inc.php:200
+msgid "Serbia"
+msgstr "Serbie"
+
+#: lib/classes/country/countries.inc.php:237
+msgid "United Kingdom"
+msgstr "Royaume-Uni"
+
+#: lib/classes/country/countries.inc.php:12
+msgid "Antarctica"
+msgstr "Antarctique"
+
+#: lib/classes/country/countries.inc.php:41
+msgid "Cambodia, Kingdom of"
+msgstr "Cambodge"
+
+#: lib/classes/country/countries.inc.php:89
+msgid "Greece"
+msgstr "Grèce"
+
+#: lib/classes/country/countries.inc.php:176
+msgid "Paraguay"
+msgstr "Paraguay"
+
+#: lib/classes/country/countries.inc.php:83
+msgid "Gabon"
+msgstr "Gabon"
+
+#: lib/classes/country/countries.inc.php:173
+msgid "Palestinian Territory, Occupied"
+msgstr "Palestine"
