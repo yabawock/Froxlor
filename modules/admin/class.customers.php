@@ -28,7 +28,7 @@ class adminCustomers
 	{
 		#Froxlor::getLog()->logAction(ADM_ACTION, LOG_NOTICE, "viewed customers/index");
 		// clear request data
-		unset($_SESSION['requestData']);
+		unset($_SESSION['requestData'], $_SESSION['formerror']);
 
 		$where = '';
 		if (Froxlor::getUser()->getData('resources', 'customers_see_all'))
@@ -200,7 +200,7 @@ class adminCustomers
 
 		$customer_add_data = include_once dirname(__FILE__).'/../../lib/formfields/admin/customer/formfield.customer_add.php';
 		$customer_add_form = htmlform::genHTMLForm($customer_add_data);
-		unset($_SESSION['requestData']);
+		unset($_SESSION['requestData'], $_SESSION['formerror']);
 
 		Froxlor::getSmarty()->assign('title', $customer_add_data['customer_add']['title']);
 		Froxlor::getSmarty()->assign('image', $customer_add_data['customer_add']['image']);
@@ -220,30 +220,37 @@ class adminCustomers
 		$_SESSION['requestData'] = $_POST;
 
 		$returnto = array('area' => 'admin', 'section' => 'customers', 'action' => 'add');
-		$name = validate($_POST['name'], 'name');
-		$firstname = validate($_POST['firstname'], 'first name');
-		$company = validate($_POST['company'], 'company');
-		$street = validate($_POST['street'], 'street');
-		$zipcode = validate($_POST['zipcode'], 'zipcode', '/^[0-9 \-A-Z]*$/');
-		$city = validate($_POST['city'], 'city');
-		$phone = validate($_POST['phone'], 'phone', '/^[0-9\- \+\(\)\/]*$/');
-		$fax = validate($_POST['fax'], 'fax', '/^[0-9\- \+\(\)\/]*$/');
-		$idna_convert = new idna_convert();
-		$email = $idna_convert->encode(validate($_POST['email'], 'email'));
-		$customernumber = validate($_POST['customernumber'], 'customer number', '/^[A-Za-z0-9 \-]*$/Di');
-		$def_language = validate($_POST['def_language'], 'default language');
-		$diskspace = intval_ressource($_POST['diskspace']);
-		$gender = intval_ressource($_POST['gender']);
 
-		$ccode = "";
-		if(isset($_POST['countrycode'])) {
-			$ccode = $_POST['countrycode'];
+		// We need to hide errors in the include_once since there are many undefined variables in the formfield, but these not required for validation
+		$form = @include_once dirname(__FILE__) . '/../../lib/formfields/admin/customer/formfield.customer_add.php';
+		$validation = validateForm::validate($_POST, $form['customer_add']);
+		if (count($validation['failed']) > 0)
+		{
+			$_SESSION['errormessage'] = '';
+			foreach ($validation['failed'] as $error)
+			{
+				$label = $error['label'];
+				unset($error['label']);
+				$error = join("<br />$label: ", $error);
+				$_SESSION['errormessage'] .= "$label: $error<br />";
+			}
+			$_SESSION['formerror'] = $validation['failed'];
+			redirectTo(Froxlor::getLinker()->getLink(array('area' => 'admin', 'section' => 'customers', 'action' => 'add')));
 		}
+
+		foreach(array('name', 'firstname', 'company', 'street', 'zipcode', 'city', 'phone', 'fax', 'customernumber', 'def_language', 'gender') as $fieldname)
+		{
+			$$fieldname = $validation['safe'][$fieldname];
+		}
+		$idna_convert = new idna_convert();
+		$email = $idna_convert->encode($validation['safe']['email']);
+
+		$ccode = $validation['safe']['countrycode'];
 
 		foreach(array('diskspace', 'traffic', 'subdomains', 'emails', 'email_accounts', 'email_forwarders', 'email_quota', 'email_autoresponder', 'ftps', 'tickets', 'mysqls', 'aps_packages') as $type)
 		{
 			$check = 1;
-			if ($type == 'email_quota' && getSetting('systems', 'mail_quotaenabled') != 1)
+			if ($type == 'email_quota' && getSetting('systems', 'mail_quota_enabled') != 1)
 			{
 				$check = 0;
 			}
@@ -262,8 +269,8 @@ class adminCustomers
 
 			if ($check)
 			{
-				$$type = doubleval_ressource($_POST[$type]);
-				if (isset($_POST[$type . '_ul']))
+				$$type = $validation['safe'][$type];
+				if (isset($validation['safe'][$type . '_ul']))
 				{
 					$$type = -1;
 				}
@@ -273,120 +280,28 @@ class adminCustomers
 				$$type = ($$type == 'email_quota' ? -1 : 0);
 			}
 		}
-		if(getSetting('system', 'mail_quota_enabled') == '1')
-		{
-			$email_quota = validate($_POST['email_quota'], 'email_quota', '/^\d+$/', 'vmailquotawrong', array('0', ''));
 
-			if(isset($_POST['email_quota_ul']))
+		foreach(array('createstdsubdomain', 'deactivated', 'email_imap', 'email_pop3', 'backup_allowed', 'phpenabled', 'perlenabled', 'sendpassword', 'store_defaultindex') as $type)
+		{
+			$$type = 0;
+			if (isset($validation['safe'][$type]))
 			{
-				$email_quota = - 1;
+				$$type = (int)$validation['safe'][$type];
+			}
+			if ($$type != 1)
+			{
+				$$type = 0;
 			}
 		}
-		else
-		{
-			$email_quota = - 1;
-		}
 
-		if(getSetting('autoresponder', 'autoresponder_active') == '1')
-		{
-			$email_autoresponder = intval_ressource($_POST['email_autoresponder']);
-
-			if(isset($_POST['email_autoresponder_ul']))
-			{
-				$email_autoresponder = - 1;
-			}
-		}
-		else
-		{
-			$email_autoresponder = 0;
-		}
-
-		$email_imap = 0;
-		if(isset($_POST['email_imap']))
-			$email_imap = intval_ressource($_POST['email_imap']);
-
-		$email_pop3 = 0;
-		if(isset($_POST['email_pop3']))
-			$email_pop3 = intval_ressource($_POST['email_pop3']);
-
-		$ftps = 0;
-		if(isset($_POST['ftps']))
-			$ftps = intval_ressource($_POST['ftps']);
-
-		if(isset($_POST['ftps_ul']))
-		{
-			$ftps = - 1;
-		}
-
-		$tickets = (getSetting('ticket', 'enabled') == 1 ? intval_ressource($_POST['tickets']) : 0);
-
-		if(isset($_POST['tickets_ul'])
-		   && getSetting('ticket', 'enabled') == '1')
-		{
-			$tickets = - 1;
-		}
-
-		$mysqls = intval_ressource($_POST['mysqls']);
-
-		if(isset($_POST['mysqls_ul']))
-		{
-			$mysqls = - 1;
-		}
-
-		if(getSetting('aps', 'aps_active') == '1')
-		{
-			$aps_packages = intval_ressource($_POST['aps_packages']);
-
-			if(isset($_POST['aps_packages_ul']))
-			{
-				$aps_packages = - 1;
-			}
-		}
-		else
-		{
-			$aps_packages = 0;
-		}
-
-		$createstdsubdomain = 0;
-		if(isset($_POST['createstdsubdomain']))
-			$createstdsubdomain = intval($_POST['createstdsubdomain']);
-		$password = validate($_POST['new_customer_password'], 'password');
+		$password = $validation['safe']['new_customer_password'];
 		// only check if not empty,
 		// cause empty == generate password automatically
-		if($password != '')
-		{
-			$password = validatePassword($password);
-		}
-
-		$backup_allowed = 0;
-		if(isset($_POST['backup_allowed']))
-			$backup_allowed = intval($_POST['backup_allowed']);
-
-		if ($backup_allowed != 0)
-		{
-			$backup_allowed = 1;
-		}
 
 		// gender out of range? [0,2]
 		if ($gender < 0 || $gender > 2) {
 			$gender = 0;
 		}
-
-		$sendpassword = 0;
-		if(isset($_POST['sendpassword']))
-			$sendpassword = intval($_POST['sendpassword']);
-
-		$phpenabled = 0;
-		if(isset($_POST['phpenabled']))
-			$phpenabled = intval($_POST['phpenabled']);
-
-		$perlenabled = 0;
-		if(isset($_POST['perlenabled']))
-			$perlenabled = intval($_POST['perlenabled']);
-
-		$store_defaultindex = 0;
-		if(isset($_POST['store_defaultindex']))
-			$store_defaultindex = intval($_POST['store_defaultindex']);
 
 		foreach(array('diskspace', 'mysqls', 'emails', 'email_accounts', 'email_forwarders', 'email_quota', 'email_autoresponder', 'ftps', 'tickets', 'subdomains', 'aps_packages') as $type)
 		{
@@ -426,6 +341,7 @@ class adminCustomers
 				redirectTo(Froxlor::getLinker()->getLink($returnto));
 			}
 		}
+
 		// Either $name and $firstname or the $company must be inserted
 		if($name == '' && $company == '')
 		{
@@ -449,11 +365,10 @@ class adminCustomers
 		}
 		else
 		{
-			if(isset($_POST['new_loginname'])
-			   && $_POST['new_loginname'] != '')
+			if(isset($validation['safe']['new_loginname'])
+			   && $validation['safe']['new_loginname'] != '')
 			{
 				$accountnumber = intval(getSetting('system', 'lastaccountnumber'));
-				$loginname = validate($_POST['new_loginname'], 'loginname', '/^[a-z0-9\-_]+$/i');
 
 				// Accounts which match systemaccounts are not allowed, filtering them
 
@@ -791,21 +706,31 @@ class adminCustomers
 		$returnto = array('area' => 'admin', 'section' => 'customers', 'action' => 'edit', 'id' => $id);
 
 		Froxlor::getSmarty()->assign('id', $id);
-		$name = validate($_POST['name'], 'name');
-		$firstname = validate($_POST['firstname'], 'first name');
-		$company = validate($_POST['company'], 'company');
-		$street = validate($_POST['street'], 'street');
-		$zipcode = validate($_POST['zipcode'], 'zipcode', '/^[0-9 \-A-Z]*$/');
-		$city = validate($_POST['city'], 'city');
-		$phone = validate($_POST['phone'], 'phone', '/^[0-9\- \+\(\)\/]*$/');
-		$fax = validate($_POST['fax'], 'fax', '/^[0-9\- \+\(\)\/]*$/');
+
+		// We need to hide errors in the include_once since there are many undefined variables in the formfield, but these not required for validation
+		$form = @include_once dirname(__FILE__) . '/../../lib/formfields/admin/customer/formfield.customer_edit.php';
+		$validation = validateForm::validate($_POST, $form['customer_add']);
+		if (count($validation['failed']) > 0)
+		{
+			$_SESSION['errormessage'] = '';
+			foreach ($validation['failed'] as $error)
+			{
+				$label = $error['label'];
+				unset($error['label']);
+				$error = join("<br />$label: ", $error);
+				$_SESSION['errormessage'] .= "$label: $error<br />";
+			}
+			$_SESSION['formerror'] = $validation['failed'];
+			redirectTo(Froxlor::getLinker()->getLink(array('area' => 'admin', 'section' => 'customers', 'action' => 'add')));
+		}
+
+		foreach(array('name', 'firstname', 'company', 'street', 'zipcode', 'city', 'phone', 'fax', 'customernumber', 'def_language', 'gender') as $fieldname)
+		{
+			$$fieldname = $validation['safe'][$fieldname];
+		}
 		$idna_convert = new idna_convert();
-		$email = $idna_convert->encode(validate($_POST['email'], 'email'));
-		$customernumber = validate($_POST['customernumber'], 'customer number', '/^[A-Za-z0-9 \-]*$/Di');
-		$def_language = validate($_POST['def_language'], 'default language');
-		$password = validate($_POST['new_customer_password'], 'new password');
-		$diskspace = intval_ressource($_POST['diskspace']);
-		$gender = intval_ressource($_POST['gender']);
+		$email = $idna_convert->encode($validation['safe']['email']);
+		$password = $validation['safe']['new_customer_password'];
 
 		foreach(array('diskspace', 'traffic', 'subdomains', 'emails', 'email_accounts', 'email_forwarders', 'email_quota', 'email_autoresponder', 'ftps', 'tickets', 'mysqls', 'aps_packages') as $type)
 		{
@@ -829,8 +754,8 @@ class adminCustomers
 
 			if ($check)
 			{
-				$$type = doubleval_ressource($_POST[$type]);
-				if (isset($_POST[$type . '_ul']))
+				$$type = $validation['safe'][$type];
+				if (isset($validation['safe'][$type . '_ul']))
 				{
 					$$type = -1;
 				}
@@ -844,9 +769,9 @@ class adminCustomers
 		foreach(array('createstdsubdomain', 'deactivated', 'email_imap', 'email_pop3', 'backup_allowed', 'phpenabled', 'perlenabled') as $type)
 		{
 			$$type = 0;
-			if (isset($_POST[$type]))
+			if (isset($validation['safe'][$type]))
 			{
-				$$type = intval($_POST[$type]);
+				$$type = (int)($validation['safe'][$type]);
 			}
 			if ($$type != 1)
 			{
