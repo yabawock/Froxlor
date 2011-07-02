@@ -77,6 +77,14 @@ class htmlform
 							$nexto = false;
 						}
 						Froxlor::getSmarty()->assign('data_field', $data_field);
+						if (isset($_SESSION['formerror'][$fieldname]))
+						{
+							Froxlor::getSmarty()->assign('error', true);
+						}
+						else
+						{
+							Froxlor::getSmarty()->assign('error', false);
+						}
 						self::$_form .= Froxlor::getSmarty()->fetch('misc/form/table_row.tpl');
 					} else {
 						$data_field = self::_parseDataField($fieldname, $fielddata);
