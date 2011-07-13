@@ -14,8 +14,8 @@
 				{$searchcode}
 			</div>
 
-			(if (($user->getData("resources", "domains_used") < $user->getData("resources", "domains")
-				|| $user->getData("resources", "domains") == '-1') && 15 < $count && 0 < $countcustomers )
+			(if ((Froxlor::getUser()->getData("resources", "domains_used") < Froxlor::getUser()->getData("resources", "domains")
+				|| Froxlor::getUser()->getData("resources", "domains") == '-1') && 15 < $count && 0 < $countcustomers )
 			)
 				<div class="overviewadd">
 					<img src="images/Froxlor/icons/domain_add.png" alt="" />&nbsp;
@@ -60,8 +60,8 @@
 				</div>
 			(/if)
 
-			(if ($user->getData("resources", "domains_used") < $user->getData("resources", "domains")
-				|| $user->getData("resources", "domains") == '-1') && $countcustomers !=0
+			(if (Froxlor::getUser()->getData("resources", "domains_used") < Froxlor::getUser()->getData("resources", "domains")
+				|| Froxlor::getUser()->getData("resources", "domains") == '-1') && $countcustomers !=0
 			)
 				<div class="overviewadd">
 					<img src="images/Froxlor/icons/domain_add.png" alt="" />&nbsp;

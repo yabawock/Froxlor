@@ -22,9 +22,9 @@
  */
 class adminDomains {
 	public function index() {
-		$countcustomers = Froxlor::getDb()->query_first("SELECT COUNT(`customerid`) as `countcustomers` FROM `" . TABLE_PANEL_CUSTOMERS . "` " . ($userinfo['customers_see_all'] ? '' : " WHERE `adminid` = '" . (int)$userinfo['adminid'] . "' ") . "");
+		$countcustomers = Froxlor::getDb()->query_first("SELECT COUNT(`customerid`) as `countcustomers` FROM `" . TABLE_PANEL_CUSTOMERS . "` " . (Froxlor::getUser()->getData("resources", "customers_see_all") ? '' : " WHERE `adminid` = '" . Froxlor::getUser()->getId() . "' ") . "");
 		$countcustomers = (int)$countcustomers['countcustomers'];
-		$log->logAction(ADM_ACTION, LOG_NOTICE, "viewed admin_domains");
+		// $log->logAction(ADM_ACTION, LOG_NOTICE, "viewed admin_domains");
 		$fields = array(
 			'd.domain' => $lng['domains']['domainname'],
 			'ip.ip' => $lng['admin']['ipsandports']['ip'],
@@ -35,14 +35,20 @@ class adminDomains {
 			'c.loginname' => $lng['login']['username'],
 			'd.aliasdomain' => $lng['domains']['aliasdomain']
 		);
-		$paging = new paging($userinfo, $db, TABLE_PANEL_DOMAINS, $fields, $settings['panel']['paging'], $settings['panel']['natsorting']);
+		// $paging = new paging($userinfo, $db, TABLE_PANEL_DOMAINS, $fields, $settings['panel']['paging'], $settings['panel']['natsorting']);
 		$domains = '';
-		$result = Froxlor::getDb()->query("SELECT `d`.*, `c`.`loginname`, `c`.`name`, `c`.`firstname`, `c`.`company`, `c`.`standardsubdomain`, `ad`.`id` AS `aliasdomainid`, `ad`.`domain` AS `aliasdomain`, `ip`.`id` AS `ipid`, `ip`.`ip`, `ip`.`port` " . "FROM `" . TABLE_PANEL_DOMAINS . "` `d` " . "LEFT JOIN `" . TABLE_PANEL_CUSTOMERS . "` `c` USING(`customerid`) " . "LEFT JOIN `" . TABLE_PANEL_DOMAINS . "` `ad` ON `d`.`aliasdomain`=`ad`.`id` " . "LEFT JOIN `" . TABLE_PANEL_IPSANDPORTS . "` `ip` ON (`d`.`ipandport` = `ip`.`id`) " . "WHERE `d`.`parentdomainid`='0' " . ($userinfo['customers_see_all'] ? '' : " AND `d`.`adminid` = '" . (int)$userinfo['adminid'] . "' ") . " " . $paging->getSqlWhere(true) . " " . $paging->getSqlOrderBy() . " " . $paging->getSqlLimit());
-		$paging->setEntries(Froxlor::getDb()->num_rows($result));
-		$sortcode = $paging->getHtmlSortCode($lng);
-		$arrowcode = $paging->getHtmlArrowCode($filename . '?page=' . $page . '&s=' . $s);
-		$searchcode = $paging->getHtmlSearchCode($lng);
-		$pagingcode = $paging->getHtmlPagingCode($filename . '?page=' . $page . '&s=' . $s);
+		$result = Froxlor::getDb()->query("SELECT `d`.*, `c`.`loginname`, `c`.`name`, `c`.`firstname`,
+		`c`.`company`, `c`.`standardsubdomain`, `ad`.`id` AS `aliasdomainid`, `ad`.`domain` AS `aliasdomain`,
+		`ip`.`id` AS `ipid`, `ip`.`ip`, `ip`.`port` " . "FROM `" . TABLE_PANEL_DOMAINS . "` `d` " .
+		"LEFT JOIN `" . TABLE_PANEL_CUSTOMERS . "` `c` USING(`customerid`) " .
+		"LEFT JOIN `" . TABLE_PANEL_DOMAINS . "` `ad` ON `d`.`aliasdomain`=`ad`.`id` " .
+		"LEFT JOIN `" . TABLE_PANEL_IPSANDPORTS . "` `ip` ON (`d`.`ipandport` = `ip`.`id`) " .
+		"WHERE `d`.`parentdomainid`='0' " . (Froxlor::getUser()->getData("resources", "customers_see_all") ? '' : " AND `d`.`adminid` = '" . Froxlor::getUser()->getId() . "' "));
+		//$paging->setEntries(Froxlor::getDb()->num_rows($result));
+		//$sortcode = $paging->getHtmlSortCode($lng);
+		//$arrowcode = $paging->getHtmlArrowCode($filename . '?page=' . $page . '&s=' . $s);
+		//$searchcode = $paging->getHtmlSearchCode($lng);
+		//$pagingcode = $paging->getHtmlPagingCode($filename . '?page=' . $page . '&s=' . $s);
 		$domain_array = array();
 
 		while($row = Froxlor::getDb()->fetch_array($result))
