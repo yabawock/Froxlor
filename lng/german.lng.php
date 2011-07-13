@@ -1617,3 +1617,5 @@ $lng['tasks']['diskspace_set_quota'] = 'Quota auf dem Dateisystem setzen';
 $lng['error']['session_timeout'] = 'Wert zu niedrig';
 $lng['error']['session_timeout_desc'] = 'Der Wert der Session Timeout sollte nicht unter einer Minute liegen.';
 $lng['countrycode'] = 'Land';
+
+$lng['domain']['domain_register'] = 'Domain registrieren';

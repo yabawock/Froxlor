@@ -28,6 +28,9 @@ $header
 			<tr>
 				<td class="field_display_border_left" colspan="5"><a href="{$linker->getLink(array('section' => 'domains', 'page' => $page, 'action' => 'add'))}">{$lng['admin']['domain_add']}</a></td>
 			</tr>
+			<tr>
+				<td class="field_display_border_left" colspan="5"><a href="{$linker->getLink(array('section' => 'domains', 'page' => $page, 'action' => 'register'))}">{$lng['domain']['domain_register']}</a></td>
+			</tr>
 			</if>
 			<if $countcustomers == 0 >
 			<tr>

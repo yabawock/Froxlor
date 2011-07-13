@@ -1888,3 +1888,6 @@ $lng['serversettings']['diskquota_customer_partition']['description'] = 'Partiti
 $lng['tasks']['diskspace_set_quota'] = 'Set quota on filesystem';
 $lng['error']['session_timeout'] = 'Value too low';
 $lng['error']['session_timeout_desc'] = 'You should not set the session timeout lower than 1 minute.';
+
+//
+$lng['domain']['domain_register'] = 'Register Domain';
