@@ -99,6 +99,7 @@ if (Froxlor::getDb()->connect_error)
 }
 
 $settings = array();
+/*
 // Let's get the theme we need
 if ($result = Froxlor::getDb()->query("SELECT `value` FROM `panel_settings` WHERE `varname` = 'default_theme'"))
 {
@@ -109,6 +110,9 @@ else
 	// Default will be Froxlor ;)
 	$settings['panel']['default_theme'] = 'Froxlor';
 }
+*/
+# Until we have other themes: enforce the Froxlor - layout
+$settings['panel']['default_theme'] = 'Froxlor';
 
 # Initialize Smarty
 Froxlor::addObject('smarty', new Smarty());

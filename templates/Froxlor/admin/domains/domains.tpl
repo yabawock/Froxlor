@@ -63,6 +63,9 @@
 				<div class="overviewadd">
 					<img src="images/Froxlor/icons/domain_add.png" alt="" />&nbsp;
 					<a href="{$linker->getLink(array('section' => 'domains', 'page' => $page, 'action' => 'add'))}">{$lng['admin']['domain_add']}</a>
+					<br />
+					<img src="images/Froxlor/icons/domain_add.png" alt="" />&nbsp;
+					<a href="{$linker->getLink(array('section' => 'domains', 'page' => $page, 'action' => 'register'))}">{$lng['domain']['domain_register']}</a>
 				</div>
 			</if>
 

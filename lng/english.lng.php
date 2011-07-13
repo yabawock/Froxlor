@@ -243,7 +243,7 @@ $lng['error']['domainname'] = $lng['domains']['domainname'];
 $lng['question']['question'] = 'Security question';
 $lng['question']['admin_customer_reallydelete'] = 'Do you really want to delete the customer %s? This cannot be undone!';
 $lng['question']['admin_domain_reallydelete'] = 'Do you really want to delete the domain %s?';
-$lng['question']['admin_domain_reallydisablesecuritysetting'] = 'Do you really want to disable these security setting (OpenBasedir)?';
+$lng['question']['admin_domain_reallydisablesecuritysetting'] = 'Do you really want to disable this security setting OpenBasedir?';
 $lng['question']['admin_admin_reallydelete'] = 'Do you really want to delete the admin %s? Every customer and domain will be reassigned to your account.';
 $lng['question']['admin_template_reallydelete'] = 'Do you really want to delete the template \'%s\'?';
 $lng['question']['domains_reallydelete'] = 'Do you really want to delete the domain %s?';
@@ -1606,7 +1606,7 @@ $lng['error']['admin_domain_emailsystemhostname'] = 'Sorry, the system - hostnam
 $lng['backup'] = 'Backup';
 $lng['backup_allowed'] = 'Backup allowed';
 $lng['extras']['backup_create'] = 'Create Backup?';
-$lng['extras']['backup_info'] = 'Backup will be saved once daily to a FTP directory. The FTP username is "'. $userinfo['loginname'] .'_backup". The FTP password is the same as for your main FTP account.';
+$lng['extras']['backup_info'] = 'Backup will be saved once daily to a FTP directory. The FTP username is "&lt;Froxloruser&gt;_backup". The FTP password is the same as for your main FTP account.';
 $lng['extras']['backup_info_sep'] = 'It contains compressed archives of your web-directory and databases.';
 $lng['extras']['backup_info_big'] = 'It contains a compressed archive of your web-directory and databases.';
 $lng['extras']['backup_count_info'] = '<br /><br />Please note that the backup will charge your webspace!';
@@ -1888,3 +1888,6 @@ $lng['serversettings']['diskquota_customer_partition']['description'] = 'Partiti
 $lng['tasks']['diskspace_set_quota'] = 'Set quota on filesystem';
 $lng['error']['session_timeout'] = 'Value too low';
 $lng['error']['session_timeout_desc'] = 'You should not set the session timeout lower than 1 minute.';
+
+//
+$lng['domain']['domain_register'] = 'Register Domain';
