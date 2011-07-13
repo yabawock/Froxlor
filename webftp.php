@@ -97,6 +97,7 @@ if ($db->connect_error)
 }
 
 $settings = array();
+/*
 // Let's get the theme we need
 if ($result = $db->query("SELECT `value` FROM `panel_settings` WHERE `varname` = 'default_theme'"))
 {
@@ -107,6 +108,9 @@ else
 	// Default will be Froxlor ;)
 	$settings['panel']['default_theme'] = 'Froxlor';
 }
+*/
+# Until we have other themes: enforce the Froxlor - layout
+$settings['panel']['default_theme'] = 'Froxlor';
 
 # Initialize Smarty
 include('./lib/classes/Smarty/Smarty.class.php');
@@ -856,7 +860,7 @@ elseif ((!empty($_POST['loginname']) && !empty($_POST['password'])) || (!empty($
 
 			if($action == "rename" && $_GET['op']=="show")
 			{
-				$body .= $smarty->fetch('webftp/webftp_main_rename');
+				$body .= $smarty->fetch('webftp/webftp_main_rename.tpl');
 			}
 			$smarty->assign('output_dir', $output_dir);
 			$smarty->assign('output_link', $output_link);
@@ -881,7 +885,7 @@ elseif ((!empty($_POST['loginname']) && !empty($_POST['password'])) || (!empty($
 					$smarty->assign('chmod', $_POST['chmod']);
 				}
 				$smarty->assign('op', $_POST['op']);
-				$body .= $smarty->fetch('webftp/webftp_main_prompt');
+				$body .= $smarty->fetch('webftp/webftp_main_prompt.tpl');
 			}
 			else
 			{
