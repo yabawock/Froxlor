@@ -57,7 +57,7 @@ class domain {
 	 * @param domain $domain
 	 */
 	public function addSubdomain($domain) {
-		$domain->setParent(this);
+		$domain->setParent($this);
 		$this->_subdomains[] = $domain;
 	}
 	
