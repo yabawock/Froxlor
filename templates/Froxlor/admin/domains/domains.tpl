@@ -1,9 +1,8 @@
- $header
 	<article>
 		<header>
 			<h2>
 				<img src="images/Froxlor/icons/domains.png" alt="" />&nbsp;
-				{$lng['admin']['domains']}&nbsp;({$domainscount})
+				{t}Domains{/t}&nbsp;({$domainscount})
 			</h2>
 		</header>
 
@@ -15,12 +14,14 @@
 				{$searchcode}
 			</div>
 
-			<if ($userinfo['domains_used'] < $userinfo['domains'] || $userinfo['domains'] == '-1') && 15 < $count && 0 < $countcustomers >
+			(if (($user->getData("resources", "domains_used") < $user->getData("resources", "domains")
+				|| $user->getData("resources", "domains") == '-1') && 15 < $count && 0 < $countcustomers )
+			)
 				<div class="overviewadd">
 					<img src="images/Froxlor/icons/domain_add.png" alt="" />&nbsp;
 					<a href="{$linker->getLink(array('section' => 'domains', 'page' => $page, 'action' => 'add'))}">{$lng['admin']['domain_add']}</a>
 				</div>
-			</if>
+			(/if)
 
 			<table class="bradiusodd">
 				<thead>
@@ -31,15 +32,15 @@
 						<th>{$lng['panel']['options']}</th>
 					</tr>
 				</thead>
-				<if $pagingcode != ''>
-					<tfoot>
-						<tr>
-							<td>{$pagingcode}</td>
-						</tr>
-					</tfoot>
-				</if>
 				<tbody>
-					{$domains}
+					(foreach $domains as $domain)
+					<tr>
+						<td>{$domain.name}</td>
+						<td>{$domain.ip}:{$domain.port}</td>
+						<td>{$domain.customer}</td>
+						<td>TODO: options</td>
+					</tr>
+					(/foreach)
 				</tbody>
 			</table>
 
@@ -50,16 +51,18 @@
 
 			</form>
 
-			<if $countcustomers == 0 >
+			(if $countcustomers == 0)
 				<div class="warningcontainer bradius">
 					<div class="warningtitle">{$lng['admin']['warning']}</div>
 					<div class="warning">
 						<a href="{$linker->getLink(array('section' => 'customers', 'page' => 'customers', 'action' => 'add'))}">{$lng['admin']['domain_nocustomeraddingavailable']}</a>
 					</div>
 				</div>
-			</if>
+			(/if)
 
-			<if ($userinfo['domains_used'] < $userinfo['domains'] || $userinfo['domains'] == '-1') && $countcustomers !=0 >
+			(if ($user->getData("resources", "domains_used") < $user->getData("resources", "domains")
+				|| $user->getData("resources", "domains") == '-1') && $countcustomers !=0
+			)
 				<div class="overviewadd">
 					<img src="images/Froxlor/icons/domain_add.png" alt="" />&nbsp;
 					<a href="{$linker->getLink(array('section' => 'domains', 'page' => $page, 'action' => 'add'))}">{$lng['admin']['domain_add']}</a>
@@ -67,8 +70,7 @@
 					<img src="images/Froxlor/icons/domain_add.png" alt="" />&nbsp;
 					<a href="{$linker->getLink(array('section' => 'domains', 'page' => $page, 'action' => 'register'))}">{$lng['domain']['domain_register']}</a>
 				</div>
-			</if>
+			(/if)
 
 		</section>
 	</article>
-$footer
