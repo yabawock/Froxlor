@@ -463,4 +463,41 @@ class user {
 
 		return $table;
 	}
+	
+	/**
+	 * Deletes everything from database, but leaves resources in this object.
+	 *
+	 * @param boolean $really set this to true to really delete database records
+	 *
+	 * @todo only deletes resources and data records atm! relations aren't deleted yet
+	 */
+	public function deleteUserFromDatabase($really = false) {
+		if (!$really) {
+			// read the description lazy dev!
+			return false;
+		}
+		
+		$sqlUsers = "DELETE FROM `". TABLE_USERS ."` WHERE `id` = '". $this->getId() ."'";
+		
+		// resources
+		if ($this->isAdmin()) {
+			// @todo check if the admin has costumer
+			
+			$sqlRes = "DELETE FROM `". TABLE_ADMIN_RESOURCES ."` WHERE `id` = '". $this->getId() ."'";
+		} else {
+			$sqlRes = "DELETE FROM `". TABLE_USER_RESOURCES ."` WHERE `id` = '". $this->getId() ."'";
+		}
+		
+		// start transaction
+		$this->_db->query("begin;");
+		
+		// query everything
+		$this->_db->query($sqlUsers);
+		$this->_db->query($sqlRes);
+		
+		// @todo do some checks
+		
+		// commit
+		$this->_db->query("commit;");
+	}
 }
