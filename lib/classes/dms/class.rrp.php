@@ -165,4 +165,29 @@ class rrp implements dms
 		
 		return $response->code;
 	}
+	
+	/**
+	 * (non-PHPdoc)
+	 * @see dms::domainRegister()
+	 */
+	public function domainRegister($domain) {
+		
+	}
+	
+	/**
+	 * (non-PHPdoc)
+	 * @see dms::domainList()
+	 */
+	public function domainList() {
+		$response = $this->_request->send(array("command" => "QueryDomainList", "domain" => "*", "wide" => 1));
+		$domains = $response->getList();
+	}
+	
+	/**
+	 * (non-PHPdoc)
+	 * @see dms::domainListByContact()
+	 */
+	public function domainListByContact($handle) {
+		
+	}
 }
