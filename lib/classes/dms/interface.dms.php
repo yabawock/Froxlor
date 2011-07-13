@@ -64,9 +64,32 @@ interface dms
 	 */
 	public function domainCheck($domain);
 	
-	/*
-	public function domainRegister();
+	/**
+	 * Registers the new domain.
+	 *
+	 * @param string $domain
+	 *
+	 * @return int statuscode
+	 */
+	public function domainRegister($domain);
 	
+	/**
+	 * This will get all domains.
+	 *
+	 * @return array with domains
+	 */
+	public function domainList();
+	
+	/**
+	 * This will get all domains for a specific handle.
+	 *
+	 * @param handle $handle
+	 *
+	 * @return array domains
+	 */
+	public function domainListByContact($handle);
+	
+	/*
 	public function eventListener();
 	*/
 }
