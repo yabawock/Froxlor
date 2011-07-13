@@ -23,7 +23,7 @@ $downloadDir = "/tmp/";
 
 // Which file extensions indicate files allowed to be edited
 // Either simple extension or regex
-$editFileExtensions = array("php[34]?$","sh$","txt$","[ps]?htm[l]?$","tpl$","pl","cgi","^ht[acespwd]+$");
+$editFileExtensions = array("php[345]?$","sh$","txt$","[ps]?htm[l]?$","tpl$","pl","cgi","^ht[acespwd]+$");
 // Are files without extension allowed to be edited?
 $editFileNoExtension = true;
 // Which FTP - mode should be used by default?
@@ -99,6 +99,7 @@ if (Froxlor::getDb()->connect_error)
 }
 
 $settings = array();
+/*
 // Let's get the theme we need
 if ($result = Froxlor::getDb()->query("SELECT `value` FROM `panel_settings` WHERE `varname` = 'default_theme'"))
 {
@@ -109,6 +110,9 @@ else
 	// Default will be Froxlor ;)
 	$settings['panel']['default_theme'] = 'Froxlor';
 }
+*/
+# Until we have other themes: enforce the Froxlor - layout
+$settings['panel']['default_theme'] = 'Froxlor';
 
 # Initialize Smarty
 Froxlor::addObject('smarty', new Smarty());
@@ -859,7 +863,7 @@ elseif ((!empty($_POST['loginname']) && !empty($_POST['password'])) || (!empty($
 
 			if($action == "rename" && $_GET['op']=="show")
 			{
-				$body .= Froxlor::getSmarty()->fetch('webftp/webftp_main_rename');
+				$body .= Froxlor::getSmarty()->fetch('webftp/webftp_main_rename.tpl');
 			}
 			Froxlor::getSmarty()->assign('output_dir', $output_dir);
 			Froxlor::getSmarty()->assign('output_link', $output_link);
@@ -884,7 +888,7 @@ elseif ((!empty($_POST['loginname']) && !empty($_POST['password'])) || (!empty($
 					Froxlor::getSmarty()->assign('chmod', $_POST['chmod']);
 				}
 				Froxlor::getSmarty()->assign('op', $_POST['op']);
-				$body .= Froxlor::getSmarty()->fetch('webftp/webftp_main_prompt');
+				$body .= Froxlor::getSmarty()->fetch('webftp/webftp_main_prompt.tpl');
 			}
 			else
 			{
