@@ -37,7 +37,7 @@ class domain {
 	 * @param string $name
 	 * @param string $tld
 	 */
-	public function __construct($name, $tld) {
+	public function __construct($name, $tld = null) {
 		$this->_domainname = $name;
 		$this->_tld = $tld;
 	}
