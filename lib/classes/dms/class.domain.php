@@ -19,8 +19,23 @@
  * This class represents a (sub)domain.
  */
 class domain {
+	/**
+	 * The domainname.
+	 * @var string
+	 */
 	private $_domainname = "";
+	
+	/**
+	 * TLD.
+	 * @var string
+	 */
 	private $_tld = "";
+	
+	/**
+	 * Contains the owner handle.
+	 * @var handle
+	 */
+	private $_handle = null;
 	
 	/**
 	 * Contains all subdomains.
@@ -118,5 +133,14 @@ class domain {
 	 */
 	public function getTld() {
 		return $this->_tld;
+	}
+	
+	/**
+	 * Sets the owner handle.
+	 *
+	 * @param handle $handle
+	 */
+	public function setOwner($handle) {
+		$this->_handle = $handle;
 	}
 }
