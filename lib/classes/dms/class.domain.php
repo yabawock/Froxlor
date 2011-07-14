@@ -15,6 +15,9 @@
  * @package    DMS
  */
 
+/**
+ * This class represents a (sub)domain.
+ */
 class domain {
 	private $_domainname = "";
 	private $_tld = "";
@@ -103,10 +106,16 @@ class domain {
 		return $this->_parent;
 	}
 	
+	/**
+	 * @return string the domainname
+	 */
 	public function getName() {
 		return $this->_domainname;
 	}
 	
+	/**
+	 * @return string the tld
+	 */
 	public function getTld() {
 		return $this->_tld;
 	}
