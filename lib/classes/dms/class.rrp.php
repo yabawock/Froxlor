@@ -167,6 +167,23 @@ class rrp implements dms
 	}
 	
 	/**
+	 * Retuns all information for the domain object.
+	 *
+	 * @param domain $domain
+	 *
+	 * @return MREG_Response or null
+	 */
+	public function domainStatus($domain) {
+		$response = $this->_request->send(array("command" => "StatusDomain", "domain" => $domain->getFQDN()));
+		
+		if ($response->code == 200) {
+			return $response->getList();
+		}
+		
+		return null;
+	}
+	
+	/**
 	 * (non-PHPdoc)
 	 * @see dms::domainRegister()
 	 */
@@ -180,7 +197,25 @@ class rrp implements dms
 	 */
 	public function domainList() {
 		$response = $this->_request->send(array("command" => "QueryDomainList", "domain" => "*", "wide" => 1));
-		$domains = $response->getList();
+		
+		if ($response->code == 200) {
+			$ds = $response->getList();
+			$domains = array();
+			
+			foreach($ds as $d) {
+				$tmp = explode(".", $d['domain']);
+				$domain = new domain($tmp[1], $tmp[0]);
+				$status = $this->domainStatus($domain);
+				$handle = new handle(array(), $status['contact']['0']);
+				$domain->setOwner($handle);
+				
+				$domains[] = $domain;
+			}
+			
+			return $domains;
+		}
+		
+		return null;
 	}
 	
 	/**
