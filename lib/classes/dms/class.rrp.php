@@ -217,7 +217,7 @@ class rrp implements dms
 				$tmp = explode(".", $d['domain']);
 				$domain = new domain($tmp[1], $tmp[0]);
 				$status = $this->domainStatus($domain);
-				$handle = new handle(array(), $status['contact']['0']);
+				$handle = new handle(array(), $status['owner_contact']);
 				$domain->setOwner($handle);
 				
 				$domains[] = $domain;
