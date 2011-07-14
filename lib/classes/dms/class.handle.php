@@ -54,8 +54,8 @@ class handle {
 			$data = $this->_db->query_first("SELECT * FROM ". TABLE_USER_ADDRESSES ." WHERE `handleid` = '". $handleid ."'");
 			$this->setName($data['name'], $data['firstname']);
 			$this->setCompany($data['company']);
-			$this->setAddress($data['street'], $data['city'], $data['zip'], $data['country']);
-			$this->setContactData($data['phone'], $data['mail'], $data['fax']);
+			$this->setAddress($data['street'], $data['city'], $data['zipcode'], $data['country']);
+			$this->setContactData($data['phone'], $data['email'], $data['fax']);
 		}
 	}
 
