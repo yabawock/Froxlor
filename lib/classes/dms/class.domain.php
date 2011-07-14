@@ -141,12 +141,25 @@ class domain {
 	public function getFQDN() {
 		$parent = $this->getParent();
 		$fqdn = $this->getName();
-		while (is_null($parent->_tld)) {
-			$parent = $parent->getParent();
-			$fqdn .= ".". $parent->getName();
-		}
 		
+		// is there a parent?
+		if (!is_null($parent)) {
+			// circle as long as there isn't a tld
+			while (is_null($parent->_tld)) {
+				$parent = $parent->getParent();
+				if (is_null($parent)) {
+					break;
+				}
+				$fqdn .= ".". $parent->getName();
+			}
+			
+			$fqdn .= ".". $parent->getName();
+		} else {
+			$parent = $this;
+		}
 		$fqdn .= ".". $parent->getTld();
+		
+		return $fqdn;
 	}
 	
 	/**
