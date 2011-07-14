@@ -29,7 +29,7 @@ class domain {
 	 * TLD.
 	 * @var string
 	 */
-	private $_tld = "";
+	private $_tld = null;
 	
 	/**
 	 * Contains the owner handle.
@@ -139,7 +139,14 @@ class domain {
 	 * @return the fqdn
 	 */
 	public function getFQDN() {
-		// @todo implement this
+		$parent = $this->getParent();
+		$fqdn = $this->getName();
+		while (is_null($parent->_tld)) {
+			$parent = $parent->getParent();
+			$fqdn .= ".". $parent->getName();
+		}
+		
+		$fqdn .= ".". $parent->getTld();
 	}
 	
 	/**
