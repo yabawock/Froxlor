@@ -13,10 +13,6 @@
  * @license http://opensource.org/licenses/lgpl-2.1 LGPLv2.1
  */
 
-/**
- * Include the basic class we extend
- */
-include_once "MREG_Request.class.php";
 
 /**
  * RRPProxy metaregistry request via local MREGd
