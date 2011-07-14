@@ -56,6 +56,8 @@ class rrp implements dms
 	 * @see dms::handleCreate()
 	 */
 	public function handleCreate($handle) {
+		$this->_request->reset();
+		
 		$command = array(
 			"command" => "AddContact",
 			"firstname" => $handle->getFirstname(),
@@ -90,6 +92,8 @@ class rrp implements dms
 	 * @see dms::handleDelete()
 	 */
 	public function handleDelete($handle) {
+		$this->_request->reset();
+		
 		$command = array("command" => "DeleteContact", "contact" => $handle->getHandleId());
 		$response = $this->_reqeust->send($command);
 		
@@ -105,6 +109,8 @@ class rrp implements dms
 	 * @see dms::handleModify()
 	 */
 	public function handleModify($handle) {
+		$this->_request->reset();
+		
 		$command = array(
 			"command" => "ModifyContact",
 			"contact" => $handle->getHandleId(),
@@ -135,6 +141,8 @@ class rrp implements dms
 	 * @see dms::handleList()
 	 */
 	public function handleList() {
+		$this->_request->reset();
+		
 		$response = $this->_request->send(array("command" => "QueryContactList", "wide" => "1"));
 		$handles = array();
 		
@@ -161,6 +169,8 @@ class rrp implements dms
 	 * @see dms::domainCheck()
 	 */
 	public function domainCheck($domain) {
+		$this->_request->reset();
+		
 		$response = $this->_request->send(array("command" => "CheckDomain", "domain" => $domain));
 		
 		return $response->code;
@@ -171,6 +181,8 @@ class rrp implements dms
 	 * @see dms::domainStatus()
 	 */
 	public function domainStatus($domain) {
+		$this->_request->reset();
+		
 		$response = $this->_request->send(array("command" => "StatusDomain", "domain" => $domain->getFQDN()));
 		
 		if ($response->code == 200) {
@@ -185,7 +197,7 @@ class rrp implements dms
 	 * @see dms::domainRegister()
 	 */
 	public function domainRegister($domain) {
-		
+		$this->_request->reset();
 	}
 	
 	/**
@@ -193,6 +205,8 @@ class rrp implements dms
 	 * @see dms::domainList()
 	 */
 	public function domainList() {
+		$this->_request->reset();
+		
 		$response = $this->_request->send(array("command" => "QueryDomainList", "domain" => "*", "wide" => 1));
 		
 		if ($response->code == 200) {
@@ -220,6 +234,8 @@ class rrp implements dms
 	 * @see dms::domainListByContact()
 	 */
 	public function domainListByContact($handle) {
+		$this->_request->reset();
+		
 		$response = $this->_request->send(array("command" => "QueryDomainList", "domain" => "*",
 												"contact" => $handle->getHandleId(), "wide" => 1));
 		
