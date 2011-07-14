@@ -167,11 +167,8 @@ class rrp implements dms
 	}
 	
 	/**
-	 * Retuns all information for the domain object.
-	 *
-	 * @param domain $domain
-	 *
-	 * @return MREG_Response or null
+	 * (non-PHPdoc)
+	 * @see dms::domainStatus()
 	 */
 	public function domainStatus($domain) {
 		$response = $this->_request->send(array("command" => "StatusDomain", "domain" => $domain->getFQDN()));

@@ -65,6 +65,15 @@ interface dms
 	public function domainCheck($domain);
 	
 	/**
+	 * Retuns all information for the domain object.
+	 *
+	 * @param domain $domain
+	 *
+	 * @return array or null
+	 */
+	public function domainStatus($domain);
+	
+	/**
 	 * Registers the new domain.
 	 *
 	 * @param string $domain
