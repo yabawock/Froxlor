@@ -223,6 +223,24 @@ class rrp implements dms
 	 * @see dms::domainListByContact()
 	 */
 	public function domainListByContact($handle) {
+		$response = $this->_request->send(array("command" => "QueryDomainList", "domain" => "*",
+												"contact" => $handle->getHandleId(), "wide" => 1));
 		
+		if ($response->code == 200) {
+			$ds = $response->getList();
+			$domains = array();
+			
+			foreach($ds as $d) {
+				$tmp = explode(".", $d['domain']);
+				$domain = new domain($tmp[1], $tmp[0]);
+				$domain->setOwner($handle);
+				
+				$domains[] = $domain;
+			}
+			
+			return $domains;
+		}
+		
+		return null;
 	}
 }
