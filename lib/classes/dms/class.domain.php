@@ -136,6 +136,13 @@ class domain {
 	}
 	
 	/**
+	 * @return the fqdn
+	 */
+	public function getFQDN() {
+		// @todo implement this
+	}
+	
+	/**
 	 * Sets the owner handle.
 	 *
 	 * @param handle $handle
