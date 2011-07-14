@@ -52,10 +52,10 @@ class handle {
 			$this->_handleId = $data['contact'];
 		} elseif (!is_null($handleid)) {
 			$data = $this->_db->query_first("SELECT * FROM ". TABLE_USER_ADDRESSES ." WHERE `handleid` = '". $handleid ."'");
-			$this->setName($data['contact_lastname'], $data['contact_firstname']);
-			$this->setCompany($data['contact_organization']);
-			$this->setAddress($data['contact_street'], $data['contact_city'], $data['contact_zip'], $data['contact_country']);
-			$this->setContactData($data['contact_phone'], $data['contact_email'], $data['contact_fax']);
+			$this->setName($data['name'], $data['firstname']);
+			$this->setCompany($data['company']);
+			$this->setAddress($data['street'], $data['city'], $data['zip'], $data['country']);
+			$this->setContactData($data['phone'], $data['mail'], $data['fax']);
 		}
 	}
 
