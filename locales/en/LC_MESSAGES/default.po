@@ -8,7 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
+<<<<<<< HEAD
 "POT-Creation-Date: 2011-06-27 17:00+0200\n"
+=======
+"POT-Creation-Date: 2011-07-16 10:04+0200\n"
+>>>>>>> rrp
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+<<<<<<< HEAD
 #: lib/classes/general/class.Loader.php:305
 #: lib/navigation/00.froxlor.main.php:24
 #: lib/navigation/00.froxlor.main.php:153
@@ -587,15 +592,27 @@ msgid "Successfully logged out"
 msgstr ""
 
 #: webftp.php:286 webftp.php:293 webftp.php:373
+=======
+#: webftp.php:177
+msgid "Successfully logged out"
+msgstr ""
+
+#: webftp.php:289 webftp.php:296 webftp.php:376
+>>>>>>> rrp
 #, php-format
 msgid "Directory change to '%1$s' failed!"
 msgstr ""
 
+<<<<<<< HEAD
 #: webftp.php:300 webftp.php:312 webftp.php:318 webftp.php:369
+=======
+#: webftp.php:303 webftp.php:315 webftp.php:321 webftp.php:372
+>>>>>>> rrp
 #, php-format
 msgid "current folder = [%1$s]"
 msgstr ""
 
+<<<<<<< HEAD
 #: webftp.php:414
 #, php-format
 msgid "<strong>File '%1$s' is to big!</strong> (max. %2$u bytes)<br />"
@@ -632,30 +649,85 @@ msgid "<br />'%1$s' couldn't be deleted!"
 msgstr ""
 
 #: webftp.php:465
+=======
+#: webftp.php:417
+#, php-format
+msgid "File '%1$s' is to big! (max. %2$u bytes)"
+msgstr ""
+
+#: webftp.php:432
+#, php-format
+msgid "File '%1$s' couldn't be uploaded!"
+msgstr ""
+
+#: webftp.php:436
+#, php-format
+msgid "File '%1$s' was successfully uploaded!"
+msgstr ""
+
+#: webftp.php:446
+#, php-format
+msgid "Directory '%1$s' deleted!"
+msgstr ""
+
+#: webftp.php:450
+#, php-format
+msgid "Directory '%1$s' couldn't be deleted!"
+msgstr ""
+
+#: webftp.php:456 webftp.php:573
+#, php-format
+msgid "'%1$s' deleted!"
+msgstr ""
+
+#: webftp.php:460 webftp.php:577
+#, php-format
+msgid "'%1$s' couldn't be deleted!"
+msgstr ""
+
+#: webftp.php:468
+>>>>>>> rrp
 #, php-format
 msgid "'%1$s' renamed to '%2$s'"
 msgstr ""
 
+<<<<<<< HEAD
 #: webftp.php:469
+=======
+#: webftp.php:472
+>>>>>>> rrp
 #, php-format
 msgid "'%1$s' couldn't be renamed to '%2$s'!"
 msgstr ""
 
+<<<<<<< HEAD
 #: webftp.php:474
+=======
+#: webftp.php:477
+>>>>>>> rrp
 #, php-format
 msgid "File '%1$s' rename/move to"
 msgstr ""
 
+<<<<<<< HEAD
 #: webftp.php:480
+=======
+#: webftp.php:483
+>>>>>>> rrp
 #, php-format
 msgid "Directory '%1$s' created"
 msgstr ""
 
+<<<<<<< HEAD
 #: webftp.php:484
+=======
+#: webftp.php:487
+>>>>>>> rrp
 #, php-format
 msgid "Directory '%1$s' couldn't be created!"
 msgstr ""
 
+<<<<<<< HEAD
 #: webftp.php:499 webftp.php:530
 #, php-format
 msgid "<br />The permission '%1$s' you entered is not valid!"
@@ -682,25 +754,66 @@ msgid "<br />File '%1$s' couldn't be moved"
 msgstr ""
 
 #: webftp.php:605
+=======
+#: webftp.php:502 webftp.php:533
+#, php-format
+msgid "The permission '%1$s' you entered is not valid!"
+msgstr ""
+
+#: webftp.php:509 webftp.php:544
+#, php-format
+msgid "The permission of '%1$s' is set to '%2$s'!"
+msgstr ""
+
+#: webftp.php:513 webftp.php:548
+#, php-format
+msgid "The permission of '%1$s' couldn't be set to '%2$s'!"
+msgstr ""
+
+#: webftp.php:597
+#, php-format
+msgid "File '%1$s' moved"
+msgstr ""
+
+#: webftp.php:601
+#, php-format
+msgid "File '%1$s' couldn't be moved"
+msgstr ""
+
+#: webftp.php:608
+>>>>>>> rrp
 #, php-format
 msgid "The directory '%1$s' doesn't exist"
 msgstr ""
 
+<<<<<<< HEAD
 #: webftp.php:649
+=======
+#: webftp.php:652
+>>>>>>> rrp
 #, php-format
 msgid "File '%1$s' couldn't be downloaded!"
 msgstr ""
 
+<<<<<<< HEAD
 #: webftp.php:686
+=======
+#: webftp.php:689
+>>>>>>> rrp
 #, php-format
 msgid "File '%1$s' couldn't be saved!"
 msgstr ""
 
+<<<<<<< HEAD
 #: webftp.php:690
+=======
+#: webftp.php:693
+>>>>>>> rrp
 #, php-format
 msgid "File '%1$s' was saved succesfully!"
 msgstr ""
 
+<<<<<<< HEAD
 #: webftp.php:697
 #, php-format
 msgid "Files with these extension can't be created/edited!"
@@ -711,25 +824,50 @@ msgid "Please enter a filename!"
 msgstr ""
 
 #: webftp.php:855
+=======
+#: webftp.php:700
+#, php-format
+msgid "Files with this extension can't be created/edited!"
+msgstr ""
+
+#: webftp.php:708
+msgid "Please enter a filename!"
+msgstr ""
+
+#: webftp.php:858
+>>>>>>> rrp
 #, php-format
 msgid "Connected to %1$s"
 msgstr ""
 
+<<<<<<< HEAD
 #: webftp.php:874
 msgid "Do you really want to delete the selected files?"
 msgstr ""
 
 #: webftp.php:878
+=======
+#: webftp.php:877
+msgid "Do you really want to delete the selected files?"
+msgstr ""
+
+#: webftp.php:881
+>>>>>>> rrp
 #, php-format
 msgid "Do you really want to move the selected files to '%1$s'?"
 msgstr ""
 
+<<<<<<< HEAD
 #: webftp.php:883
+=======
+#: webftp.php:886
+>>>>>>> rrp
 #, php-format
 msgid ""
 "Do you really want to set the permission of the selected files to '%1$s'?"
 msgstr ""
 
+<<<<<<< HEAD
 #: webftp.php:896
 msgid "Switch to BINARY mode"
 msgstr ""
@@ -1165,4 +1303,188 @@ msgstr ""
 msgid ""
 "A newer version of Froxlor has been installed but not yet set up.<br />Only "
 "the administrator can log in and finish the update."
+=======
+#: webftp.php:897
+msgid "Logout"
+msgstr ""
+
+#: webftp.php:899
+msgid "Switch to BINARY mode"
+msgstr ""
+
+#: webftp.php:901
+msgid "Switch to ASCII mode"
+msgstr ""
+
+#: webftp.php:903
+msgid "Main"
+msgstr ""
+
+#: webftp.php:909
+msgid "Login failed, please try again"
+msgstr ""
+
+#: smarty.c:2
+msgid "Froxlor Server Management Panel"
+msgstr ""
+
+#: smarty.c:5 smarty.c:50 smarty.c:59 smarty.c:152
+msgid "Success"
+msgstr ""
+
+#: smarty.c:8 smarty.c:53 smarty.c:62 smarty.c:155
+msgid "Error"
+msgstr ""
+
+#: smarty.c:11
+msgid "Froxlor - WebFTP - Login"
+msgstr ""
+
+#: smarty.c:14
+msgid "Username"
+msgstr ""
+
+#: smarty.c:17
+msgid "Password"
+msgstr ""
+
+#: smarty.c:20
+msgid "Login"
+msgstr ""
+
+#: smarty.c:23
+msgid "the Froxlor Team"
+msgstr ""
+
+#: smarty.c:26 smarty.c:32 smarty.c:41 smarty.c:134
+msgid "Delete"
+msgstr ""
+
+#: smarty.c:29 smarty.c:35 smarty.c:44
+msgid "Rename"
+msgstr ""
+
+#: smarty.c:38
+msgid "Edit"
+msgstr ""
+
+#: smarty.c:47
+msgid "Symbolic link to"
+msgstr ""
+
+#: smarty.c:56
+msgid "Editing"
+msgstr ""
+
+#: smarty.c:65 smarty.c:161
+msgid "Save file"
+msgstr ""
+
+#: smarty.c:68 smarty.c:164
+msgid "Cancel"
+msgstr ""
+
+#: smarty.c:71
+msgid "Yes"
+msgstr ""
+
+#: smarty.c:74
+msgid "No"
+msgstr ""
+
+#: smarty.c:77 smarty.c:158
+msgid "Filename"
+msgstr ""
+
+#: smarty.c:80
+msgid "Size"
+msgstr ""
+
+#: smarty.c:83
+msgid "Date"
+msgstr ""
+
+#: smarty.c:86
+msgid "Permissions"
+msgstr ""
+
+#: smarty.c:89
+msgid "User"
+msgstr ""
+
+#: smarty.c:92
+msgid "Group"
+msgstr ""
+
+#: smarty.c:95
+msgid "Options"
+msgstr ""
+
+#: smarty.c:98
+msgid "Files"
+msgstr ""
+
+#: smarty.c:101
+msgid "Complete filesize"
+msgstr ""
+
+#: smarty.c:104
+msgid "Symlinks"
+msgstr ""
+
+#: smarty.c:107
+msgid "Directories"
+msgstr ""
+
+#: smarty.c:110
+msgid "Complete directorysize"
+msgstr ""
+
+#: smarty.c:113
+msgid "Basic operations"
+msgstr ""
+
+#: smarty.c:116
+msgid "Change dir"
+msgstr ""
+
+#: smarty.c:119
+msgid "Create dir"
+msgstr ""
+
+#: smarty.c:122
+msgid "Create new file in current directory"
+msgstr ""
+
+#: smarty.c:125
+msgid "Upload files"
+msgstr ""
+
+#: smarty.c:128
+msgid "Upload file(s)"
+msgstr ""
+
+#: smarty.c:131
+msgid "Selected file(s)"
+msgstr ""
+
+#: smarty.c:137
+msgid "Change permission to"
+msgstr ""
+
+#: smarty.c:140
+msgid "Move to"
+msgstr ""
+
+#: smarty.c:143
+msgid "Do it"
+msgstr ""
+
+#: smarty.c:146
+msgid "Rename / Move"
+msgstr ""
+
+#: smarty.c:149
+msgid "Creating a file in"
+>>>>>>> rrp
 msgstr ""

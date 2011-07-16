@@ -8,7 +8,7 @@ font-weight: bold;
 </style>
 <table cellpadding="0" cellspacing="0">
 	<tr>
-		<td colspan="10" align="left"><span class="Stil1">{$action_text}</span></td>
+		<td colspan="10" align="left"><span class="Stil1">{$action_text|escape:'htmlall'|nl2br}</span></td>
 	</tr>
 	<tr>
 		<td colspan="10" align="left">

@@ -1256,6 +1256,9 @@ if($page == 'domains'
 			}
 		}
 	}
+	elseif($action == 'register') {
+		
+	}
 }
 
 ?>

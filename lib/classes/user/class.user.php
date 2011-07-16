@@ -389,6 +389,7 @@ class user {
 	public function setAllData($area, $values) {
 		if (isset($this->_data[$area]) && is_array($this->_data[$area])) {
 			$this->_data[$area] = $values;
+			$this->syncAll();
 		}
 	}
 
@@ -401,7 +402,11 @@ class user {
 	 * @return string RessourceId
 	 */
 	private function sync($area, $key) {
-		$sql = "UPDATE ". $this->area2table($area) ." SET `". $this->_db->escape($key) ."` = '". $this->_db->escape($this->getData($area, $key)) ."' WHERE `id` = '". $this->getId() ."';";
+		$id = $this->getId();
+		if ($area == 'address') {
+			$id = $this->getData('general', 'contactid');
+		}
+		$sql = "UPDATE ". $this->area2table($area) ." SET `". $this->_db->escape($key) ."` = '". $this->_db->escape($this->getData($area, $key)) ."' WHERE `id` = '". $id ."';";
 
 		return $this->_db->query($sql);
 	}
@@ -416,20 +421,24 @@ class user {
 		$this->_db->query($sql);
 
 		// TABLE_USER_ADDRESSES
-		$data = $this->_db->array2update($this->_data['address']);
-		$sql = "UPDATE ". TABLE_USER_ADDRESSES ." SET ". $data ." WHERE `id` = '". $this->data['general']['contactid'] ."'";
-		$this->_db->query($sql);
-
-		if ($this->isAdmin()) {
-			// TABLE_ADMIN_RESOURCES
-			$data = $this->_db->array2update($this->_data['resources']);
-			$sql = "UPDATE ". TABLE_ADMIN_RESOURCES ." SET ". $data ." WHERE `id` = '". $this->getId() ."'";
+		if (is_array($this->_data['address'])) {
+			$data = $this->_db->array2update($this->_data['address']);
+			$sql = "UPDATE ". TABLE_USER_ADDRESSES ." SET ". $data ." WHERE `id` = '". $this->_data['general']['contactid'] ."'";
 			$this->_db->query($sql);
-		} else {
-			// TABLE_USER_RESOURCES
-			$data = $this->_db->array2update($this->_data['resources']);
-			$sql = "UPDATE ". TABLE_USER_RESOURCES ." SET ". $data ." WHERE `id` = '". $this->getId() ."'";
-			$this->_db->query($sql);
+		}
+		
+		if (is_array($this->_data['resources'])) {
+			if ($this->isAdmin()) {
+				// TABLE_ADMIN_RESOURCES
+				$data = $this->_db->array2update($this->_data['resources']);
+				$sql = "UPDATE ". TABLE_ADMIN_RESOURCES ." SET ". $data ." WHERE `id` = '". $this->getId() ."'";
+				$this->_db->query($sql);
+			} else {
+				// TABLE_USER_RESOURCES
+				$data = $this->_db->array2update($this->_data['resources']);
+				$sql = "UPDATE ". TABLE_USER_RESOURCES ." SET ". $data ." WHERE `id` = '". $this->getId() ."'";
+				$this->_db->query($sql);
+			}
 		}
 	}
 

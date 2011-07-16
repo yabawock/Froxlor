@@ -15,11 +15,6 @@
 
 
 /**
- * Include the basic class we extend
- */
-include_once "MREG_Request.class.php";
-
-/**
  * RRPProxy metaregistry request via HTTP requests
  *
  * @author Florian Aders <faders@key-systems.net>

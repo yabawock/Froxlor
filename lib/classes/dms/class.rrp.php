@@ -56,6 +56,8 @@ class rrp implements dms
 	 * @see dms::handleCreate()
 	 */
 	public function handleCreate($handle) {
+		$this->_request->reset();
+		
 		$command = array(
 			"command" => "AddContact",
 			"firstname" => $handle->getFirstname(),
@@ -90,6 +92,8 @@ class rrp implements dms
 	 * @see dms::handleDelete()
 	 */
 	public function handleDelete($handle) {
+		$this->_request->reset();
+		
 		$command = array("command" => "DeleteContact", "contact" => $handle->getHandleId());
 		$response = $this->_reqeust->send($command);
 		
@@ -105,6 +109,8 @@ class rrp implements dms
 	 * @see dms::handleModify()
 	 */
 	public function handleModify($handle) {
+		$this->_request->reset();
+		
 		$command = array(
 			"command" => "ModifyContact",
 			"contact" => $handle->getHandleId(),
@@ -135,6 +141,8 @@ class rrp implements dms
 	 * @see dms::handleList()
 	 */
 	public function handleList() {
+		$this->_request->reset();
+		
 		$response = $this->_request->send(array("command" => "QueryContactList", "wide" => "1"));
 		$handles = array();
 		
@@ -161,8 +169,91 @@ class rrp implements dms
 	 * @see dms::domainCheck()
 	 */
 	public function domainCheck($domain) {
+		$this->_request->reset();
+		
 		$response = $this->_request->send(array("command" => "CheckDomain", "domain" => $domain));
 		
 		return $response->code;
+	}
+	
+	/**
+	 * (non-PHPdoc)
+	 * @see dms::domainStatus()
+	 */
+	public function domainStatus($domain) {
+		$this->_request->reset();
+		
+		$response = $this->_request->send(array("command" => "StatusDomain", "domain" => $domain->getFQDN()));
+		
+		if ($response->code == 200) {
+			return $response->getList();
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * (non-PHPdoc)
+	 * @see dms::domainRegister()
+	 */
+	public function domainRegister($domain) {
+		$this->_request->reset();
+	}
+	
+	/**
+	 * (non-PHPdoc)
+	 * @see dms::domainList()
+	 */
+	public function domainList() {
+		$this->_request->reset();
+		
+		$response = $this->_request->send(array("command" => "QueryDomainList", "domain" => "*", "wide" => 1));
+		
+		if ($response->code == 200) {
+			$ds = $response->getList();
+			$domains = array();
+			
+			foreach($ds as $d) {
+				$tmp = explode(".", $d['domain']);
+				$domain = new domain($tmp[1], $tmp[0]);
+				$status = $this->domainStatus($domain);
+				$handle = new handle(array(), $status['owner_contact']);
+				$domain->setOwner($handle);
+				
+				$domains[] = $domain;
+			}
+			
+			return $domains;
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * (non-PHPdoc)
+	 * @see dms::domainListByContact()
+	 */
+	public function domainListByContact($handle) {
+		$this->_request->reset();
+		
+		$response = $this->_request->send(array("command" => "QueryDomainList", "domain" => "*",
+												"contact" => $handle->getHandleId(), "wide" => 1));
+		
+		if ($response->code == 200) {
+			$ds = $response->getList();
+			$domains = array();
+			
+			foreach($ds as $d) {
+				$tmp = explode(".", $d['domain']);
+				$domain = new domain($tmp[1], $tmp[0]);
+				$domain->setOwner($handle);
+				
+				$domains[] = $domain;
+			}
+			
+			return $domains;
+		}
+		
+		return null;
 	}
 }

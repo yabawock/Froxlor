@@ -1890,3 +1890,18 @@ if(isFroxlorVersion('0.9.22-rrp6'))
 	lastStepStatus(0);
 	updateToVersion('0.9.22-rrp7');
 }
+
+if(isFroxlorVersion('0.9.22-rrp7'))
+{
+	showUpdateStep("Updating from 0.9.22-rrp7 to 0.9.22-rrp8");
+	lastStepStatus(0);
+
+	
+	// create new table
+	showUpdateStep("Add handleid to user_addresses");
+	$db->query("ALTER TABLE `user_addresses` ADD `handleid` VARCHAR( 32 ) NOT NULL AFTER `id` ;");
+	lastStepStatus(0);
+	
+	lastStepStatus(0);
+	updateToVersion('0.9.22-rrp8');
+}
