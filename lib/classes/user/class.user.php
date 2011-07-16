@@ -405,7 +405,7 @@ class user {
 	private function sync($area, $key) {
 		$id = $this->getId();
 		if ($area == 'address') {
-			$id = $this->getData('address', 'contactid');
+			$id = $this->getData('general', 'contactid');
 		}
 		$sql = "UPDATE ". $this->area2table($area) ." SET `". $this->_db->escape($key) ."` = '". $this->_db->escape($this->getData($area, $key)) ."' WHERE `id` = '". $id ."';";
 
