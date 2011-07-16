@@ -1257,7 +1257,41 @@ if($page == 'domains'
 		}
 	}
 	elseif($action == 'register') {
+		/*
+		 * 1. check if a domain is available
+		 * 2. if so show the registration form
+		 * 3. send register domain command and forward to add domain
+		 *
+		 * steps:
+		 * 		null -> show domain search
+		 * 				show registered domains from rrp account but not configured
+		 * 		search
+		 *
+		 */
 		
+		if (!isset($_GET['step'])) {
+			$title = 'Register Domain';
+			$image = 'icons/domain_add.png';
+			eval("echo \"" . getTemplate("domains/domains_search") . "\";");
+			
+		} else {
+			$step = $_GET['step'];
+			$rrp = new rrp($rrp_user, $rrp_password); // @todo currently these vars are set in userdata.inc
+			
+			if ($step == 'search') {
+				if (validateDomain($_POST['domain'])) {
+					$status = $rrp->domainCheck($_POST['domain']);
+					
+					if ($status == 210) {
+						// domain available
+						$link = array("filename" => "admin_domains.php", "page" => "register", "step" => "register");
+						standard_success("Domain is available", "", $link);
+					} else { // 211 - Domain name not available
+						standard_error("Domain Check", "Domain *not* available");
+					}
+				}
+			}
+		}
 	}
 }
 
