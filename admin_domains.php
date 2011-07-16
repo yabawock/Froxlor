@@ -1279,7 +1279,7 @@ if($page == 'domains'
 			$rrp = new rrp($rrp_user, $rrp_password); // @todo currently these vars are set in userdata.inc
 			
 			if ($step == 'search') {
-				if (validateDomain($_POST['domain'])) {
+				try {
 					$status = $rrp->domainCheck($_POST['domain']);
 					
 					if ($status == 210) {
@@ -1289,8 +1289,8 @@ if($page == 'domains'
 					} else { // 211 - Domain name not available
 						standard_error("Domain Check", "Domain is not available");
 					}
-				} else {
-					standard_error("Domain Check", "Domain is not valid.");
+				} catch(Exception $e) {
+					standard_error("Domain Check", "Domain is not valid. "/*.$e->getMessage()*/);
 				}
 			}
 		}
