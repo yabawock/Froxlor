@@ -418,20 +418,24 @@ class user {
 		$this->_db->query($sql);
 		
 		// TABLE_USER_ADDRESSES
-		$data = $this->_db->array2update($this->_data['address']);
-		$sql = "UPDATE ". TABLE_USER_ADDRESSES ." SET ". $data ." WHERE `id` = '". $this->_data['general']['contactid'] ."'";
-		$this->_db->query($sql);
+		if (is_array($this->_data['address'])) {
+			$data = $this->_db->array2update($this->_data['address']);
+			$sql = "UPDATE ". TABLE_USER_ADDRESSES ." SET ". $data ." WHERE `id` = '". $this->_data['general']['contactid'] ."'";
+			$this->_db->query($sql);
+		}
 		
-		if ($this->isAdmin()) {
-			// TABLE_ADMIN_RESOURCES
-			$data = $this->_db->array2update($this->_data['resources']);
-			$sql = "UPDATE ". TABLE_ADMIN_RESOURCES ." SET ". $data ." WHERE `id` = '". $this->getId() ."'";
-			$this->_db->query($sql);
-		} else {
-			// TABLE_USER_RESOURCES
-			$data = $this->_db->array2update($this->_data['resources']);
-			$sql = "UPDATE ". TABLE_USER_RESOURCES ." SET ". $data ." WHERE `id` = '". $this->getId() ."'";
-			$this->_db->query($sql);
+		if (is_array($this->_data['resources'])) {
+			if ($this->isAdmin()) {
+				// TABLE_ADMIN_RESOURCES
+				$data = $this->_db->array2update($this->_data['resources']);
+				$sql = "UPDATE ". TABLE_ADMIN_RESOURCES ." SET ". $data ." WHERE `id` = '". $this->getId() ."'";
+				$this->_db->query($sql);
+			} else {
+				// TABLE_USER_RESOURCES
+				$data = $this->_db->array2update($this->_data['resources']);
+				$sql = "UPDATE ". TABLE_USER_RESOURCES ." SET ". $data ." WHERE `id` = '". $this->getId() ."'";
+				$this->_db->query($sql);
+			}
 		}
 	}
 	
