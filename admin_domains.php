@@ -1287,8 +1287,10 @@ if($page == 'domains'
 						$link = array("filename" => "admin_domains.php", "page" => "register", "step" => "register");
 						standard_success("Domain is available", "", $link);
 					} else { // 211 - Domain name not available
-						standard_error("Domain Check", "Domain *not* available");
+						standard_error("Domain Check", "Domain is not available");
 					}
+				} else {
+					standard_error("Domain Check", "Domain is not valid.");
 				}
 			}
 		}
