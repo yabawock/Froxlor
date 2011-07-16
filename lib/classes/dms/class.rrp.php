@@ -202,6 +202,14 @@ class rrp implements dms
 	
 	/**
 	 * (non-PHPdoc)
+	 * @see dms::domainRegisterFormfield()
+	 */
+	public function domainRegisterFormfield($domain) {
+		
+	}
+	
+	/**
+	 * (non-PHPdoc)
 	 * @see dms::domainList()
 	 */
 	public function domainList() {
