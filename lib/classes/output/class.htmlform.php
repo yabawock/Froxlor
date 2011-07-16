@@ -15,7 +15,7 @@
  *
  */
 
-class htmlform 
+class htmlform
 {
 	/**
 	 * internal tmp-variable to store form
@@ -128,7 +128,7 @@ class htmlform
 
 	private static function _getMandatoryFlag($data = array())
 	{
-		if(isset($data['mandatory']))
+		if(isset($data['mandatory']) && $data['mandatory'])
 		{
 			return '&nbsp;<span style="color:#ff0000;">*</span>';
 		}
@@ -215,9 +215,9 @@ class htmlform
 			$select_var = '';
 		}
 		
-		return '<select 
-			id="'.$fieldname.'" 
-			name="'.$fieldname.'" 
+		return '<select
+			id="'.$fieldname.'"
+			name="'.$fieldname.'"
 			'.(isset($data['class']) ? ' class="'.$data['class'] .'" ' : '').'
 			>'
 			.$select_var.
@@ -226,7 +226,7 @@ class htmlform
 	
 	/**
 	 * Function to generate checkboxes.
-	 * 
+	 *
 	 * <code>
 	 * $data = array(
      *                       'label' => $lng['customer']['email_imap'],
@@ -240,7 +240,7 @@ class htmlform
      *                       'mandatory' => true
      *          )
 	 * </code>
-	 * 
+	 *
 	 * @param string $fieldname contains the fieldname
 	 * @param array $data contains the data array
 	 */
