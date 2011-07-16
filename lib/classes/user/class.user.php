@@ -390,6 +390,7 @@ class user {
 	public function setAllData($area, $values) {
 		if (isset($this->_data[$area]) && is_array($this->_data[$area])) {
 			$this->_data[$area] = $values;
+			$this->syncAll();
 		}
 	}
 	
@@ -418,7 +419,7 @@ class user {
 		
 		// TABLE_USER_ADDRESSES
 		$data = $this->_db->array2update($this->_data['address']);
-		$sql = "UPDATE ". TABLE_USER_ADDRESSES ." SET ". $data ." WHERE `id` = '". $this->data['general']['contactid'] ."'";
+		$sql = "UPDATE ". TABLE_USER_ADDRESSES ." SET ". $data ." WHERE `id` = '". $this->_data['general']['contactid'] ."'";
 		$this->_db->query($sql);
 		
 		if ($this->isAdmin()) {
