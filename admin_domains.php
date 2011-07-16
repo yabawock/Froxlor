@@ -1284,7 +1284,7 @@ if($page == 'domains'
 					
 					if ($status == 210) {
 						// domain is available
-						$link = array("filename" => "admin_domains.php", "page" => "register", "step" => "register");
+						$link = array("filename" => "admin_domains.php", "page" => "domains", "action" => "register", "step" => "register");
 						standard_success("Domain is available", "", $link);
 					} else { // 211 - Domain name not available
 						standard_error("Domain Check", "Domain is not available");
@@ -1294,6 +1294,12 @@ if($page == 'domains'
 				}
 			} elseif ($step == 'register') {
 				// create formfields
+				$domain_register_form = htmlform::genHTMLForm($rrp->domainRegisterFormfield("test.de"));
+				
+				$title = 'Register Domain';
+				$image = 'icons/domain_add.png';
+
+				eval("echo \"" . getTemplate("domains/domains_register") . "\";");
 			}
 		}
 	}

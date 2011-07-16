@@ -205,7 +205,44 @@ class rrp implements dms
 	 * @see dms::domainRegisterFormfield()
 	 */
 	public function domainRegisterFormfield($domain) {
+		$this->_request->reset();
 		
+		$response = $this->_request->send(array("command" => "querycommandsyntax",
+								"commandname" => "adddomain","domain" => $domain));
+		
+		if ($response->code == 200) {
+			$data = $response->getList();
+			$ret = array(
+					'domain_add' => array(
+						'title' => 'Register Domain',
+						'image' => 'icons/domain_add.png',
+						'sections' => array(
+							'section_a' => array(
+								'title' => 'Register Domain',
+								'image' => 'icons/domain_add.png',
+								'fields' => array()
+							)
+						)
+					)
+					);
+			
+			foreach($data as $val) {
+				if (empty($val['parameter']) || empty($val['title'])){ continue;}
+				
+				$field = array(
+						'label' => $val['title'],
+						'type' => 'text',
+						'desc' => $val['description'],
+						'mandatory' => !$val['optional'],
+					);
+				
+				$ret['domain_add']['sections']['section_a']['fields'][$val['title']] = $field;
+			}
+			
+			return $ret;
+		}
+		
+		return null;
 	}
 	
 	/**
