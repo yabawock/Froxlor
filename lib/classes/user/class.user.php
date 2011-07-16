@@ -403,7 +403,11 @@ class user {
 	 * @return string RessourceId
 	 */
 	private function sync($area, $key) {
-		$sql = "UPDATE ". $this->area2table($area) ." SET `". $this->_db->escape($key) ."` = '". $this->_db->escape($this->getData($area, $key)) ."' WHERE `id` = '". $this->getId() ."';";
+		$id = $this->getId();
+		if ($area == 'address') {
+			$id = $this->getData('address', 'contactid');
+		}
+		$sql = "UPDATE ". $this->area2table($area) ." SET `". $this->_db->escape($key) ."` = '". $this->_db->escape($this->getData($area, $key)) ."' WHERE `id` = '". $id ."';";
 
 		return $this->_db->query($sql);
 	}
