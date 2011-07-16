@@ -1283,7 +1283,7 @@ if($page == 'domains'
 					$status = $rrp->domainCheck($_POST['domain']);
 					
 					if ($status == 210) {
-						// domain available
+						// domain is available
 						$link = array("filename" => "admin_domains.php", "page" => "register", "step" => "register");
 						standard_success("Domain is available", "", $link);
 					} else { // 211 - Domain name not available
@@ -1292,6 +1292,8 @@ if($page == 'domains'
 				} catch(Exception $e) {
 					standard_error("Domain Check", "Domain is not valid. "/*.$e->getMessage()*/);
 				}
+			} elseif ($step == 'register') {
+				// create formfields
 			}
 		}
 	}
