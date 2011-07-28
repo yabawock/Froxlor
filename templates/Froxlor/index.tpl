@@ -11,6 +11,9 @@
 	<!--[if IE]><link rel="stylesheet" href="templates/Froxlor/froxlor_ie.css"  /><![endif]-->
 	<!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 	<script type="text/javascript" src="templates/Froxlor/js/jquery.min.js"></script>
+	<script type="text/javascript" src="templates/jquery.tablesorter.js"></script>
+	<script type="text/javascript" src="templates/jquery.tablesorter.pager.js"></script>
+	<script type="text/javascript" src="templates/jquery.tablesorter.filter.js"></script>
 	<script type="text/javascript" src="templates/Froxlor/js/froxlor.js"></script>
 	<title>{if isset($title)}{$title} -{/if}Froxlor</title>
 </head>

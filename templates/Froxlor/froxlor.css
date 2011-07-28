@@ -744,3 +744,23 @@ caption {
 	font-weight: bold;
 	margin-bottom: 0.2em;
 }
+
+table.tablesorter thead tr .header {
+	background-image: url('../../images/Froxlor/icons/bg.gif');
+	background-repeat: no-repeat;
+	background-position: center right;
+	cursor: pointer;
+}
+table.tablesorter thead tr .headerSortUp {
+	background-image: url('../../images/Froxlor/icons/asc.gif');
+}
+table.tablesorter thead tr .headerSortDown {
+	background-image: url('../../images/Froxlor/icons/desc.gif');
+}
+table.tablesorter tbody td {
+	background-color: #FFF;
+	vertical-align: top;
+}
+table.tablesorter tbody tr.odd td {
+	background-color:#F0F0F6;
+}
