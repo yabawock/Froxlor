@@ -7,9 +7,6 @@
 		</header>
 
 		<section>
-
-			<form action="{link area='admin' section='customers' action='index'}" method="post" enctype="application/x-www-form-urlencoded">
-
 			{if ($user->getData('resources', customers_used) < $user->getData('resources', 'customers') || $user->getData('resources', 'customers') == '-1') && $user->getData('resources', 'customers_used') > 15}
 				<div class="overviewadd">
 					<img src="images/Froxlor/icons/user_add.png" alt="" />&nbsp;
@@ -112,13 +109,6 @@
 					</tr>{/foreach}
 				</tbody>
 			</table>
-
-			<p style="display:none;">
-				<input type="hidden" name="s" value="$s" />
-				<input type="hidden" name="page" value="$page" />
-			</p>
-
-			</form>
 
 		</section>
 
