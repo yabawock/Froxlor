@@ -83,6 +83,15 @@ interface dms
 	public function domainRegister($domain);
 	
 	/**
+	 * Creates a formfield for domain registration.
+	 *
+	 * @param string $domain
+	 *
+	 * @return array formfield
+	 */
+	public function domainRegisterFormfield($domain);
+	
+	/**
 	 * This will get all domains.
 	 *
 	 * @return array with domains

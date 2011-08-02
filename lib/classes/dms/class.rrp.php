@@ -202,6 +202,60 @@ class rrp implements dms
 	
 	/**
 	 * (non-PHPdoc)
+	 * @see dms::domainRegisterFormfield()
+	 */
+	public function domainRegisterFormfield($domain) {
+		/*
+15:43 <@EleRas> kurze erkl?rung wie range und description zusammenarbeiten
+15:43 <@EleRas> beispiel:
+15:43 <@EleRas> RANGE=0|1|<NULL>
+15:43 <@EleRas> DESCRIPTION=No|Yes||This is the parameter to turn things of and on again
+15:44 <@EleRas> sprich: wenn in der description (exploded mit |) soviele felder sind wie in der range exploded mit |, dann ist die description immer genau zu dem feld
+15:45 <@EleRas> <option value="0">No</option><option value="1">Yes</option><option value=""></option>
+
+		 */
+		$this->_request->reset();
+		
+		$response = $this->_request->send(array("command" => "querycommandsyntax",
+								"commandname" => "adddomain","domain" => $domain));
+		
+		if ($response->code == 200) {
+			$data = $response->getList();
+			$ret = array(
+					'domain_add' => array(
+						'title' => 'Register Domain',
+						'image' => 'icons/domain_add.png',
+						'sections' => array(
+							'section_a' => array(
+								'title' => 'Register Domain',
+								'image' => 'icons/domain_add.png',
+								'fields' => array()
+							)
+						)
+					)
+					);
+			
+			foreach($data as $val) {
+				if (empty($val['parameter']) || empty($val['title'])){ continue;}
+				
+				$field = array(
+						'label' => $val['title'],
+						'type' => 'text',
+						'desc' => $val['description'],
+						'mandatory' => !$val['optional'],
+					);
+				
+				$ret['domain_add']['sections']['section_a']['fields'][$val['title']] = $field;
+			}
+			
+			return $ret;
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * (non-PHPdoc)
 	 * @see dms::domainList()
 	 */
 	public function domainList() {

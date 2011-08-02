@@ -137,7 +137,7 @@ class htmlform
 
 	private static function _getMandatoryFlag($data = array())
 	{
-		if(isset($data['mandatory']))
+		if(isset($data['mandatory']) && $data['mandatory'])
 		{
 			return '&nbsp;<span style="color:#ff0000;">*</span>';
 		}

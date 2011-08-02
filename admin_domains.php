@@ -1257,7 +1257,51 @@ if($page == 'domains'
 		}
 	}
 	elseif($action == 'register') {
+		/*
+		 * 1. check if a domain is available
+		 * 2. if so show the registration form
+		 * 3. send register domain command and forward to add domain
+		 *
+		 * steps:
+		 * 		null -> show domain search
+		 * 				show registered domains from rrp account but not configured
+		 * 		search
+		 *
+		 */
 		
+		if (!isset($_GET['step'])) {
+			$title = 'Register Domain';
+			$image = 'icons/domain_add.png';
+			eval("echo \"" . getTemplate("domains/domains_search") . "\";");
+			
+		} else {
+			$step = $_GET['step'];
+			$rrp = new rrp($rrp_user, $rrp_password); // @todo currently these vars are set in userdata.inc
+			
+			if ($step == 'search') {
+				try {
+					$status = $rrp->domainCheck($_POST['domain']);
+					
+					if ($status == 210) {
+						// domain is available
+						$link = array("filename" => "admin_domains.php", "page" => "domains", "action" => "register", "step" => "register");
+						standard_success("Domain is available", "", $link);
+					} else { // 211 - Domain name not available
+						standard_error("Domain Check", "Domain is not available");
+					}
+				} catch(Exception $e) {
+					standard_error("Domain Check", "Domain is not valid. "/*.$e->getMessage()*/);
+				}
+			} elseif ($step == 'register') {
+				// create formfields
+				$domain_register_form = htmlform::genHTMLForm($rrp->domainRegisterFormfield("test.de"));
+				
+				$title = 'Register Domain';
+				$image = 'icons/domain_add.png';
+
+				eval("echo \"" . getTemplate("domains/domains_register") . "\";");
+			}
+		}
 	}
 }
 
