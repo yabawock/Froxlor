@@ -238,12 +238,29 @@ class rrp implements dms
 			foreach($data as $val) {
 				if (empty($val['parameter']) || empty($val['title'])){ continue;}
 				
+				// assume default setting
 				$field = array(
 						'label' => $val['title'],
 						'type' => 'text',
 						'desc' => $val['description'],
 						'mandatory' => !$val['optional'],
 					);
+				
+				// check if it is a select box
+				$range = explode("|", $val['range']);
+				$desc = explode("|", $val['description']);
+				$elements = count($desc);
+				if ($elements > 1) {
+					$options = "";
+					for ($i = 0; $i < $elements; $i++) {
+						if ($desc[$i] == "") {break;}
+						$options .= makeoption($desc[$i], $range[$i]);
+					}
+					
+					$field['type'] = 'select';
+					$field['sel_var'] = $options;
+					$field['desc'] = $desc[$elements];
+				}
 				
 				$ret['domain_add']['sections']['section_a']['fields'][$val['title']] = $field;
 			}
