@@ -249,12 +249,12 @@ class rrp implements dms
 				// check if it is a select box
 				$range = explode("|", $val['range']);
 				$desc = explode("|", $val['description']);
-				$elements = count($desc);
-				if ($elements > 1) {
+				$elements = count($range);
+				if ($elements > 2) {
 					$options = "";
 					for ($i = 0; $i < $elements; $i++) {
-						if ($desc[$i] == "") {break;}
 						$options .= makeoption($desc[$i], $range[$i]);
+						echo $val['range'] ."\n". $val['description'] ."\n". $desc[$i] ."\n".  $range[$i] ."\n";
 					}
 					
 					$field['type'] = 'select';
