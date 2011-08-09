@@ -196,7 +196,7 @@ class rrp implements dms
 	 * (non-PHPdoc)
 	 * @see dms::domainRegister()
 	 */
-	public function domainRegister($domain) {
+	public function domainRegister($domain, $formdata) {
 		$this->_request->reset();
 	}
 	
