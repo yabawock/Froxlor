@@ -1301,6 +1301,8 @@ if($page == 'domains'
 				$image = 'icons/domain_add.png';
 
 				eval("echo \"" . getTemplate("domains/domains_register") . "\";");
+			} elseif ($step == 'done') {
+				// send data
 			}
 		}
 	}
