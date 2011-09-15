@@ -153,8 +153,8 @@ $lng['ftp']['account_add'] = 'Create Account';
  * MySQL
  */
 
-$lng['mysql']['databasename'] = 'user/database name';
-$lng['mysql']['databasedescription'] = 'database description';
+$lng['mysql']['databasename'] = 'User/Database name';
+$lng['mysql']['databasedescription'] = 'Database description';
 $lng['mysql']['database_create'] = 'Create database';
 
 /**
@@ -1423,7 +1423,7 @@ $lng['serversettings']['mail_also_with_mxservers'] = 'Create mail-, imap-, pop3-
 $lng['aps']['nocontingent'] = 'Your APS contingent is insufficient. You cannot install any package.';
 $lng['aps']['packageneedsdb'] = 'This package needs a database but your contingent is used up';
 $lng['aps']['cannoteditordeleteapsdb'] = 'APS databases cannot be edited or removed here';
-$lng['admin']['webserver_Puser'] = 'Webserver user-name';
+$lng['admin']['webserver_user'] = 'Webserver user-name';
 $lng['admin']['webserver_group'] = 'Webserver group-name';
 
 // ADDED IN FROXLOR 0.9.10
@@ -1891,3 +1891,14 @@ $lng['error']['session_timeout_desc'] = 'You should not set the session timeout 
 
 //
 $lng['domain']['domain_register'] = 'Register Domain';
+
+// ADDED IN FROXLOR 0.9.24-svn1
+$lng['logrotate'] = 'Logrotate';
+$lng['logrotate_enabled'] = 'Enable logrotate?';
+$lng['logrotate_binary'] = 'Path to logrotate binary:';
+$lng['logrotate_interval'] = 'Interval?';
+$lng['logrotate_keep'] = 'How many logfiles should be kept?';
+$lng['admin']['assignedmax'] = 'Assigned / Max';
+$lng['admin']['usedmax'] = 'Used / Max';
+$lng['admin']['used'] = 'Used';
+$lng['mysql']['size'] = 'Database size (MB)';

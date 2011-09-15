@@ -1905,3 +1905,34 @@ if(isFroxlorVersion('0.9.22-rrp7'))
 	lastStepStatus(0);
 	updateToVersion('0.9.22-rrp8');
 }
+if(isFroxlorVersion('0.9.22'))
+{
+	showUpdateStep("Updating from 0.9.22 to 0.9.23-rc1");
+	lastStepStatus(0);
+
+	updateToVersion('0.9.23-rc1');
+}
+
+
+if(isFroxlorVersion('0.9.23-rc1'))
+{
+	showUpdateStep("Updating from 0.9.23-rc1 to 0.9.23");
+	lastStepStatus(0);
+
+	updateToVersion('0.9.23');
+}
+
+if(isFroxlorVersion('0.9.23'))
+{
+	showUpdateStep("Updating from 0.9.23 to 0.9.24-svn1");
+	lastStepStatus(0);
+
+	/* add new settings for logrotate - support */
+	$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('system', 'logrotate_enabled', '0');");
+	$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('system', 'logrotate_binary', '/usr/sbin/logrotate');");
+	$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('system', 'logrotate_interval', 'weekly');");
+	$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('system', 'logrotate_keep', '4');");
+
+	updateToVersion('0.9.24-svn1');
+}
+
