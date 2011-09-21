@@ -1285,8 +1285,8 @@ if($page == 'domains'
 					if ($status == 210) {
 						// domain is available
 						$link = array("filename" => "admin_domains.php", "page" => "domains", "action" => "register", "step" => "register");
-						standard_success("Domain is available", "", $link);
 						$_SESSION['domain_register']['domain'] = $_POST['domain'];
+						standard_success("Domain is available", "", $link);
 					} else { // 211 - Domain name not available
 						standard_error("Domain Check", "Domain is not available");
 					}
