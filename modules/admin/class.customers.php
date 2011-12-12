@@ -377,6 +377,7 @@ class adminCustomers
 					$_SESSION['errormessage'] = sprintf(_('You cannot create accounts which are similar to system accounts (as for example begin with \'%s\'). Please enter another account name.'), getSetting('customer', 'accountprefix'));
 					redirectTo(Froxlor::getLinker()->getLink($returnto));
 				}
+				$loginname = $validation['safe']['new_loginname'];
 			}
 			else
 			{
