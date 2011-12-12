@@ -153,8 +153,8 @@ $lng['ftp']['account_add'] = 'Create Account';
  * MySQL
  */
 
-$lng['mysql']['databasename'] = 'user/database name';
-$lng['mysql']['databasedescription'] = 'database description';
+$lng['mysql']['databasename'] = 'User/Database name';
+$lng['mysql']['databasedescription'] = 'Database description';
 $lng['mysql']['database_create'] = 'Create database';
 
 /**
@@ -351,6 +351,8 @@ $lng['serversettings']['hostname']['title'] = 'Hostname';
 $lng['serversettings']['hostname']['description'] = 'What\'s the Hostname of this server?';
 $lng['serversettings']['apachereload_command']['title'] = 'Webserver reload command';
 $lng['serversettings']['apachereload_command']['description'] = 'What\'s the webserver command to reload configfiles?';
+$lng['serversettings']['bindenable']['title'] = 'Enable Nameserver';
+$lng['serversettings']['bindenable']['description'] = 'Here the Nameserver can be enabled and disabled globaly.';
 $lng['serversettings']['bindconf_directory']['title'] = 'Bind config directory';
 $lng['serversettings']['bindconf_directory']['description'] = 'Where should bind configfiles be saved?';
 $lng['serversettings']['bindreload_command']['title'] = 'Bind reload command';
@@ -611,12 +613,9 @@ $lng['ticket']['subject'] = 'Subject';
 $lng['ticket']['status'] = 'Status';
 $lng['ticket']['lastreplier'] = 'Last replier';
 $lng['ticket']['priority'] = 'Priority';
-$lng['ticket']['low'] = '<span class="ticket_low">Low</span>';
-$lng['ticket']['normal'] = '<span class="ticket_normal">Normal</span>';
-$lng['ticket']['high'] = '<span class="ticket_high">High</span>';
-$lng['ticket']['unf_low'] = 'Low';
-$lng['ticket']['unf_normal'] = 'Normal';
-$lng['ticket']['unf_high'] = 'High';
+$lng['ticket']['low'] = 'Low';
+$lng['ticket']['normal'] = 'Normal';
+$lng['ticket']['high'] = 'High';
 $lng['ticket']['lastchange'] = 'Last change';
 $lng['ticket']['lastchange_from'] = 'From date (dd.mm.yyyy)';
 $lng['ticket']['lastchange_to'] = 'To date (dd.mm.yyyy)';
@@ -1423,7 +1422,7 @@ $lng['serversettings']['mail_also_with_mxservers'] = 'Create mail-, imap-, pop3-
 $lng['aps']['nocontingent'] = 'Your APS contingent is insufficient. You cannot install any package.';
 $lng['aps']['packageneedsdb'] = 'This package needs a database but your contingent is used up';
 $lng['aps']['cannoteditordeleteapsdb'] = 'APS databases cannot be edited or removed here';
-$lng['admin']['webserver_Puser'] = 'Webserver user-name';
+$lng['admin']['webserver_user'] = 'Webserver user-name';
 $lng['admin']['webserver_group'] = 'Webserver group-name';
 
 // ADDED IN FROXLOR 0.9.10
@@ -1889,5 +1888,19 @@ $lng['tasks']['diskspace_set_quota'] = 'Set quota on filesystem';
 $lng['error']['session_timeout'] = 'Value too low';
 $lng['error']['session_timeout_desc'] = 'You should not set the session timeout lower than 1 minute.';
 
-//
-$lng['domain']['domain_register'] = 'Register Domain';
+// ADDED IN FROXLOR 0.9.24-svn1
+$lng['logrotate'] = 'Logrotate';
+$lng['logrotate_enabled'] = 'Enable logrotate?';
+$lng['logrotate_binary'] = 'Path to logrotate binary:';
+$lng['logrotate_interval'] = 'Interval?';
+$lng['logrotate_keep'] = 'How many logfiles should be kept?';
+$lng['admin']['assignedmax'] = 'Assigned / Max';
+$lng['admin']['usedmax'] = 'Used / Max';
+$lng['admin']['used'] = 'Used';
+$lng['mysql']['size'] = 'Database size (MB)';
+
+$lng['error']['invalidhostname'] = 'Hostname can\'t be empty nor can it consist only of whitespaces';
+
+$lng['traffic']['http'] = 'HTTP (MB)';
+$lng['traffic']['ftp'] = 'FTP (MB)';
+$lng['traffic']['mail'] = 'Mail (MB)';

@@ -118,7 +118,7 @@ while($row = $db->fetch_array($result_tasks))
 				// now get rid of old stuff
 				//(but append /* so we don't delete the directory)
 				$configdir.='/*';
-				safe_exec('rm -rf '. makeCorrectFile($configdir));
+				safe_exec('rm -rf '. escapeshellarg(makeCorrectFile($configdir)));
 			}
 		}
 
@@ -132,7 +132,7 @@ while($row = $db->fetch_array($result_tasks))
 				// now get rid of old stuff
 				//(but append /* so we don't delete the directory)
 				$configdir.='/*';
-				safe_exec('rm -rf '. makeCorrectFile($configdir));
+				safe_exec('rm -rf '. escapeshellarg(makeCorrectFile($configdir)));
 			}
 		}
 
@@ -245,6 +245,12 @@ while($row = $db->fetch_array($result_tasks))
 	 */
 	elseif ($row['type'] == '4')
 	{
+		//dont do anything when module is disabled
+		if((int)$settings['system']['bind_enable'] == 0)
+		{
+			return;
+		}
+		
 		if(!isset($nameserver))
 		{
 			$nameserver = new bind($db, $cronlog, $debugHandler, $settings);
@@ -264,7 +270,7 @@ while($row = $db->fetch_array($result_tasks))
 	elseif ($row['type'] == '5')
 	{
 		$cronlog->logAction(CRON_ACTION, LOG_INFO, 'Creating new FTP-home');
-		$result_directories = $db->query('SELECT `f`.`homedir`, `f`.`uid`, `f`.`gid`, `c`.`documentroot` AS `customerroot` FROM `' . TABLE_FTP_USERS . '` `f` LEFT JOIN `' . TABLE_PANEL_CUSTOMERS . '` `c` USING (`customerid`) ');
+		$result_directories = $db->query('SELECT `f`.`homedir`, `f`.`uid`, `f`.`gid`, `c`.`documentroot` AS `customerroot` FROM `' . TABLE_FTP_USERS . '` `f` LEFT JOIN `' . TABLE_PANEL_CUSTOMERS . '` `c` USING (`customerid`) WHERE `f`.`username` NOT LIKE \'%_backup\'');
 
 		while($directory = $db->fetch_array($result_directories))
 		{
@@ -322,6 +328,20 @@ while($row = $db->fetch_array($result_tasks))
 				{
 					$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'Running: rm -rf ' . escapeshellarg($maildir));
 					safe_exec('rm -rf '.escapeshellarg($maildir));
+				}
+
+				/*
+				 * remove tmpdir if it exists
+				 */
+				$tmpdir = makeCorrectDir($settings['system']['mod_fcgid_tmpdir'] . '/' . $row['data']['loginname'] . '/');
+
+				if (is_dir($tmpdir)
+				&& $tmpdir != "/"
+				&& $tmpdir != $settings['system']['mod_fcgid_tmpdir']
+				&& substr($tmpdir, 0, strlen($settings['system']['mod_fcgid_tmpdir'])) == $settings['system']['mod_fcgid_tmpdir'])
+				{
+					 $cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'Running: rm -rf ' . escapeshellarg($tmpdir));
+					 safe_exec('rm -rf '.escapeshellarg($tmpdir));
 				}
 
 				/*

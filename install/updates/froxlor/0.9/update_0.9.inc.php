@@ -1905,3 +1905,129 @@ if(isFroxlorVersion('0.9.22-rrp7'))
 	lastStepStatus(0);
 	updateToVersion('0.9.22-rrp8');
 }
+if(isFroxlorVersion('0.9.22'))
+{
+	showUpdateStep("Updating from 0.9.22 to 0.9.23-rc1");
+	lastStepStatus(0);
+
+	updateToVersion('0.9.23-rc1');
+}
+
+
+if(isFroxlorVersion('0.9.23-rc1'))
+{
+	showUpdateStep("Updating from 0.9.23-rc1 to 0.9.23");
+	lastStepStatus(0);
+
+	updateToVersion('0.9.23');
+}
+
+if(isFroxlorVersion('0.9.23'))
+{
+	showUpdateStep("Updating from 0.9.23 to 0.9.24-svn1");
+	lastStepStatus(0);
+
+	/* add new settings for logrotate - support */
+	$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('system', 'logrotate_enabled', '0');");
+	$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('system', 'logrotate_binary', '/usr/sbin/logrotate');");
+	$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('system', 'logrotate_interval', 'weekly');");
+	$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('system', 'logrotate_keep', '4');");
+
+	updateToVersion('0.9.24-svn1');
+}
+
+if(isFroxlorVersion('0.9.22'))
+{
+	showUpdateStep("Updating from 0.9.22 to 0.9.23-rc1");
+	lastStepStatus(0);
+
+	updateToVersion('0.9.23-rc1');
+}
+
+
+if(isFroxlorVersion('0.9.23-rc1'))
+{
+	showUpdateStep("Updating from 0.9.23-rc1 to 0.9.23");
+	lastStepStatus(0);
+
+	updateToVersion('0.9.23');
+}
+
+if(isFroxlorVersion('0.9.23'))
+{
+	showUpdateStep("Updating from 0.9.23 to 0.9.24-svn1");
+	lastStepStatus(0);
+
+	/* add new settings for logrotate - support */
+	$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('system', 'logrotate_enabled', '0');");
+	$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('system', 'logrotate_binary', '/usr/sbin/logrotate');");
+	$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('system', 'logrotate_interval', 'weekly');");
+	$db->query("INSERT INTO `" . TABLE_PANEL_SETTINGS . "` (`settinggroup`, `varname`, `value`) VALUES ('system', 'logrotate_keep', '4');");
+
+	updateToVersion('0.9.24-svn1');
+}
+
+if(isFroxlorVersion('0.9.24-svn1'))
+{
+	showUpdateStep("Updating from 0.9.24-svn1 to 0.9.24-rc1");
+	lastStepStatus(0);
+
+	updateToVersion('0.9.24-rc1');
+}
+
+if(isFroxlorVersion('0.9.24-rc1'))
+{
+	showUpdateStep("Updating from 0.9.24-rc1 to 0.9.24");
+	lastStepStatus(0);
+
+	updateToVersion('0.9.24');
+}
+
+if(isFroxlorVersion('0.9.24'))
+{
+	showUpdateStep("Updating from 0.9.24 to 0.9.25-rc1");
+	lastStepStatus(0);
+
+	updateToVersion('0.9.25-rc1');
+}
+
+if(isFroxlorVersion('0.9.25-rc1'))
+{
+	showUpdateStep("Updating from 0.9.25-rc1 to 0.9.25");
+	lastStepStatus(0);
+
+	updateToVersion('0.9.25');
+}
+
+if(isFroxlorVersion('0.9.25'))
+{
+	showUpdateStep("Updating from 0.9.25 to 0.9.26-svn1");
+	lastStepStatus(0);
+	
+	// enable bind by default
+	$db->query("INSERT INTO `panel_settings` (`settinggroup`, `varname`, `value`) VALUES ('system', 'bind_enable', '1')");
+	
+	// check for multiple backup_enabled entries
+	$handle = $db->query("SELECT `value` FROM `panel_settings` WHERE `varname` = 'backup_enabled';");
+	
+	// if there are more than one entry try to fix it
+	if ($db->num_rows($handle) > 1) {
+		$rows = $db->fetch_array($handle);
+		$state = false;
+		
+		// iterate through all found entries
+		// and try to guess what value it should be
+		foreach ($rows as $row) {
+			$state = $state | $row['value'];
+		}
+		
+		// now delete all entries
+		$db->query("DELETE FROM `panel_settings` WHERE `varname` = 'backup_enabled';");
+		
+		// and re-add it
+		$db->query("INSERT INTO `panel_settings` (`settinggroup`, `varname`, `value`) VALUES ('system', 'backup_enabled', '". $state ."');");
+	}
+	
+	updateToVersion('0.9.26-svn1');
+}
+

@@ -158,6 +158,9 @@ class htmlform
 		if(isset($data['size'])) {
 			$extras .= ' size="'.$data['size'].'"';
 		}
+		if(isset($data['autocomplete'])) {
+                        $extras .= ' autocomplete="'.$data['autocomplete'].'"';
+                }
 
 		// add support to save reloaded forms
 		if (isset($data['value'])) {

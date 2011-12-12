@@ -68,7 +68,8 @@ return array(
 						'validation' => array(
 							'required' => false,
 							'format' => 'password',
-						)
+						),
+						'autocomplete' => 'off'
 					),
 					'new_customer_password_suggestion' => array(
 						'label' => _('Password suggestion'),

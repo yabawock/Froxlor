@@ -194,7 +194,12 @@ if($page == 'domains'
 				$log->logAction(ADM_ACTION, LOG_INFO, "deleted domain/subdomains (#" . $result['id'] . ")");
 				updateCounters();
 				inserttask('1');
-				inserttask('4');
+
+				# Using nameserver, insert a task which rebuilds the server config
+				if ($settings['system']['bind_enable'])
+				{
+					inserttask('4');
+				}
 				redirectTo($filename, Array('page' => $page, 's' => $s));
 			}
 			elseif ($alias_check['count'] > 0) {
@@ -570,7 +575,12 @@ if($page == 'domains'
 					$db->query("UPDATE `" . TABLE_PANEL_ADMINS . "` SET `domains_used` = `domains_used` + 1 WHERE `adminid` = '" . (int)$adminid . "'");
 					$log->logAction(ADM_ACTION, LOG_INFO, "added domain '" . $domain . "'");
 					inserttask('1');
-					inserttask('4');
+
+					# Using nameserver, insert a task which rebuilds the server config
+					if ($settings['system']['bind_enable'])
+					{
+						inserttask('4');
+					}
 					redirectTo($filename, Array('page' => $page, 's' => $s));
 				}
 			}
@@ -1054,7 +1064,8 @@ if($page == 'domains'
 				   || $mod_fcgid_maxrequests != $result['mod_fcgid_maxrequests']
 				   || $specialsettings != $result['specialsettings']
 				   || $aliasdomain != $result['aliasdomain']
-				   || $issubof != $result['ismainbutsubto'])
+				   || $issubof != $result['ismainbutsubto']
+				   || $email_only != $result['email_only'])
 				{
 					inserttask('1');
 				}
@@ -1285,6 +1296,7 @@ if($page == 'domains'
 					if ($status == 210) {
 						// domain is available
 						$link = array("filename" => "admin_domains.php", "page" => "domains", "action" => "register", "step" => "register");
+						$_SESSION['domain_register']['domain'] = $_POST['domain'];
 						standard_success("Domain is available", "", $link);
 					} else { // 211 - Domain name not available
 						standard_error("Domain Check", "Domain is not available");
@@ -1294,12 +1306,14 @@ if($page == 'domains'
 				}
 			} elseif ($step == 'register') {
 				// create formfields
-				$domain_register_form = htmlform::genHTMLForm($rrp->domainRegisterFormfield("test.de"));
+				$domain_register_form = htmlform::genHTMLForm($rrp->domainRegisterFormfield($_SESSION['domain_register']['domain']));
 				
 				$title = 'Register Domain';
 				$image = 'icons/domain_add.png';
 
 				eval("echo \"" . getTemplate("domains/domains_register") . "\";");
+			} elseif ($step == 'done') {
+				// send data
 			}
 		}
 	}

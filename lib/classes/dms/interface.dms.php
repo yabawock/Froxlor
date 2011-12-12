@@ -77,10 +77,11 @@ interface dms
 	 * Registers the new domain.
 	 *
 	 * @param string $domain
+	 * @param array  $formdata
 	 *
 	 * @return int statuscode
 	 */
-	public function domainRegister($domain);
+	public function domainRegister($domain, $formdata);
 	
 	/**
 	 * Creates a formfield for domain registration.
