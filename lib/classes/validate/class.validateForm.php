@@ -136,7 +136,7 @@ class validateForm
 						}
 						elseif($rule == 'zipcode')
 						{
-							if (!preg_match('/^[0-9 \-A-Z]$/', $value))
+							if (!preg_match('/^[0-9 \-A-Z]+$/', $value))
 							{
 								$result[] = _('The value contains invalid characters for a zipcode. Only numbers, letters, spaces and dashes are allowed.');
 								$safe = 0;
