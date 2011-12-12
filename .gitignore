@@ -3,5 +3,4 @@ temp/*
 .buildpath
 .project
 .settings/
-.gitignore
-*unit*
+*.diff

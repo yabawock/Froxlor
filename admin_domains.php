@@ -194,7 +194,12 @@ if($page == 'domains'
 				$log->logAction(ADM_ACTION, LOG_INFO, "deleted domain/subdomains (#" . $result['id'] . ")");
 				updateCounters();
 				inserttask('1');
-				inserttask('4');
+
+				# Using nameserver, insert a task which rebuilds the server config
+				if ($settings['system']['bind_enable'])
+				{
+					inserttask('4');
+				}
 				redirectTo($filename, Array('page' => $page, 's' => $s));
 			}
 			elseif ($alias_check['count'] > 0) {
@@ -570,7 +575,12 @@ if($page == 'domains'
 					$db->query("UPDATE `" . TABLE_PANEL_ADMINS . "` SET `domains_used` = `domains_used` + 1 WHERE `adminid` = '" . (int)$adminid . "'");
 					$log->logAction(ADM_ACTION, LOG_INFO, "added domain '" . $domain . "'");
 					inserttask('1');
-					inserttask('4');
+
+					# Using nameserver, insert a task which rebuilds the server config
+					if ($settings['system']['bind_enable'])
+					{
+						inserttask('4');
+					}
 					redirectTo($filename, Array('page' => $page, 's' => $s));
 				}
 			}
@@ -1054,7 +1064,8 @@ if($page == 'domains'
 				   || $mod_fcgid_maxrequests != $result['mod_fcgid_maxrequests']
 				   || $specialsettings != $result['specialsettings']
 				   || $aliasdomain != $result['aliasdomain']
-				   || $issubof != $result['ismainbutsubto'])
+				   || $issubof != $result['ismainbutsubto']
+				   || $email_only != $result['email_only'])
 				{
 					inserttask('1');
 				}

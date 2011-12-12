@@ -351,6 +351,8 @@ $lng['serversettings']['hostname']['title'] = 'Hostname';
 $lng['serversettings']['hostname']['description'] = 'Welchen Hostnamen hat der Server?';
 $lng['serversettings']['apachereload_command']['title'] = 'Webserver-Reload-Command';
 $lng['serversettings']['apachereload_command']['description'] = 'Wie hei&szlig;t das Skript zum Neuladen der Webserver-Konfigurationsdateien?';
+$lng['serversettings']['bindenable']['title'] = 'Nameserver aktivieren';
+$lng['serversettings']['bindenable']['description'] = 'Hier k&ouml;nnen Sie den Nameserver global aktivieren bzw. deaktivieren.';
 $lng['serversettings']['bindconf_directory']['title'] = 'Bind-Config-Directory';
 $lng['serversettings']['bindconf_directory']['description'] = 'Wo liegen die Bind-Konfigurationsdateien?';
 $lng['serversettings']['bindreload_command']['title'] = 'Bind-Reload-Command';
@@ -564,7 +566,7 @@ $lng['serversettings']['apacheconf_vhost']['description'] = 'Wo sollen die vHost
 $lng['serversettings']['apacheconf_diroptions']['title'] = 'Webserver Verzeichnisoption-Konfigurations-Datei/Verzeichnis-Name';
 $lng['serversettings']['apacheconf_diroptions']['description'] = 'Wo sollen die Verzeichnisoption-Konfigurationen abgelegt werden? Sie k&ouml;nnen entweder eine Datei (also mit allen vHosts) oder einen Ordner (mit einer Datei pro vHost) angeben.';
 $lng['serversettings']['apacheconf_htpasswddir']['title'] = 'Webserver htpasswd Verzeichnisname';
-$lng['serversettings']['apacheconf_htpasswddir']['description'] = 'Wo sollen die htpasswd-Dateien f&uuml; den Verzeichnisschutz abgelegt werden?';
+$lng['serversettings']['apacheconf_htpasswddir']['description'] = 'Wo sollen die htpasswd-Dateien f&uuml;r den Verzeichnisschutz abgelegt werden?';
 
 // ADDED IN 1.2.16-svn15
 
@@ -614,12 +616,9 @@ $lng['ticket']['subject'] = 'Betreff';
 $lng['ticket']['status'] = 'Status';
 $lng['ticket']['lastreplier'] = 'Letzte Antwort';
 $lng['ticket']['priority'] = 'Priorit&auml;t';
-$lng['ticket']['low'] = '<span class="ticket_low">Niedrig</span>';
-$lng['ticket']['normal'] = '<span class="ticket_normal">Normal</span>';
-$lng['ticket']['high'] = '<span class="ticket_high">Hoch</span>';
-$lng['ticket']['unf_low'] = 'Niedrig';
-$lng['ticket']['unf_normal'] = 'Normal';
-$lng['ticket']['unf_high'] = 'Hoch';
+$lng['ticket']['low'] = 'Niedrig';
+$lng['ticket']['normal'] = 'Normal';
+$lng['ticket']['high'] = 'Hoch';
 $lng['ticket']['lastchange'] = 'Letzte &Auml;nderung';
 $lng['ticket']['lastchange_from'] = 'Anfangsdatum (tt.mm.jjjj)';
 $lng['ticket']['lastchange_to'] = 'Enddatum (tt.mm.jjjj)';
@@ -1596,7 +1595,7 @@ $lng['serversettings']['backup_ftp_enabled'] = 'FTP Upload aktivieren?';
 $lng['serversettings']['backup_ftp_server'] = 'FTP Server:';
 $lng['serversettings']['backup_ftp_user'] = 'FTP Benutzer:';
 $lng['serversettings']['backup_ftp_pass'] = 'FTP Passwort:';
-$lng['serversettings']['backupdir']['description'] = 'Pfad des Backup Verzeichnises?';
+$lng['serversettings']['backupdir']['description'] = 'Pfad des Backup-Verzeichnisses?';
 $lng['serversettings']['mysqldump_path']['description'] = 'Pfad zum mysqldump Programm:';
 $lng['serversettings']['backup_count'] = 'Soll die Gr&ouml;&szlig;e des Backups vom verf&uuml;gbaren Webspace abgezogen werden?';
 $lng['crondesc']['cron_backup'] = 'Backup Cronjob';
@@ -1616,8 +1615,6 @@ $lng['serversettings']['diskquota_customer_partition']['description'] = 'Partiti
 $lng['tasks']['diskspace_set_quota'] = 'Quota auf dem Dateisystem setzen';
 $lng['error']['session_timeout'] = 'Wert zu niedrig';
 $lng['error']['session_timeout_desc'] = 'Der Wert der Session Timeout sollte nicht unter einer Minute liegen.';
-$lng['countrycode'] = 'Land';
-$lng['domain']['domain_register'] = 'Domain registrieren';
 
 // ADDED IN FROXLOR 0.9.24-svn1
 $lng['logrotate'] = 'Logrotate';
@@ -1626,6 +1623,12 @@ $lng['logrotate_binary'] = 'Pfad zum logrotate binary?';
 $lng['logrotate_interval'] = 'Intervall?';
 $lng['logrotate_keep'] = 'Wie viele Logdateien sollen aufbewahrt werden?';
 $lng['admin']['assignedmax'] = 'Zugewiesen / Max.';
-$lng['admin']['usedmax'] = 'Benutzt / Max.';	
+$lng['admin']['usedmax'] = 'Benutzt / Max.';
 $lng['admin']['used'] = 'Benutzt';
 $lng['mysql']['size'] = 'Datenbankgr&ouml;&szlig;e (MB)';
+
+$lng['error']['invalidhostname'] = 'Hostname darf nicht leer sein oder nur aus Leerzeichen bestehen';
+
+$lng['traffic']['http'] = 'HTTP (MB)';
+$lng['traffic']['ftp'] = 'FTP (MB)';
+$lng['traffic']['mail'] = 'Mail (MB)';

@@ -38,7 +38,7 @@ return array(
 					'type' => 'string',
 					'string_type' => 'dir',
 					'default' => '/var/customers/backups/',
-					'string_regexp' => '^/.*/$',
+					'string_regexp' => '#^/.*/$#',
 					'save_method' => 'storeSettingField',
 				),
 				'backup_mysqldump_path' => array(
@@ -96,7 +96,7 @@ return array(
 					'label' => $lng['serversettings']['backup_ftp_pass'],
 					'settinggroup' => 'system',
 					'varname' => 'backup_ftp_pass',
-					'type' => 'string',
+					'type' => 'hiddenstring',
 					'default' => '',
 					'save_method' => 'storeSettingField',
 				),

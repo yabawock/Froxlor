@@ -546,7 +546,6 @@ $lng['panel']['back'] = 'Indietro';
 // ADDED IN 1.2.16-svn12
 
 $lng['serversettings']['mod_log_sql']['title'] = 'Salva i log temporaneamente nel database';
-$lng['serversettings']['mod_log_sql']['description'] = 'Usa <a href="http://www.outoforder.cc/projects/apache/mod_log_sql/" title="mod_log_sql">mod_log_sql</a> per salvare temporaneamente le richieste web<br /><b>Questo richiede una <a href="http://files.froxlor.org/docs/mod_log_sql/" title="mod_log_sql - documentation">configurazione di apache</a> particolare!</b>';
 $lng['serversettings']['mod_log_sql']['description'] = 'Usa <a target="blank" href="http://www.outoforder.cc/projects/apache/mod_log_sql/" title="mod_log_sql">mod_log_sql</a> per salvare temporaneamente le richieste web<br /><b>Questo richiede una <a target="blank" href="http://files.froxlor.org/docs/mod_log_sql/" title="mod_log_sql - documentation">configurazione di apache</a> particolare!</b>';
 $lng['serversettings']['mod_fcgid']['title'] = 'Includi PHP via mod_fcgid/suexec';
 $lng['serversettings']['mod_fcgid']['description'] = 'Usa mod_fcgid/suexec/libnss_mysql per avviare PHP con il corrispondente account-utente.<br/><b>Questo richiede una speciale configurazione del Webserver. Tutte le opzioni seguenti sono validi solo se il modulo &egrave; abilitato.</b>';
@@ -615,12 +614,9 @@ $lng['ticket']['subject'] = 'Soggetto';
 $lng['ticket']['status'] = 'Stato';
 $lng['ticket']['lastreplier'] = 'Ultimo che ha risposto';
 $lng['ticket']['priority'] = 'Priorit&agrave;';
-$lng['ticket']['low'] = '<span class="ticket_low">Bassa</span>';
-$lng['ticket']['normal'] = '<span class="ticket_normal">Normale</span>';
-$lng['ticket']['high'] = '<span class="ticket_high">Alta</span>';
-$lng['ticket']['unf_low'] = 'Bassa';
-$lng['ticket']['unf_normal'] = 'Normale';
-$lng['ticket']['unf_high'] = 'Alta';
+$lng['ticket']['low'] = 'Bassa';
+$lng['ticket']['normal'] = 'Normale';
+$lng['ticket']['high'] = 'Alta';
 $lng['ticket']['lastchange'] = 'Ultima modifica';
 $lng['ticket']['lastchange_from'] = 'Dalla data (dd.mm.yyyy)';
 $lng['ticket']['lastchange_to'] = 'Alla data (dd.mm.yyyy)';

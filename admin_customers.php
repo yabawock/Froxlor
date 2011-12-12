@@ -117,12 +117,21 @@ if($page == 'customers'
 				/**
 				 * percent-values for progressbar
 				 */
+				//For Disk usage
 				if ($row['diskspace'] > 0) {
-					$percent = round(($row['diskspace_used']*100)/$row['diskspace'], 2);
-					$doublepercent = round($percent*2, 2);
+					$disk_percent = round(($row['diskspace_used']*100)/$row['diskspace'], 2);
+					$disk_doublepercent = round($disk_percent*2, 2);
 				} else {
-					$percent = 0;
-					$doublepercent = 0;
+					$disk_percent = 0;
+					$disk_doublepercent = 0;
+				}
+
+				if ($row['traffic'] > 0) {
+					$traffic_percent = round(($row['traffic_used']*100)/$row['traffic'], 2);
+					$traffic_doublepercent = round($traffic_percent*2, 2);
+				} else {
+					$traffic_percent = 0;
+					$traffic_doublepercent = 0;
 				}
 
 				$column_style = '';
@@ -219,8 +228,8 @@ if($page == 'customers'
 					foreach(array_unique(explode(',', $settings['system']['mysql_access_host'])) as $mysql_access_host)
 					{
 						$mysql_access_host = trim($mysql_access_host);
-						$db_root->query('REVOKE ALL PRIVILEGES ON * . * FROM `' . $db_root->escape($row_database['databasename']) . '`@`' . $db_root->escape($mysql_access_host) . '`');
-						$db_root->query('REVOKE ALL PRIVILEGES ON `' . str_replace('_', '\_', $db_root->escape($row_database['databasename'])) . '` . * FROM `' . $db_root->escape($row_database['databasename']) . '`@`' . $db_root->escape($mysql_access_host) . '`');
+						$db_root->query('REVOKE ALL PRIVILEGES ON * . * FROM `' . $db_root->escape($row_database['databasename']) . '`@`' . $db_root->escape($mysql_access_host) . '`',false,true);
+						$db_root->query('REVOKE ALL PRIVILEGES ON `' . str_replace('_', '\_', $db_root->escape($row_database['databasename'])) . '` . * FROM `' . $db_root->escape($row_database['databasename']) . '`@`' . $db_root->escape($mysql_access_host) . '`',false,true);
 						$db_root->query('DELETE FROM `mysql`.`user` WHERE `User` = "' . $db_root->escape($row_database['databasename']) . '" AND `Host` = "' . $db_root->escape($mysql_access_host) . '"');
 					}
 
@@ -329,7 +338,12 @@ if($page == 'customers'
 				$db->query($admin_update_query);
 				$log->logAction(ADM_ACTION, LOG_INFO, "deleted user '" . $result['loginname'] . "'");
 				inserttask('1');
-				inserttask('4');
+
+				# Using nameserver, insert a task which rebuilds the server config
+				if ($settings['system']['bind_enable'])
+				{
+					inserttask('4');
+				}
 
 				if(isset($_POST['delete_userfiles'])
 				  && (int)$_POST['delete_userfiles'] == 1)
@@ -614,6 +628,11 @@ if($page == 'customers'
 
 						if(preg_match('/^' . preg_quote($settings['customer']['accountprefix'], '/') . '([0-9]+)/', $loginname))
 						{
+							standard_error('loginnameissystemaccount', $settings['customer']['accountprefix']);
+						}
+						
+						//Additional filtering for Bug #962
+						if(function_exists('posix_getpwuid') && !in_array("posix_getpwuid",explode(",",ini_get('disable_functions'))) && posix_getpwuid($loginname)) {
 							standard_error('loginnameissystemaccount', $settings['customer']['accountprefix']);
 						}
 					}

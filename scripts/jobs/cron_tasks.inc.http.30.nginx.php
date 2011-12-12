@@ -28,6 +28,7 @@ class nginx
 	private $logger = false;
 	private $debugHandler = false;
 	private $idnaConvert = false;
+	private $nginx_server = array();
 
 	//	protected
 
@@ -40,22 +41,22 @@ class nginx
 	protected $mod_accesslog_loaded = "0";
 	protected $vhost_root_autoindex = false;
 	protected $known_vhostfilenames = array();
-
 	/**
 	 * indicator whether a customer is deactivated or not
 	 * if yes, only the webroot will be generated
-	 * 
+	 *
 	 * @var bool
 	 */
 	private $_deactivated = false;
 
-	public function __construct($db, $logger, $debugHandler, $idnaConvert, $settings)
+	public function __construct($db, $logger, $debugHandler, $idnaConvert, $settings, $nginx_server=array())
 	{
 		$this->db = $db;
 		$this->logger = $logger;
 		$this->debugHandler = $debugHandler;
 		$this->idnaConvert = $idnaConvert;
 		$this->settings = $settings;
+		$this->nginx_server = $nginx_server;
 	}
 
 	protected function getDB()
@@ -87,13 +88,6 @@ class nginx
 		}
 	}
 
-	public function createVirtualHosts()
-	{
-	}
-
-	public function createFileDirOptions()
-	{
-	}
 
 	/**
 	 * define a default ErrorDocument-statement, bug #unknown-yet
@@ -143,7 +137,10 @@ class nginx
 
 		}
 	}
-	
+ 	public function createVirtualHosts(){
+	}
+	public function createFileDirOptions(){
+	}
 	public function createIpPort()
 	{
 		$query = "SELECT * FROM `" . TABLE_PANEL_IPSANDPORTS . "` ORDER BY `ip` ASC, `port` ASC";
@@ -229,18 +226,18 @@ class nginx
 						
 					if($row_ipsandports['ssl_ca_file'] != '')
 					{
-						$this->lighttpd_data[$vhost_filename].= 'ssl_client_certificate ' . makeCorrectFile($row_ipsandports['ssl_ca_file']) . ';' . "\n";
+						$this->nginx_data[$vhost_filename].= 'ssl_client_certificate ' . makeCorrectFile($row_ipsandports['ssl_ca_file']) . ';' . "\n";
 					}
 				}
 			}
-
+			
 			$this->nginx_data[$vhost_filename].= "\t".'location ~ \.php$ {'."\n";
 			$this->nginx_data[$vhost_filename].= "\t\t".'fastcgi_index index.php;'."\n";
 			$this->nginx_data[$vhost_filename].= "\t\t".'include /etc/nginx/fastcgi_params;'."\n";
+			$this->nginx_data[$vhost_filename].= "\t\t".'fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;'."\n";
 			if ($row_ipsandports['ssl'] == '1') {
 				$this->nginx_data[$vhost_filename].= "\t\t".'fastcgi_param HTTPS on;'."\n";
 			}
-			$this->nginx_data[$vhost_filename].= "\t\t".'fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;'."\n";
 			if((int)$this->settings['phpfpm']['enabled'] == 1
 				&& (int)$this->settings['phpfpm']['enabled_ownvhost'] == 1
 			) {
@@ -255,7 +252,7 @@ class nginx
 					'safemode' => '0',
 					'email' => $this->settings['panel']['adminmail'],
 					'loginname' => 'froxlor.panel',
-					'documentroot' => $mypath
+					'documentroot' => $mypath,
 				);
 
 				$php = new phpinterface($this->getDB(), $this->settings, $domain);
@@ -286,11 +283,11 @@ class nginx
 
 		if($ssl == '0')
 		{
-			$query2 = "SELECT `d`.*, `pd`.`domain` AS `parentdomain`, `c`.`loginname`, `c`.`guid`, `c`.`email`, `c`.`documentroot` AS `customerroot`, `c`.`deactivated`, `c`.`phpenabled` AS `phpenabled` FROM `" . TABLE_PANEL_DOMAINS . "` `d` LEFT JOIN `" . TABLE_PANEL_CUSTOMERS . "` `c` USING(`customerid`) LEFT JOIN `" . TABLE_PANEL_DOMAINS . "` `pd` ON (`pd`.`id` = `d`.`parentdomainid`) WHERE `d`.`ipandport`='" . $ipandport['id'] . "' AND `d`.`aliasdomain` IS NULL ORDER BY `d`.`iswildcarddomain`, `d`.`domain` ASC";
+			$query2 = "SELECT `d`.*, `pd`.`domain` AS `parentdomain`, `c`.`loginname`, `c`.`guid`, `c`.`email`, `c`.`documentroot` AS `customerroot`, `c`.`deactivated`, `c`.`phpenabled` AS `phpenabled` FROM `" . TABLE_PANEL_DOMAINS . "` `d` LEFT JOIN `" . TABLE_PANEL_CUSTOMERS . "` `c` USING(`customerid`) LEFT JOIN `" . TABLE_PANEL_DOMAINS . "` `pd` ON (`pd`.`id` = `d`.`parentdomainid`) WHERE `d`.`ipandport`='" . $ipandport['id'] . "' AND `d`.`aliasdomain` IS NULL AND `d`.`email_only` <> 1 ORDER BY `d`.`iswildcarddomain`, `d`.`domain` ASC";
 		}
 		else
 		{
-			$query2 = "SELECT `d`.*, `pd`.`domain` AS `parentdomain`, `c`.`loginname`, `c`.`guid`, `c`.`email`, `c`.`documentroot` AS `customerroot`, `c`.`deactivated`, `c`.`phpenabled` AS `phpenabled` FROM `" . TABLE_PANEL_DOMAINS . "` `d` LEFT JOIN `" . TABLE_PANEL_CUSTOMERS . "` `c` USING(`customerid`) LEFT JOIN `" . TABLE_PANEL_DOMAINS . "` `pd` ON (`pd`.`id` = `d`.`parentdomainid`) WHERE `d`.`ssl_ipandport`='" . $ipandport['id'] . "' AND `d`.`aliasdomain` IS NULL ORDER BY `d`.`iswildcarddomain`, `d`.`domain` ASC";
+			$query2 = "SELECT `d`.*, `pd`.`domain` AS `parentdomain`, `c`.`loginname`, `c`.`guid`, `c`.`email`, `c`.`documentroot` AS `customerroot`, `c`.`deactivated`, `c`.`phpenabled` AS `phpenabled` FROM `" . TABLE_PANEL_DOMAINS . "` `d` LEFT JOIN `" . TABLE_PANEL_CUSTOMERS . "` `c` USING(`customerid`) LEFT JOIN `" . TABLE_PANEL_DOMAINS . "` `pd` ON (`pd`.`id` = `d`.`parentdomainid`) WHERE `d`.`ssl_ipandport`='" . $ipandport['id'] . "' AND `d`.`aliasdomain` IS NULL AND `d`.`email_only` <> 1 ORDER BY `d`.`iswildcarddomain`, `d`.`domain` ASC";
 		}
 
 		$included_vhosts = array();
@@ -422,12 +419,23 @@ class nginx
 
 			$vhost_content.= $this->getLogFiles($domain);
 			$vhost_content.= $this->getWebroot($domain, $ssl_vhost);
+			
 			if ($this->_deactivated == false) {
 				$vhost_content.= $this->create_pathOptions($domain);
-			//	$vhost_content.= $this->create_htaccess($domain);
 				$vhost_content.= $this->composePhpOptions($domain, $ssl_vhost);
-				$vhost_content.= $this->getStats($domain);
 
+				$l_regex1="/(location\ \/\ \{)(.*)(\})/smU";
+				$l_regex2="/(location\ \/\ \{.*\})/smU";
+				$replace_by="";
+				$replacements=preg_match_all($l_regex1,$vhost_content,$out);
+				if ($replacements>1){
+					foreach ($out[2] as $val) {
+						$replace_by.=$val."\n";
+					}
+					$vhost_content=preg_replace($l_regex2,"",$vhost_content,$replacements-1);
+					$vhost_content=preg_replace($l_regex2,"location / {"."\n\t\t". $replace_by ."\t}"."\n",$vhost_content);
+				}
+				
 				if ($domain['specialsettings'] != "") {
 					$vhost_content.= $domain['specialsettings'] . "\n";
 				}
@@ -466,19 +474,22 @@ class nginx
 				$path_options.= "\t".'error_page   502 503 504    ' . $row['error500path'] . ';' . "\n";
 			}
 
-			if($row['options_indexes'] != '0')
-			{
+//			if($row['options_indexes'] != '0')
+//			{
 				$path = makeCorrectDir(substr($row['path'], strlen($domain['documentroot']) - 1));
 
 				mkDirWithCorrectOwnership($domain['documentroot'], $row['path'], $domain['guid'], $domain['guid']);
 
-				if (trim($path) == '/') {
+				$path_options.= "\t".'# '.$path."\n";
+				if ($path == '/') {
 					$this->vhost_root_autoindex = true;
-				}
-				else
-				{
 					$path_options.= "\t".'location ' . $path . ' {' . "\n";
-					$path_options.= "\t\t" . 'autoindex  on;' . "\n";
+					if($this->vhost_root_autoindex) {
+						$path_options.= "\t\t" . 'autoindex  on;' . "\n";
+						$this->vhost_root_autoindex = false;
+					}
+					$path_options.= "\t\t" . 'index    index.php index.html index.htm;'."\n";
+//					$path_options.= "\t\t" . 'try_files $uri $uri/ @rewrites;'."\n";
 					// check if we have a htpasswd for this path
 					// (damn nginx does not like more than one
 					// 'location'-part with the same path)
@@ -486,12 +497,17 @@ class nginx
 					{
 						foreach($htpasswds as $idx => $single)
 						{
-							if($path == $single['path'])
-							{
-								$path_options.= "\t\t" . 'auth_basic            "Restricted Area";' . "\n";
-								$path_options.= "\t\t" . 'auth_basic_user_file  ' . $single['usrf'] . ';'."\n";
-								// remove already used entries so we do not have doubles
-								unset($htpasswds[$idx]);
+							switch($single['path']){
+								case '/awstats/':
+								case '/webalizer/':
+								break;
+								default:
+									if ($single['path']=='/'){
+										$path_options.= "\t\t" . 'auth_basic            "Restricted Area";' . "\n";
+										$path_options.= "\t\t" . 'auth_basic_user_file  ' . $single['usrf'] . ';'."\n";
+										// remove already used entries so we do not have doubles
+										unset($htpasswds[$idx]);
+									}
 							}
 						}
 					}
@@ -499,10 +515,20 @@ class nginx
 
 					$this->vhost_root_autoindex = false;
 				}
-			}
+				 else
+				{
+					$path_options.= "\t".'location ' . $path . ' {' . "\n";
+					if($this->vhost_root_autoindex) {
+						$path_options.= "\t\t" . 'autoindex  on;' . "\n";
+						$this->vhost_root_autoindex = false;
+					}
+					$path_options.= "\t\t" . 'index    index.php index.html index.htm;'."\n";
+					$path_options.= "\t".'} ' . "\n";
+				}
+//			}
 			
 			/**
-			 * Perl suport
+			 * Perl support
 			 * required the fastCGI wrapper to be running to receive the CGI requests.
 			 */
 			if(customerHasPerlEnabled($domain['customerid'])
@@ -517,7 +543,7 @@ class nginx
 				}
 				$path_options.= "\t" . 'location ~ \(.pl|.cgi)$ {' . "\n";
 				$path_options.= "\t\t" . 'gzip off; #gzip makes scripts feel slower since they have to complete before getting gzipped' . "\n";
-    			$path_options.= "\t\t" . 'fastcgi_pass  '. $this->settings['system']['perl_server'] . ';' . "\n";
+	    			$path_options.= "\t\t" . 'fastcgi_pass  '. $this->settings['system']['perl_server'] . ';' . "\n";
    				$path_options.= "\t\t" . 'fastcgi_index index.cgi;' . "\n";
 				$path_options.= "\t\t" . 'include /etc/nginx/fastcgi_params;'."\n";
 				$path_options.= "\t" . '}' . "\n";
@@ -532,10 +558,23 @@ class nginx
 		{
 			foreach($htpasswds as $idx => $single)
 			{
-				$path_options.= "\t" . 'location ' . $single['path'] . ' {' . "\n";
-				$path_options.= "\t\t" . 'auth_basic            "Restricted Area";' . "\n";
-				$path_options.= "\t\t" . 'auth_basic_user_file  ' . $single['usrf'] . ';'."\n";
-				$path_options.= "\t".'}' . "\n";
+				//if($single['path'] != "/")
+				//{
+					switch($single['path'])
+					{
+						case '/awstats/':
+						case '/webalizer/':
+							$path_options.= $this->getStats($domain,$single);
+							unset($htpasswds[$idx]);
+						break;
+						default:
+							$path_options.= "\t" . 'location ' . $single['path'] . ' {' . "\n";
+							$path_options.= "\t\t" . 'auth_basic            "Restricted Area";' . "\n";
+							$path_options.= "\t\t" . 'auth_basic_user_file  ' . $single['usrf'] . ';'."\n";
+							$path_options.= "\t".'}' . "\n";
+					}
+				//}
+				unset($htpasswds[$idx]);
 			}
 		}
 
@@ -544,7 +583,9 @@ class nginx
 
 	protected function getHtpasswds($domain)
 	{
-		$query = "SELECT * FROM " . TABLE_PANEL_HTPASSWDS . " WHERE `customerid`='" . $domain['customerid'] . "'";
+		//$query = "SELECT * FROM " . TABLE_PANEL_HTPASSWDS . " WHERE `customerid`='" . $domain['customerid'] . "'";
+		$query = "SELECT DISTINCT * FROM " . TABLE_PANEL_HTPASSWDS . " AS a JOIN " . TABLE_PANEL_DOMAINS . " AS b ON a.customerid=b.customerid WHERE b.customerid='" . $domain['customerid'] . "' AND a.path LIKE CONCAT(b.documentroot,'%') AND b.domain='" . $domain['domain'] . "'" ;
+
 		$result = $this->db->query($query);
 
 		$returnval = array();
@@ -579,13 +620,15 @@ class nginx
 		if($domain['phpenabled'] == '1')
 		{
 			$phpopts = "\t".'location ~ \.php$ {'."\n";
+			$phpopts.= "\t\t".'try_files $uri =404;'."\n";
+			$phpopts.= "\t\t".'fastcgi_split_path_info ^(.+\.php)(/.+)$;'."\n";
 			$phpopts.= "\t\t".'fastcgi_index index.php;'."\n";
+			$phpopts.= "\t\t".'fastcgi_pass ' . $this->settings['system']['nginx_php_backend'] . ';' . "\n";
+			$phpopts.= "\t\t".'fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;'."\n";
 			$phpopts.= "\t\t".'include /etc/nginx/fastcgi_params;'."\n";
 			if ($domain['ssl'] == '1' && $ssl_vhost) {
 				$phpopts.= "\t\t".'fastcgi_param HTTPS on;'."\n";
 			}
-			$phpopts.= "\t\t".'fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;'."\n";
-			$phpopts.= "\t\t".'fastcgi_pass ' . $this->settings['system']['nginx_php_backend'] . ';' . "\n";
 			$phpopts.= "\t".'}'."\n";
 		}
 		return $phpopts;
@@ -610,18 +653,22 @@ class nginx
 
 		$webroot_text.= "\t".'location / {'."\n";
 		$webroot_text.= "\t\t".'index    index.php index.html index.htm;'."\n";
+		$webroot_text.= "\t\t" . 'try_files $uri $uri/ @rewrites;'."\n";
 
 		if($this->vhost_root_autoindex) {
 			$webroot_text.= "\t\t".'autoindex on;'."\n";
 			$this->vhost_root_autoindex = false;
 		}
 
-		$webroot_text.= "\t".'}'."\n";
+		$webroot_text.= "\t".'}'."\n\n";
+		$webroot_text.= "\tlocation @rewrites {\n";
+		$webroot_text.= "rewrite ^ /index.php last;\n";
+		$webroot_text.= "}\n\n";
 
 		return $webroot_text;
 	}
 
-	protected function getStats($domain)
+	protected function getStats($domain,$single=array())
 	{
 		$stats_text = '';
 
@@ -634,17 +681,20 @@ class nginx
 				{
 					$stats_text.= "\t" . 'location /awstats {' . "\n";
 					$stats_text.= "\t\t" . 'alias ' . makeCorrectFile($domain['customerroot'] . '/awstats/' . $domain['domain']) . ';' . "\n";
+					$stats_text.= "\t\t" . 'auth_basic            "Restricted Area";' . "\n";
+					$stats_text.= "\t\t" . 'auth_basic_user_file  ' . $single['usrf'] . ';'."\n";
 					$stats_text.= "\t" . '}' . "\n";
 					$stats_text.= "\t" . 'location /awstats-icon {' . "\n";
 					$stats_text.= "\t\t" . 'alias ' . makeCorrectDir($this->settings['system']['awstats_icons']) . ';' . "\n";
-					$stats_text.= "\t\t" . '}' . "\n";
+					$stats_text.= "\t" . '}' . "\n";
 				}
 				else
 				{
 					$stats_text.= "\t" . 'location /webalizer {' . "\n";
 					$stats_text.= "\t\t" . 'alias ' .  makeCorrectFile($domain['customerroot'] . '/webalizer/' . $domain['domain']) . ';' . "\n";
+					$stats_text.= "\t\t" . 'auth_basic            "Restricted Area";' . "\n";
+					$stats_text.= "\t\t" . 'auth_basic_user_file  ' . $single['usrf'] . ';'."\n";
 					$stats_text.= "\t" . '}' . "\n";
-
 				}
 			}
 			else
@@ -653,15 +703,19 @@ class nginx
 				{
 					$stats_text.= "\t" . 'location /awstats {' . "\n";
 					$stats_text.= "\t\t" . 'alias ' . makeCorrectFile($domain['customerroot'] . '/awstats/' . $domain['parentdomain']) . ';' . "\n";
+					$stats_text.= "\t\t" . 'auth_basic            "Restricted Area";' . "\n";
+					$stats_text.= "\t\t" . 'auth_basic_user_file  ' . $single['usrf'] . ';'."\n";
 					$stats_text.= "\t" . '}' . "\n";
 					$stats_text.= "\t" . 'location /awstats-icon {' . "\n";
 					$stats_text.= "\t\t" . 'alias ' . makeCorrectDir($this->settings['system']['awstats_icons']) . ';' . "\n";
-					$stats_text.= "\t\t" . '}' . "\n";
+					$stats_text.= "\t" . '}' . "\n";
 				}
 				else
 				{
 					$stats_text.= "\t" . 'location /webalizer {' . "\n";
 					$stats_text.= "\t\t" . 'alias ' .  makeCorrectFile($domain['customerroot'] . '/webalizer/' . $domain['parentdomain']) . ';' . "\n";
+					$stats_text.= "\t\t" . 'auth_basic            "Restricted Area";' . "\n";
+					$stats_text.= "\t\t" . 'auth_basic_user_file  ' . $single['usrf'] . ';'."\n";
 					$stats_text.= "\t" . '}' . "\n";
 
 				}
@@ -675,6 +729,8 @@ class nginx
 				{
 					$stats_text.= "\t" . 'location /awstats {' . "\n";
 					$stats_text.= "\t\t" . 'alias ' . makeCorrectFile($domain['customerroot'] . '/awstats/' . $domain['domain']) . ';' . "\n";
+					$stats_text.= "\t\t" . 'auth_basic            "Restricted Area";' . "\n";
+					$stats_text.= "\t\t" . 'auth_basic_user_file  ' . $single['usrf'] . ';'."\n";
 					$stats_text.= "\t" . '}' . "\n";
 					$stats_text.= "\t" . 'location /awstats-icon {' . "\n";
 					$stats_text.= "\t\t" . 'alias ' . makeCorrectDir($this->settings['system']['awstats_icons']) . ';' . "\n";
@@ -684,6 +740,8 @@ class nginx
 				{
 					$stats_text.= "\t" . 'location /webalizer {' . "\n";
 					$stats_text.= "\t\t" . 'root ' .  makeCorrectFile($domain['customerroot'] . '/webalizer/' . $domain['domain']) . ';' . "\n";
+					$stats_text.= "\t\t" . 'auth_basic            "Restricted Area";' . "\n";
+					$stats_text.= "\t\t" . 'auth_basic_user_file  ' . $single['usrf'] . ';'."\n";
 					$stats_text.= "\t" . '}' . "\n";
 
 				}
@@ -696,10 +754,12 @@ class nginx
 			{
 				$stats_text.= "\t" . 'location /awstats {' . "\n";
 				$stats_text.= "\t\t" . 'alias ' . makeCorrectFile($domain['documentroot'] . '/awstats/' . $domain['domain']) . ';' . "\n";
+				$stats_text.= "\t\t" . 'auth_basic            "Restricted Area";' . "\n";
+				$stats_text.= "\t\t" . 'auth_basic_user_file  ' . $single['usrf'] . ';'."\n";
 				$stats_text.= "\t" . '}' . "\n";
 				$stats_text.= "\t" . 'location /awstats-icon {' . "\n";
 				$stats_text.= "\t\t" . 'alias ' . makeCorrectDir($this->settings['system']['awstats_icons']) . ';' . "\n";
-				$stats_text.= "\t\t" . '}' . "\n";
+				$stats_text.= "\t" . '}' . "\n";
 			}
 		}
 		
@@ -798,12 +858,8 @@ class nginx
 				// After inserting the AWStats information,
 				// be sure to build the awstats conf file as well
 				// and chown it using $awstats_params, #258
-				$awstats_params = array(
-					'loginname' => $domain['loginname'],
-					'guid' => $domain['guid'],
-					'documentroot' => $domain['documentroot']
-				);
-				createAWStatsConf($this->settings['system']['logfiles_directory'] . $domain['loginname'] . $speciallogfile . '-access.log', $domain['domain'], $alias . $server_alias, $domain['customerroot'], $awstats_params);
+				// Bug 960 + Bug 970 : Use full $domain instead of custom $awstats_params as following classes depend on the informations
+				createAWStatsConf($this->settings['system']['logfiles_directory'] . $domain['loginname'] . $speciallogfile . '-access.log', $domain['domain'], $alias . $server_alias, $domain['customerroot'], $domain);
 			}
 		}
 
