@@ -688,11 +688,12 @@ if($page == 'domains'
 				
 				// done
 				$result_customers = $db->query("
-					SELECT `id`, `loginname`, `name`, `firstname`, `company`
-					FROM `user_addresses`, `user2admin`
+					SELECT `users`.`id`, `loginname`, `name`, `firstname`, `company`
+					FROM `user_addresses`, `user2admin`, `users`
 						" . ($user->getData('resources', 'customers_see_all') ? '' : "
 						WHERE `user2admin`.`adminid` = '" . $user->getId() . "'
 							AND `user2admin`.`userid` = `user_addresses`.`id`
+							AND `users`.`id` = `user2admin`.`userid`
 						") . "
 					ORDER BY `name` ASC");
 
