@@ -47,19 +47,24 @@ if($page == 'message')
 			   && $userinfo['customers_see_all'] == '1')
 			{
 				$log->logAction(ADM_ACTION, LOG_NOTICE, "sending messages to admins");
-				$result = $db->query('SELECT `name`, `email`  FROM `' . TABLE_PANEL_ADMINS . "`");
+				$result = $db->query("SELECT `name`, `email`  FROM `user_addresses`, `users` WHERE `users`.`id` = `user_addresses`.`id` AND `users`.`isadmin` = '1'");
 			}
 			elseif($_POST['receipient'] == 1)
 			{
 				if($userinfo['customers_see_all'] == "1")
 				{
 					$log->logAction(ADM_ACTION, LOG_NOTICE, "sending messages to ALL customers");
-					$result = $db->query('SELECT `firstname`, `name`, `email`  FROM `' . TABLE_PANEL_CUSTOMERS . "`");
+					$result = $db->query("SELECT `firstname`, `name`, `email`  FROM `user_addresses`, `users` WHERE `users`.`id` = `user_addresses`.`id` AND `users`.`isadmin` = '0'");
 				}
 				else
 				{
 					$log->logAction(ADM_ACTION, LOG_NOTICE, "sending messages to customers");
-					$result = $db->query('SELECT `firstname`, `name`, `email`  FROM `' . TABLE_PANEL_CUSTOMERS . "` WHERE `adminid`='" . $userinfo['adminid'] . "'");
+					$result = $db->query("SELECT `firstname`, `name`, `email`  FROM `user_addresses`, `users`, `user2admin`
+						WHERE `user2admin`.`adminid` = '" . $user->getId() . "'
+							AND `user2admin`.`userid` = `users`.`id`
+							AND `users`.`id` = `user_addresses`.`id`
+							AND `users`.`isadmin` = '0'
+					");
 				}
 			}
 			else
