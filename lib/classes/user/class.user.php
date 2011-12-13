@@ -509,4 +509,28 @@ class user {
 		// commit
 		$this->_db->query("commit;");
 	}
+	
+	public static function getCorrectFullUserDetails($data) {
+		$returnval = '';
+		
+		// check if data is set
+		if(isset($data['firstname']) && isset($data['name']) && isset($data['company'])) {
+			// use name/firstname if no company is given
+			if($data['company'] == '') {
+				$returnval = $data['name'] . ', ' . $data['firstname'];
+			}
+			else {
+				// check if name/firstname is available
+				if($data['name'] != '' && $data['firstname'] != '') {
+					$returnval = $data['name'] . ', ' . $data['firstname'] . ' | ' . $data['company'];
+				}
+				// return only the company name
+				else {
+					$returnval = $data['company'];
+				}
+			}
+		}
+	
+		return $returnval;
+	}
 }
