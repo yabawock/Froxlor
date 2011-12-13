@@ -198,7 +198,8 @@ elseif($page == 'wipequotas'
 		// Set the quota to 0 which means unlimited
 
 		$db->query("UPDATE `" . TABLE_MAIL_USERS . "` SET `quota`='0' ");
-		$db->query("UPDATE " . TABLE_PANEL_CUSTOMERS . " SET `email_quota_used` = 0");
+		$db->query("UPDATE `user_resources` SET `email_quota_used` = 0");
+		$db->query("UPDATE `user_resources_admin` SET `email_quota_used` = 0");
 		redirectTo('admin_settings.php', array('s' => $s));
 	}
 	else
@@ -219,7 +220,8 @@ elseif($page == 'enforcequotas'
 		while($array = $db->fetch_array($result))
 		{
 			$difference = $settings['system']['mail_quota'] - $array['quota'];
-			$db->query("UPDATE " . TABLE_PANEL_CUSTOMERS . " SET `email_quota_used` = `email_quota_used` + " . (int)$difference . " WHERE `customerid` = '" . $array['customerid'] . "'");
+			// done, maybe it's necessary to do this for admins too?
+			$db->query("UPDATE `user_resources` SET `email_quota_used` = `email_quota_used` + " . (int)$difference . " WHERE `id` = '" . $array['customerid'] . "'");
 		}
 
 		// Set the new quota
@@ -228,7 +230,8 @@ elseif($page == 'enforcequotas'
 
 		// Update the Customer, if the used quota is bigger than the allowed quota
 
-		$db->query("UPDATE " . TABLE_PANEL_CUSTOMERS . " SET `email_quota` = `email_quota_used` WHERE `email_quota` < `email_quota_used`");
+		// done
+		$db->query("UPDATE `user_resources` SET `email_quota` = `email_quota_used` WHERE `email_quota` < `email_quota_used`");
 		$log->logAction(ADM_ACTION, LOG_WARNING, 'enforcing mailquota to all customers: ' . $settings['system']['mail_quota'] . ' MB');
 		redirectTo('admin_settings.php', array('s' => $s));
 	}
