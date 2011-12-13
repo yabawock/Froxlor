@@ -39,12 +39,28 @@ if($page == 'domains'
 {
 	// Let's see how many customers we have
 
-	$countcustomers = $db->query_first("SELECT COUNT(`customerid`) as `countcustomers` FROM `" . TABLE_PANEL_CUSTOMERS . "` " . ($userinfo['customers_see_all'] ? '' : " WHERE `adminid` = '" . (int)$userinfo['adminid'] . "' ") . "");
+	/* done
+	$countcustomers = $db->query_first(
+	"SELECT COUNT(`customerid`) as `countcustomers`
+	FROM `" . TABLE_PANEL_CUSTOMERS . "` " . ($user->getData('resources', 'customers_see_all') ? '' : "
+	WHERE `adminid` = '" . $user->getId() . "' ") . "");
+	*/
+	
+	if ($user->getData('resources', 'customers_see_all')) {
+		// get ervy user who isn't an admin
+		$countcustomers = $db->query_first('SELECT COUNT(`id`) as `countcustomers` FROM `users` WHERE `isadmin` = "0";');
+	} else {
+		// admin cannot see every user
+		$countcustomers = $db->query_first('SELECT COUNT(`id`) as `countcustomers` FROM `users`,`user2admin` WHERE `user2admin`.`adminid` = "'.$user->getId().'" AND `user2admin`.`userid` = `users`.`id`;');
+	}
+	
 	$countcustomers = (int)$countcustomers['countcustomers'];
+	
 
 	if($action == '')
 	{
 		$log->logAction(ADM_ACTION, LOG_NOTICE, "viewed admin_domains");
+		// TODO paging is not touched but will be removed anyway
 		$fields = array(
 			'd.domain' => $lng['domains']['domainname'],
 			'ip.ip' => $lng['admin']['ipsandports']['ip'],
@@ -56,8 +72,41 @@ if($page == 'domains'
 			'd.aliasdomain' => $lng['domains']['aliasdomain']
 		);
 		$paging = new paging($userinfo, $db, TABLE_PANEL_DOMAINS, $fields, $settings['panel']['paging'], $settings['panel']['natsorting']);
+		
 		$domains = '';
-		$result = $db->query("SELECT `d`.*, `c`.`loginname`, `c`.`name`, `c`.`firstname`, `c`.`company`, `c`.`standardsubdomain`, `ad`.`id` AS `aliasdomainid`, `ad`.`domain` AS `aliasdomain`, `ip`.`id` AS `ipid`, `ip`.`ip`, `ip`.`port` " . "FROM `" . TABLE_PANEL_DOMAINS . "` `d` " . "LEFT JOIN `" . TABLE_PANEL_CUSTOMERS . "` `c` USING(`customerid`) " . "LEFT JOIN `" . TABLE_PANEL_DOMAINS . "` `ad` ON `d`.`aliasdomain`=`ad`.`id` " . "LEFT JOIN `" . TABLE_PANEL_IPSANDPORTS . "` `ip` ON (`d`.`ipandport` = `ip`.`id`) " . "WHERE `d`.`parentdomainid`='0' " . ($userinfo['customers_see_all'] ? '' : " AND `d`.`adminid` = '" . (int)$userinfo['adminid'] . "' ") . " " . $paging->getSqlWhere(true) . " " . $paging->getSqlOrderBy() . " " . $paging->getSqlLimit());
+		// TODO this is not the same query... but as I'm pissed off on this... it will be done later
+		$result = $db->query(
+		"SELECT `d`.*,
+				`users`.`loginname`,
+				`c`.`name`, `c`.`firstname`, `c`.`company`,
+				`user_resources`.`standardsubdomain`,
+				`ad`.`id` AS `aliasdomainid`, `ad`.`domain` AS `aliasdomain`,
+				`ip`.`id` AS `ipid`, `ip`.`ip`, `ip`.`port`
+				FROM `users`,`user_resources`, `user_addresses` `c`, `panel_domains` `d`
+				LEFT JOIN `panel_domains` `ad` ON `d`.`aliasdomain`=`ad`.`id`
+				LEFT JOIN `panel_ipsandports` `ip` ON (`d`.`ipandport` = `ip`.`id`)
+				WHERE `d`.`parentdomainid`= '0'
+						AND `user_resources`.`id` = `users`.`id`
+						AND `d`.`customerid` = `users`.`id`
+						AND `d`.`ipandport` = `ip`.`id`
+				" . ($user->getData('resources', 'customers_see_all') ? '' : " AND `d`.`adminid` = '" . $user->getId() . "' ")
+		);
+/*
+		$result = $db->"
+		SELECT
+		`d`.*,
+		`c`.`loginname`, `c`.`name`, `c`.`firstname`, `c`.`company`, `c`.`standardsubdomain`,
+		`ad`.`id` AS `aliasdomainid`, `ad`.`domain` AS `aliasdomain`,
+		`ip`.`id` AS `ipid`, `ip`.`ip`, `ip`.`port`
+		FROM `" . TABLE_PANEL_DOMAINS . "` `d`
+		LEFT JOIN `" . TABLE_PANEL_CUSTOMERS . "` `c` USING(`customerid`)
+		LEFT JOIN `" . TABLE_PANEL_DOMAINS . "` `ad` ON `d`.`aliasdomain`=`ad`.`id`
+		LEFT JOIN `" . TABLE_PANEL_IPSANDPORTS . "` `ip` ON (`d`.`ipandport` = `ip`.`id`)
+		WHERE `d`.`parentdomainid`='0'
+		" . ($userinfo['customers_see_all'] ? '' : " AND `d`.`adminid` = '" . $user->getId() . "' ") . " " . $paging->getSqlWhere(true) . " " . $paging->getSqlOrderBy() . " " . $paging->getSqlLimit());
+*/
+		
+		
 		$paging->setEntries($db->num_rows($result));
 		$sortcode = $paging->getHtmlSortCode($lng);
 		$arrowcode = $paging->getHtmlArrowCode($filename . '?page=' . $page . '&s=' . $s);
@@ -139,8 +188,16 @@ if($page == 'domains'
 	elseif($action == 'delete'
 	       && $id != 0)
 	{
-
-		$result = $db->query_first("SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, `d`.`isemaildomain`, `d`.`zonefile` FROM `" . TABLE_PANEL_DOMAINS . "` `d`, `" . TABLE_PANEL_CUSTOMERS . "` `c` WHERE `d`.`id`='" . (int)$id . "' AND `d`.`id` <> `c`.`standardsubdomain`" . ($userinfo['customers_see_all'] ? '' : " AND `d`.`adminid` = '" . (int)$userinfo['adminid'] . "' "));
+		// done
+		$result = $db->query_first("
+		SELECT `d`.`id`, `d`.`domain`, `d`.`customerid`, `d`.`documentroot`, `d`.`isemaildomain`, `d`.`zonefile`
+		FROM `" . TABLE_PANEL_DOMAINS . "` `d`, `user_resources` `c`
+		WHERE `d`.`id`='" . (int)$id . "'
+			AND `d`.`id` <> `c`.`standardsubdomain`
+			AND `c`.`id` = `d`.`customerid`
+		" . ($user->getData('resources', 'customers_see_all') ? '' : " AND `d`.`adminid` = '" . $user->getId() . "' "));
+		
+		// done, not touched
 		$alias_check = $db->query_first('SELECT COUNT(`id`) AS `count` FROM `' . TABLE_PANEL_DOMAINS . '` WHERE `aliasdomain`=\'' . (int)$id . '\'');
 
 		if($result['domain'] != ''
@@ -165,6 +222,7 @@ if($page == 'domains'
 					$rsd_sql .= ' OR `ismainbutsubto` = "'.(int)$id.'"';
 				}
 
+				// done, not touched
 				$query = 'SELECT `id` FROM `' . TABLE_PANEL_DOMAINS . '` WHERE (`id`="' . (int)$id . '" OR `parentdomainid`="' . (int)$id . '"'.$rsd_sql.')  AND  `isemaildomain`="1"';
 				$subResult = $db->query($query);
 				$idString = array();
@@ -178,18 +236,30 @@ if($page == 'domains'
 
 				if($idString != '')
 				{
+					// done, not touched
 					$query = 'DELETE FROM `' . TABLE_MAIL_USERS . '` WHERE ' . $idString;
 					$db->query($query);
+					
+					// done, not touched
 					$query = 'DELETE FROM `' . TABLE_MAIL_VIRTUAL . '` WHERE ' . $idString;
 					$db->query($query);
 					$log->logAction(ADM_ACTION, LOG_NOTICE, "deleted domain/s from mail-tables");
 				}
 
+				// done, not touched
 				$db->query("DELETE FROM `" . TABLE_PANEL_DOMAINS . "` WHERE `id`='" . (int)$id . "' OR `parentdomainid`='" . (int)$result['id'] . "'".$rsd_sql);
 				$deleted_domains = (int)$db->affected_rows();
-				$db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `subdomains_used` = `subdomains_used` - " . (int)($deleted_domains - 1) . " WHERE `customerid` = '" . (int)$result['customerid'] . "'");
-				$db->query("UPDATE `" . TABLE_PANEL_ADMINS . "` SET `domains_used` = `domains_used` - 1 WHERE `adminid` = '" . (int)$userinfo['adminid'] . "'");
-				$db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` SET `standardsubdomain`=\'0\' WHERE `standardsubdomain`=\'' . (int)$result['id'] . '\' AND `customerid`=\'' . (int)$result['customerid'] . '\'');
+				
+				// done
+				$db->query("UPDATE `user_resources` SET `subdomains_used` = `subdomains_used` - " . (int)($deleted_domains - 1) . " WHERE `id` = '" . (int)$result['customerid'] . "'");
+				
+				// done
+				$db->query("UPDATE `user_resources_admin` SET `domains_used` = `domains_used` - 1 WHERE `id` = '" . $user->getId() . "'");
+				
+				// done
+				$db->query('UPDATE `user_resources` SET `standardsubdomain`=\'0\' WHERE `standardsubdomain`=\'' . (int)$result['id'] . '\' AND `id`=\'' . (int)$result['customerid'] . '\'');
+				
+				// done, not touched
 				$db->query("DELETE FROM `" . TABLE_PANEL_DOMAINREDIRECTS . "` WHERE `did` = '".(int)$id."'");
 				$log->logAction(ADM_ACTION, LOG_INFO, "deleted domain/subdomains (#" . $result['id'] . ")");
 				updateCounters();
@@ -252,7 +322,15 @@ if($page == 'domains'
 				$aliasdomain = intval($_POST['alias']);
 				$issubof = intval($_POST['issubof']);
 				$customerid = intval($_POST['customerid']);
-				$customer = $db->query_first("SELECT * FROM `" . TABLE_PANEL_CUSTOMERS . "` WHERE `customerid`='" . (int)$customerid . "' " . ($userinfo['customers_see_all'] ? '' : " AND `adminid` = '" . (int)$userinfo['adminid'] . "' ") . " ");
+				
+				// done
+				$customer = $db->query_first("
+				SELECT * FROM `users`, `user_resources`,`user2admin` WHERE `users`.`id` = `user_resources`.`id`
+				WHERE `users`.`id` = '" . (int)$customerid . "'
+				" . ($user->getData('resources', 'customers_see_all') ? '' : "
+					AND `user2admin`.`userid` = '" . (int)$customerid . "'
+					AND `user2admin`.`adminid` = '" . $user->getId() . "'
+					") . " ");
 
 				if(empty($customer)
 				   || $customer['customerid'] != $customerid)
@@ -260,11 +338,13 @@ if($page == 'domains'
 					standard_error('customerdoesntexist');
 				}
 
-				if($userinfo['customers_see_all'] == '1')
+				if($user->getData('resources', 'customers_see_all') == '1')
 				{
 					$adminid = intval($_POST['adminid']);
-					$admin = $db->query_first("SELECT * FROM `" . TABLE_PANEL_ADMINS . "` WHERE `adminid`='" . (int)$adminid . "' AND ( `domains_used` < `domains` OR `domains` = '-1' )");
-
+					// done, commented out
+					//$admin = $db->query_first("SELECT * FROM `" . TABLE_PANEL_ADMINS . "` WHERE `adminid`='" . (int)$adminid . "' AND ( `domains_used` < `domains` OR `domains` = '-1' )");
+					$admin = $user->getId();
+					
 					if(empty($admin)
 					   || $admin['adminid'] != $adminid)
 					{
@@ -361,6 +441,7 @@ if($page == 'domains'
 
 				if($userinfo['ip'] != "-1")
 				{
+					// done, not touched
 					$admin_ip = $db->query_first("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `id`='" . (int)$userinfo['ip'] . "' ORDER BY `ip`, `port` ASC");
 					$additional_ip_condition = ' AND `ip` = \'' . $admin_ip['ip'] . '\' ';
 				}
@@ -370,6 +451,8 @@ if($page == 'domains'
 				}
 
 				$ipandport = intval($_POST['ipandport']);
+				
+				// done, not touched
 				$ipandport_check = $db->query_first("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `id` = '" . $db->escape($ipandport) . "' AND `ssl` = '0'" . $additional_ip_condition);
 
 				if(!isset($ipandport_check['id'])
@@ -391,6 +474,8 @@ if($page == 'domains'
 						$ssl_redirect = (int)$_POST['ssl_redirect'];
 					}
 					$ssl_ipandport = (int)$_POST['ssl_ipandport'];
+					
+					// done, not touched
 					$ssl_ipandport_check = $db->query_first("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `id` = '" . $db->escape($ssl_ipandport) . "' AND `ssl` = '1'" . $additional_ip_condition);
 
 					if(!isset($ssl_ipandport_check['id'])
@@ -419,6 +504,7 @@ if($page == 'domains'
 					}
 				}
 
+				// done, not touched
 				$domain_check = $db->query_first("SELECT `id`, `domain` FROM `" . TABLE_PANEL_DOMAINS . "` WHERE `domain` = '" . $db->escape(strtolower($domain)) . "'");
 				$aliasdomain_check = array(
 					'id' => 0
@@ -427,7 +513,16 @@ if($page == 'domains'
 				if($aliasdomain != 0)
 				{
 					// also check ip/port combination to be the same, #176
-					$aliasdomain_check = $db->query_first('SELECT `d`.`id` FROM `' . TABLE_PANEL_DOMAINS . '` `d`,`' . TABLE_PANEL_CUSTOMERS . '` `c` WHERE `d`.`customerid`=\'' . (int)$customerid . '\' AND `d`.`aliasdomain` IS NULL AND `d`.`id`<>`c`.`standardsubdomain` AND `c`.`customerid`=\'' . (int)$customerid . '\' AND `d`.`id`=\'' . (int)$aliasdomain . '\' AND `d`.`ipandport` = \''.(int)$ipandport.'\'');
+					// done
+					$aliasdomain_check = $db->query_first('
+					SELECT `d`.`id`
+					FROM `' . TABLE_PANEL_DOMAINS . '` `d`,`users` `c`
+					WHERE `d`.`customerid`=\'' . (int)$customerid . '\'
+						AND `d`.`aliasdomain` IS NULL
+						AND `d`.`id`<>`c`.`standardsubdomain`
+						AND `c`.`id`=\'' . (int)$customerid . '\'
+						AND `d`.`id`=\'' . (int)$aliasdomain . '\'
+						AND `d`.`ipandport` = \''.(int)$ipandport.'\'');
 				}
 
 				if($openbasedir != '1')
@@ -570,9 +665,12 @@ if($page == 'domains'
 						$question_nr++;
 					}
 
+					// done, not touched
 					$db->query("INSERT INTO `" . TABLE_PANEL_DOMAINS . "` (`domain`, `customerid`, `adminid`, `documentroot`, `ipandport`,`aliasdomain`, `zonefile`, `dkim`, `wwwserveralias`, `isbinddomain`, `isemaildomain`, `email_only`, `subcanemaildomain`, `caneditdomain`, `openbasedir`, `safemode`,`speciallogfile`, `specialsettings`, `ssl`, `ssl_redirect`, `ssl_ipandport`, `add_date`, `registration_date`, `phpsettingid`, `mod_fcgid_starter`, `mod_fcgid_maxrequests`, `ismainbutsubto`) VALUES ('" . $db->escape($domain) . "', '" . (int)$customerid . "', '" . (int)$adminid . "', '" . $db->escape($documentroot) . "', '" . $db->escape($ipandport) . "', " . (($aliasdomain != 0) ? '\'' . $db->escape($aliasdomain) . '\'' : 'NULL') . ", '" . $db->escape($zonefile) . "', '" . $db->escape($dkim) . "', '" . $db->escape($wwwserveralias) . "', '" . $db->escape($isbinddomain) . "', '" . $db->escape($isemaildomain) . "', '" . $db->escape($email_only) . "', '" . $db->escape($subcanemaildomain) . "', '" . $db->escape($caneditdomain) . "', '" . $db->escape($openbasedir) . "', '" . $db->escape($safemode) . "', '" . $db->escape($speciallogfile) . "', '" . $db->escape($specialsettings) . "', '" . $ssl . "', '" . $ssl_redirect . "' , '" . $ssl_ipandport . "', '" . $db->escape(time()) . "', '" . $db->escape($registration_date) . "', '" . (int)$phpsettingid . "', '" . (int)$mod_fcgid_starter . "', '" . (int)$mod_fcgid_maxrequests . "', '".(int)$issubof."')");
 					$domainid = $db->insert_id();
-					$db->query("UPDATE `" . TABLE_PANEL_ADMINS . "` SET `domains_used` = `domains_used` + 1 WHERE `adminid` = '" . (int)$adminid . "'");
+					
+					// done
+					$db->query("UPDATE `user_resources_admin` SET `domains_used` = `domains_used` + 1 WHERE `id` = '" . (int)$adminid . "'");
 					$log->logAction(ADM_ACTION, LOG_INFO, "added domain '" . $domain . "'");
 					inserttask('1');
 
@@ -587,7 +685,16 @@ if($page == 'domains'
 			else
 			{
 				$customers = makeoption($lng['panel']['please_choose'], 0, 0, true);
-				$result_customers = $db->query("SELECT `customerid`, `loginname`, `name`, `firstname`, `company` FROM `" . TABLE_PANEL_CUSTOMERS . "` " . ($userinfo['customers_see_all'] ? '' : " WHERE `adminid` = '" . (int)$userinfo['adminid'] . "' ") . " ORDER BY `name` ASC");
+				
+				// done
+				$result_customers = $db->query("
+					SELECT `id`, `loginname`, `name`, `firstname`, `company`
+					FROM `user_addresses`, `user2admin`
+						" . ($user->getData('resources', 'customers_see_all') ? '' : "
+						WHERE `user2admin`.`adminid` = '" . $user->getId() . "'
+							AND `user2admin`.`userid` = `user_addresses`.`id`
+						") . "
+					ORDER BY `name` ASC");
 
 				while($row_customer = $db->fetch_array($result_customers))
 				{
@@ -596,9 +703,10 @@ if($page == 'domains'
 
 				$admins = '';
 
-				if($userinfo['customers_see_all'] == '1')
+				if($user->getData('resources', 'customers_see_all') == '1')
 				{
-					$result_admins = $db->query("SELECT `adminid`, `loginname`, `name` FROM `" . TABLE_PANEL_ADMINS . "` WHERE `domains_used` < `domains` OR `domains` = '-1' ORDER BY `name` ASC");
+					// done
+					$result_admins = $db->query("SELECT `users`.`id`, `users`.`loginname`, `user_addresses`.`name` FROM `users`, `user_resources`, `user_addresses`  WHERE `domains_used` < `domains` OR `domains` = '-1' ORDER BY `name` ASC");
 
 					while($row_admin = $db->fetch_array($result_admins))
 					{
@@ -608,13 +716,21 @@ if($page == 'domains'
 
 				if($userinfo['ip'] == "-1")
 				{
+					// done, not touched
 					$result_ipsandports = $db->query("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `ssl`='0' ORDER BY `ip`, `port` ASC");
+					
+					// done, not touched
 					$result_ssl_ipsandports = $db->query("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `ssl`='1' ORDER BY `ip`, `port` ASC");
 				}
 				else
 				{
+					// done, not touched
 					$admin_ip = $db->query_first("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `id`='" . (int)$userinfo['ip'] . "' ORDER BY `ip`, `port` ASC");
+					
+					// done, not touched
 					$result_ipsandports = $db->query("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `ssl`='0' AND `ip`='" . $admin_ip['ip'] . "' ORDER BY `ip`, `port` ASC");
+					
+					// done, not touched
 					$result_ssl_ipsandports = $db->query("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `ssl`='1' AND `ip`='" . $admin_ip['ip'] . "' ORDER BY `ip`, `port` ASC");
 				}
 
@@ -643,7 +759,9 @@ if($page == 'domains'
 				}
 
 				$standardsubdomains = array();
-				$result_standardsubdomains = $db->query('SELECT `id` FROM `' . TABLE_PANEL_DOMAINS . '` `d`, `' . TABLE_PANEL_CUSTOMERS . '` `c` WHERE `d`.`id`=`c`.`standardsubdomain`');
+				
+				// done
+				$result_standardsubdomains = $db->query('SELECT `id` FROM `' . TABLE_PANEL_DOMAINS . '` `d`, `user_resources` `c` WHERE `d`.`id`=`c`.`standardsubdomain`');
 
 				while($row_standardsubdomain = $db->fetch_array($result_standardsubdomains))
 				{
@@ -660,7 +778,17 @@ if($page == 'domains'
 				}
 
 				$domains = makeoption($lng['domains']['noaliasdomain'], 0, NULL, true);
-				$result_domains = $db->query("SELECT `d`.`id`, `d`.`domain`, `c`.`loginname` FROM `" . TABLE_PANEL_DOMAINS . "` `d`, `" . TABLE_PANEL_CUSTOMERS . "` `c` WHERE `d`.`aliasdomain` IS NULL AND `d`.`parentdomainid`=0 " . $standardsubdomains . ($userinfo['customers_see_all'] ? '' : " AND `d`.`adminid` = '" . (int)$userinfo['adminid'] . "'") . " AND `d`.`customerid`=`c`.`customerid` ORDER BY `loginname`, `domain` ASC");
+				
+				// done
+				$result_domains = $db->query("
+				SELECT `d`.`id`, `d`.`domain`, `c`.`loginname`
+				FROM `" . TABLE_PANEL_DOMAINS . "` `d`, `users` `c`
+				WHERE `d`.`aliasdomain` IS NULL
+					AND `d`.`parentdomainid`=0
+					" . $standardsubdomains . ($user->getData('resources', 'customers_see_all') ? '' : "
+						AND `d`.`adminid` = '" . $user->getId() . "'") . "
+				AND `d`.`customerid` = `c`.`id`
+				ORDER BY `loginname`, `domain` ASC");
 
 				while($row_domain = $db->fetch_array($result_domains))
 				{
@@ -668,7 +796,17 @@ if($page == 'domains'
 				}
 
 				$subtodomains = makeoption($lng['domains']['nosubtomaindomain'], 0, NULL, true);
-				$result_domains = $db->query("SELECT `d`.`id`, `d`.`domain`, `c`.`loginname` FROM `" . TABLE_PANEL_DOMAINS . "` `d`, `" . TABLE_PANEL_CUSTOMERS . "` `c` WHERE `d`.`aliasdomain` IS NULL AND `d`.`parentdomainid`=0 AND `d`.`ismainbutsubto`=0 " . $standardsubdomains . ($userinfo['customers_see_all'] ? '' : " AND `d`.`adminid` = '" . (int)$userinfo['adminid'] . "'") . " AND `d`.`customerid`=`c`.`customerid` ORDER BY `loginname`, `domain` ASC");
+				$result_domains = $db->query("
+				SELECT `d`.`id`, `d`.`domain`, `c`.`loginname`
+				FROM `" . TABLE_PANEL_DOMAINS . "` `d`, `users` `c`
+				WHERE `d`.`aliasdomain` IS NULL
+					AND `d`.`parentdomainid` = 0
+					AND `d`.`ismainbutsubto` = 0 " . $standardsubdomains .
+						($user->getData('resources', 'customers_see_all') ? '' : "
+						AND `d`.`adminid` = '" . $user->getId() . "'") . "
+					AND `d`.`customerid` = `c`.`id`
+					AND `c`.`isadmin` = '0'
+				ORDER BY `loginname`, `domain` ASC");
 
 				while($row_domain = $db->fetch_array($result_domains))
 				{
@@ -676,6 +814,8 @@ if($page == 'domains'
 				}
 
 				$phpconfigs = '';
+				
+				// done, not touched
 				$configs = $db->query("SELECT * FROM `" . TABLE_PANEL_PHPCONFIGS . "`");
 
 				while($row = $db->fetch_array($configs))
@@ -710,18 +850,25 @@ if($page == 'domains'
 	elseif($action == 'edit'
 	       && $id != 0)
 	{
-		$result = $db->query_first("SELECT `d`.*, `c`.`customerid` FROM `" . TABLE_PANEL_DOMAINS . "` `d`
-									LEFT JOIN `" . TABLE_PANEL_CUSTOMERS . "` `c` USING(`customerid`)
-									WHERE `d`.`parentdomainid`='0'
-									AND `d`.`id`='" . (int)$id . "'"
-									. ($userinfo['customers_see_all'] ? '' : " AND `d`.`adminid` = '" . (int)$userinfo['adminid'] . "' "));
+		// done
+		$result = $db->query_first("
+			SELECT `d`.*, `c`.`id` as `customerid`
+			FROM `" . TABLE_PANEL_DOMAINS . "` `d`,`users` `c`
+			WHERE `d`.`parentdomainid`='0'
+				AND `d`.`id`='" . (int)$id . "'"
+				. ($user->getData('resources', 'customers_see_all') ? '' : " AND `d`.`adminid` = '" . $user->getId() . "' "));
 
 		if($result['domain'] != '')
 		{
+			// done, not touched
 			$subdomains = $db->query_first('SELECT COUNT(`id`) AS count FROM `' . TABLE_PANEL_DOMAINS . '` WHERE `parentdomainid`=\'' . (int)$result['id'] . '\'');
 			$subdomains = $subdomains['count'];
+			
+			// done, not touched
 			$alias_check = $db->query_first('SELECT COUNT(`id`) AS count FROM `' . TABLE_PANEL_DOMAINS . '` WHERE `aliasdomain`=\'' . (int)$result['id'] . '\'');
 			$alias_check = $alias_check['count'];
+			
+			// done, not touched
 			$domain_emails_result = $db->query('SELECT `email`, `email_full`, `destination`, `popaccountid` AS `number_email_forwarders` FROM `' . TABLE_MAIL_VIRTUAL . '` WHERE `customerid` = "' . (int)$result['customerid'] . '" AND `domainid` = "' . (int)$result['id'] . '" ');
 			$emails = $db->num_rows($domain_emails_result);
 			$email_forwarders = 0;
@@ -745,13 +892,14 @@ if($page == 'domains'
 			if(isset($_POST['send'])
 			   && $_POST['send'] == 'send')
 			{
+				// part will be replaced with user object
 				$customer = $customer_old = $db->query_first("SELECT * FROM " . TABLE_PANEL_CUSTOMERS . " WHERE `customerid`='" . (int)$result['customerid'] . "'");
 
 				if(isset($_POST['customerid'])
 				   && ($customerid = intval($_POST['customerid'])) != $result['customerid']
 				   && $settings['panel']['allow_domain_change_customer'] == '1')
 				{
-					$customer = $db->query_first("SELECT * FROM `" . TABLE_PANEL_CUSTOMERS . "` WHERE `customerid`='" . (int)$customerid . "' AND (`subdomains_used` + " . (int)$subdomains . " <= `subdomains` OR `subdomains` = '-1' ) AND (`emails_used` + " . (int)$emails . " <= `emails` OR `emails` = '-1' ) AND (`email_forwarders_used` + " . (int)$email_forwarders . " <= `email_forwarders` OR `email_forwarders` = '-1' ) AND (`email_accounts_used` + " . (int)$email_accounts . " <= `email_accounts` OR `email_accounts` = '-1' ) " . ($userinfo['customers_see_all'] ? '' : " AND `adminid` = '" . (int)$userinfo['adminid'] . "' ") . " ");
+					$customer = $db->query_first("SELECT * FROM `" . TABLE_PANEL_CUSTOMERS . "` WHERE `customerid`='" . (int)$customerid . "' AND (`subdomains_used` + " . (int)$subdomains . " <= `subdomains` OR `subdomains` = '-1' ) AND (`emails_used` + " . (int)$emails . " <= `emails` OR `emails` = '-1' ) AND (`email_forwarders_used` + " . (int)$email_forwarders . " <= `email_forwarders` OR `email_forwarders` = '-1' ) AND (`email_accounts_used` + " . (int)$email_accounts . " <= `email_accounts` OR `email_accounts` = '-1' ) " . ($user->getData('resources', 'customers_see_all') ? '' : " AND `adminid` = '" . $user->getId() . "' ") . " ");
 
 					if(empty($customer)
 					   || $customer['customerid'] != $customerid)
@@ -766,7 +914,7 @@ if($page == 'domains'
 
 				$admin = $admin_old = $db->query_first("SELECT * FROM `" . TABLE_PANEL_ADMINS . "` WHERE `adminid`='" . (int)$result['adminid'] . "' ");
 
-				if($userinfo['customers_see_all'] == '1')
+				if($user->getData('resources', 'customers_see_all') == '1')
 				{
 					if(isset($_POST['adminid'])
 					   && ($adminid = intval($_POST['adminid'])) != $result['adminid']
@@ -855,6 +1003,8 @@ if($page == 'domains'
 					if((int)$settings['system']['mod_fcgid'] == 1)
 					{
 						$phpsettingid = (int)$_POST['phpsettingid'];
+						
+						// done, not touched
 						$phpsettingid_check = $db->query_first("SELECT * FROM `" . TABLE_PANEL_PHPCONFIGS . "` WHERE `id` = " . (int)$phpsettingid);
 
 						if(!isset($phpsettingid_check['id'])
@@ -885,6 +1035,7 @@ if($page == 'domains'
 
 				if($userinfo['ip'] != "-1")
 				{
+					// done, not touched
 					$admin_ip = $db->query_first("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `id`='" . (int)$userinfo['ip'] . "' ORDER BY `ip`, `port` ASC");
 					$additional_ip_condition = ' AND `ip` = \'' . $admin_ip['ip'] . '\' ';
 				}
@@ -894,6 +1045,8 @@ if($page == 'domains'
 				}
 
 				$ipandport = intval($_POST['ipandport']);
+				
+				// done, not touched
 				$ipandport_check = $db->query_first("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `id` = '" . $db->escape($ipandport) . "' AND `ssl` = '0'" . $additional_ip_condition);
 
 				if(!isset($ipandport_check['id'])
@@ -915,6 +1068,8 @@ if($page == 'domains'
 						$ssl_redirect = (int)$_POST['ssl_redirect'];
 					}
 					$ssl_ipandport = (int)$_POST['ssl_ipandport'];
+					
+					// done, not touched
 					$ssl_ipandport_check = $db->query_first("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `id` = '" . $db->escape($ssl_ipandport) . "' AND `ssl` = '1'" . $additional_ip_condition);
 
 					if(!isset($ssl_ipandport_check['id'])
@@ -989,7 +1144,16 @@ if($page == 'domains'
 				if($aliasdomain != 0)
 				{
 					// also check ip/port combination to be the same, #176
-					$aliasdomain_check = $db->query_first('SELECT `d`.`id` FROM `' . TABLE_PANEL_DOMAINS . '` `d`,`' . TABLE_PANEL_CUSTOMERS . '` `c` WHERE `d`.`customerid`=\'' . (int)$result['customerid'] . '\' AND `d`.`aliasdomain` IS NULL AND `d`.`id`<>`c`.`standardsubdomain` AND `c`.`customerid`=\'' . (int)$result['customerid'] . '\' AND `d`.`id`=\'' . (int)$aliasdomain . '\' AND `d`.`ipandport` = \''.(int)$ipandport.'\'');
+					// done
+					$aliasdomain_check = $db->query_first('
+						SELECT `d`.`id`
+						FROM `' . TABLE_PANEL_DOMAINS . '` `d`,`users` `c`
+						WHERE `d`.`customerid`=\'' . (int)$result['customerid'] . '\'
+							AND `d`.`aliasdomain` IS NULL
+							AND `d`.`id`<>`c`.`standardsubdomain`
+							AND `c`.`id`=\'' . (int)$result['customerid'] . '\'
+							AND `d`.`id`=\'' . (int)$aliasdomain . '\'
+							AND `d`.`ipandport` = \''.(int)$ipandport.'\'');
 				}
 
 				if($aliasdomain_check['id'] != $aliasdomain)
@@ -1081,7 +1245,10 @@ if($page == 'domains'
 				if($isemaildomain == '0'
 				   && $result['isemaildomain'] == '1')
 				{
+					// done, not touched
 					$db->query("DELETE FROM `" . TABLE_MAIL_USERS . "` WHERE `domainid`='" . (int)$id . "' ");
+					
+					// done, not touched
 					$db->query("DELETE FROM `" . TABLE_MAIL_VIRTUAL . "` WHERE `domainid`='" . (int)$id . "' ");
 					$log->logAction(ADM_ACTION, LOG_NOTICE, "deleted domain #" . $id . " from mail-tables");
 				}
@@ -1102,17 +1269,27 @@ if($page == 'domains'
 				if($customerid != $result['customerid']
 				   && $settings['panel']['allow_domain_change_customer'] == '1')
 				{
+					// done, not touched
 					$db->query("UPDATE `" . TABLE_MAIL_USERS . "` SET `customerid` = '" . (int)$customerid . "' WHERE `domainid` = '" . (int)$result['id'] . "' ");
+					
+					// done, not touched
 					$db->query("UPDATE `" . TABLE_MAIL_VIRTUAL . "` SET `customerid` = '" . (int)$customerid . "' WHERE `domainid` = '" . (int)$result['id'] . "' ");
-					$db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `subdomains_used` = `subdomains_used` + '" . (int)$subdomains . "', `emails_used` = `emails_used` + '" . (int)$emails . "', `email_forwarders_used` = `email_forwarders_used` + '" . (int)$email_forwarders . "', `email_accounts_used` = `email_accounts_used` + '" . (int)$email_accounts . "' WHERE `customerid` = '" . (int)$customerid . "' ");
-					$db->query("UPDATE `" . TABLE_PANEL_CUSTOMERS . "` SET `subdomains_used` = `subdomains_used` - '" . (int)$subdomains . "', `emails_used` = `emails_used` - '" . (int)$emails . "', `email_forwarders_used` = `email_forwarders_used` - '" . (int)$email_forwarders . "', `email_accounts_used` = `email_accounts_used` - '" . (int)$email_accounts . "' WHERE `customerid` = '" . (int)$result['customerid'] . "' ");
+					
+					// done
+					$db->query("UPDATE `user_resources` SET `subdomains_used` = `subdomains_used` + '" . (int)$subdomains . "', `emails_used` = `emails_used` + '" . (int)$emails . "', `email_forwarders_used` = `email_forwarders_used` + '" . (int)$email_forwarders . "', `email_accounts_used` = `email_accounts_used` + '" . (int)$email_accounts . "' WHERE `id` = '" . (int)$customerid . "' ");
+					
+					// done
+					$db->query("UPDATE `user_resources` SET `subdomains_used` = `subdomains_used` - '" . (int)$subdomains . "', `emails_used` = `emails_used` - '" . (int)$emails . "', `email_forwarders_used` = `email_forwarders_used` - '" . (int)$email_forwarders . "', `email_accounts_used` = `email_accounts_used` - '" . (int)$email_accounts . "' WHERE `id` = '" . (int)$result['customerid'] . "' ");
 				}
 
 				if($adminid != $result['adminid']
 				   && $settings['panel']['allow_domain_change_admin'] == '1')
 				{
-					$db->query("UPDATE `" . TABLE_PANEL_ADMINS . "` SET `domains_used` = `domains_used` + 1 WHERE `adminid` = '" . (int)$adminid . "' ");
-					$db->query("UPDATE `" . TABLE_PANEL_ADMINS . "` SET `domains_used` = `domains_used` - 1 WHERE `adminid` = '" . (int)$result['adminid'] . "' ");
+					// done
+					$db->query("UPDATE `user_resources_admin` SET `domains_used` = `domains_used` + 1 WHERE `id` = '" . (int)$adminid . "' ");
+					
+					// done
+					$db->query("UPDATE `user_resources_admin` SET `domains_used` = `domains_used` - 1 WHERE `id` = '" . (int)$result['adminid'] . "' ");
 				}
 
 				$ssfs = isset($_POST['specialsettingsforsubdomains']) ? intval($_POST['specialsettingsforsubdomains']) : 1;
@@ -1123,11 +1300,16 @@ if($page == 'domains'
 				else
 				{
 					$upd_specialsettings = '';
+					
+					// done, not touched
 					$db->query("UPDATE `" . TABLE_PANEL_DOMAINS . "` SET `specialsettings`='' WHERE `parentdomainid`='" . (int)$id . "'");
 					$log->logAction(ADM_ACTION, LOG_INFO, "removed specialsettings on all subdomains of domain #" . $id);
 				}
 
+				// done, not touched
 				$result = $db->query("UPDATE `" . TABLE_PANEL_DOMAINS . "` SET `customerid` = '" . (int)$customerid . "', `adminid` = '" . (int)$adminid . "', `documentroot`='" . $db->escape($documentroot) . "', `ipandport`='" . $db->escape($ipandport) . "', `ssl`='" . (int)$ssl . "', `ssl_redirect`='" . (int)$ssl_redirect . "', `ssl_ipandport`='" . (int)$ssl_ipandport . "', `aliasdomain`=" . (($aliasdomain != 0 && $alias_check == 0) ? '\'' . $db->escape($aliasdomain) . '\'' : 'NULL') . ", `isbinddomain`='" . $db->escape($isbinddomain) . "', `isemaildomain`='" . $db->escape($isemaildomain) . "', `email_only`='" . $db->escape($email_only) . "', `subcanemaildomain`='" . $db->escape($subcanemaildomain) . "', `dkim`='" . $db->escape($dkim) . "', `caneditdomain`='" . $db->escape($caneditdomain) . "', `zonefile`='" . $db->escape($zonefile) . "', `wwwserveralias`='" . $db->escape($wwwserveralias) . "', `openbasedir`='" . $db->escape($openbasedir) . "', `safemode`='" . $db->escape($safemode) . "', `phpsettingid`='" . $db->escape($phpsettingid) . "', `mod_fcgid_starter`='" . $db->escape($mod_fcgid_starter) . "', `mod_fcgid_maxrequests`='" . $db->escape($mod_fcgid_maxrequests) . "', `specialsettings`='" . $db->escape($specialsettings) . "', `registration_date`='" . $db->escape($registration_date) . "', `ismainbutsubto`='" . (int)$issubof . "' WHERE `id`='" . (int)$id . "'");
+				
+				// done, not touched
 				$result = $db->query("UPDATE `" . TABLE_PANEL_DOMAINS . "` SET `customerid` = '" . (int)$customerid . "', `adminid` = '" . (int)$adminid . "', `ipandport`='" . $db->escape($ipandport) . "', `openbasedir`='" . $db->escape($openbasedir) . "', `safemode`='" . $db->escape($safemode) . "', `phpsettingid`='" . $db->escape($phpsettingid) . "', `mod_fcgid_starter`='" . $db->escape($mod_fcgid_starter) . "', `mod_fcgid_maxrequests`='" . $db->escape($mod_fcgid_maxrequests) . "'" . $upd_specialsettings . $updatechildren . " WHERE `parentdomainid`='" . (int)$id . "'");
 				$log->logAction(ADM_ACTION, LOG_INFO, "edited domain #" . $id);
 				$redirect_props = Array(
@@ -1142,7 +1324,24 @@ if($page == 'domains'
 				if($settings['panel']['allow_domain_change_customer'] == '1')
 				{
 					$customers = '';
-					$result_customers = $db->query("SELECT `customerid`, `loginname`, `name`, `firstname`, `company` FROM `" . TABLE_PANEL_CUSTOMERS . "` WHERE ( (`subdomains_used` + " . (int)$subdomains . " <= `subdomains` OR `subdomains` = '-1' ) AND (`emails_used` + " . (int)$emails . " <= `emails` OR `emails` = '-1' ) AND (`email_forwarders_used` + " . (int)$email_forwarders . " <= `email_forwarders` OR `email_forwarders` = '-1' ) AND (`email_accounts_used` + " . (int)$email_accounts . " <= `email_accounts` OR `email_accounts` = '-1' ) " . ($userinfo['customers_see_all'] ? '' : " AND `adminid` = '" . (int)$userinfo['adminid'] . "' ") . ") OR `customerid` = '" . (int)$result['customerid'] . "' ORDER BY `name` ASC");
+					
+					// done
+					$result_customers = $db->query("
+						SELECT `users`.`id` as `customerid`, `users`.`loginname`, `name`, `firstname`, `company`
+						FROM `users`,`user_addresses`
+						WHERE (
+								(`subdomains_used` + " . (int)$subdomains . " <= `subdomains` OR `subdomains` = '-1' )
+								AND
+								(`emails_used` + " . (int)$emails . " <= `emails` OR `emails` = '-1' )
+								AND
+								(`email_forwarders_used` + " . (int)$email_forwarders . " <= `email_forwarders`
+									OR `email_forwarders` = '-1' )
+								AND (`email_accounts_used` + " . (int)$email_accounts . " <= `email_accounts`
+									OR `email_accounts` = '-1' )
+							" . ($user->getData('resources', 'customers_see_all') ? '' : " AND `user2admin`.`userid` = '" . (int)$customerid . "'
+									AND `user2admin`.`adminid` = '" . $user->getId() . "' ") . ")
+							OR `users`.`id` = '" . (int)$result['customerid'] . "'
+							ORDER BY `name` ASC");
 
 					while($row_customer = $db->fetch_array($result_customers))
 					{
@@ -1151,16 +1350,22 @@ if($page == 'domains'
 				}
 				else
 				{
-					$customer = $db->query_first("SELECT `customerid`, `loginname`, `name`, `firstname`, `company` FROM `" . TABLE_PANEL_CUSTOMERS . "` WHERE `customerid` = '" . (int)$result['customerid'] . "'");
+					// done
+					$customer = $db->query_first("
+						SELECT `users`.`id` as `customerid`, `users`.`loginname`, `name`, `firstname`, `company`
+						FROM `users`,`user_addresses`
+						WHERE `users`.`id` = '" . (int)$result['customerid'] . "'");
 					$result['customername'] = getCorrectFullUserDetails($customer) . ' (' . $customer['loginname'] . ')';
 				}
 
-				if($userinfo['customers_see_all'] == '1')
+				if($user->getData('resources', 'customers_see_all') == '1')
 				{
 					if($settings['panel']['allow_domain_change_admin'] == '1')
 					{
 						$admins = '';
-						$result_admins = $db->query("SELECT `adminid`, `loginname`, `name` FROM `" . TABLE_PANEL_ADMINS . "` WHERE (`domains_used` < `domains` OR `domains` = '-1') OR `adminid` = '" . (int)$result['adminid'] . "' ORDER BY `name` ASC");
+						
+						// done
+						$result_admins = $db->query("SELECT `id` as `adminid`, `loginname`, `name` FROM `user_resources_admin` WHERE (`domains_used` < `domains` OR `domains` = '-1') OR `id` = '" . (int)$result['adminid'] . "' ORDER BY `name` ASC");
 
 						while($row_admin = $db->fetch_array($result_admins))
 						{
@@ -1169,14 +1374,26 @@ if($page == 'domains'
 					}
 					else
 					{
-						$admin = $db->query_first("SELECT `adminid`, `loginname`, `name` FROM `" . TABLE_PANEL_ADMINS . "` WHERE `adminid` = '" . (int)$result['adminid'] . "'");
+						// done
+						$admin = $db->query_first("SELECT ``id` as `adminid`, `loginname`, `name` FROM `users` WHERE `id` = '" . (int)$result['adminid'] . "'");
 						$result['adminname'] = getCorrectFullUserDetails($admin) . ' (' . $admin['loginname'] . ')';
 					}
 				}
 
 				$result['domain'] = $idna_convert->decode($result['domain']);
 				$domains = makeoption($lng['domains']['noaliasdomain'], 0, NULL, true);
-				$result_domains = $db->query("SELECT `d`.`id`, `d`.`domain`  FROM `" . TABLE_PANEL_DOMAINS . "` `d`, `" . TABLE_PANEL_CUSTOMERS . "` `c` WHERE `d`.`aliasdomain` IS NULL AND `d`.`parentdomainid`=0 AND `d`.`id`<>'" . (int)$result['id'] . "' AND `c`.`standardsubdomain`<>`d`.`id` AND `d`.`customerid`='" . (int)$result['customerid'] . "' AND `c`.`customerid`=`d`.`customerid` ORDER BY `d`.`domain` ASC");
+				
+				// done
+				$result_domains = $db->query("
+					SELECT `d`.`id`, `d`.`domain`
+					FROM `" . TABLE_PANEL_DOMAINS . "` `d`, `users` `c`
+					WHERE `d`.`aliasdomain` IS NULL
+						AND `d`.`parentdomainid`=0
+						AND `d`.`id`<>'" . (int)$result['id'] . "'
+						AND `c`.`standardsubdomain`<>`d`.`id`
+						AND `d`.`customerid`='" . (int)$result['customerid'] . "'
+						AND `c`.`id` = `d`.`customerid`
+					ORDER BY `d`.`domain` ASC");
 
 				while($row_domain = $db->fetch_array($result_domains))
 				{
@@ -1184,7 +1401,19 @@ if($page == 'domains'
 				}
 
 				$subtodomains = makeoption($lng['domains']['nosubtomaindomain'], 0, NULL, true);
-				$result_domains = $db->query("SELECT `d`.`id`, `d`.`domain` FROM `" . TABLE_PANEL_DOMAINS . "` `d`, `" . TABLE_PANEL_CUSTOMERS . "` `c` WHERE `d`.`aliasdomain` IS NULL AND `d`.`parentdomainid`=0 AND `d`.`id`<>'" . (int)$result['id'] . "' AND `c`.`standardsubdomain`<>`d`.`id` AND `c`.`customerid`=`d`.`customerid`". ($userinfo['customers_see_all'] ? '' : " AND `d`.`adminid` = '" . (int)$userinfo['adminid'] . "'") . " ORDER BY `d`.`domain` ASC");
+				
+				// done
+				$result_domains = $db->query("
+					SELECT `d`.`id`, `d`.`domain`
+					FROM `" . TABLE_PANEL_DOMAINS . "` `d`, `users` `c`
+					WHERE `d`.`aliasdomain` IS NULL
+						AND `d`.`parentdomainid`=0
+						AND `d`.`id`<>'" . (int)$result['id'] . "'
+						AND `c`.`standardsubdomain`<>`d`.`id`
+						AND `c`.`id` = `d`.`customerid`".
+				($user->getData('resources', 'customers_see_all') ? '' : "
+					AND `d`.`adminid` = '" . $user->getId() . "'") . "
+				ORDER BY `d`.`domain` ASC");
 
 				while($row_domain = $db->fetch_array($result_domains))
 				{
@@ -1193,13 +1422,21 @@ if($page == 'domains'
 
 				if($userinfo['ip'] == "-1")
 				{
+					// done, not touched
 					$result_ipsandports = $db->query("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `ssl`='0' ORDER BY `ip`, `port` ASC");
+					
+					// done, not touched
 					$result_ssl_ipsandports = $db->query("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `ssl`='1' ORDER BY `ip`, `port` ASC");
 				}
 				else
 				{
+					// done, not touched
 					$admin_ip = $db->query_first("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `id`='" . (int)$userinfo['ip'] . "' ORDER BY `ip`, `port` ASC");
+					
+					// done, not touched
 					$result_ipsandports = $db->query("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `ssl`='0' AND `ip`='" . $admin_ip['ip'] . "' ORDER BY `ip`, `port` ASC");
+					
+					// done, not touched
 					$result_ssl_ipsandports = $db->query("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `ssl`='1' AND `ip`='" . $admin_ip['ip'] . "' ORDER BY `ip`, `port` ASC");
 				}
 
@@ -1246,6 +1483,8 @@ if($page == 'domains'
 				$result['add_date'] = date('Y-m-d', $result['add_date']);
 
 				$phpconfigs = '';
+				
+				// done, not touched
 				$phpconfigs_result = $db->query("SELECT * FROM `" . TABLE_PANEL_PHPCONFIGS . "`");
 
 				while($phpconfigs_row = $db->fetch_array($phpconfigs_result))
