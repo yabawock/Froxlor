@@ -706,8 +706,14 @@ if($page == 'domains'
 
 				if($user->getData('resources', 'customers_see_all') == '1')
 				{
-					// done
-					$result_admins = $db->query("SELECT `users`.`id`, `users`.`loginname`, `user_addresses`.`name` FROM `users`, `user_resources`, `user_addresses`  WHERE `domains_used` < `domains` OR `domains` = '-1' ORDER BY `name` ASC");
+					$result_admins = $db->query("
+						SELECT `users`.`id`, `users`.`loginname`, `user_addresses`.`name`
+						FROM `users`, `user_resources_admin`, `user_addresses`
+						WHERE `user_resources_admin`.`domains_used` < `user_resources_admin`.`domains`
+							OR `user_resources_admin`.`domains` = '-1'
+							AND `users`.`id` = `user_addresses`.`id`
+							AND `user_resources_admin`.`id` = `users`.`id`
+						ORDER BY `user_addresses`.`name` ASC");
 
 					while($row_admin = $db->fetch_array($result_admins))
 					{
@@ -1326,10 +1332,10 @@ if($page == 'domains'
 				{
 					$customers = '';
 					
-					// done
+					// done TODO
 					$result_customers = $db->query("
 						SELECT `users`.`id` as `customerid`, `users`.`loginname`, `name`, `firstname`, `company`
-						FROM `users`,`user_addresses`
+						FROM `users`,`user_addresses`, `user_resources`
 						WHERE (
 								(`subdomains_used` + " . (int)$subdomains . " <= `subdomains` OR `subdomains` = '-1' )
 								AND
@@ -1354,8 +1360,10 @@ if($page == 'domains'
 					// done
 					$customer = $db->query_first("
 						SELECT `users`.`id` as `customerid`, `users`.`loginname`, `name`, `firstname`, `company`
-						FROM `users`,`user_addresses`
-						WHERE `users`.`id` = '" . (int)$result['customerid'] . "'");
+						FROM `users`, `user_addresses`
+						WHERE `users`.`id` = '" . (int)$result['customerid'] . "'
+							AND `users`.`id` = `user_addresses`.`id`
+						");
 					$result['customername'] = getCorrectFullUserDetails($customer) . ' (' . $customer['loginname'] . ')';
 				}
 
@@ -1366,7 +1374,19 @@ if($page == 'domains'
 						$admins = '';
 						
 						// done
-						$result_admins = $db->query("SELECT `id` as `adminid`, `loginname`, `name` FROM `user_resources_admin` WHERE (`domains_used` < `domains` OR `domains` = '-1') OR `id` = '" . (int)$result['adminid'] . "' ORDER BY `name` ASC");
+						$result_admins = $db->query("
+							SELECT `users`.`id` as `adminid`, `users`.`loginname`, `user_addresses`.`name`
+							FROM `user_resources_admin`, `users`, `user_addresses`
+							WHERE `users`.`isadmin` = '1'
+								AND `users`.`id` = `user_addresses`.`id`
+								AND `user_resources_admin`.`id` = `users`.`id`
+								AND (
+										(`user_resources_admin`.`domains_used` < `user_resources_admin`.`domains`
+											OR `user_resources_admin`.`domains` = '-1'
+										)
+										OR `users`.`id` = '" . (int)$result['adminid'] . "'
+									)
+							ORDER BY `name` ASC");
 
 						while($row_admin = $db->fetch_array($result_admins))
 						{
