@@ -13,7 +13,7 @@
 			}
 				<div class="overviewadd">
 					<img src="images/Froxlor/icons/domain_add.png" alt="" />&nbsp;
-					<a href="{link section=domains action=add}">{t}Create domain{/t}</a>
+					<a href="{link area=admin section=domains action=add}">{t}Create domain{/t}</a>
 				</div>
 			{/if}
 
@@ -43,7 +43,7 @@
 				<div class="warningcontainer bradius">
 					<div class="warningtitle">{t}WARNING - Please note!{/t}</div>
 					<div class="warning">
-						<a href="{link section=customers action=add}">{t}It's not possible to add a domain currently. You first need to add at least one customer.{/t}</a>
+						<a href="{link area=admin section=customers action=add}">{t}It's not possible to add a domain currently. You first need to add at least one customer.{/t}</a>
 					</div>
 				</div>
 			{/if}
@@ -53,10 +53,10 @@
 			}
 				<div class="overviewadd">
 					<img src="images/Froxlor/icons/domain_add.png" alt="" />&nbsp;
-					<a href="{link section=domains action=add}">{t}Create domain{/t}</a>
+					<a href="{link area=admin section=domains action=add}">{t}Create domain{/t}</a>
 					<br />
 					<img src="images/Froxlor/icons/domain_add.png" alt="" />&nbsp;
-					<a href="{link section=domains action=register}">{t}Register domain{/t}</a>
+					<a href="{link area=admin section=domains action=register}">{t}Register domain{/t}</a>
 				</div>
 			{/if}
 
