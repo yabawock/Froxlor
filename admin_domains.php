@@ -342,8 +342,13 @@ if($page == 'domains'
 				{
 					$adminid = intval($_POST['adminid']);
 					// done, commented out
-					//$admin = $db->query_first("SELECT * FROM `" . TABLE_PANEL_ADMINS . "` WHERE `adminid`='" . (int)$adminid . "' AND ( `domains_used` < `domains` OR `domains` = '-1' )");
-					$admin = $user->getId();
+					$admin = $db->query_first("
+						SELECT `isadmin` as `adminid`
+						FROM `users`, `user_resources_admin`
+						WHERE `id` = '" . (int)$adminid . "'
+							AND `users`.`id` = `user_resources_admin`.`id`
+							AND ( `domains_used` < `domains` OR `domains` = '-1' )");
+					//$admin = $user->getId();
 					
 					if(empty($admin)
 					   || $admin['adminid'] != $adminid)
