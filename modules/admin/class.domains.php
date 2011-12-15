@@ -130,33 +130,43 @@ class adminDomains {
 
 	public function add()
 	{
+		// Does this admin have enough free resources to add a new domain?
 		if(Froxlor::getUser()->getData('resources', 'domains_used') >= Froxlor::getUser()->getData('resources', 'domains') && Froxlor::getUser()->getData('resources', 'domains') != '-1')
 		{
+			// NO: redirect to admin/domains/index for the complete list and issue an errormessage
 			$_SESSION['errormessage'] = sprintf(_('You may not add more than %s domains'), Froxlor::getUser()->getData('resources', 'domains'));
 			redirectTo(Froxlor::getLinker()->getLink(array('area' => 'admin', 'section' => 'domains', 'action' => 'index')));
 		}
 
+		// Prepare the dropdown of all customers
+		// TODO: Make this more smarty - compatible
 		$customers = makeoption('customerid', _('Please choose'), 0, 0, true);
 
-		// done
+		// Select all customers visible to this admin
 		$result_customers = Froxlor::getDb()->query("
 			SELECT `users`.`id`, `loginname`, `name`, `firstname`, `company`
-			FROM `user_addresses`, `user2admin`, `users`
-				" . (Froxlor::getUser()->getData('resources', 'customers_see_all') ? '' : "
-				WHERE `user2admin`.`adminid` = '" . Froxlor::getUser()->getId() . "'
-					AND `user2admin`.`userid` = `user_addresses`.`id`
-					AND `users`.`id` = `user2admin`.`userid`
-				") . "
-			ORDER BY `name` ASC");
+					FROM `user_addresses`, `user2admin`, `users`
+					WHERE `users`.`id` = `user2admin`.`userid`
+						AND `users`.`isadmin` = '0'
+						" . (Froxlor::getUser()->getData('resources', 'customers_see_all') ? '' : "
+							AND `user2admin`.`adminid` = '" . Froxlor::getUser()->getId() . "'
+							AND `users`.`contactid` = `user_addresses`.`id`
+						") . "
+					ORDER BY `name` ASC");
+
+		// Loop through all visible customers to build the dropdown
 		while($row_customer = Froxlor::getDb()->fetch_array($result_customers))
 		{
+			// Add this customer to the dropdown and format the displayed name
+			// TODO: Make this more smarty - compatible
 			$customers.= makeoption('customerid', user::getCorrectFullUserDetails($row_customer) . ' (' . $row_customer['loginname'] . ')', $row_customer['id']);
 		}
 
+		// If this admin is able to see all customers, also select all admins
 		$admins = '';
-
 		if(Froxlor::getUser()->getData('resources', 'customers_see_all') == '1')
 		{
+			// Select every admin in this system with free domain - resources
 			$result_admins = Froxlor::getDb()->query("SELECT `users`.`id`, `users`.`loginname`, `user_addresses`.`name`
 						FROM `users`, `user_resources_admin`, `user_addresses`
 						WHERE `user_resources_admin`.`domains_used` < `user_resources_admin`.`domains`
@@ -165,70 +175,95 @@ class adminDomains {
 							AND `user_resources_admin`.`id` = `users`.`id`
 						ORDER BY `user_addresses`.`name` ASC");
 
+			// Loop through the selected admins
 			while($row_admin = Froxlor::getDb()->fetch_array($result_admins))
 			{
+				// Add the admin to the dropdown with selecting the current admin as default
+				// TODO: Make this more smarty - compatible
 				$admins.= makeoption('adminid', user::getCorrectFullUserDetails($row_admin) . ' (' . $row_admin['loginname'] . ')', $row_admin['id'], Froxlor::getUser()->getId());
 			}
 		}
 
+		// Does this admin have a designated IP or is he able to choose from the pool?
+		// Let's prepare the corresponding MySQL - queries
 		if(Froxlor::getUser()->getData('resources', 'ip') == "-1")
 		{
+			// This admin uses the complete IP - pool: select all IPs, seperated by "normal" and "SSL" - IPs
 			$result_ipsandports = Froxlor::getDb()->query("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `ssl`='0' ORDER BY `ip`, `port` ASC");
 			$result_ssl_ipsandports = Froxlor::getDb()->query("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `ssl`='1' ORDER BY `ip`, `port` ASC");
 		}
 		else
 		{
+			// This admin has to use a designated ip:port - combination: select it
 			$admin_ip = Froxlor::getDb()->query_first("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `id`='" . (int)Froxlor::getUser()->getData('resources', 'ip') . "' ORDER BY `ip`, `port` ASC");
 
 			$result_ipsandports = Froxlor::getDb()->query("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `ssl`='0' AND `ip`='" . $admin_ip['ip'] . "' ORDER BY `ip`, `port` ASC");
-
 			$result_ssl_ipsandports = Froxlor::getDb()->query("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `ssl`='1' AND `ip`='" . $admin_ip['ip'] . "' ORDER BY `ip`, `port` ASC");
 		}
 
+		// Loop through the prepared IP:Port query and turn the results into a dropdown
 		$ipsandports = '';
-
 		while($row_ipandport = Froxlor::getDb()->fetch_array($result_ipsandports))
 		{
+			// Is the IP an IPv6 - address?
 			if(filter_var($row_ipandport['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
 			{
+				// It's IPv6: put [] around the IP
 				$row_ipandport['ip'] = '[' . $row_ipandport['ip'] . ']';
 			}
+			
+			// Add the IP:Port combination to the dropdown, setting the system - defaultip as selected default
 			$ipsandports.= makeoption('ipandport', $row_ipandport['ip'] . ':' . $row_ipandport['port'], $row_ipandport['id'], getSetting('system', 'defaultip'));
 		}
 
+		
+		// Loop through the prepared SSL-IP:Port query and turn the results into a dropdown
 		$ssl_ipsandports = '';
-
 		while($row_ssl_ipandport = Froxlor::getDb()->fetch_array($result_ssl_ipsandports))
 		{
+			// Is the IP an IPv6 - address?
 			if(filter_var($row_ssl_ipandport['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
 			{
+				// It's IPv6: put [] around the IP
 				$row_ssl_ipandport['ip'] = '[' . $row_ssl_ipandport['ip'] . ']';
 			}
 
+			// Add the SSL - IP:Port combination to the dropdown, setting the system - defaultip as selected default
 			$ssl_ipsandports.= makeoption('ssl_ipandport', $row_ssl_ipandport['ip'] . ':' . $row_ssl_ipandport['port'], $row_ssl_ipandport['id'], getSetting('system', 'defaultip'));
 		}
 
+		// We need the standardsubdomains to exclude them from the aliasdomain-dropdown
 		$standardsubdomains = array();
 
+		// Select all standardsubdomains in the system
 		$result_standardsubdomains = Froxlor::getDb()->query('SELECT `d`.`id` FROM `' . TABLE_PANEL_DOMAINS . '` `d`, `user_resources` `c` WHERE `d`.`id`=`c`.`standardsubdomain`');
 
+		// Loop through the standardsubdomains
 		while($row_standardsubdomain = Froxlor::getDb()->fetch_array($result_standardsubdomains))
 		{
+			// Add the standardsubdomain to our storage - array
 			$standardsubdomains[] = Froxlor::getDb()->escape($row_standardsubdomain['id']);
 		}
 
+		// Let's see how many standardsubdomains are in the system
 		if(count($standardsubdomains) > 0)
 		{
+			// There are standardsubdomains in the system: incorporate them into the SQL query for later usage
 			$standardsubdomains = 'AND `d`.`id` NOT IN (' . join(',', $standardsubdomains) . ') ';
 		}
 		else
 		{
+			// There are no standardsubdomains in the system: nothing to be excluded
 			$standardsubdomains = '';
 		}
 
+		// Prepare the aliasdomain - dropdown
 		$domains = makeoption('alias', _('No alias domain'), 0, NULL, true);
+
+		// Initialize the IDNA - converter
 		$idna_convert = new idna_convert_wrapper();
-		// done
+
+		// Select all available domains in the system not being aliasdomains or standardsubdomains
 		$result_domains = Froxlor::getDb()->query("SELECT `d`.`id`, `d`.`domain`, `c`.`loginname`
 				FROM `" . TABLE_PANEL_DOMAINS . "` `d`, `users` `c`
 				WHERE `d`.`aliasdomain` IS NULL
@@ -238,12 +273,17 @@ class adminDomains {
 				AND `d`.`customerid` = `c`.`id`
 				ORDER BY `loginname`, `domain` ASC");
 
+		// Loop through the selected domains
 		while($row_domain = Froxlor::getDb()->fetch_array($result_domains))
 		{
+			// Put the domain into the "alias" - dropdown
 			$domains.= makeoption('alias', $idna_convert->decode($row_domain['domain']) . ' (' . $row_domain['loginname'] . ')', $row_domain['id']);
 		}
 
+		// Prepare the dropdown for subdomainto
 		$subtodomains = makeoption('issubof', _('No subdomain of a full domain'), 0, NULL, true);
+
+		// Again: select all domains except aliasdomains, standardsubdomains and(!) domains already being subdomains of other domains
 		$result_domains = Froxlor::getDb()->query("SELECT `d`.`id`, `d`.`domain`, `c`.`loginname`
 				FROM `" . TABLE_PANEL_DOMAINS . "` `d`, `users` `c`
 				WHERE `d`.`aliasdomain` IS NULL
@@ -255,45 +295,47 @@ class adminDomains {
 					AND `c`.`isadmin` = '0'
 				ORDER BY `loginname`, `domain` ASC");
 
+		// Loop through the selected domains
 		while($row_domain = Froxlor::getDb()->fetch_array($result_domains))
 		{
+			// Add the domain to the "issubof" - dropdown
 			$subtodomains.= makeoption('issubof', $idna_convert->decode($row_domain['domain']) . ' (' . $row_domain['loginname'] . ')', $row_domain['id']);
 		}
 
+		// Let's get all available PHP - configs
 		$phpconfigs = '';
-
 		$configs = Froxlor::getDb()->query("SELECT * FROM `" . TABLE_PANEL_PHPCONFIGS . "`");
 
+		// Loop through all available PHP - configurations
 		while($row = Froxlor::getDb()->fetch_array($configs))
 		{
+			// Add the name of the config to the "phpsettingid" - dropdown
 			$phpconfigs.= makeoption('phpsettingid', $row['description'], $row['id'], getSetting('system', 'mod_fcgid_defaultini'), true, true);
 		}
 
-		#$isbinddomain = makeyesno('isbinddomain', '1', '0', '1');
-		#$isemaildomain = makeyesno('isemaildomain', '1', '0', '1');
-		#$email_only = makeyesno('email_only', '1', '0', '0');
+		// Prepare the dropdown which allows choosing if subdomains may be used as emaildomains
 		$subcanemaildomain = makeoption('subcanemaildomain', _('Never'), '0', '0', true, true);
 		$subcanemaildomain .= makeoption('subcanemaildomain', _('Chooseable, default no'), '1', '0', true, true);
 		$subcanemaildomain .= makeoption('subcanemaildomain', _('Chooseable, default yes'), '2', '0', true, true);
 		$subcanemaildomain .= makeoption('subcanemaildomain', _('Always'), '3', '0', true, true);
-		#$dkim = makeyesno('dkim', '1', '0', '1');
-		#$wwwserveralias = makeyesno('wwwserveralias', '1', '0', '1');
-		#$caneditdomain = makeyesno('caneditdomain', '1', '0', '1');
-		#$openbasedir = makeyesno('openbasedir', '1', '0', '1');
-		#$safemode = makeyesno('safemode', '1', '0', '1');
-		#$speciallogfile = makeyesno('speciallogfile', '1', '0', '0');
-		#$ssl = makeyesno('ssl', '1', '0', '0');
-		#$ssl_redirect = makeyesno('ssl_redirect', '1', '0', '0');
+
 		$add_date = date('Y-m-d');
 
+		// Get the array holding the form - definition
 		$domain_add_data = include_once dirname(__FILE__).'/../../lib/formfields/admin/domains/formfield.domains_add.php';
+		
+		// Generate the HTML - form with the help of the stored array
 		$domain_add_form = htmlform::genHTMLForm($domain_add_data);
+		
+		// Unset the "errormessages" for formfields in the session, so they can be filled with fresh data on the next submit
 		unset($_SESSION['requestData'], $_SESSION['formerror']);
 
+		// Assign various form-stuff to smarty for usage
 		Froxlor::getSmarty()->assign('title', $domain_add_data['domain_add']['title']);
 		Froxlor::getSmarty()->assign('image', $domain_add_data['domain_add']['image']);
 		Froxlor::getSmarty()->assign('domain_add_form', $domain_add_form);
 
+		// Render and return the current page
 		return Froxlor::getSmarty()->fetch('admin/domains/domains_add.tpl');
 	}
 }
