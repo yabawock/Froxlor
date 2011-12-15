@@ -56,11 +56,20 @@ $months = array(
 	'12' => 'dec',
 );
 
-if($page == 'overview' || $page == 'customers') 
+if($page == 'overview' || $page == 'customers')
 {
 	if($action == 'su' && $id != 0)
 	{
-		$result = $db->query_first("SELECT * FROM `" . TABLE_PANEL_CUSTOMERS . "` WHERE `customerid`='" . (int)$id . "' " . ($userinfo['customers_see_all'] ? '' : " AND `adminid` = '" . (int)$userinfo['adminid'] . "' "));
+		$result = $db->query_first("
+			SELECT `users`.`loginname`
+			FROM `users`
+			WHERE `users`.`id` = '" . (int)$id . "'
+				AND `users`.`isadmin` = '0'
+			" . ($user->getData('resources', 'customers_see_all') ? '' : "
+					AND `user2admin`.`userid` = '" . (int)$id . "'
+					AND `user2admin`.`adminid` = '" . $user->getId() . "'
+					")
+		);
 
 		if($result['loginname'] != '')
 		{
@@ -93,7 +102,19 @@ if($page == 'overview' || $page == 'customers')
 		$overview['year'] = date("Y")-$years;
 		$overview['type'] = $lng['traffic']['customer'];
 		$domain_list = '';
-		$customer_name_list = $db->query("SELECT `customerid`,`company`,`name`,`firstname` FROM `" . TABLE_PANEL_CUSTOMERS . "` WHERE `deactivated`='0'" . ($userinfo['customers_see_all'] ? '' : " AND `adminid` = '" . (int)$userinfo['adminid'] . "' ") . " ORDER BY name");
+		$customer_name_list = $db->query("
+			SELECT `users`.`id`,`company`,`name`,`firstname`
+			FROM `users`, `user_addresses`
+			WHERE `users`.`deactivated` = '0'
+				AND `users`.`isadmin` = '0'
+				AND `users`.`contactid` = `user_addresses`.`id`
+			" .
+			($user->getData('resources', 'customers_see_all') ? '' : "
+					AND `user2admin`.`userid` = `users`.`id`
+					AND `user2admin`.`adminid` = '" . $user->getId() . "'
+					") . "
+			ORDER BY name");
+			
 		$totals = array(
 			'jan' => 0,
 			'feb' => 0,
