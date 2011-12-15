@@ -9,7 +9,7 @@
 		<section>
 
 			{if ((Froxlor::getUser()->getData("resources", "domains_used") < Froxlor::getUser()->getData("resources", "domains")
-				|| Froxlor::getUser()->getData("resources", "domains") == '-1') && $domainscount > 15 && $countcustomers > 0)
+				|| Froxlor::getUser()->getData("resources", "domains") == '-1') && $domainscount > 15)
 			}
 				<div class="overviewadd">
 					<img src="images/Froxlor/icons/domain_add.png" alt="" />&nbsp;
@@ -39,17 +39,8 @@
 			</table>
 			</form>
 
-			{if $countcustomers == 0}
-				<div class="warningcontainer bradius">
-					<div class="warningtitle">{t}WARNING - Please note!{/t}</div>
-					<div class="warning">
-						<a href="{link area=admin section=customers action=add}">{t}It's not possible to add a domain currently. You first need to add at least one customer.{/t}</a>
-					</div>
-				</div>
-			{/if}
-
 			{if (Froxlor::getUser()->getData("resources", "domains_used") < Froxlor::getUser()->getData("resources", "domains")
-				|| Froxlor::getUser()->getData("resources", "domains") == '-1') && $countcustomers != 0
+				|| Froxlor::getUser()->getData("resources", "domains") == '-1')
 			}
 				<div class="overviewadd">
 					<img src="images/Froxlor/icons/domain_add.png" alt="" />&nbsp;

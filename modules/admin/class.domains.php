@@ -22,17 +22,27 @@
  */
 class adminDomains {
 	public function index() {
+		// $log->logAction(ADM_ACTION, LOG_NOTICE, "viewed admin_domains");
+
+		// Get the number of users available
 		if (Froxlor::getUser()->getData('resources', 'customers_see_all') == 1) {
-			// get every user who isn't an admin
+			// this admin can see every customer - but we only want to get the customers, not admins
 			$countcustomers = Froxlor::getDb()->query_first('SELECT COUNT(`id`) as `countcustomers` FROM `users` WHERE `isadmin` = "0";');
 		} else {
-			// admin cannot see every user
+			// this admin cannot see every customer, just select those where we are the admin
 			$countcustomers = Froxlor::getDb()->query_first('SELECT COUNT(`id`) as `countcustomers` FROM `users`,`user2admin` WHERE `user2admin`.`adminid` = "'.Froxlor::getUser()->getId().'" AND `user2admin`.`userid` = `users`.`id`;');
 		}
-		Froxlor::getSmarty()->assign('countcustomers', (int)$countcustomers['countcustomers']);
 
-		// $log->logAction(ADM_ACTION, LOG_NOTICE, "viewed admin_domains");
-		$domains = '';
+		// Let's see how many customers you are able to see
+		if ($countcustomers == 0)
+		{
+			// You can't see any customer: without a customer, you can't add a domain!
+			// Redirect to admin/customers/add with a helpful errormessage
+			$_SESSION['errormessage'] = _('It\'s not possible to add a domain currently. You first need to add at least one customer.');
+			redirectTo(Froxlor::getLinker()->getLink(array('area' => 'admin', 'section' => 'customers', 'action' => 'add')));
+		}
+
+		// Select all domains visible to this admin
 		$result = Froxlor::getDb()->query(
 		"SELECT `d`.*,
 				`users`.`loginname`,
@@ -49,60 +59,69 @@ class adminDomains {
 						AND `d`.`ipandport` = `ip`.`id`
 				" . (Froxlor::getUser()->getData('resources', 'customers_see_all') ? '' : " AND `d`.`adminid` = '" . Froxlor::getUser()->getId() . "' ")
 		);
+		
+		// Initialize the domain - storage
 		$domain_array = array();
+		// Initialize the IDNA - converter for IDN - domains
+		$idna_convert = new idna_convert_wrapper();
 
+		// Loop through all domains visible to this admin
 		while($row = Froxlor::getDb()->fetch_array($result))
 		{
+			// Decode domain / aliasdomain - punycode into human readable "real" domains
 			$row['domain'] = $idna_convert->decode($row['domain']);
 			$row['aliasdomain'] = $idna_convert->decode($row['aliasdomain']);
 
+			// Check if the domain uses IPv4 or IPv6
 			if(filter_var($row['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))
 			{
+				// This domain uses IPv6, [] around the IP is needed
 				$row['ipandport'] = '[' . $row['ip'] . ']:' . $row['port'];
 			}
 			else
 			{
+				// Plain old IPv4 is used
 				$row['ipandport'] = $row['ip'] . ':' . $row['port'];
 			}
 
+			// Build the currect customername based on the data in the query
+			// and save it in the resultset
+			$row['customername'] = user::getCorrectFullUserDetails($row);
+
+			// Let's see if we already added this domain to our completed domainlist
 			if(!isset($domain_array[$row['domain']]))
 			{
+				// NO: Just add the result to the full list
 				$domain_array[$row['domain']] = $row;
 			}
 			else
 			{
+				// YES: Merge the new result with the one already given
+				// BTW: Can anyone tell me (EleRas) why this is needed? Shouldn't every domain be unique?
 				$domain_array[$row['domain']] = array_merge($row, $domain_array[$row['domain']]);
 			}
 
+			// Let's see: is this an aliasdomain?
 			if(isset($row['aliasdomainid']) && $row['aliasdomainid'] != NULL && isset($row['aliasdomain']) && $row['aliasdomain'] != '')
 			{
+				// It's an aliasdomain - do we have this domain in our full list already?
 				if(!isset($domain_array[$row['aliasdomain']]))
 				{
+					// Domain was not added yet - initialize the array
 					$domain_array[$row['aliasdomain']] = array();
 				}
 
+				// Add the data of the aliasdomain to the full resultset
 				$domain_array[$row['aliasdomain']]['domainaliasid'] = $row['id'];
 				$domain_array[$row['aliasdomain']]['domainalias'] = $row['domain'];
 			}
 
 		}
 
+		// Assign the fully built domainlist to smarty for display
 		Froxlor::getSmarty()->assign('domains', $domain_array);
-		$i = 0;
-		$count = 0;
-		foreach($domain_array as $row)
-		{
-			if(isset($row['domain']) && $row['domain'] != '')
-			{
-				#$row['customername'] =
-				$row = htmlentities_array($row);
-				#eval("\$domains.=\"" . getTemplate("domains/domains_domain") . "\";");
-				$count++;
-			}
 
-			$i++;
-		}
-
+		// Tell Smarty how many domains we have
 		Froxlor::getSmarty()->assign('domainscount', Froxlor::getDb()->num_rows($result));
 
 		// Render and return the current page
@@ -152,20 +171,19 @@ class adminDomains {
 			}
 		}
 
-		// TODO: Preselected ip for user
-		//if($userinfo['ip'] == "-1")
-		//{
+		if(Froxlor::getUser()->getData('resources', 'ip') == "-1")
+		{
 			$result_ipsandports = Froxlor::getDb()->query("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `ssl`='0' ORDER BY `ip`, `port` ASC");
 			$result_ssl_ipsandports = Froxlor::getDb()->query("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `ssl`='1' ORDER BY `ip`, `port` ASC");
-		//}
-		/*else
+		}
+		else
 		{
-			$admin_ip = Froxlor::getDb()->query_first("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `id`='" . (int)$userinfo['ip'] . "' ORDER BY `ip`, `port` ASC");
+			$admin_ip = Froxlor::getDb()->query_first("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `id`='" . (int)Froxlor::getUser()->getData('resources', 'ip') . "' ORDER BY `ip`, `port` ASC");
 
 			$result_ipsandports = Froxlor::getDb()->query("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `ssl`='0' AND `ip`='" . $admin_ip['ip'] . "' ORDER BY `ip`, `port` ASC");
 
 			$result_ssl_ipsandports = Froxlor::getDb()->query("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `ssl`='1' AND `ip`='" . $admin_ip['ip'] . "' ORDER BY `ip`, `port` ASC");
-		}*/
+		}
 
 		$ipsandports = '';
 
