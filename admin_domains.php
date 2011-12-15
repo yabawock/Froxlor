@@ -712,7 +712,7 @@ if($page == 'domains'
 						FROM `users`, `user_resources_admin`, `user_addresses`
 						WHERE `user_resources_admin`.`domains_used` < `user_resources_admin`.`domains`
 							OR `user_resources_admin`.`domains` = '-1'
-							AND `users`.`id` = `user_addresses`.`id`
+							AND `users`.`contactid` = `user_addresses`.`id`
 							AND `user_resources_admin`.`id` = `users`.`id`
 						ORDER BY `user_addresses`.`name` ASC");
 
@@ -1363,7 +1363,7 @@ if($page == 'domains'
 						SELECT `users`.`id` as `customerid`, `users`.`loginname`, `name`, `firstname`, `company`
 						FROM `users`, `user_addresses`
 						WHERE `users`.`id` = '" . (int)$result['customerid'] . "'
-							AND `users`.`id` = `user_addresses`.`id`
+							AND `users`.`contactid` = `user_addresses`.`id`
 						");
 					$result['customername'] = getCorrectFullUserDetails($customer) . ' (' . $customer['loginname'] . ')';
 				}
@@ -1379,7 +1379,7 @@ if($page == 'domains'
 							SELECT `users`.`id` as `adminid`, `users`.`loginname`, `user_addresses`.`name`
 							FROM `user_resources_admin`, `users`, `user_addresses`
 							WHERE `users`.`isadmin` = '1'
-								AND `users`.`id` = `user_addresses`.`id`
+								AND `users`.`contactid` = `user_addresses`.`id`
 								AND `user_resources_admin`.`id` = `users`.`id`
 								AND (
 										(`user_resources_admin`.`domains_used` < `user_resources_admin`.`domains`
