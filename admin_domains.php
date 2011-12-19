@@ -325,8 +325,9 @@ if($page == 'domains'
 				
 				// done
 				$customer = $db->query_first("
-				SELECT * FROM `users`, `user_resources`,`user2admin` WHERE `users`.`id` = `user_resources`.`id`
+				SELECT * FROM `users`, `user_resources`,`user2admin`
 				WHERE `users`.`id` = '" . (int)$customerid . "'
+					AND `users`.`id` = `user_resources`.`id`
 				" . ($user->getData('resources', 'customers_see_all') ? '' : "
 					AND `user2admin`.`userid` = '" . (int)$customerid . "'
 					AND `user2admin`.`adminid` = '" . $user->getId() . "'
@@ -694,12 +695,12 @@ if($page == 'domains'
 				// done
 				$result_customers = $db->query("
 					SELECT `users`.`id`, `loginname`, `name`, `firstname`, `company`
-					FROM `user_addresses`, `user2admin`, `users`
+					FROM `users`, `user_addresses`, `user2admin`
 					WHERE `users`.`id` = `user2admin`.`userid`
 						AND `users`.`isadmin` = '0'
+						AND `users`.`contactid` = `user_addresses`.`id`
 						" . ($user->getData('resources', 'customers_see_all') ? '' : "
 							AND `user2admin`.`adminid` = '" . $user->getId() . "'
-							AND `users`.`contactid` = `user_addresses`.`id`
 						") . "
 					ORDER BY `name` ASC");
 
