@@ -86,7 +86,7 @@ class adminDomains {
 
 			// Build the currect customername based on the data in the query
 			// and save it in the resultset
-			$row['customername'] = user::getCorrectFullUserDetails($row);
+			$row['customer'] = user::getCorrectFullUserDetails($row);
 
 			// Let's see if we already added this domain to our completed domainlist
 			if(!isset($domain_array[$row['domain']]))
@@ -115,14 +115,13 @@ class adminDomains {
 				$domain_array[$row['aliasdomain']]['domainaliasid'] = $row['id'];
 				$domain_array[$row['aliasdomain']]['domainalias'] = $row['domain'];
 			}
-
 		}
 
 		// Assign the fully built domainlist to smarty for display
 		Froxlor::getSmarty()->assign('domains', $domain_array);
 
 		// Tell Smarty how many domains we have
-		Froxlor::getSmarty()->assign('domainscount', Froxlor::getDb()->num_rows($result));
+		Froxlor::getSmarty()->assign('domainscount', count($domain_array));
 
 		// Render and return the current page
 		return Froxlor::getSmarty()->fetch('admin/domains/index.tpl');
@@ -144,13 +143,13 @@ class adminDomains {
 
 		// Select all customers visible to this admin
 		$result_customers = Froxlor::getDb()->query("
-			SELECT `users`.`id`, `loginname`, `name`, `firstname`, `company`
-					FROM `user_addresses`, `user2admin`, `users`
+SELECT `users`.`id`, `loginname`, `name`, `firstname`, `company`
+					FROM `users`, `user_addresses`, `user2admin`
 					WHERE `users`.`id` = `user2admin`.`userid`
 						AND `users`.`isadmin` = '0'
+						AND `users`.`contactid` = `user_addresses`.`id`
 						" . (Froxlor::getUser()->getData('resources', 'customers_see_all') ? '' : "
 							AND `user2admin`.`adminid` = '" . Froxlor::getUser()->getId() . "'
-							AND `users`.`contactid` = `user_addresses`.`id`
 						") . "
 					ORDER BY `name` ASC");
 
@@ -337,5 +336,425 @@ class adminDomains {
 
 		// Render and return the current page
 		return Froxlor::getSmarty()->fetch('admin/domains/domains_add.tpl');
+	}
+	
+	public function addPost()
+	{
+		// Does this admin have enough free resources to add a new domain?
+		if(Froxlor::getUser()->getData('resources', 'domains_used') >= Froxlor::getUser()->getData('resources', 'domains') && Froxlor::getUser()->getData('resources', 'domains') != '-1')
+		{
+			// NO: redirect to admin/domains/index for the complete list and issue an errormessage
+			$_SESSION['errormessage'] = sprintf(_('You may not add more than %s domains'), Froxlor::getUser()->getData('resources', 'domains'));
+			redirectTo(Froxlor::getLinker()->getLink(array('area' => 'admin', 'section' => 'domains', 'action' => 'index')));
+		}
+
+		$_SESSION['requestData'] = $_POST;
+
+		$returnto = array('area' => 'admin', 'section' => 'domains', 'action' => 'add');
+
+		// We need to hide errors in the include_once since there are many undefined variables in the formfield, but these not required for validation
+		$form = @include_once dirname(__FILE__) . '/../../lib/formfields/admin/domains/formfield.domains_add.php';
+		$validation = validateForm::validate($_POST, $form['domain_add']);
+		if (count($validation['failed']) > 0)
+		{
+			$_SESSION['errormessage'] = '';
+			foreach ($validation['failed'] as $error)
+			{
+				$label = $error['label'];
+				unset($error['label']);
+				$error = join("<br />$label: ", $error);
+				$_SESSION['errormessage'] .= "$label: $error<br />";
+			}
+			$_SESSION['formerror'] = $validation['failed'];
+			redirectTo(Froxlor::getLinker()->getLink($returnto));
+		}
+
+		if($validation['safe']['domain'] == getSetting('system', 'hostname'))
+		{
+			$_SESSION['errormessage'] = _('Sorry. You can not use the Server Hostname as normal domain');
+			redirectTo(Froxlor::getLinker()->getLink($returnto));
+		}
+
+		$idna_convert = new idna_convert();
+
+		$domain = $idna_convert->encode(preg_replace(array('/\:(\d)+$/', '/^https?\:\/\//'), '', $validation['safe']['domain']));
+		$subcanemaildomain = (int)$validation['safe']['subcanemaildomain'];
+
+		$isemaildomain = 0;
+		if(isset($validation['safe']['isemaildomain']))
+		$isemaildomain = (int)$validation['safe']['isemaildomain'];
+
+		$email_only = 0;
+		if(isset($validation['safe']['email_only']))
+			$email_only = $validation['safe']['email_only'];
+
+		$wwwserveralias = 0;
+		if(isset($validation['safe']['wwwserveralias']))
+			$wwwserveralias = (int)$validation['safe']['wwwserveralias'];
+
+		$speciallogfile = 0;
+		if(isset($validation['safe']['speciallogfile']))
+			$speciallogfile = (int)$validation['safe']['speciallogfile'];
+
+		$aliasdomain = (int)$validation['safe']['alias'];
+		$issubof = (int)$validation['safe']['issubof'];
+		$customerid = (int)$validation['safe']['customerid'];
+
+		$customer = Froxlor::getDb()->query_first("
+			SELECT * FROM `users`, `user_resources`,`user2admin`
+				WHERE `users`.`id` = '" . (int)$customerid . "'
+					AND `users`.`id` = `user_resources`.`id`
+				" . (Froxlor::getUser()->getData('resources', 'customers_see_all') ? '' : "
+					AND `user2admin`.`userid` = '" . (int)$customerid . "'
+					AND `user2admin`.`adminid` = '" . Froxlor::getUser()->getId() . "'
+					") . " ");
+
+		if(empty($customer)
+			|| $customer['id'] != $customerid)
+		{
+			$_SESSION['errormessage'] = _('The customer you have chosen doesn\'t exist.');
+			redirectTo(Froxlor::getLinker()->getLink($returnto));
+		}
+
+		if(Froxlor::getUser()->getData('resources', 'customers_see_all') == '1')
+		{
+			$adminid = (int)$validation['safe']['adminid'];
+			$admin = Froxlor::getDb()->query_first("
+				SELECT `users`.`id`
+				FROM `users`, `user_resources_admin`
+				WHERE `users`.`id` = '" . (int)$adminid . "'
+					AND `users`.`id` = `user_resources_admin`.`id`
+					AND `users`.`isadmin` = 1
+					AND ( `domains_used` < `domains` OR `domains` = '-1' )");
+			
+			if(empty($admin)
+				|| $admin['id'] != $adminid)
+			{
+				$_SESSION['errormessage'] = _('The admin you have chosen doesn\'t exist or does not have enough free resources.');
+				redirectTo(Froxlor::getLinker()->getLink($returnto));
+			}
+			$admin = new user((int)$admin['id']);
+		}
+		else
+		{
+			$admin = Froxlor::getUser();
+		}
+
+		$documentroot = $customer['documentroot'];
+		$registration_date = $validation['safe']['registration_date'];
+		if ($registration_date == '')
+		{
+			$registration_date = '0000-00-00';
+		}
+
+		if(Froxlor::getUser()->getData('resources', 'change_serversettings') == '1')
+		{
+			$isbinddomain = (int)$validation['safe']['isbinddomain'];
+			$caneditdomain = (int)$validation['safe']['caneditdomain'];
+			$zonefile = validate($_POST['zonefile'], 'zonefile');
+
+			if(isset($validation['safe']['dkim']))
+			{
+				$dkim = (int)$validation['safe']['dkim'];
+			}
+			else
+			{
+				$dkim = '1';
+			}
+
+			$specialsettings = str_replace("\r\n", "\n", $validation['safe']['specialsettings']);
+
+			if(isset($validation['safe']['documentroot'])
+				&& $validation['safe']['documentroot'] != '')
+			{
+				if(substr($validation['safe']['documentroot'], 0, 1) != '/'
+					&& !preg_match('/^https?\:\/\//', $validation['safe']['documentroot']))
+				{
+					$documentroot.= '/' . $validation['safe']['documentroot'];
+				}
+				else
+				{
+					$documentroot = $validation['safe']['documentroot'];
+				}
+			}
+		}
+		else
+		{
+			$isbinddomain = '1';
+			$caneditdomain = '1';
+			$zonefile = '';
+			$dkim = '1';
+			$specialsettings = '';
+		}
+
+		if(Froxlor::getUser()->getData('resources', 'caneditphpsettings') == '1'
+			|| Froxlor::getUser()->getData('resources', 'change_serversettings') == '1')
+		{
+			$openbasedir = isset($validation['safe']['openbasedir']) ? (int)$validation['safe']['openbasedir'] : 1;
+			$safemode = isset($validation['safe']['safemode']) ? (int)$validation['safe']['safemode'] : 1;
+
+			if((int)getSetting('system', 'mod_fcgid') == 1)
+			{
+				$phpsettingid = (int)$validation['safe']['phpsettingid'];
+				$phpsettingid_check = Froxlor::getDb()->query_first("SELECT * FROM `" . TABLE_PANEL_PHPCONFIGS . "` WHERE `id` = " . (int)$phpsettingid);
+
+				if(!isset($phpsettingid_check['id'])
+					|| $phpsettingid_check['id'] == '0'
+					|| $phpsettingid_check['id'] != $phpsettingid)
+				{
+					$_SESSION['errormessage'] = _('A PHP Configuration with this id doesn\'t exist');
+					redirectTo(Froxlor::getLinker()->getLink($returnto));
+				}
+
+				$mod_fcgid_starter = (int)$validation['safe']['openbasedir'];
+				if ((int)$mod_fcgid_starter <= 0)
+				{
+					$mod_fcgid_starter = -1;
+				}
+				$mod_fcgid_maxrequests = (int)$validation['safe']['mod_fcgid_maxrequests'];
+				if ((int)$mod_fcgid_maxrequests <= 0)
+				{
+					$mod_fcgid_maxrequests = -1;
+				}
+			}
+			else
+			{
+				$phpsettingid = getSetting('system', 'mod_fcgid_defaultini');
+				$mod_fcgid_starter = '-1';
+				$mod_fcgid_maxrequests = '-1';
+			}
+		}
+		else
+		{
+			$openbasedir = '1';
+			$safemode = '1';
+			$phpsettingid = getSetting('system', 'mod_fcgid_defaultini');
+			$mod_fcgid_starter = '-1';
+			$mod_fcgid_maxrequests = '-1';
+		}
+
+		if(Froxlor::getUser()->getData('resources', 'ip') != "-1")
+		{
+			$admin_ip = Froxlor::getUser()->query_first("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `id`='" . (int)Froxlor::getUser()->getData('resources', 'ip') . "' ORDER BY `ip`, `port` ASC");
+			$additional_ip_condition = ' AND `ip` = \'' . $admin_ip['ip'] . '\' ';
+		}
+		else
+		{
+			$additional_ip_condition = '';
+		}
+
+		$ipandport = (int)$validation['safe']['ipandport'];
+
+		$ipandport_check = Froxlor::getDb()->query_first("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `id` = '" . (int)$ipandport . "' AND `ssl` = '0'" . $additional_ip_condition);
+
+		if(!isset($ipandport_check['id'])
+			|| $ipandport_check['id'] == '0'
+			|| $ipandport_check['id'] != $ipandport)
+		{
+			$_SESSION['errormessage'] = _('The IP:Port combination you have chosen doesn\'t exist.');
+			redirectTo(Froxlor::getLinker()->getLink($returnto));
+		}
+
+		if(getSetting('system', 'use_ssl') == "1"
+			&& isset($validation['safe']['ssl'])
+			&& isset($validation['safe']['ssl_ipandport'])
+			&& $validation['safe']['ssl'] != '0')
+		{
+			$ssl = (int)$validation['safe']['ssl'];
+			$ssl_redirect = 0;
+			if (isset($validation['safe']['ssl_redirect'])) {
+				$ssl_redirect = (int)$validation['safe']['ssl_redirect'];
+			}
+			$ssl_ipandport = (int)$validation['safe']['ssl_ipandport'];
+
+			$ssl_ipandport_check = Froxlor::getDb()->query_first("SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` WHERE `id` = '" . $ssl_ipandport . "' AND `ssl` = '1'" . $additional_ip_condition);
+
+			if(!isset($ssl_ipandport_check['id'])
+				|| $ssl_ipandport_check['id'] == '0'
+				|| $ssl_ipandport_check['id'] != $ssl_ipandport)
+			{
+				$_SESSION['errormessage'] = _('The SSL - IP:Port combination you have chosen doesn\'t exist.');
+				redirectTo(Froxlor::getLinker()->getLink($returnto));
+			}
+		}
+		else
+		{
+			$ssl = 0;
+			$ssl_redirect = 0;
+			$ssl_ipandport = 0;
+		}
+
+		if(!preg_match('/^https?\:\/\//', $documentroot))
+		{
+			if(strstr($documentroot, ":") !== FALSE)
+			{
+				$_SESSION['errormessage'] = _('The path you have entered should not contain a colon (":"). Please enter a correct path value.');
+				redirectTo(Froxlor::getLinker()->getLink($returnto));
+			}
+			else
+			{
+				$documentroot = makeCorrectDir($documentroot);
+			}
+		}
+
+		$domain_check = Froxlor::getDb()->query_first("SELECT `id`, `domain` FROM `" . TABLE_PANEL_DOMAINS . "` WHERE `domain` = '" . Froxlor::getDb()->escape(strtolower($domain)) . "'");
+		$aliasdomain_check = array(
+			'id' => 0
+		);
+
+		if($aliasdomain != 0)
+		{
+			// also check ip/port combination to be the same, #176
+			$aliasdomain_check = Froxlor::getDb()->query_first('
+			SELECT `d`.`id`
+			FROM `' . TABLE_PANEL_DOMAINS . '` `d`,`users` `c`
+			WHERE `d`.`customerid`=\'' . (int)$customerid . '\'
+				AND `d`.`aliasdomain` IS NULL
+				AND `d`.`id`<>`c`.`standardsubdomain`
+				AND `c`.`id`=\'' . (int)$customerid . '\'
+				AND `d`.`id`=\'' . (int)$aliasdomain . '\'
+				AND `d`.`ipandport` = \''.(int)$ipandport.'\'');
+		}
+
+		foreach(array('openbasedir', 'safemode', 'speciallogfile', 'isbinddomain', 'isemaildomain', 'email_only', 'dkim', 'wwwserveralias') as $type)
+		{
+			if ($$type != 1)
+			{
+				$$type = 0;
+			}
+		}
+
+		if($email_only == '1')
+		{
+			$isemaildomain = '1';
+		}
+
+		if($issubof <= '0')
+		{
+			$issubof = '0';
+		}
+
+		if($domain == '')
+		{
+			$_SESSION['errormessage'] = sprintf(_('Missing input in field \'%s\''), _('Domain'));
+			redirectTo(Froxlor::getLinker()->getLink($returnto));
+		}
+		elseif($documentroot == '')
+		{
+			$_SESSION['errormessage'] = sprintf(_('Missing input in field \'%s\''), _('Documentroot'));
+			redirectTo(Froxlor::getLinker()->getLink($returnto));
+		}
+		elseif($customerid == 0)
+		{
+			$_SESSION['errormessage'] = _('Please create a customer first');
+			redirectTo(Froxlor::getLinker()->getLink($returnto));
+		}
+		elseif(strtolower($domain_check['domain']) == strtolower($domain))
+		{
+			$_SESSION['errormessage'] = sprintf(_('The domain \'%s\' is already assigned to a customer'), $idna_convert->decode($domain));
+			redirectTo(Froxlor::getLinker()->getLink($returnto));
+		}
+		elseif($aliasdomain_check['id'] != $aliasdomain)
+		{
+			$_SESSION['errormessage'] = _('The selected alias domain is either itself an alias domain, has a different ip/port combination or belongs to another customer');
+			redirectTo(Froxlor::getLinker()->getLink($returnto));
+		}
+		else
+		{
+			$params = array(
+				'page' => $page,
+				'action' => $action,
+				'domain' => $domain,
+				'customerid' => $customerid,
+				'adminid' => $admin->getId(),
+				'documentroot' => $documentroot,
+				'alias' => $aliasdomain,
+				'isbinddomain' => $isbinddomain,
+				'isemaildomain' => $isemaildomain,
+				'email_only' => $email_only,
+				'subcanemaildomain' => $subcanemaildomain,
+				'caneditdomain' => $caneditdomain,
+				'zonefile' => $zonefile,
+				'dkim' => $dkim,
+				'speciallogfile' => $speciallogfile,
+				'wwwserveralias' => $wwwserveralias,
+				'ipandport' => $ipandport,
+				'ssl' => $ssl,
+				'ssl_redirect' => $ssl_redirect,
+				'ssl_ipandport' => $ssl_ipandport,
+				'openbasedir' => $openbasedir,
+				'safemode' => $safemode,
+				'phpsettingid' => $phpsettingid,
+				'mod_fcgid_starter' => $mod_fcgid_starter,
+				'mod_fcgid_maxrequests' => $mod_fcgid_maxrequests,
+				'specialsettings' => $specialsettings,
+				'registration_date' => $registration_date,
+				'issubof' => $issubof
+			);
+
+			$security_questions = array(
+				'reallydisablesecuritysetting' => array('text' => _('Do you really want to disable this security setting OpenBasedir?'), 'value' => ($openbasedir == '0' && Froxlor::getUser()->getData('resources', 'change_serversettings') == '1')),
+				'reallydocrootoutofcustomerroot' => array('text' => _('Are you sure, you want the document root for this domain, not being within the customer root of the customer?'), 'value' => (substr($documentroot, 0, strlen($customer['documentroot'])) != $customer['documentroot'] && !preg_match('/^https?\:\/\//', $documentroot)))
+			);
+			$question_nr = 1;
+			foreach($security_questions as $question_name => $question_launch)
+			{
+				if($question_launch['value'] !== false)
+				{
+					$params[$question_name] = $question_name;
+
+					if(!isset($_POST[$question_name])
+						|| $_POST[$question_name] != $question_name)
+					{
+						return ask_yesno($question_launch['text'], $returnto, $params, $question_nr);
+					}
+				}
+				$question_nr++;
+			}
+
+			Froxlor::getDb()->query("INSERT INTO `" . TABLE_PANEL_DOMAINS . "`
+				SET 
+				`domain` = '" . Froxlor::getDb()->escape($domain) . "',
+				`customerid` = '" . (int)$customerid . "',
+				`adminid` = '" . $admin->getId() . "',
+				`documentroot` = '" . Froxlor::getDb()->escape($documentroot) . "',
+				`ipandport` = '" . (int)$ipandport . "',
+				`aliasdomain` = " . (($aliasdomain != 0) ? '\'' . (int)$aliasdomain . '\'' : 'NULL') . ",
+				`zonefile` = '" . Froxlor::getDb()->escape($zonefile) . "',
+				`dkim` = '" . (bool)$dkim . "',
+				`wwwserveralias` = '" . (bool)$wwwserveralias . "',
+				`isbinddomain` = '" . (bool)$isbinddomain . "',
+				`isemaildomain` = '" . (bool)$isemaildomain . "',
+				`email_only` = '" . (bool)$email_only . "',
+				`subcanemaildomain` = '" . (bool)$subcanemaildomain . "', 
+				`caneditdomain` = '" . (bool)$caneditdomain . "',
+				`openbasedir` = '" . (bool)$openbasedir . "',
+				`safemode` = '" . (bool)$safemode . "',
+				`speciallogfile` = '" . (bool)$speciallogfile . "',
+				`specialsettings` = '" . Froxlor::getDb()->escape($specialsettings) . "',
+				`ssl` = '" . $ssl . "',
+				`ssl_redirect` = '" . $ssl_redirect . "',
+				`ssl_ipandport` = '" . $ssl_ipandport . "',
+				`add_date` = NOW(),
+				`registration_date` = '" . Froxlor::getDb()->escape($registration_date) . "',
+				`phpsettingid` = '" . (int)$phpsettingid . "',
+				`mod_fcgid_starter` = '" . (int)$mod_fcgid_starter . "',
+				`mod_fcgid_maxrequests` = '" . (int)$mod_fcgid_maxrequests . "',
+				`ismainbutsubto` = '".(int)$issubof."'");
+			$domainid = Froxlor::getDb()->insert_id();
+
+			$admin->setData('resources', 'domains_used', $admin->getData('resources', 'domains_used') + 1);
+			//$log->logAction(ADM_ACTION, LOG_INFO, "added domain '" . $domain . "'");
+			inserttask('1');
+
+			# Using nameserver, insert a task which rebuilds the server config
+			if (getSetting('system', 'bind_enable'))
+			{
+				inserttask('4');
+			}
+			
+			$_SESSION['successmessage'] = sprintf(_('Domain \'%s\' successfully added'), $domain);
+			redirectTo(Froxlor::getLinker()->getLink(array('area' => 'admin', 'section' => 'domains', 'action' => 'index')));
+		}
 	}
 }

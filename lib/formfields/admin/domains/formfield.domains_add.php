@@ -28,12 +28,20 @@ return array(
 						'label' => 'Domain',
 						'type' => 'text',
 						'mandatory' => true,
+						'validation' => array(
+							'required' => true,
+							'format' => 'domain',
+						)
 					),
 					'customerid' => array(
 						'label' => _('Customer'),
 						'type' => 'select',
 						'select_var' => $customers,
 						'mandatory' => true,
+						'validate' => array(
+							'required' => 'true',
+							'format' => 'number',
+						)
 					),
 					'adminid' => array(
 						'visible' => (Froxlor::getUser()->getData('resources', 'customers_see_all') == '1' ? true : false),
@@ -41,17 +49,29 @@ return array(
 						'type' => 'select',
 						'select_var' => $admins,
 						'mandatory' => true,
+						'validate' => array(
+							'required' => 'true',
+							'format' => 'number',
+						)
 					),
 					'alias' => array(
 						'label' => _('Alias for domain'),
 						'type' => 'select',
-						'select_var' => $domains
+						'select_var' => $domains,
+						'validate' => array(
+							'required' => 'false',
+							'format' => 'number',
+						)
 					),
 					'issubof' => array(
 						'label' => _('This domain is a subdomain of another domain'),
 						'desc' => _('You have to set this to the correct domain if you want to add a subdomain as full-domain (e.g. you want to add "www.domain.tld", you have to select "domain.tld" here)'),
 						'type' => 'select',
-						'select_var' => $subtodomains
+						'select_var' => $subtodomains,
+						'validate' => array(
+							'required' => 'false',
+							'format' => 'number',
+						)
 					),
 					'caneditdomain' => array(
 						'label' => _('Edit domain'),
@@ -59,19 +79,27 @@ return array(
 						'values' => array(
 										array ('label' => _('yes'), 'value' => '1')
 									),
-						'value' => array('1')
+						'value' => array('1'),
+						'validate' => array(
+							'required' => 'false',
+							'format' => 'boolean',
+						)
 					),
 					'add_date' => array(
 						'label' => _('Added to Froxlor'),
 						'desc' => _('YYYY-MM-DD'),
 						'type' => 'label',
-						'value' => $add_date
+						'value' => $add_date,
 					),
 					'registration_date' => array(
 						'label' => _('Added at registry'),
 						'desc' => _('YYYY-MM-DD'),
 						'type' => 'text',
-						'size' => 10
+						'size' => 10,
+						'validate' => array(
+							'required' => false,
+							'regex' => '(19|20)\d\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])'
+						),
 					)
 				)
 			),
@@ -90,6 +118,10 @@ return array(
 						'type' => 'select',
 						'select_var' => $ipsandports,
 						'mandatory' => true,
+						'validate' => array(
+							'required' => 'true',
+							'format' => 'number',
+						)
 					),
 					'ssl' => array(
 						'visible' => (getSetting('system', 'use_ssl') == '1' ? ($ssl_ipsandports != '' ? true : false) : false),
@@ -98,7 +130,11 @@ return array(
 						'values' => array(
 										array ('label' => _('yes'), 'value' => '1')
 									),
-						'value' => array()
+						'value' => array(),
+						'validate' => array(
+							'required' => 'false',
+							'format' => 'boolean',
+						)
 					),
 					'ssl_redirect' => array(
 						'visible' => (getSetting('system', 'use_ssl') == '1' ? ($ssl_ipsandports != '' ? true : false) : false),
@@ -107,13 +143,21 @@ return array(
 						'values' => array(
 										array ('label' => _('yes'), 'value' => '1')
 									),
-						'value' => array()
+						'value' => array(),
+						'validate' => array(
+							'required' => 'false',
+							'format' => 'boolean',
+						)
 					),
 					'ssl_ipandport' => array(
 						'visible' => (getSetting('system', 'use_ssl') == '1' ? ($ssl_ipsandports != '' ? true : false) : false),
 						'label' => _('SSL IP:Port'),
 						'type' => 'select',
-						'select_var' => $ssl_ipsandports
+						'select_var' => $ssl_ipsandports,
+						'validate' => array(
+							'required' => 'false',
+							'format' => 'number',
+						)
 					),
 					'no_ssl_available_info' => array(
 						'visible' => (getSetting('system', 'use_ssl') == '1' ? ($ssl_ipsandports == '' ? true : false) : false),
@@ -127,7 +171,11 @@ return array(
 						'values' => array(
 										array ('label' => _('yes'), 'value' => '1')
 									),
-						'value' => array('1')
+						'value' => array('1'),
+						'validate' => array(
+							'required' => 'false',
+							'format' => 'boolean',
+						)
 					),
 					'speciallogfile' => array(
 						'label' => 'Speciallogfile',
@@ -135,7 +183,11 @@ return array(
 						'values' => array(
 										array ('label' => _('yes'), 'value' => '1')
 									),
-						'value' => array()
+						'value' => array(),
+						'validate' => array(
+							'required' => 'false',
+							'format' => 'boolean',
+						)
 					),
 					'specialsettings' => array(
 						'visible' => (Froxlor::getUser()->getData('resources', 'change_serversettings') == '1' ? true : false),
@@ -144,7 +196,11 @@ return array(
 						'desc' => _('The content of this field will be included into the domain vHost container directly. Attention: The code won\'t be checked for any errors. If it contains errors, webserver might not start again!'),
 						'type' => 'textarea',
 						'cols' => 60,
-						'rows' => 12
+						'rows' => 12,
+						'validate' => array(
+							'required' => false,
+							'regex' => '[^\0]*',
+						)
 					)
 				)
 			),
@@ -159,7 +215,11 @@ return array(
 						'values' => array(
 										array ('label' => _('yes'), 'value' => '1')
 									),
-						'value' => array('1')
+						'value' => array('1'),
+						'validate' => array(
+							'required' => 'false',
+							'format' => 'boolean',
+						)
 					),
 					'safemode' => array(
 						'label' => _('Safemode'),
@@ -167,23 +227,41 @@ return array(
 						'values' => array(
 										array ('label' => _('yes'), 'value' => '1')
 									),
-						'value' => array('1')
+						'value' => array('1'),
+						'validate' => array(
+							'required' => 'false',
+							'format' => 'boolean',
+						)
 					),
 					'phpsettingid' => array(
 						'visible' => ((int)getSetting('system', 'mod_fcgid') == 1 ? true : false),
 						'label' => _('PHP Configuration'),
 						'type' => 'select',
-						'select_var' => $phpconfigs
+						'select_var' => $phpconfigs,
+						'validate' => array(
+							'required' => 'false',
+							'format' => 'number',
+						)
 					),
 					'mod_fcgid_starter' => array(
 						'visible' => ((int)getSetting('system', 'mod_fcgid') == 1 ? true : false),
-						'label' => _('PHP Processes for this domain (empty for default value)'),
-						'type' => 'text'
+						'label' => _('PHP Processes for this domain'),
+						'desc' => _('empty for default'),
+						'type' => 'text',
+						'validate' => array(
+							'required' => 'false',
+							'format' => 'number',
+						)
 					),
 					'mod_fcgid_maxrequests' => array(
 						'visible' => ((int)getSetting('system', 'mod_fcgid') == 1 ? true : false),
-						'label' => _('Maximum php requests for this domain (empty for default value)'),
-						'type' => 'text'
+						'label' => _('Maximum php requests for this domain'),
+						'desc' => _('empty for defaults'),
+						'type' => 'text',
+						'validate' => array(
+							'required' => 'false',
+							'format' => 'number',
+						)
 					)
 				)
 			),
@@ -198,7 +276,11 @@ return array(
 						'values' => array(
 										array ('label' => _('yes'), 'value' => '1')
 									),
-						'value' => array('1')
+						'value' => array('1'),
+						'validate' => array(
+							'required' => 'false',
+							'format' => 'boolean',
+						)
 					),
 					'zonefile' => array(
 						'label' => _('Zonefile'),
@@ -217,7 +299,11 @@ return array(
 						'values' => array(
 										array ('label' => _('yes'), 'value' => '1')
 									),
-						'value' => array('1')
+						'value' => array('1'),
+						'validate' => array(
+							'required' => 'false',
+							'format' => 'boolean',
+						)
 					),
 					'email_only' => array(
 						'label' => _('Only email?'),
@@ -225,12 +311,20 @@ return array(
 						'values' => array(
 										array ('label' => _('yes'), 'value' => '1')
 									),
-						'value' => array()
+						'value' => array(),
+						'validate' => array(
+							'required' => 'false',
+							'format' => 'boolean',
+						)
 					),
 					'subcanemaildomain' => array(
 						'label' => _('Subdomains as emaildomains'),
 						'type' => 'select',
-						'select_var' => $subcanemaildomain
+						'select_var' => $subcanemaildomain,
+						'validate' => array(
+							'required' => 'false',
+							'regex' => '(0|1|2|3)',
+						)
 					),
 					'dkim' => array(
 						'visible' => (getSetting('dkim', 'use_dkim') == '1' ? true : false),
@@ -239,7 +333,11 @@ return array(
 						'values' => array(
 										array ('label' => _('yes'), 'value' => '1')
 									),
-						'value' => array('1')
+						'value' => array('1'),
+						'validate' => array(
+							'required' => 'false',
+							'format' => 'boolean',
+						)
 					)
 				)
 			)
