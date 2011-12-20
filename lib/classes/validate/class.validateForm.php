@@ -168,7 +168,7 @@ class validateForm
 						}
 						elseif($rule == 'boolean')
 						{
-							if (!preg_match('/^\d+$/', $value))
+							if (!preg_match('/^(0|1)$/', $value))
 							{
 								$result[] = _('The value is not a valid boolean. Only 0 or 1 allowed');
 								$safe = 0;
@@ -204,6 +204,25 @@ class validateForm
 									$result[] = _('The password is not complex enough.');
 									$safe = 0;
 								}
+							}
+						}
+						elseif($rule == 'domain')
+						{
+							// we add http:// because this makes a domain valid for the filter;
+							$domainname_tmp = 'http://' . $value;
+							// If FILTER_VALIDATE_URL is good, but FILTER_VALIDATE_URL with FILTER_FLAG_PATH_REQUIRED or FILTER_FLAG_QUERY_REQUIRED is also good, it isn't just a domain.
+							// This is a ugly hack, maybe a good regex would be better?
+
+							// there is a bug in php 5.2.13 - 5.3.2 which
+							// lets filter_var fail if the domain has
+							// a dash (-) in it. As the PHP_VERSION constant
+							// gives also patch-brandings, e.g. '5.3.2-pl0-gentoo'
+							// we just always use our regex
+							$pattern = '/^http:\/\/([a-z0-9]([a-z0-9\-]{0,61}[a-z0-9])?\.)+[a-z]{2,6}$/i';
+							if(!preg_match($pattern, $domainname_tmp))
+							{
+								$result[] = _('The domain name is invalid');
+								$safe = 0;
 							}
 						}
 						break;
