@@ -34,7 +34,14 @@ if(isset($argv[1]) && strtolower($argv[1]) == '--force')
 
 foreach($jobs_to_run as $cron)
 {
-	require_once($cron);
+        $jobfile = $lockdir . "froxcron_" . substr($cron, strlen($pathtophpfiles."/scripts/jobs/cron_"), -4);
+        if(!file_exists($jobfile)){
+                $jobfileHandler = fopen($jobfile, 'w');
+                fwrite($jobfileHandler, time());
+                fclose($jobfileHandler);
+                require_once($cron);
+                unlink($jobfile);
+        }
 }
 
 fwrite($debugHandler, 'Cronfiles have been included' . "\n");

@@ -34,6 +34,7 @@ $lng['panel']['path'] = 'Path';
 $lng['panel']['toggle'] = 'Toggle';
 $lng['panel']['next'] = 'next';
 $lng['panel']['dirsmissing'] = 'Can not find or read the directory!';
+$lng['panel']['cancel'] = 'Cancel';
 
 /**
  * Login
@@ -324,6 +325,8 @@ $lng['admin']['templates']['SALUTATION'] = 'Replaced with a correct salutation (
 $lng['admin']['templates']['FIRSTNAME'] = 'Replaced with the customers firstname.';
 $lng['admin']['templates']['NAME'] = 'Replaced with the customers name.';
 $lng['admin']['templates']['COMPANY'] = 'Replaces with the customers company name';
+$lng['admin']['templates']['DOMAINNAME'] = 'Replaces the customers domain name';
+$lng['admin']['templates']['DOMAINIP'] = 'Replaces the base IP of the customer domain';
 $lng['admin']['templates']['USERNAME'] = 'Replaced with the customers account username.';
 $lng['admin']['templates']['PASSWORD'] = 'Replaced with the customers account password.';
 $lng['admin']['templates']['EMAIL'] = 'Replaced with the address of the POP3/IMAP account.';
@@ -1903,3 +1906,9 @@ $lng['error']['invalidhostname'] = 'Hostname can\'t be empty nor can it consist 
 $lng['traffic']['http'] = 'HTTP (MB)';
 $lng['traffic']['ftp'] = 'FTP (MB)';
 $lng['traffic']['mail'] = 'Mail (MB)';
+$lng['serversettings']['mod_fcgid']['idle_timeout']['title'] = 'Idle Timeout';
+$lng['serversettings']['mod_fcgid']['idle_timeout']['description'] = 'Timeout setting for Mod FastCGI.';
+$lng['serversettings']['phpfpm_settings']['idle_timeout']['title'] = 'Idle Timeout';
+$lng['serversettings']['phpfpm_settings']['idle_timeout']['description'] = 'Timeout setting for PHP5 FPM FastCGI.';
+$lng['admin']['delete_statistics'] = 'delete statistics';
+$lng['admin']['speciallogwarning'] = 'WARNING: By changing this setting you will lose all your old statistics for this domain. If you are 100% sure you wish to change this type "'.$lng['admin']['delete_statistics'].'" in the field below and click the "'.$lng['panel']['delete'].'" button.';

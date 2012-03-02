@@ -46,6 +46,7 @@ function __autoload($classname)
 {
 	global $libdirname;
 	findIncludeClass($libdirname . '/classes/', $classname);
+	findIncludeClass('/usr/share/php/libphp-phpmailer/', $classname);
 }
 
 function findIncludeClass($dirname, $classname)
@@ -58,6 +59,13 @@ function findIncludeClass($dirname, $classname)
 			if($filename == 'class.' . $classname . '.php' || $filename == 'abstract.' . $classname . '.php' || $filename == 'interface.' . $classname . '.php')
 			{
 				include($dirname . $filename);
+				return;
+			}
+
+			// added for using the system copy of PHPMailer
+			if ($classname == 'PHPMailer' || $classname == 'SMTP')
+			{
+				findIncludeClass($dirname .  '/', strtolower($classname));
 				return;
 			}
 

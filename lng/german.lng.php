@@ -1634,3 +1634,7 @@ $lng['error']['invalidhostname'] = 'Hostname darf nicht leer sein oder nur aus L
 $lng['traffic']['http'] = 'HTTP (MB)';
 $lng['traffic']['ftp'] = 'FTP (MB)';
 $lng['traffic']['mail'] = 'Mail (MB)';
+$lng['serversettings']['mod_fcgid']['idle_timeout']['title'] = 'Idle Timeout';
+$lng['serversettings']['mod_fcgid']['idle_timeout']['description'] = 'Timeout einstellung für Mod FastCGI.';
+$lng['serversettings']['phpfpm_settings']['idle_timeout']['title'] = 'Idle Timeout';
+$lng['serversettings']['phpfpm_settings']['idle_timeout']['description'] = 'Timeout einstellung für PHP5 FPM FastCGI.';

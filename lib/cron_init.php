@@ -89,7 +89,7 @@ while($fName = readdir($lockDirHandle))
 			fwrite($debugHandler, 'Removing lockfile: ' . $lockdir . $fName . "\n");
 			unlink($lockdir . $fName);
 		}
-		else
+/*		else
 		{
 			// Result:      A Cronscript with this pid
 			//              is still running
@@ -103,7 +103,7 @@ while($fName = readdir($lockDirHandle))
 
 			unlink($lockfile);
 			die('There is already a Cronjob in progress. Exiting...' . "\n" . 'Take a look into the contents of ' . $lockdir . $lockFilename . '* for more information!' . "\n");
-		}
+		} */
 	}
 }
 

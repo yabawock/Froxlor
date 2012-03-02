@@ -862,11 +862,14 @@ if($page == 'customers'
 
 					if($sendpassword == '1')
 					{
+						$ipresult=$db->query_first('select `ip` from `' . TABLE_PANEL_IPSANDPORTS . '` where `id`=\'' . $db->escape($settings['system']['defaultip']) . '\'');
 						$replace_arr = array(
 							'FIRSTNAME' => $firstname,
 							'NAME' => $name,
 							'COMPANY' => $company,
 							'SALUTATION' => getCorrectUserSalutation(array('firstname' => $firstname, 'name' => $name, 'company' => $company)),
+							'DOMAINNAME' => $db->escape($_stdsubdomain),
+							'DOMAINIP' => $db->escape($ipresult['ip']),
 							'USERNAME' => $loginname,
 							'PASSWORD' => $password
 						);

@@ -71,6 +71,14 @@ $header
 					<td>{$lng['admin']['templates']['COMPANY']}</td>
 				</tr>
 				<tr>
+					<td><em>{DOMAINNAME}</em>:</td>
+					<td>{$lng['admin']['templates']['DOMAINNAME']}</td>
+				</tr>
+				<tr>
+					<td><em>{DOMAINIP}</em>:</td>
+					<td>{$lng['admin']['templates']['DOMAINIP']}</td>
+				</tr>
+				<tr>
 					<td><em>{USERNAME}</em>:</td>
 					<td>{$lng['admin']['templates']['USERNAME']}</td>
 				</tr>
