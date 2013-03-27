@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<froxlorlog>
+	<enabled>true</enabled>
+	<level>1</level>
+	<facilities>
+		<syslog>
+			<enabled>false</enabled>
+		</syslog>
+		<file>
+			<enabled>true</enabled>
+			<filename>logs/froxlor.log</filename>
+		</file>
+	</facilities>
+</froxlorlog>
+
