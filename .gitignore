@@ -1,7 +1,4 @@
-packages/*
-temp/*
-templates/*
-install/update.log
+logs/*.log
 .buildpath
 .project
 .settings/
