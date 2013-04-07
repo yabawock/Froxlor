@@ -71,10 +71,17 @@ class Autoloader {
 	 */
 	public function doAutoload($class) {
 
+		// Database-related (redbean created) classes
+		// are handled by RedBean -> include it and go
+		if (substr($class, 0, 6) == 'Model_') {
+			include_once FROXLOR_API_DIR.'/lib/froxlor/classes/database/rb.php';
+			return;
+		}
+
 		// define the paths where to look for classes
 		$paths = array(
 				dirname(__FILE__) . '/froxlor/',
-				dirname(__FILE__) . '/external/',
+				//dirname(__FILE__) . '/external/',
 				FROXLOR_API_DIR . '/modules/'
 		);
 

@@ -222,18 +222,24 @@ class Froxlor implements iFroxlor {
 	 * @return boolean
 	 */
 	private function _validateApiKey() {
-		$stmt = Database::prepare("SELECT * FROM `panel_admins` WHERE `api_key`=:apikeyvalue");
-		$stmt->execute(array(':apikeyvalue' => $this->_apikey));
-		$result = $stmt->fetch(PDO::FETCH_ASSOC);
-		if ($result !== false) {
-			$this->_userinfo = $result;
+
+		/**
+		 * FIXME testing code
+		 */
+		$usertable = Database::dispense('users');
+		$usertable->apikey = 'mysupersecretkey';
+		$usertable->name = 'admin';
+		Database::store($usertable);
+
+		$user = Database::findOne('users', ' apikey = ? ', array($this->_apikey));
+		if ($user !== null) {
+			$this->_userinfo = $user;
 			// don't include password and api-key
-			unset($this->_userinfo['api_key']);
-			unset($this->_userinfo['password']);
+			$this->_userinfo->apikey = null;
+			$this->_userinfo->password = null;
 			return true;
 		}
 		return false;
-		// this part can never be reached
 	}
 
 	/**
@@ -243,6 +249,10 @@ class Froxlor implements iFroxlor {
 	 * @throws ApiException
 	 */
 	private function _checkPrerequisites() {
+
+		// FIXME auto-detect or similar
+		@date_default_timezone_set('Europe/Berlin');
+
 		// check php version
 		if (PHP_VERSION_ID < 50300) {
 			throw new ApiException(503, 'Froxlor api requires PHP-5.3 or newer');
@@ -251,9 +261,22 @@ class Froxlor implements iFroxlor {
 		if (!extension_loaded('PDO')) {
 			throw new ApiException(503, 'Froxlor api requires PHP compiled with PDO support');
 		}
-		// pdo_mysql (for now!)
-		if (!in_array('mysql', PDO::getAvailableDrivers())) {
-			throw new ApiException(503, 'Froxlor api requires PDO compiled with mysql support');
+		// check database conf
+		$_dbconf = FROXLOR_API_DIR.'/conf/db.inc.php';
+		if (!file_exists($_dbconf)) {
+			throw new ApiException(503, 'Cannot connect to database due to missing config file');
+		}
+		if (!is_readable($_dbconf)) {
+			throw new ApiException(503, 'Cannot connect to database due to missing permission to read the config file');
+		}
+
+		include $_dbconf;
+		$driver = $dbconf["db_driver"];
+		unset($dbconf);
+		$ext = strstr($driver, ":", true);
+		// check pdo_extension for used dbms
+		if (!in_array($ext, PDO::getAvailableDrivers())) {
+			throw new ApiException(503, 'Froxlor api requires PDO compiled with '.$ext.' support');
 		}
 
 		// api key
@@ -262,15 +285,6 @@ class Froxlor implements iFroxlor {
 		}
 		if (!$this->_validateApiKey()) {
 			throw new ApiException(403, 'No valid API user. Check your API key');
-		}
-
-		// check database conf
-		$dbconf = FROXLOR_API_DIR.'/conf/db.inc.php';
-		if (!file_exists($dbconf)) {
-			throw new ApiException(503, 'Cannot connect to database due to missing config file');
-		}
-		if (!is_readable($dbconf)) {
-			throw new ApiException(503, 'Cannot connect to database due to missing permission to read the config file');
 		}
 	}
 

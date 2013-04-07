@@ -44,48 +44,44 @@ class Database {
 	 *
 	 * @return PDO
 	 */
-	private static function getLink() {
+	private static function init() {
 
 		if (self::$_link) {
 			return self::$_link;
 		}
 
 		require FROXLOR_API_DIR . "/conf/db.inc.php";
+		require_once dirname(__FILE__)."/rb.php";
 
+		// MySQL: 'mysql:host=localhost;dbname=mydatabase', 'user','password'
+		// SQLite: 'sqlite:/tmp/dbfile.txt', 'user','password'
 		$driver = $dbconf["db_driver"];
-		$dsn = "${driver}:";
 		$user = $dbconf["db_user"];
 		$password = $dbconf["db_password"];
-		$options = $dbconf["db_options"];
-		$attributes = $dbconf["db_attributes"];
 
-		foreach ($dbconf["dns"] as $k => $v) {
-			$dsn .= $k."=".$v.";";
-		}
+		// Setup RedBeansPHP
+		R::setup($driver, $user, $password);
+		//R::freeze(true);
+		R::debug(false);
+		R::$writer->setUseCache(true);
 
 		unset($dbconf);
 
-		self::$_link = new PDO($dsn, $user, $password, $options);
-
-		foreach ($attributes as $k => $v) {
-			self::$_link->setAttribute(constant("PDO::".$k), constant("PDO::".$v));
-		}
-
-		return self::$_link;
+		return 'R';
 	}
 
 	/**
 	 * magic function which takes all static calls,
 	 * creates a database object if needed and runs
 	 * the given method.
-	 * 
+	 *
 	 * @param string $name
 	 * @param mixed $args
-	 * 
+	 *
 	 * @return mixed
 	 */
 	public static function __callStatic($name, $args) {
-		$callback = array(self::getLink(), $name);
+		$callback = array(self::init(), $name);
 		return call_user_func_array($callback, $args );
 	}
 }
