@@ -162,4 +162,13 @@ class ApiResponse implements iApiResponse {
 	public function getResponse() {
 		return $this->_data;
 	}
+
+	/**
+	 * @see iApiResponse::getData()
+	 *
+	 * @return array|null
+	 */
+	public function getData() {
+		return isset($this->_data['body']) ? $this->_data['body'] : null;
+	}
 }

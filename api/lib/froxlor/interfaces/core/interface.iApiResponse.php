@@ -72,4 +72,11 @@ interface iApiResponse {
 	 */
 	public function getResponse();
 
+	/**
+	 * returns the response data-body as php-array
+	 *
+	 * @return array|null
+	 */
+	public function getData();
+
 }

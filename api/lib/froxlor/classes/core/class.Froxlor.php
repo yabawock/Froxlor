@@ -187,7 +187,8 @@ class Froxlor implements iFroxlor {
 
 				// append admin/reseller data to the request so we use it internally
 				$this->_request['body']['_userinfo'] = $this->_userinfo;
-				$req_result = call_user_func($mod.'::'.$fun, $this->_request['body']);
+				//$req_result = call_user_func($mod.'::'.$fun, $this->_request['body']);
+				$req_result = $mod::$fun($this->_request['body']);
 
 			} catch(ApiException $e) {
 
