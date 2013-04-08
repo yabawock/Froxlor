@@ -1,7 +1,9 @@
 <?php
 
 /**
- * Froxlor API version interface
+ * FroxlorModuleException class
+ *
+ * This class extends the ApiException class
  *
  * PHP version 5
  *
@@ -21,7 +23,9 @@
  */
 
 /**
- * Interface ApiVersion
+ * Class FroxlorModuleException
+ *
+ * This class extends the ApiException class
  *
  * @copyright  (c) the authors
  * @author     Froxlor team <team@froxlor.org> (2010-)
@@ -30,22 +34,4 @@
  * @package    API
  * @since      0.99.0
  */
-interface iApiVersion {
-
-	/**
-	 * This is the only place where the
-	 * Froxlor API version is defined
-	 *
-	 * @var const
-	 */
-	const API_VERSION = '0.99';
-
-	/**
-	 * Main Froxlor version which is
-	 * used to show in the panel and
-	 * check for new version etc.
-	 *
-	 * @var const
-	 */
-	const API_RELEASE_VERSION = '0.99.0';
-}
+class FroxlorModuleException extends ApiException {}

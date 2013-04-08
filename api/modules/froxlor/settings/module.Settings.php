@@ -6,7 +6,6 @@
  * PHP version 5
  *
  * This file is part of the Froxlor project.
- * Copyright (c) 2003-2009 the SysCP Team (see authors).
  * Copyright (c) 2010- the Froxlor Team (see authors).
  *
  * For the full copyright and license information, please view the COPYING
@@ -31,39 +30,43 @@
  * @package    API
  * @since      0.99.0
  */
-class Settings implements iSettings {
+class Settings extends FroxlorModule implements iSettings {
 
 	/**
 	 * @see iSettings::listSettings()
 	 *
 	 * @return array
 	 */
-	public static function listSettings(array &$params = null) {
+	public static function listSettings() {
 
 		// check for limit-parameter
 		$limit = array();
-		if ($params != null
-				&& is_array($params)
-				&& isset($params['limit'])
-				&& $params['limit'] != ''
-		) {
-			// explode by dot
-			$limit = explode('.', $params['limit']);
-		}
+		$params = self::getParam('limit');
+		$limit = explode('.', $params);
 
 		// is something in there?
 		if (isset($limit[0])
 				&& $limit[0] != ''
 		) {
 			// limit by given module
-			$fields = 'module = :mod';
-			$values = array(':mod' => $limit[0]);
+			$fields = '';
+			$values = array();
+
+			if ($limit[0] != '*') {
+				$fields .= 'module = :mod';
+				$values[':mod'] = $limit[0];
+			}
+
 			// check for more limitation
 			if (isset($limit[1])
 					&& $limit[1] != ''
+					&& $limit[1] != '*'
 			) {
 				// limit also by section
-				$fields .= ' AND section = :sec';
+				if ($fields != '') {
+					$fields .= ' AND ';
+				}
+				$fields .= 'section = :sec';
 				$values[':sec'] = $limit[1];
 			}
 			// find them
@@ -92,10 +95,11 @@ class Settings implements iSettings {
 	 *
 	 * @return mixed settings value
 	 */
-	public static function statusSetting(array &$param) {
+	public static function statusSetting() {
 
 		// explode ident-parameter by dot
-		$params = explode('.', $param['ident']);
+		$param = self::getParam('ident');
+		$params = explode('.', $param);
 
 		// validate it
 		if (!is_array($params)
@@ -116,7 +120,7 @@ class Settings implements iSettings {
 
 		// if null, no setting was found
 		if ($setting === null) {
-			throw new ApiException(404, 'Setting "'.$param['ident'].'" not found');
+			throw new SettingsException(404, 'Setting "'.$param['ident'].'" not found');
 		}
 
 		// return it as array

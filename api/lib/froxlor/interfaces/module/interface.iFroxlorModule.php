@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Froxlor API version interface
+ * FroxlorModule API interface
  *
  * PHP version 5
  *
@@ -21,7 +21,7 @@
  */
 
 /**
- * Interface ApiVersion
+ * Interface FroxlorModule
  *
  * @copyright  (c) the authors
  * @author     Froxlor team <team@froxlor.org> (2010-)
@@ -30,22 +30,21 @@
  * @package    API
  * @since      0.99.0
  */
-interface iApiVersion {
+interface iFroxlorModule {
 
 	/**
-	 * This is the only place where the
-	 * Froxlor API version is defined
+	 * getter for $parameters
 	 *
-	 * @var const
+	 * @return array
+	 * @internal
 	 */
-	const API_VERSION = '0.99';
+	public static function getParamList();
 
 	/**
-	 * Main Froxlor version which is
-	 * used to show in the panel and
-	 * check for new version etc.
+	 * setter for $parameters
 	 *
-	 * @var const
+	 * @param array $params
+	 * @internal
 	 */
-	const API_RELEASE_VERSION = '0.99.0';
+	public static function setParamList(array $params = null);
 }

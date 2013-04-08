@@ -6,7 +6,6 @@
  * PHP version 5
  *
  * This file is part of the Froxlor project.
- * Copyright (c) 2003-2009 the SysCP Team (see authors).
  * Copyright (c) 2010- the Froxlor Team (see authors).
  *
  * For the full copyright and license information, please view the COPYING
@@ -37,10 +36,13 @@ interface iSettings {
 	 * list all available settings, optionally
 	 * limited by given 'module' and 'section'
 	 * (separated by a dot, e.g. 'limit' => 'Core[.system]')
+	 * In case you need to list all settings of a
+	 * specific section, you can use an asterisk,
+	 * e.g. 'limit' => '*.domain'
 	 *
 	 * @return array 
 	 */
-	public static function listSettings(array &$params);
+	public static function listSettings();
 
 	/**
 	 * return a specific setting by given
@@ -49,6 +51,6 @@ interface iSettings {
 	 *
 	 * @return mixed settings value
 	*/
-	public static function statusSetting(array &$param);
+	public static function statusSetting();
 
 }

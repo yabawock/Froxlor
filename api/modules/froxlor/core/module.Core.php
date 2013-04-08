@@ -6,7 +6,6 @@
  * PHP version 5
  *
  * This file is part of the Froxlor project.
- * Copyright (c) 2003-2009 the SysCP Team (see authors).
  * Copyright (c) 2010- the Froxlor Team (see authors).
  *
  * For the full copyright and license information, please view the COPYING
@@ -31,7 +30,7 @@
  * @package    API
  * @since      0.99.0
  */
-class Core implements iCore {
+class Core extends FroxlorModule implements iCore {
 
 	/**
 	 * @see iCore::statusVersion()

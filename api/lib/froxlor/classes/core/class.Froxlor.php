@@ -6,7 +6,6 @@
  * PHP version 5
  *
  * This file is part of the Froxlor project.
- * Copyright (c) 2003-2009 the SysCP Team (see authors).
  * Copyright (c) 2010- the Froxlor Team (see authors).
  *
  * For the full copyright and license information, please view the COPYING
@@ -188,7 +187,8 @@ class Froxlor implements iFroxlor {
 				// append admin/reseller data to the request so we use it internally
 				$this->_request['body']['_userinfo'] = $this->_userinfo;
 				//$req_result = call_user_func($mod.'::'.$fun, $this->_request['body']);
-				$req_result = $mod::$fun($this->_request['body']);
+				$mod::setParamList($this->_request['body']);
+				$req_result = $mod::$fun();
 
 			} catch(ApiException $e) {
 
