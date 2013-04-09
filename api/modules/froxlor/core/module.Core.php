@@ -135,10 +135,12 @@ class Core extends FroxlorModule implements iCore {
 		// PHP SAPI
 		$webserverinterface = strtoupper(@php_sapi_name());
 
-		// DB Server
-		$dbserver = Database::getAttribute(PDO::ATTR_SERVER_VERSION);
-		// DB Client
-		$dbclient = Database::getAttribute(PDO::ATTR_CLIENT_VERSION);
+		// get PDO Object
+		$pdo = Database::getDatabaseAdapter()->getDatabase();
+		// DB Type
+		$dbtype = $pdo->getDatabaseType();
+		// DB Version
+		$dbversion = $pdo->getDatabaseVersion();
 
 		// load average
 		if (function_exists('sys_getloadavg')) {
@@ -186,8 +188,8 @@ class Core extends FroxlorModule implements iCore {
 				'php_version' => $phpversion,
 				'php_sapi' => $webserverinterface,
 				'php_memorylimit' => $phpmemorylimit,
-				'db_server' => $dbserver,
-				'db_client' => $dbclient,
+				'db_type' => $dbtype,
+				'db_version' => $dbversion,
 				'server_load' => $load,
 				'server_kernel' => $kernel,
 				'server_uptime' => $uptime
