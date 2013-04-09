@@ -71,13 +71,17 @@ abstract class FroxlorModule implements iFroxlorModule {
 	protected static function getParam($param = null, $empty_allowed = false) {
 		// does it exist?
 		if (!isset(self::$parameters[$param])) {
-			throw new FroxlorModuleException(404, 'Requested parameter "'.$param.'" could not be found');
+			if ($empty_allowed == false) {
+				throw new FroxlorModuleException(404, 'Requested parameter "'.$param.'" could not be found');
+			}
+			return '';
 		}
 		// is it empty? (if not allowed)
-		if ($empty_allowed == false
-				&& self::$parameters[$param] == ''
-		) {
-			throw new FroxlorModuleException(406, 'Requested parameter "'.$param.'" is empty where it should not be');
+		if (self::$parameters[$param] == '') {
+			if ($empty_allowed == false) {
+				throw new FroxlorModuleException(406, 'Requested parameter "'.$param.'" is empty where it should not be');
+			}
+			return '';
 		}
 		// everything else is fine
 		return self::$parameters[$param];

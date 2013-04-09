@@ -146,6 +146,11 @@ class ApiRequest implements iApiRequest {
 	 */
 	public function setFunction($func = null) {
 
+		// validate function roughly
+		if (preg_match('/^(\w+)$/', $func) == false) {
+			throw new ApiException(406, 'The given function name is not valid');
+		}
+
 		// set the function
 		$this->_data['request_function'] = $func;
 

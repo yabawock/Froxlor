@@ -41,7 +41,7 @@ class Settings extends FroxlorModule implements iSettings {
 
 		// check for limit-parameter
 		$limit = array();
-		$params = self::getParam('limit');
+		$params = self::getParam('limit', true);
 		$limit = explode('.', $params);
 
 		// is something in there?
