@@ -42,6 +42,16 @@ interface iFroxlor extends iApiVersion {
 	public static function getApiVersion();
 
 	/**
+	 * return the instanciated Froxlor-object
+	 * only used to place api-calls "internally"
+	 *
+	 * @throws ApiException
+	 * @return Froxlor
+	 * @internal
+	 */
+	public static function getApi();
+
+	/**
 	 * sends an API-request to the request-handler
 	 *
 	 * @param ApiRequest $api_req object of the ApiRequest class

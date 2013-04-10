@@ -70,10 +70,10 @@ class Settings extends FroxlorModule implements iSettings {
 				$values[':sec'] = $limit[1];
 			}
 			// find them
-			$settings = Database::find('frx_settings', $fields, $values);
+			$settings = Database::find('settings', $fields, $values);
 		} else {
 			// find all of them
-			$settings = Database::findAll('frx_settings',' ORDER BY module');
+			$settings = Database::findAll('settings',' ORDER BY module');
 		}
 
 		// create array from beans
@@ -116,7 +116,7 @@ class Settings extends FroxlorModule implements iSettings {
 		);
 
 		// go find the setting
-		$setting = Database::findOne('frx_settings', 'module = :mod AND section = :sec AND name = :nam', $dbparam);
+		$setting = Database::findOne('settings', 'module = :mod AND section = :sec AND name = :nam', $dbparam);
 
 		// if null, no setting was found
 		if ($setting === null) {

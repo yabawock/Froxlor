@@ -61,7 +61,13 @@ class ApiLogger implements iLogger {
 	 * @var SimpleXML
 	 */
 	private $_logconf = null;
-	
+
+	/**
+	 * if set using setErrorException() the message, file, line, etc. for the
+	 * response is taken from the exception instead of the debug_backtrace()
+	 *
+	 * @var Exception
+	 */
 	private static $_errException = null;
 
 	public static function setErrorException($e = null) {
@@ -163,7 +169,7 @@ class ApiLogger implements iLogger {
 
 	/**
 	 * this function creates a new *Logger
-	 * instance for each log-facility and calls 
+	 * instance for each log-facility and calls
 	 * its log-function with the specific message and loglevel
 	 *
 	 * @param string $text     message to log
@@ -224,7 +230,7 @@ class ApiLogger implements iLogger {
 		} else {
 			$t = debug_backtrace();
 			$file = $t[$level]['file'];
-			$l = (isset($t[$level-1]['line']) ? $t[$level-1]['line'] : 0);
+			$l = (isset($t[$level]['line']) ? $t[$level]['line'] : 0);
 		}
 		return basename($file).':'.$l;
 	}

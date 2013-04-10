@@ -46,7 +46,7 @@ abstract class FroxlorModule implements iFroxlorModule {
 	/**
 	 * @see iFroxlorModule::setParamList()
 	 */
-	public static function setParamList(array &$params = null) {
+	public static function setParamList(array $params = null) {
 		self::$parameters = $params;
 	}
 
@@ -63,22 +63,22 @@ abstract class FroxlorModule implements iFroxlorModule {
 	 * Maybe more in the future
 	 *
 	 * @param string $param
-	 * @param bool $empty_allowed
+	 * @param bool $optional
 	 *
 	 * @throws FroxlorModuleException
 	 * @return mixed
 	 */
-	protected static function getParam($param = null, $empty_allowed = false) {
+	protected static function getParam($param = null, $optional = false) {
 		// does it exist?
 		if (!isset(self::$parameters[$param])) {
-			if ($empty_allowed == false) {
+			if ($optional == false) {
 				throw new FroxlorModuleException(404, 'Requested parameter "'.$param.'" could not be found');
 			}
 			return '';
 		}
 		// is it empty? (if not allowed)
 		if (self::$parameters[$param] == '') {
-			if ($empty_allowed == false) {
+			if ($optional == false) {
 				throw new FroxlorModuleException(406, 'Requested parameter "'.$param.'" is empty where it should not be');
 			}
 			return '';
