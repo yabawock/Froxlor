@@ -15,7 +15,7 @@
  * @copyright  (c) the authors
  * @author     Froxlor team <team@froxlor.org> (2010-)
  * @license    GPLv2 http://files.froxlor.org/misc/COPYING.txt
- * @category   core
+ * @category   Modules
  * @package    API
  * @since      0.99.0
  */
@@ -26,7 +26,7 @@
  * @copyright  (c) the authors
  * @author     Froxlor team <team@froxlor.org> (2010-)
  * @license    GPLv2 http://files.froxlor.org/misc/COPYING.txt
- * @category   core
+ * @category   Modules
  * @package    API
  * @since      0.99.0
  */

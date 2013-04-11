@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Froxlor API Core-Module interface
+ * Froxlor API Permissions-Module interface
  *
  * PHP version 5
  *
@@ -21,7 +21,7 @@
  */
 
 /**
- * Interface iCore
+ * Interface iPermissions
  *
  * @copyright  (c) the authors
  * @author     Froxlor team <team@froxlor.org> (2010-)
@@ -30,37 +30,18 @@
  * @package    API
  * @since      0.99.0
  */
-interface iCore {
+interface iPermissions {
 
 	/**
-	 * return the current release version
+	 * checks if a given user (id) has a given permission (ident) 
+	 * by searching the users groups for this permission
 	 *
-	 * @return string version
+	 * @param int $userid
+	 * @param string $ident e.g. Core.useAPI
+	 *
+	 * @throws PermissionsException
+	 * @return bool allowed=true if user has permission
 	 */
-	public static function statusVersion();
+	public static function statusUserPermission();
 
-	/**
-	 * return the current API version
-	 *
-	 * @return string version
-	*/
-	public static function statusApiVersion();
-
-	/**
-	 * return whether a newer version is available.
-	 * Hooks that are being called:
-	 * - statusUpdate_beforeReturn
-	 *
-	 * @return string
-	*/
-	public static function statusUpdate();
-
-	/**
-	 * returns various system information.
-	 * Hooks that are being called:
-	 * - statusSystem_beforeReturn
-	 *
-	 * @return array
-	*/
-	public static function statusSystem();
 }

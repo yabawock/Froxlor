@@ -15,7 +15,7 @@
  * @copyright  (c) the authors
  * @author     Froxlor team <team@froxlor.org> (2010-)
  * @license    GPLv2 http://files.froxlor.org/misc/COPYING.txt
- * @category   core
+ * @category   Modules
  * @package    API
  * @since      0.99.0
  */
@@ -26,7 +26,7 @@
  * @copyright  (c) the authors
  * @author     Froxlor team <team@froxlor.org> (2010-)
  * @license    GPLv2 http://files.froxlor.org/misc/COPYING.txt
- * @category   core
+ * @category   Modules
  * @package    API
  * @since      0.99.0
  */
@@ -97,16 +97,8 @@ class Settings extends FroxlorModule implements iSettings {
 	 */
 	public static function statusSetting() {
 
-		// explode ident-parameter by dot
-		$param = self::getParam('ident');
-		$params = explode('.', $param);
-
-		// validate it
-		if (!is_array($params)
-				|| count($params) != 3
-		) {
-			throw new ApiException(406, 'invalid parameter list for '.__FUNCTION__);
-		}
+		// get ident parameter
+		$params = self::getParamIdent('ident', 3);
 
 		// set database-parameter
 		$dbparam = array(

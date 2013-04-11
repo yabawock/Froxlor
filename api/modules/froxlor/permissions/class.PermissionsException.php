@@ -1,7 +1,9 @@
 <?php
 
 /**
- * Froxlor API Core-Module interface
+ * PermissionsException class
+ *
+ * This class extends the ApiException class
  *
  * PHP version 5
  *
@@ -21,7 +23,9 @@
  */
 
 /**
- * Interface iCore
+ * Class PermissionsException
+ *
+ * This class extends the ApiException class
  *
  * @copyright  (c) the authors
  * @author     Froxlor team <team@froxlor.org> (2010-)
@@ -30,37 +34,4 @@
  * @package    API
  * @since      0.99.0
  */
-interface iCore {
-
-	/**
-	 * return the current release version
-	 *
-	 * @return string version
-	 */
-	public static function statusVersion();
-
-	/**
-	 * return the current API version
-	 *
-	 * @return string version
-	*/
-	public static function statusApiVersion();
-
-	/**
-	 * return whether a newer version is available.
-	 * Hooks that are being called:
-	 * - statusUpdate_beforeReturn
-	 *
-	 * @return string
-	*/
-	public static function statusUpdate();
-
-	/**
-	 * returns various system information.
-	 * Hooks that are being called:
-	 * - statusSystem_beforeReturn
-	 *
-	 * @return array
-	*/
-	public static function statusSystem();
-}
+class PermissionsException extends ApiException {}

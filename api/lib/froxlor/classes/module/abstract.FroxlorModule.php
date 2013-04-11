@@ -99,4 +99,32 @@ abstract class FroxlorModule implements iFroxlorModule {
 	protected static function setParam($param = null, $new_value = null) {
 		self::$parameters[$param] = $new_value;
 	}
+
+	/**
+	 * returns an array of parameters when given
+	 * a parameter-ident-string, e.g. Module.section.something
+	 * results in: array(0 => Module, 1 => section, 2 => something)
+	 * optionally checks the required amount of elements if > 0
+	 *
+	 * @param string $param
+	 * @param int $required_elements
+	 * @param bool $optional
+	 *
+	 * @throws FroxlorModuleException
+	 * @return array
+	 */
+	protected static function getParamIdent($param = null, $required_elements = 0, $optional = false) {
+
+		$param = self::getParam($param, $optional);
+
+		$params = explode('.', $param);
+		// validate it
+		if (!is_array($params)
+				|| ($required_elements > 0 && count($params) != $required_elements)
+		) {
+			throw new ApiException(406, 'invalid parameter list given');
+		}
+
+		return $params;
+	}
 }

@@ -15,7 +15,7 @@
  * @copyright  (c) the authors
  * @author     Froxlor team <team@froxlor.org> (2010-)
  * @license    GPLv2 http://files.froxlor.org/misc/COPYING.txt
- * @category   core
+ * @category   Modules
  * @package    API
  * @since      0.99.0
  */
@@ -26,7 +26,7 @@
  * @copyright  (c) the authors
  * @author     Froxlor team <team@froxlor.org> (2010-)
  * @license    GPLv2 http://files.froxlor.org/misc/COPYING.txt
- * @category   core
+ * @category   Modules
  * @package    API
  * @since      0.99.0
  */
@@ -93,9 +93,9 @@ class Core extends FroxlorModule implements iCore {
 			$latestversion = curl_exec($ch);
 			// clear
 			curl_close($ch);
-			// split 
+			// split
 			// 0 => version
-			// 1 => info-link 
+			// 1 => info-link
 			// 2 => whether it's a testing-version or not
 			// 3 => extra message
 			$_vinfo = explode('|', $latestversion);
@@ -127,6 +127,16 @@ class Core extends FroxlorModule implements iCore {
 	 * @return array
 	 */
 	public static function statusSystem() {
+
+		$user = self::getParam('_userinfo');
+		$resp = Froxlor::getApi()->apiCall(
+				'Permissions.statusUserPermission',
+				array('userid' => $user->id, 'ident' => 'Core.view_statusSystem')
+		);
+
+		if ($resp->getResponseCode() != '200') {
+			throw new ApiException(403, 'You are not allowed to access this function');
+		}
 
 		// PHP version
 		$phpversion = phpversion();

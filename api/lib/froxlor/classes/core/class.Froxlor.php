@@ -38,12 +38,14 @@ class Froxlor implements iFroxlor {
 
 	/**
 	 * static object holder
+	 *
 	 * @var Froxlor
 	 */
 	private static $_frx = null;
 
 	/**
 	 * api version indicator
+	 *
 	 * @var string
 	 */
 	private static $_apiversion = self::API_VERSION;
@@ -58,17 +60,22 @@ class Froxlor implements iFroxlor {
 
 	/**
 	 * internal storage for API responses
+	 *
 	 * @var object ApiResponse
 	 */
 	private $_lastrepsonse = null;
 
 	/**
 	 * the users api-key, used to identify the user
+	 *
+	 * @var string
 	 */
 	private $_apikey = null;
 
 	/**
 	 * the data of the api-key user
+	 *
+	 * @var Model_User user-bean
 	 */
 	private $_userinfo = null;
 
@@ -114,13 +121,24 @@ class Froxlor implements iFroxlor {
 		if ($api_version == null) {
 			$api_version = self::API_VERSION;
 		}
-		if (!is_array(self::$_frx)) {
-			self::$_frx = array();
+		if (!isset(self::$_frx)) {
+			self::$_frx = new Froxlor($api_key, $api_version);
 		}
-		if (!isset(self::$_frx[$api_key.$api_version])) {
-			self::$_frx[$api_key.$api_version] = new Froxlor($api_key, $api_version);
+		return self::$_frx;
+	}
+
+	/**
+	 * @see iFroxlor::getApi()
+	 *
+	 * @throws ApiException
+	 * @return Froxlor
+	 * @internal
+	 */
+	public static function getApi() {
+		if (!isset(self::$_frx)) {
+			throw new ApiException(500, 'Froxlor does not seem to be instanciated yet');
 		}
-		return self::$_frx[$api_key.$api_version];
+		return self::$_frx;
 	}
 
 	/**
@@ -174,6 +192,9 @@ class Froxlor implements iFroxlor {
 
 				ApiLogger::debug('Calling '.$mod.'::'.$fun);
 
+				// check if required module exists
+				Module::requireModules($mod);
+
 				// check whether function exists in module
 				try {
 					$refl = new ReflectionMethod($mod, $fun);
@@ -224,21 +245,21 @@ class Froxlor implements iFroxlor {
 	 */
 	private function _validateApiKey() {
 
-		/**
-		 * FIXME testing code
-		 */
-		$usertable = Database::dispense('users');
-		$usertable->apikey = 'mysupersecretkey';
-		$usertable->name = 'admin';
-		Database::store($usertable);
-
 		$user = Database::findOne('users', ' apikey = ? ', array($this->_apikey));
 		if ($user !== null) {
-			$this->_userinfo = $user;
-			// don't include password and api-key
-			$this->_userinfo->apikey = null;
-			$this->_userinfo->password = null;
-			return true;
+
+			$api_response = $this->apiCall(
+					'Permissions.statusUserPermission',
+					array('userid' => $user->id, 'ident' => 'Core.useAPI')
+			);
+
+			if ($api_response->getResponseCode() == '200') {
+				$this->_userinfo = $user;
+				// don't include password and api-key
+				$this->_userinfo->apikey = null;
+				$this->_userinfo->password = null;
+				return true;
+			}
 		}
 		return false;
 	}

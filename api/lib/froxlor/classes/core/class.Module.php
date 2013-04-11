@@ -54,9 +54,15 @@ class Module implements iModule {
 			}
 			// check all the modules
 			foreach ($modules as $module) {
-				// can we can the class?
-				if (!class_exists($module)) {
-					// no - we cannot
+				try {
+					// can we use the class?
+					if (class_exists($module)) {
+						continue;
+					}
+				} catch (CoreException $e) {
+					// The autoloader will throw a CoreException
+					// that the required class could not be found
+					// but we want a nicer error-message for this here
 					throw new ApiException(404, 'The required module "'.$module."' could not be found");
 				}
 			}
