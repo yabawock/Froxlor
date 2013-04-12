@@ -112,7 +112,7 @@ class Settings extends FroxlorModule implements iSettings {
 
 		// if null, no setting was found
 		if ($setting === null) {
-			throw new SettingsException(404, 'Setting "'.$param.'" not found');
+			throw new SettingsException(404, 'Setting "'.implode('.', $params).'" not found');
 		}
 
 		// return it as array

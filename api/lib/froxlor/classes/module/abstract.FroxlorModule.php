@@ -64,17 +64,18 @@ abstract class FroxlorModule implements iFroxlorModule {
 	 *
 	 * @param string $param
 	 * @param bool $optional
+	 * @param mixed $default value which is returned if optional=true and param is not set
 	 *
 	 * @throws FroxlorModuleException
 	 * @return mixed
 	 */
-	protected static function getParam($param = null, $optional = false) {
+	protected static function getParam($param = null, $optional = false, $default = '') {
 		// does it exist?
 		if (!isset(self::$parameters[$param])) {
 			if ($optional == false) {
 				throw new FroxlorModuleException(404, 'Requested parameter "'.$param.'" could not be found');
 			}
-			return '';
+			return $default;
 		}
 		// is it empty? (if not allowed)
 		if (self::$parameters[$param] == '') {
