@@ -1,7 +1,9 @@
 <?php
 
 /**
- * Froxlor API Resources-Module interface
+ * UserLimitsException class
+ *
+ * This class extends the ApiException class
  *
  * PHP version 5
  *
@@ -21,7 +23,9 @@
  */
 
 /**
- * Interface iResources
+ * Class UserLimitsException
+ *
+ * This class extends the ApiException class
  *
  * @copyright  (c) the authors
  * @author     Froxlor team <team@froxlor.org> (2010-)
@@ -30,27 +34,4 @@
  * @package    API
  * @since      0.99.0
  */
-interface iResources {
-
-	/**
-	 * returns a resource by given ident
-	 *
-	 * @param string $ident e.g. Core.maxloginattempts
-	 *
-	 * @throws ResourcesException
-	 * @return array the resource-bean-data
-	 */
-	public static function statusResource();
-
-	/**
-	 * adds a new resources to the database
-	 *
-	 * @param string $ident e.g. Core.maxloginattempts
-	 * @param mixed $default a default value for the resources, if empty -1 is used
-	 *
-	 * @throws ResourcesException if an equal resource exists
-	 * @return int id of the new resource-entry
-	*/
-	public static function addResource();
-
-}
+class UserLimitsException extends ApiException {}

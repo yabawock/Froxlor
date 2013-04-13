@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Froxlor API Resources-Module interface
+ * Froxlor API UserLimits-Module interface
  *
  * PHP version 5
  *
@@ -21,7 +21,7 @@
  */
 
 /**
- * Interface iResources
+ * Interface iUserLimits
  *
  * @copyright  (c) the authors
  * @author     Froxlor team <team@froxlor.org> (2010-)
@@ -30,27 +30,18 @@
  * @package    API
  * @since      0.99.0
  */
-interface iResources {
+interface iUserLimits {
 
 	/**
-	 * returns a resource by given ident
+	 * connects a resource to a given user identified by ident and userid, e.g.
+	 * {'userid' => 1, 'ident' => 'Core.maxloginattempts' [, 'limit' => '3'] }
 	 *
+	 * @param int $userid
 	 * @param string $ident e.g. Core.maxloginattempts
+	 * @param mixed $limit default is -1
 	 *
-	 * @throws ResourcesException
-	 * @return array the resource-bean-data
+	 * @throws UserLimitsException if the user does not exist
+	 * @return bool|mixed success=true if successful otherwise a non-success-apiresponse
 	 */
-	public static function statusResource();
-
-	/**
-	 * adds a new resources to the database
-	 *
-	 * @param string $ident e.g. Core.maxloginattempts
-	 * @param mixed $default a default value for the resources, if empty -1 is used
-	 *
-	 * @throws ResourcesException if an equal resource exists
-	 * @return int id of the new resource-entry
-	*/
-	public static function addResource();
-
+	public static function addUserLimit();
 }
