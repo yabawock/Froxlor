@@ -213,4 +213,71 @@ class Core extends FroxlorModule implements iCore {
 				$result_data
 		);
 	}
+
+	/**
+	 * @see iCore::listApiFunctions()
+	 *
+	 * @param string $module optional only list functions of specific module
+	 *
+	 * @throws CoreException
+	 * @return array
+	 */
+	public static function listApiFunctions() {
+
+		$module = self::getParam('module', true, null);
+
+		$functions = array();
+		if ($module != null) {
+			// check for existence
+			Module::requireModules($module);
+			// now get all static functions
+			$reflection = new ReflectionClass($module);
+			$_functions = $reflection->getMethods(ReflectionMethod::IS_STATIC | ReflectionMethod::IS_PUBLIC);
+			foreach ($_functions as $func) {
+				if ($func->class == $module) {
+					array_push($functions, array(
+					'function' => $func->name,
+					'module' => $func->class
+					));
+				}
+			}
+		} else {
+			// check all the modules
+			$path = FROXLOR_API_DIR . '/modules/';
+			// valid directory?
+			if (is_dir($path)) {
+				// create RecursiveIteratorIterator
+				$its = new RecursiveIteratorIterator(
+						new RecursiveDirectoryIterator($path)
+				);
+				// check every file
+				foreach ($its as $fullFileName => $it ) {
+					// does it match the Filename pattern?
+					$matches = array();
+					if (preg_match("/^module\.(.+)\.php$/i", $it->getFilename(), $matches)) {
+						// check for existence
+						Module::requireModules($matches[1]);
+						// now get all static functions
+						$reflection = new ReflectionClass($matches[1]);
+						$_functions = $reflection->getMethods(ReflectionMethod::IS_STATIC | ReflectionMethod::IS_PUBLIC);
+						foreach ($_functions as $func) {
+							if ($func->class == $matches[1]) {
+								array_push($functions, array(
+								'function' => $func->name,
+								'module' => $func->class
+								));
+							}
+						}
+					}
+				}
+			} else {
+				// yikes - no valid directory to check
+				throw new CoreException(500, "Cannot search directory '".$path."'. No such directory.");
+			}
+		}
+
+		// return the list
+		return ApiResponse::createResponse(200, null, $functions);
+	}
+
 }

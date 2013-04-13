@@ -63,4 +63,15 @@ interface iCore {
 	 * @return array
 	*/
 	public static function statusSystem();
+
+	/**
+	 * list all available api-functions (possible
+	 * restrictions due permissions are not checked)
+	 *
+	 * @param string $module optional only list functions of specific module
+	 *
+	 * @throws CoreException
+	 * @return array
+	*/
+	public static function listApiFunctions();
 }
