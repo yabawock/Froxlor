@@ -54,12 +54,13 @@ interface iResources {
 	public static function addResource();
 
 	/**
-	 * connects a resource to a given user, identified
-	 * by ident and userid, e.g.
-	 * {'userid' => 1, 'ident' => 'Core.maxloginattempts'}
+	 * connects a resource to a given user via "UserLimits",
+	 * identified by ident and userid, e.g.
+	 * {'userid' => 1, 'ident' => 'Core.maxloginattempts' [, 'limit' => '3'] }
 	 *
 	 * @param int $userid
 	 * @param string $ident e.g. Core.maxloginattempts
+	 * @param mixed $limit default is -1
 	 *
 	 * @throws ResourcesException if the user does not exist
 	 * @return bool|mixed success=true if successful otherwise a non-success-apiresponse

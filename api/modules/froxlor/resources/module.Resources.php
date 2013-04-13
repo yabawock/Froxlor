@@ -101,6 +101,7 @@ class Resources extends FroxlorModule implements iResources {
 	 *
 	 * @param int $userid
 	 * @param string $ident e.g. Core.maxloginattempts
+	 * @param mixed $limit default is -1
 	 *
 	 * @throws ResourcesException if the user does not exist
 	 * @return bool|mixed success=true if successful otherwise a non-success-apiresponse
@@ -109,6 +110,7 @@ class Resources extends FroxlorModule implements iResources {
 
 		$ident = self::getParamIdent('ident', 2);
 		$userid = self::getParam('userid');
+		$limit = self::getIntParam('limit', true, -1);
 
 		// get the resource
 		$res_resp = Froxlor::getApi()->apiCall(
@@ -127,7 +129,18 @@ class Resources extends FroxlorModule implements iResources {
 
 			// valid user?
 			if ($user->id) {
-				$user->ownResources[] = $resource;
+				// check if the user already owns this resource
+				foreach ($user->ownUserLimits as $res) {
+					if ($res->resourceid == $resource->id) {
+						throw new ResourcesException(406, 'User already has resource "'.implode('.', $ident).'" assigned');
+					}
+				}
+				$userlimit = Database::dispense('userlimits');
+				$userlimit->resourceid = $resource->id;
+				$userlimit->limit = $limit;
+				$userlimit->inuse = 0;
+				$ulid = Database::store($userlimit);
+				$user->ownUserLimits[] = $userlimit;
 				return ApiResponse::createResponse(200, null, array('success' => true));
 			}
 
