@@ -33,6 +33,73 @@
 class UserLimits extends FroxlorModule implements iUserLimits {
 
 	/**
+	 * @see iUserLimits::statusUserLimit()
+	 *
+	 * @param int $userid
+	 * @param string $ident e.g. Core.maxloginattempts
+	 *
+	 * @throws UserLimitsException
+	 * @return array
+	 */
+	public static function statusUserLimit() {
+
+		$ident = self::getParamIdent('ident', 2);
+		$userid = self::getParam('userid');
+
+		$user = Database::load('users', $userid);
+
+		// valid user?
+		if ($user->id) {
+			// check if the user already owns this resource
+			foreach ($user->ownUserlimits as $res) {
+				$ul = Database::load('resources', $res->resourceid);
+				if ($ul->module == $ident[0]
+						&& $ul->resource == $ident[1]
+				) {
+					// return the userlimit-bean
+					return ApiResponse::createResponse(200, null, $res->export());
+				}
+			}
+
+			// resource-limit for user not found
+			throw new UserLimitsException(404, 'User has no resource "'.implode('.', $ident).'"');
+		}
+
+		// user not found
+		throw new UserLimitsException(404, 'User with the id #'.$userid.' could not be found');
+
+	}
+
+	/**
+	 * returns all user-limits added to a given user-id
+	 *
+	 * @param int $userid
+	 *
+	 * @throws UserLimitsException if user not found
+	 * @return array
+	 */
+	public static function listUserLimits() {
+
+		$userid = self::getParam('userid');
+		$user = Database::load('users', $userid);
+
+		// valid user?
+		if ($user->id) {
+			$limits = array();
+			// check if the user already owns this resource
+			foreach ($user->ownUserlimits as $res) {
+				$limits[] = $res->export();
+			}
+			// return the userlimits
+			return ApiResponse::createResponse(200, null, $limits);
+		}
+
+		// user not found
+		throw new UserLimitsException(404, 'User with the id #'.$userid.' could not be found');
+
+	}
+
+	/**
 	 * @see iResources::addUserLimit()
 	 *
 	 * @param int $userid
@@ -76,7 +143,8 @@ class UserLimits extends FroxlorModule implements iUserLimits {
 				$userlimit->limit = $limit;
 				$userlimit->inuse = 0;
 				$ulid = Database::store($userlimit);
-				$user->ownUserLimits[] = $userlimit;
+				$user->ownUserlimits[] = $userlimit;
+				Database::store($user);
 				return ApiResponse::createResponse(200, null, array('success' => true));
 			}
 

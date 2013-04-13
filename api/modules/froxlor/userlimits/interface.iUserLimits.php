@@ -33,6 +33,28 @@
 interface iUserLimits {
 
 	/**
+	 * returns a user-limit by given user-id and ident, e.g.
+	 * {'userid' => 1, 'ident' => 'Core.maxloginattempts' }
+	 *
+	 * @param int $userid
+	 * @param string $ident e.g. Core.maxloginattempts
+	 *
+	 * @throws UserLimitsException
+	 * @return array
+	 */
+	public static function statusUserLimit();
+
+	/**
+	 * returns all user-limits added to a given user-id
+	 *
+	 * @param int $userid
+	 *
+	 * @throws UserLimitsException if user not found
+	 * @return array
+	*/
+	public static function listUserLimits();
+
+	/**
 	 * connects a resource to a given user identified by ident and userid, e.g.
 	 * {'userid' => 1, 'ident' => 'Core.maxloginattempts' [, 'limit' => '3'] }
 	 *
@@ -42,6 +64,6 @@ interface iUserLimits {
 	 *
 	 * @throws UserLimitsException if the user does not exist
 	 * @return bool|mixed success=true if successful otherwise a non-success-apiresponse
-	 */
+	*/
 	public static function addUserLimit();
 }
