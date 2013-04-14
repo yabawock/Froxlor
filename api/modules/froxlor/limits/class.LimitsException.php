@@ -1,7 +1,7 @@
 <?php
 
 /**
- * UserLimitsException class
+ * LimitsException class
  *
  * This class extends the ApiException class
  *
@@ -23,7 +23,7 @@
  */
 
 /**
- * Class UserLimitsException
+ * Class LimitsException
  *
  * This class extends the ApiException class
  *
@@ -34,4 +34,4 @@
  * @package    API
  * @since      0.99.0
  */
-class UserLimitsException extends ApiException {}
+class LimitsException extends ApiException {}

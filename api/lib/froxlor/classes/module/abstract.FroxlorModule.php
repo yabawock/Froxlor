@@ -144,9 +144,10 @@ abstract class FroxlorModule implements iFroxlorModule {
 	protected static function getIntParam($param = null, $optional = false, $default = 0, $negative_allowed = false) {
 		// get param
 		$intparam = self::getParam($param, $optional, $default);
+
 		// check if it's an integer
-		if (!is_int($intparam)) {
-			throw new FroxlorModuleException(406, 'Required parameter should be an integer but it is not (value: '.$intparam.')');
+		if (!is_numeric($intparam)) {
+			throw new FroxlorModuleException(406, 'Required parameter should be a number but it is not (value: '.$intparam.')');
 		}
 		// check for negative values
 		// YES - smaller than -1 because -1 would be allowed as
@@ -155,6 +156,6 @@ abstract class FroxlorModule implements iFroxlorModule {
 			throw new FroxlorModuleException(406, 'Required parameter should not be negative but it is (value: '.$intparam.')');
 		}
 		// give it back
-		return $intparam;
+		return (int)$intparam;
 	}
 }
