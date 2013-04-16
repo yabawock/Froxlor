@@ -96,4 +96,10 @@ class Resources extends FroxlorModule implements iResources {
 		return ApiResponse::createResponse(200, null, array('id' => $resid));
 	}
 
+	/**
+	 * (non-PHPdoc)
+	 * @see FroxlorModule::Core_moduleSetup()
+	 */
+	public function Core_moduleSetup() {
+	}
 }

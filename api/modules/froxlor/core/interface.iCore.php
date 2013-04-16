@@ -74,4 +74,13 @@ interface iCore {
 	 * @return array
 	*/
 	public static function listApiFunctions();
+
+	/**
+	 * function that calls Core_moduleSetup() in
+	 * all modules via Hook. Mandatory for all modules,
+	 * even if the method is empty.
+	 *
+	 * @return null
+	*/
+	public static function doSetup();
 }

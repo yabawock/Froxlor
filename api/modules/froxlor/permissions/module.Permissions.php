@@ -34,10 +34,10 @@ class Permissions extends FroxlorModule implements iPermissions {
 
 	/**
 	 * @see iPermissions::statusUserPermission()
-	 * 
+	 *
 	 * @param int $userid
 	 * @param string $ident e.g. Core.useAPI
-	 * 
+	 *
 	 * @throws PermissionsException
 	 * @return bool allowed=true if user has permission
 	 */
@@ -74,5 +74,12 @@ class Permissions extends FroxlorModule implements iPermissions {
 		}
 		throw new PermissionsException(403, 'You are not allowed to access '.$params[0].'::'.$params[1]);
 
+	}
+
+	/**
+	 * (non-PHPdoc)
+	 * @see FroxlorModule::Core_moduleSetup()
+	 */
+	public function Core_moduleSetup() {
 	}
 }

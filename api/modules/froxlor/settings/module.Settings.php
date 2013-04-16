@@ -122,4 +122,11 @@ class Settings extends FroxlorModule implements iSettings {
 				$setting->export()
 		);
 	}
+
+	/**
+	 * (non-PHPdoc)
+	 * @see FroxlorModule::Core_moduleSetup()
+	 */
+	public function Core_moduleSetup() {
+	}
 }

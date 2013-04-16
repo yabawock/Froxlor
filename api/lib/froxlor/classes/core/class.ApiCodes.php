@@ -55,7 +55,12 @@ class APICodes implements iApiCodes {
 			 * internal failure messages
 			 */
 			500 => 'Internal API error',
-			503 => 'Service unavailable'
+			503 => 'Service unavailable',
+
+			/*
+			 * bohoo
+			 */
+			900 => 'Unknown result'
 	);
 
 	/**

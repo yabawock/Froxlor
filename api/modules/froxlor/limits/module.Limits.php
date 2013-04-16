@@ -52,6 +52,8 @@ class Limits extends FroxlorModule implements iLimits {
 			$entity = Database::load('users', $fid);
 		} elseif ($type == 1) {
 			$entity = Database::load('servers', $fid);
+		} else {
+			throw new LimitsException(406, 'Invalid type number #'.$type);
 		}
 
 		// valid entity?
@@ -93,6 +95,8 @@ class Limits extends FroxlorModule implements iLimits {
 			$entity = Database::load('users', $fid);
 		} elseif ($type == 1) {
 			$entity = Database::load('servers', $fid);
+		} else {
+			throw new LimitsException(406, 'Invalid type number #'.$type);
 		}
 
 		// valid entity?
@@ -147,6 +151,8 @@ class Limits extends FroxlorModule implements iLimits {
 				$entity = Database::load('users', $fid);
 			} elseif ($type == 1) {
 				$entity = Database::load('servers', $fid);
+			} else {
+				throw new LimitsException(406, 'Invalid type number #'.$type);
 			}
 
 			// valid entity?
@@ -174,5 +180,12 @@ class Limits extends FroxlorModule implements iLimits {
 
 		// return the response which is != 200
 		return $res_resp->getResponse();
+	}
+
+	/**
+	 * (non-PHPdoc)
+	 * @see FroxlorModule::Core_moduleSetup()
+	 */
+	public function Core_moduleSetup() {
 	}
 }

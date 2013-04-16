@@ -211,6 +211,16 @@ class Froxlor implements iFroxlor {
 				$mod::setParamList($this->_request['body']);
 				$req_result = $mod::$fun();
 
+				// function did not return anything - bad practise
+				if ($req_result === null) {
+					$req_result = ApiResponse::createResponse(
+							900, array(
+									'The module-function "'.$mod.'::'.$fun.'()" did not return anything.',
+									'It is possible that the requested action was executed successfully, but we cannot tell.'
+							)
+					);
+				}
+
 			} catch(ApiException $e) {
 
 				$req_result = $this->_handleException($e);
