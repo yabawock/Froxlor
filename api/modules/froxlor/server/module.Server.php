@@ -98,6 +98,17 @@ class Server extends FroxlorModule implements iServer {
 		$ipaddress = self::getParam('ipaddress');
 		$owners = self::getParam('owners', true, null);
 
+		// check permissions
+		$user = self::getParam('_userinfo');
+		$api_response = Froxlor::getApi()->apiCall(
+				'Permissions.statusUserPermission',
+				array('userid' => $user->id, 'ident' => 'Server.addServer')
+		);
+
+		if ($api_response->getResponseCode() != 200) {
+			throw new ApiException(403, 'You are not allowed to access this function');
+		}
+
 		// set up new server
 		$server = Database::dispense('server');
 		$server->name = $name;
@@ -106,7 +117,7 @@ class Server extends FroxlorModule implements iServer {
 		// check for owners
 		$owners = array();
 		// the creater is always an owner
-		$owners[] = Database::load('user', self::getParam('_userinfo')['id']);
+		$owners[] = Database::load('user', $user->id);
 		if (is_array($owners) && count($owners > 0)) {
 			// iterate and check
 			foreach ($owners as $owner) {
@@ -120,6 +131,9 @@ class Server extends FroxlorModule implements iServer {
 		$server_id = Database::store($server);
 		// load server bean
 		$serverbean = Database::load('server', $server_id);
+		$server_array = Database::exportAll($serverbean);
+
+		Hooks::callHooks('addServer_afterStore', $server_array);
 
 		// now add IP address
 		$ip_result = Froxlor::getApi()->apiCall(
@@ -127,13 +141,15 @@ class Server extends FroxlorModule implements iServer {
 				array('ipaddress' => $ipaddress, 'isdefault' => true, 'serverid' => $server_id)
 		);
 		if ($ip_result->getResponseCode() == 200) {
+			Hooks::callHooks('addServer_beforeReturn', $server_array);
 			// return result with updated server-bean
-			return ApiResponse::createResponse(200, null, Database::exportAll($serverbean));
+			return ApiResponse::createResponse(200, null, $server_array);
 		}
 		// rollback, there was an error, so the server needs to be removed from the database
 		Database::trash($serverbean);
 		// return the error-message from addServerIP
 		return $ip_result->getResponse();
+
 	}
 
 	/**
@@ -163,6 +179,9 @@ class Server extends FroxlorModule implements iServer {
 		$ip->isdefault = $isdefault;
 		$ip->server_id = $serverid;
 		$ip_id = Database::store($ip);
+		$ip_array = Database::load('ipaddress', $ip_id)->export();
+
+		Hooks::callHooks('addServerIP_afterStore', $ip_array);
 
 		// now update the "old" default IP to be non-default
 		$formerdefault = Database::findOne('ipaddress',
@@ -175,8 +194,10 @@ class Server extends FroxlorModule implements iServer {
 			Database::store($formerdefault);
 		}
 
+		Hooks::callHooks('addServerIP_beforeReturn', $ip_array);
+
 		// return newly added ip
-		return ApiResponse::createResponse(200, null, Database::load('ipaddress', $ip_id)->export());
+		return ApiResponse::createResponse(200, null, $ip_array);
 	}
 
 	/**
@@ -207,9 +228,12 @@ class Server extends FroxlorModule implements iServer {
 		$ip->ip = $ipaddress;
 		$ip->isdefault = $isdefault;
 		Database::store($ip);
+		$ip_array = Database::load('ipaddress', $iid)->export();
+
+		Hooks::callHooks('addServerIP_beforeReturn', $ip_array);
 
 		// return updated bean
-		return ApiResponse::createResponse(200, null, Database::load('ipaddress', $iid)->export());
+		return ApiResponse::createResponse(200, null, $ip_array);
 	}
 
 	/**
@@ -230,6 +254,18 @@ class Server extends FroxlorModule implements iServer {
 		$srv->ownIpaddress = array(Database::load('ipaddress', $ipid));
 		$srv->sharedUser = array(Database::load('user', 1));
 		$srvid = Database::store($srv);
-		// TODO: services
+
+		// TODO permission / resources
+		$perm = Database::dispense('permissions');
+		$perm->module = 'Server';
+		$perm->name = 'addServer';
+		$permid = Database::store($perm);
+
+		// load superadmin group and add permissions
+		$sagroup = Database::findOne('groups', ' groupname = :grp', array(':grp' => '@superadmin'));
+		if ($sagroup !== null) {
+			$sagroup->sharedPermissions[] = Database::load('permissions', $permid);
+			Database::store($sagroup);
+		}
 	}
 }

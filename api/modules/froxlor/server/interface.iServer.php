@@ -58,6 +58,9 @@ interface iServer {
 	 * @see iServer::addServerIP() is used to assign
 	 * the default ip to the server (editable if > one IP)
 	 * via @see iServer::modifyServerIP()
+	 * Hooks that are being called:
+	 * - addServer_afterStore
+	 * - addServer_beforeReturn
 	 *
 	 * @param string $name name of server
 	 * @param string $desc description
@@ -72,6 +75,9 @@ interface iServer {
 
 	/**
 	 * adds and assigns a new ipaddress to a server
+	 * Hooks that are being called:
+	 * - addServerIP_afterStore
+	 * - addServerIP_beforeReturn
 	 *
 	 * @param string $ipadress the IP adress (v4 or v6)
 	 * @param bool $isdefault whether this ip should be the default server ip, default: false
@@ -84,6 +90,8 @@ interface iServer {
 	/**
 	 * update a servers IP address, if $isdefault is set
 	 * the former default IP will be set isdefault=false
+	 * Hooks that are being called:
+	 * - modifyServerIP_beforeReturn
 	 *
 	 * @param int $id id of the ip-address
 	 * @param string $ipaddress new IP address value

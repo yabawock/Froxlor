@@ -79,6 +79,8 @@ interface iCore {
 	 * function that calls Core_moduleSetup() in
 	 * all modules via Hook. Mandatory for all modules,
 	 * even if the method is empty.
+	 * Hooks that are being called:
+	 * - Core_moduleSetup
 	 *
 	 * @return null
 	*/
