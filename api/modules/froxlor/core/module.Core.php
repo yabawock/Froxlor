@@ -288,6 +288,7 @@ class Core extends FroxlorModule implements iCore {
 	public static function doSetup() {
 		// call the hook to run Core_moduleSetup on all modules
 		Hooks::callHooks('Core_moduleSetup');
+		return ApiResponse::createResponse(200, 'Setup finished without errors');
 	}
 
 	/**
@@ -295,62 +296,5 @@ class Core extends FroxlorModule implements iCore {
 	 * @see FroxlorModule::Core_moduleSetup()
 	 */
 	public function Core_moduleSetup() {
-
-		/**
-		 * caution: this is test-code
-		 * and just inserts a few entities so
-		 * we can test the stuff :P
-		 */
-
-		// settings
-		$set = Database::dispense('settings');
-		$set->module = 'Core';
-		$set->section = 'system';
-		$set->name = 'dbversion';
-		$set->value = '1';
-		$setid = Database::store($set);
-
-		// core permissions
-		$perm = Database::dispense('permissions');
-		$perm->module = 'Core';
-		$perm->name = 'view_statusSystem';
-		$permid1 = Database::store($perm);
-
-		$perm = Database::dispense('permissions');
-		$perm->module = 'Core';
-		$perm->name = 'useAPI';
-		$permid2 = Database::store($perm);
-
-		// resources
-		$res = Database::dispense('resources');
-		$res->module = 'Core';
-		$res->resource = 'maxloginattempts';
-		$res->default = 3;
-		$resid = Database::store($res);
-
-		// default groups
-		$sagroup = Database::dispense('groups');
-		$sagroup->groupname = '@superadmin';
-		$sagroup->sharedPermissions = array(Database::load('permissions', $permid1), Database::load('permissions', $permid2));
-		$sagroupid = Database::store($sagroup);
-
-		$dgroup = Database::dispense('groups');
-		$dgroup->groupname = '@deactivated';
-		Database::store($dgroup);
-
-		// user-resource-limits
-		$ur = Database::dispense('limits');
-		$ur->resourceid = $resid;
-		$ur->limit = 3;
-		$ur->inuse = 0;
-		$urid = Database::store($ur);
-
-		// default user
-		$user = Database::dispense('users');
-		$user->apikey = 'mysupersecretkey';
-		$user->name = 'superadmin';
-		$user->sharedGroups = array(Database::load('groups', $sagroupid));
-		$user->ownLimits = array(Database::load('limits', $urid));
-		Database::store($user);
 	}
 }
