@@ -44,7 +44,7 @@ class Server extends FroxlorModule implements iServer {
 		$sid = self::getIntParam('id');
 		$server = Database::load('server', $sid);
 		if ($server->id) {
-			return ApiResponse::createResponse(200, null, $server->export());
+			return ApiResponse::createResponse(200, null, Database::exportAll($server, false));
 		}
 		throw new ServerException(404, 'Server with id #'.$sid.' could not be found');
 	}
@@ -69,10 +69,7 @@ class Server extends FroxlorModule implements iServer {
 		}
 
 		// create array from beans
-		$server_array = array();
-		foreach ($servers as $sbean) {
-			$server_array[] = $sbean->export();
-		}
+		$server_array = Database::exportAll($servers, false);
 
 		// return all the servers as array (api)
 		return ApiResponse::createResponse(
@@ -92,12 +89,13 @@ class Server extends FroxlorModule implements iServer {
 		$ip = Database::dispense('ipaddress');
 		$ip->ip = '127.0.0.1';
 		$ipid = Database::store($ip);
+
 		// default server
 		$srv = Database::dispense('server');
 		$srv->name = 'Testserver';
 		$srv->desc = 'This is an automatically added default server';
-		$srv->ownIp = array($ipid);
-		$srv->ownUser = array(1);
+		$srv->ownIpaddress = array(Database::load('ipaddress', $ipid));
+		$srv->ownUser = array(Database::load('user', 1));
 		$srvid = Database::store($srv);
 		// TODO: services
 	}
