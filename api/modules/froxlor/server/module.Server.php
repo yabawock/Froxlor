@@ -44,7 +44,7 @@ class Server extends FroxlorModule implements iServer {
 		$sid = self::getIntParam('id');
 		$server = Database::load('server', $sid);
 		if ($server->id) {
-			return ApiResponse::createResponse(200, null, Database::exportAll($server, false));
+			return ApiResponse::createResponse(200, null, Database::exportAll($server));
 		}
 		throw new ServerException(404, 'Server with id #'.$sid.' could not be found');
 	}
@@ -80,6 +80,139 @@ class Server extends FroxlorModule implements iServer {
 	}
 
 	/**
+	 * @see iServer::addServer()
+	 *
+	 * @param string $name name of server
+	 * @param string $desc description
+	 * @param string $ipaddress initial default IP of that server
+	 * @param array $owners optional, array of user-id's;
+	 *                      in any case, the user who adds the server is added as owner
+	 *
+	 * @throws ServerException
+	 * @return array exported newly added server bean
+	 */
+	public static function addServer() {
+
+		$name = self::getParam('name');
+		$desc = self::getParam('desc', true, "");
+		$ipaddress = self::getParam('ipaddress');
+		$owners = self::getParam('owners', true, null);
+
+		// set up new server
+		$server = Database::dispense('server');
+		$server->name = $name;
+		$server->desc = $desc;
+
+		// check for owners
+		$owners = array();
+		// the creater is always an owner
+		$owners[] = Database::load('user', self::getParam('_userinfo')['id']);
+		if (is_array($owners) && count($owners > 0)) {
+			// iterate and check
+			foreach ($owners as $owner) {
+				$o = Database::load('user', $owner);
+				if ($o->id) {
+					$owners[] = $o;
+				}
+			}
+		}
+		$server->sharedUser = $owners;
+		$server_id = Database::store($server);
+		// load server bean
+		$serverbean = Database::load('server', $server_id);
+
+		// now add IP address
+		$ip_result = Froxlor::getApi()->apiCall(
+				'Server.addServerIP',
+				array('ipaddress' => $ipaddress, 'isdefault' => true, 'serverid' => $server_id)
+		);
+		if ($ip_result->getResponseCode() == 200) {
+			// return result with updated server-bean
+			return ApiResponse::createResponse(200, null, Database::exportAll($serverbean));
+		}
+		// rollback, there was an error, so the server needs to be removed from the database
+		Database::trash($serverbean);
+		// return the error-message from addServerIP
+		return $ip_result->getResponse();
+	}
+
+	/**
+	 * @see iServer::addServerIP()
+	 *
+	 * @param string $ipadress the IP adress (v4 or v6)
+	 * @param int $serverid the id of the server to add the IP to
+	 * @param bool $isdefault optional, whether this ip should be the default server ip, default: false
+	 *
+	 * @throws ServerException
+	 * @return array exported added IP bean
+	 */
+	public static function addServerIP() {
+
+		$ipaddress = self::getParam('ipaddress');
+		$serverid = self::getIntParam('serverid');
+		$isdefault = self::getParam('isdefault', true, false);
+
+		// look for duplicate
+		$ip_check = Database::findOne('ipaddress', ' ip = ?', array($ipaddress));
+		if ($ip_check !== null) {
+			$server = Database::load('server', $ip_check->server_id);
+			throw new ServerException(406, 'IP address "'.$ipaddress.'" already exists for server "'.$server->name.'"');
+		}
+		$ip = Database::dispense('ipaddress');
+		$ip->ip = $ipaddress;
+		$ip->isdefault = $isdefault;
+		$ip->server_id = $serverid;
+		$ip_id = Database::store($ip);
+
+		// now update the "old" default IP to be non-default
+		$formerdefault = Database::findOne('ipaddress',
+				' isdefault = :isdef AND server_id = :sid',
+				array(':isdef' => true, ':sid' => $serverid)
+		);
+		// this is faster than calling apiCall('Server.modifyServerIP')
+		if ($formerdefault !== null) {
+			$formerdefault->isdefault = false;
+			Database::store($formerdefault);
+		}
+
+		// return newly added ip
+		return ApiResponse::createResponse(200, null, Database::load('ipaddress', $ip_id)->export());
+	}
+
+	/**
+	 * @see iServer::modifyServerIP()
+	 *
+	 * @param int $id id of the ip-address
+	 * @param string $ipaddress new IP address value
+	 * @param bool $isdefault optional, whether this ip should be the default server ip, default: false
+	 *
+	 * @throws ServerException
+	 * @return array exported updated IP bean
+	 */
+	public static function modifyServerIP() {
+
+		$iid = self::getIntParam('id');
+		$ipaddress = self::getParam('ipaddress');
+		$isdefault = self::getParam('isdefault', true, false);
+
+		// get the bean
+		$ip = Database::load('ipaddress', $iid);
+
+		// is it valid?
+		if ($ip === null) {
+			throw new ServerException(404, 'IP address "'.$ipaddress.'" with id #'.$iid.' could not be found');
+		}
+
+		// set new values
+		$ip->ip = $ipaddress;
+		$ip->isdefault = $isdefault;
+		Database::store($ip);
+
+		// return updated bean
+		return ApiResponse::createResponse(200, null, Database::load('ipaddress', $iid)->export());
+	}
+
+	/**
 	 * (non-PHPdoc)
 	 * @see FroxlorModule::Core_moduleSetup()
 	 */
@@ -95,7 +228,7 @@ class Server extends FroxlorModule implements iServer {
 		$srv->name = 'Testserver';
 		$srv->desc = 'This is an automatically added default server';
 		$srv->ownIpaddress = array(Database::load('ipaddress', $ipid));
-		$srv->ownUser = array(Database::load('user', 1));
+		$srv->sharedUser = array(Database::load('user', 1));
 		$srvid = Database::store($srv);
 		// TODO: services
 	}

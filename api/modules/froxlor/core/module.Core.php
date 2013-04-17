@@ -134,7 +134,7 @@ class Core extends FroxlorModule implements iCore {
 				array('userid' => $user->id, 'ident' => 'Core.view_statusSystem')
 		);
 
-		if ($resp->getResponseCode() != '200') {
+		if ($resp->getResponseCode() != 200) {
 			throw new ApiException(403, 'You are not allowed to access this function');
 		}
 

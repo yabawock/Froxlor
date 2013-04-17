@@ -52,7 +52,7 @@ function __froxlor_error($type, $message, $file, $line) {
 			8192                => 'Deprecated notice'
 	);
 
-	$_message = $arr_rrrors[$type].': '.$message.'; in '.$file.':'.$line;
+	$_message = $arr_errors[$type].': '.$message.'; in '.$file.':'.$line;
 	throw new ApiException(500, $_message);
 }
 
@@ -62,5 +62,6 @@ function __froxlor_error($type, $message, $file, $line) {
  * @param Exception
  */
 function __froxlor_exception($e) {
+	// this might not always be working out good
 	throw new ApiException(500, $e->getMessage);
 }

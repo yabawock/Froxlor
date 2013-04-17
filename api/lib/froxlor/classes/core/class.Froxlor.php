@@ -263,7 +263,7 @@ class Froxlor implements iFroxlor {
 					array('userid' => $user->id, 'ident' => 'Core.useAPI')
 			);
 
-			if ($api_response->getResponseCode() == '200') {
+			if ($api_response->getResponseCode() == 200) {
 				$this->_userinfo = $user;
 				// don't include password and api-key
 				$this->_userinfo->apikey = null;

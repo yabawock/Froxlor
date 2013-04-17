@@ -58,6 +58,7 @@ class FroxlorCliInterface {
 			return;
 		}
 
+		// FIXME: not if in " " or { }
 		$tokens = explode(" ", $input);
 		$main_command = array_shift($tokens);
 
@@ -187,9 +188,14 @@ class FroxlorCliInterface {
 		$request_params = array();
 		foreach ($params as $_pp) {
 			$_p = explode("=", $_pp);
+			// check for array parameter
+			// FIXME: no spaces allowed for now, use {1,2,3} or {abc,abc,abc}
+			if (substr($_p[1], 0, 1) == '{' && substr($_p[1], -1) == '}') {
+				$_p[1] = explode(',', substr($_p[1], 1, -1));
+				//array_walk($_p[1], array($this, '_trimValue'));
+			}
 			$request_params[$_p[0]] = $_p[1];
 		}
-
 		try {
 			$req = ApiRequest::createRequest(
 					$function,
@@ -225,4 +231,9 @@ class FroxlorCliInterface {
 			print_r($rarr['body']);
 		}
 	}
+
+	private function _trimValue(&$val = null) {
+		return trim($val);
+	}
+
 }

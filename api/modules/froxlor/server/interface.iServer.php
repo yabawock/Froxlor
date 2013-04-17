@@ -53,4 +53,44 @@ interface iServer {
 	*/
 	public static function listServer();
 
+	/**
+	 * adds a new server to the database, additionally
+	 * @see iServer::addServerIP() is used to assign
+	 * the default ip to the server (editable if > one IP)
+	 * via @see iServer::modifyServerIP()
+	 *
+	 * @param string $name name of server
+	 * @param string $desc description
+	 * @param string $ipaddress initial default IP of that server
+	 * @param array $owners optional, array of user-id's;
+	 *                      in any case, the user who adds the server is added as owner
+	 *
+	 * @throws ServerException
+	 * @return array exported newly added server bean
+	*/
+	public static function addServer();
+
+	/**
+	 * adds and assigns a new ipaddress to a server
+	 *
+	 * @param string $ipadress the IP adress (v4 or v6)
+	 * @param bool $isdefault whether this ip should be the default server ip, default: false
+	 *
+	 * @throws ServerException
+	 * @return array exported added IP bean
+	*/
+	public static function addServerIP();
+
+	/**
+	 * update a servers IP address, if $isdefault is set
+	 * the former default IP will be set isdefault=false
+	 *
+	 * @param int $id id of the ip-address
+	 * @param string $ipaddress new IP address value
+	 * @param bool $isdefault whether this ip should be the default server ip, default: false
+	 *
+	 * @throws ServerException
+	 * @return array exported updated IP bean
+	*/
+	public static function modifyServerIP();
 }
