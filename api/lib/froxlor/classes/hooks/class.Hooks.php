@@ -66,21 +66,31 @@ class Hooks {
 				foreach ($its as $fullFileName => $it ) {
 					// does it match the Filename pattern?
 					if (preg_match("/^module\.(.+)\.php$/i", $it->getFilename())) {
+						// indicator if we can call the function in that module
+						$useable = true;
+						// get module-name out of filename
 						$module = substr($it->getFilename(), 7, -4);
 						// check whether function exists in module
 						try {
 							$refl = new ReflectionMethod($module, $hookname);
 							if ($refl->isPublic() == false) {
 								// hook-function found but is not available for us :/
-								break;
+								$useable = false;
 							}
 						} catch (Exception $e) {
 							// not found, never mind
-							break;
+							$useable = false;
 						}
 						// call the hook-function
-						$mod = new $module();
-						$mod->{$hookname}($params);
+						if ($useable) {
+							try {
+								$mod = new $module();
+								$mod->{$hookname}($params);
+							} catch (Exception $e) {
+								// log error but go on
+								// FIXME logging
+							}
+						}
 						/**
 						 * call_user_func does not pass the $params variable
 						 * as reference so a hook-function cannot change its
