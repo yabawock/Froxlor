@@ -24,6 +24,10 @@
 
 define('FROXLOR_API_DIR', dirname(dirname(__FILE__)));
 
+require dirname(__FILE__).'/errorhandling.inc.php';
+@set_error_handler('__froxlor_error');
+@set_exception_handler('__froxlor_exception');
+
 Autoloader::init();
 
 /**
