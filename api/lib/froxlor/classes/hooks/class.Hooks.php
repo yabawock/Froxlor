@@ -58,7 +58,7 @@ class Hooks {
 		if (@file_exists($_cachefile)) {
 			$_recache = false;
 			require $_cachefile;
-			if (($cache['timestamp'] + HOOK_CACHE_TIME) > time()) {
+			if (($cache_ts + HOOK_CACHE_TIME) > time()) {
 				@unlink($cachefile);
 				$_recache = true;
 			}
@@ -120,6 +120,7 @@ class Hooks {
 						foreach ($cachedata as $module) {
 							$cfdata .= "\$cachedata[] = '".$module."';\n";
 						}
+						$cfdata .= "\$cache_ts = '".time()."';\n";
 						fwrite($fh, $cfdata);
 						fclose($fh);
 					}
