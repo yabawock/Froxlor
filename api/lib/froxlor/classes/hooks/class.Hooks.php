@@ -58,8 +58,8 @@ class Hooks {
 		if (@file_exists($_cachefile)) {
 			$_recache = false;
 			require $_cachefile;
-			if (($cache_ts + HOOK_CACHE_TIME) > time()) {
-				@unlink($cachefile);
+			if (($cache_ts + HOOK_CACHE_TIME) < time()) {
+				@unlink($_cachefile);
 				$_recache = true;
 			}
 		}

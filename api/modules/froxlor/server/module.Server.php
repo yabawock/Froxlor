@@ -237,6 +237,72 @@ class Server extends FroxlorModule implements iServer {
 	}
 
 	/**
+	 * @see iServer::deleteServer()
+	 *
+	 * @param int $serverid id of the server
+	 *
+	 * @throws ServerException
+	 * @return bool success = true
+	 *
+	 * @TODO later check for entities using that server and don't delete but warn about that
+	 */
+	public static function deleteServer() {
+		$serverid = self::getIntParam('serverid');
+		$server = Database::load('server', $serverid);
+		if ($server->id) {
+			Database::trash($server);
+			return ApiResponse::createResponse(200, null, array('success' => true));
+		}
+		throw new ServerException(404, "Server with id #".$serverid." could not be found");
+	}
+
+	/**
+	 * @see iServer::deleteServerIP()
+	 *
+	 * @param int $serverid id of the server
+	 * @param int $ipid id of the ip
+	 *
+	 * @throws ServerException
+	 * @return bool success = true
+	 */
+	public static function deleteServerIP() {
+		$serverid = self::getIntParam('serverid');
+		$ipid = self::getIntParam('ipid');
+
+		$server = Database::load('server', $serverid);
+		$ip = Database::load('ipaddress', $ipid);
+
+		// valid server?
+		if ($server->id) {
+			// valid ip?
+			if ($ip->id) {
+				// check if it belongs to the server
+				if (array_key_exists($ip->id, $server->ownIpaddress)) {
+					// is it the only one?
+					if (count($server->ownIpaddress) > 1) {
+						// check if that is the default one
+						// if that is the case, we cannot remove it
+						// until another server-ip is being set as default
+						if ($ip->isdefault == true) {
+							throw new ServerException(403, "Cannot remove IP address '".$ip->ip."' from server '".$server->name."' as it is marked as 'default'");
+						}
+						// delete from server
+						unset($server->ownIpaddress[$ip->id]);
+						Database::store($server);
+						// delete ipaddress itself as it is not used anymore
+						Database::trash($ip);
+						return ApiResponse::createResponse(200, null, array('success' => true));
+					}
+					throw new ServerException(403, "Cannot remove the IP '".$ip->ip."' from server '".$server->name."' as it is the only one");
+				}
+				throw new ServerException(406, "IP address '".$ip->ipaddress."' does not belong to server '".$server->name."'");
+			}
+			throw new ServerException(404, "IP with id #".$ipid." could not be found");
+		}
+		throw new ServerException(404, "Server with id #".$serverid." could not be found");
+	}
+
+	/**
 	 * (non-PHPdoc)
 	 * @see FroxlorModule::Core_moduleSetup()
 	 */
@@ -245,6 +311,7 @@ class Server extends FroxlorModule implements iServer {
 		// default IP
 		$ip = Database::dispense('ipaddress');
 		$ip->ip = '127.0.0.1';
+		$ip->isdefault = true;
 		$ipid = Database::store($ip);
 
 		// default server

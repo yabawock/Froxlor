@@ -101,4 +101,16 @@ interface iServer {
 	 * @return array exported updated IP bean
 	*/
 	public static function modifyServerIP();
+
+	/**
+	 * removes a server from the database
+	 *
+	 * @param int $serverid id of the server
+	 *
+	 * @throws ServerException
+	 * @return bool success = true
+	 *
+	 * @TODO later check for entities using that server and don't delete but warn about that
+	 */
+	public static function deleteServer();
 }
