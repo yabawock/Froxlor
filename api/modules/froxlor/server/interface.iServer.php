@@ -103,14 +103,26 @@ interface iServer {
 	public static function modifyServerIP();
 
 	/**
-	 * removes a server from the database
+	 * sets a new server default-IP and updates the former
+	 * default IP to be non-default
 	 *
-	 * @param int $serverid id of the server
+	 * @param int $id id of the ip-address
+	 * @param int $serverid the id of the server to add the IP to
 	 *
 	 * @throws ServerException
-	 * @return bool success = true
-	 *
-	 * @TODO later check for entities using that server and don't delete but warn about that
-	 */
+	 * @return array exported updated IP bean
+	*/
+	public static function setServerDefaultIP();
+
+	/**
+	 * removes a server from the database
+	*
+	* @param int $serverid id of the server
+	*
+	* @throws ServerException
+	* @return bool success = true
+	*
+	* @TODO later check for entities using that server and don't delete but warn about that
+	*/
 	public static function deleteServer();
 }

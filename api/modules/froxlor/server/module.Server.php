@@ -184,15 +184,7 @@ class Server extends FroxlorModule implements iServer {
 		Hooks::callHooks('addServerIP_afterStore', $ip_array);
 
 		// now update the "old" default IP to be non-default
-		$formerdefault = Database::findOne('ipaddress',
-				' isdefault = :isdef AND server_id = :sid',
-				array(':isdef' => true, ':sid' => $serverid)
-		);
-		// this is faster than calling apiCall('Server.modifyServerIP')
-		if ($formerdefault !== null) {
-			$formerdefault->isdefault = false;
-			Database::store($formerdefault);
-		}
+		self::_unsetFormerDefaultIP($serverid);
 
 		Hooks::callHooks('addServerIP_beforeReturn', $ip_array);
 
@@ -203,8 +195,8 @@ class Server extends FroxlorModule implements iServer {
 	/**
 	 * @see iServer::modifyServerIP()
 	 *
-	 * @param int $id id of the ip-address
-	 * @param string $ipaddress new IP address value
+	 * @param int $ipid id of the ip-address
+	 * @param string $ipaddress optional new IP address value
 	 * @param bool $isdefault optional, whether this ip should be the default server ip, default: false
 	 *
 	 * @throws ServerException
@@ -212,9 +204,9 @@ class Server extends FroxlorModule implements iServer {
 	 */
 	public static function modifyServerIP() {
 
-		$iid = self::getIntParam('id');
-		$ipaddress = self::getParam('ipaddress');
-		$isdefault = self::getParam('isdefault', true, false);
+		$iid = self::getIntParam('ipid');
+		$ipaddress = self::getParam('ipaddress', true, '');
+		$isdefault = self::getParam('isdefault', true, null);
 
 		// get the bean
 		$ip = Database::load('ipaddress', $iid);
@@ -224,16 +216,75 @@ class Server extends FroxlorModule implements iServer {
 			throw new ServerException(404, 'IP address "'.$ipaddress.'" with id #'.$iid.' could not be found');
 		}
 
-		// set new values
-		$ip->ip = $ipaddress;
-		$ip->isdefault = $isdefault;
-		Database::store($ip);
+		// set new values (if changed)
+		$changed = false;
+		if ($ipaddress != '') {
+			$ip->ip = $ipaddress;
+			$changed = true;
+		}
+		if ($isdefault !== null) {
+			// cannot change "isdefault" to false if it's the default IP
+			// -> first set a new default (which will unset the isdefault flag for this one)
+			if ($ip->isdefault == true
+					&& $isdefault == false
+			) {
+				throw new ServerException(403, 'Cannot make the IP "'.$ip->ip.'" non-default. Please set a new default IP for the server (#'.$ip->server_id.') first');
+			}
+			$ip->isdefault = $isdefault;
+
+			// this shall be the new default IP, so make
+			// the former default-IP non-default
+			if ($isdefault == true) {
+				self::_unsetFormerDefaultIP($ip->server_id);
+			}
+			$changed = true;
+		}
+
+		if ($changed) {
+			Database::store($ip);
+		}
 		$ip_array = Database::load('ipaddress', $iid)->export();
 
-		Hooks::callHooks('addServerIP_beforeReturn', $ip_array);
+		Hooks::callHooks('modifyServerIP_beforeReturn', $ip_array);
 
 		// return updated bean
 		return ApiResponse::createResponse(200, null, $ip_array);
+	}
+
+	/**
+	 * @see iServer::setServerDefaultIP()
+	 *
+	 * @param int $ipid id of the ip-address
+	 * @param int $serverid the id of the server to add the IP to
+	 *
+	 * @throws ServerException
+	 * @return array exported updated IP bean
+	 */
+	public static function setServerDefaultIP() {
+
+		// get params
+		$ipid = self::getIntParam('ipid');
+		$serverid = self::getIntParam('serverid');
+
+		// get beans
+		$server = Database::load('server', $serverid);
+		$ip = Database::load('ipaddress', $ipid);
+
+		// valid server?
+		if ($server->id) {
+			// valid ip?
+			if ($ip->id) {
+				// check if it belongs to the server
+				if (array_key_exists($ip->id, $server->ownIpaddress)) {
+					// now, just change the IP via API
+					$response = Froxlor::getApi()->apiCall('Server.modifyServerIP', array('id' => $ipid, 'isdefault' => true));
+					return $response->getResponse();
+				}
+				throw new ServerException(406, "IP address '".$ip->ipaddress."' does not belong to server '".$server->name."'");
+			}
+			throw new ServerException(404, "IP with id #".$ipid." could not be found");
+		}
+		throw new ServerException(404, "Server with id #".$serverid." could not be found");
 	}
 
 	/**
@@ -300,6 +351,28 @@ class Server extends FroxlorModule implements iServer {
 			throw new ServerException(404, "IP with id #".$ipid." could not be found");
 		}
 		throw new ServerException(404, "Server with id #".$serverid." could not be found");
+	}
+
+	/**
+	 * sets a given server's default IP address to non-default, mostly
+	 * after another IP has been added or modified with isdefault = true
+	 *
+	 * @param int $serverid id of the server
+	 *
+	 * @return null
+	 * @internal
+	 */
+	private static function _unsetFormerDefaultIP($serverid) {
+		// find the server's default IP
+		$formerdefault = Database::findOne('ipaddress',
+				' isdefault = :isdef AND server_id = :sid',
+				array(':isdef' => true, ':sid' => $serverid)
+		);
+		// this is faster than calling apiCall('Server.modifyServerIP')
+		if ($formerdefault !== null) {
+			$formerdefault->isdefault = false;
+			Database::store($formerdefault);
+		}
 	}
 
 	/**
