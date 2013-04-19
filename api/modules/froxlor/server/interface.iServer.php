@@ -88,6 +88,19 @@ interface iServer {
 	public static function addServerIP();
 
 	/**
+	 * @see iServer::modifyServer()
+	 *
+	 * @param int $id id of the server
+	 * @param string $name optional name of server
+	 * @param string $desc optional description
+	 * @param array $owners optional, array of user-id's
+	 *
+	 * @throws ServerException
+	 * @return array exported updated Server bean
+	*/
+	public static function modifyServer();
+
+	/**
 	 * update a servers IP address, if $isdefault is set
 	 * the former default IP will be set isdefault=false
 	 * Hooks that are being called:
@@ -116,13 +129,13 @@ interface iServer {
 
 	/**
 	 * removes a server from the database
-	*
-	* @param int $serverid id of the server
-	*
-	* @throws ServerException
-	* @return bool success = true
-	*
-	* @TODO later check for entities using that server and don't delete but warn about that
+	 *
+	 * @param int $serverid id of the server
+	 *
+	 * @throws ServerException
+	 * @return bool success = true
+	 *
+	 * @TODO later check for entities using that server and don't delete but warn about that
 	*/
 	public static function deleteServer();
 }

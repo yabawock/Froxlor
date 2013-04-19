@@ -193,6 +193,53 @@ class Server extends FroxlorModule implements iServer {
 	}
 
 	/**
+	 * @see iServer::modifyServer()
+	 *
+	 * @param int $id id of the server
+	 * @param string $name optional name of server
+	 * @param string $desc optional description
+	 * @param array $owners optional, array of user-id's
+	 *
+	 * @throws ServerException
+	 * @return array exported updated Server bean
+	 */
+	public static function modifyServer() {
+
+		$serverid = self::getIntParam('id');
+		$name = self::getParam('name', true, null);
+		$desc = self::getParam('desc', true, null);
+		$owners = self::getParam('owners', true, null);
+
+		$server = Database::load('server', $serverid);
+
+		if ($server->id) {
+			if ($name !== null && trim($name) != '') {
+				$server->name = trim($name);
+			}
+			if ($desc !== null) {
+				$server->desc = trim($desc);
+			}
+			if ($owners != null && is_array($owners)) {
+				// empty owner-array -> add current user (there must be an owner)
+				if (count($owners) <= 0
+						|| (count($owners) == 1 && $owners[0] == '')
+				) {
+					$user = self::getParam('_userinfo');
+					$owners = array(Database::load('user', $user->id));
+				}
+				$server->sharedUser = $owners;
+			}
+			if ($server->isTainted()) {
+				Database::store($server);
+				$server = Database::load('server', $serverid);
+			}
+			$server_array = Database::exportAll($server);
+			return ApiResponse::createResponse(200, null, $server_array);
+		}
+		throw new ServerException(404, "Server with id #".$serverid." could not be found");
+	}
+
+	/**
 	 * @see iServer::modifyServerIP()
 	 *
 	 * @param int $ipid id of the ip-address
@@ -217,10 +264,8 @@ class Server extends FroxlorModule implements iServer {
 		}
 
 		// set new values (if changed)
-		$changed = false;
 		if ($ipaddress != '') {
 			$ip->ip = $ipaddress;
-			$changed = true;
 		}
 		if ($isdefault !== null) {
 			// cannot change "isdefault" to false if it's the default IP
@@ -237,10 +282,9 @@ class Server extends FroxlorModule implements iServer {
 			if ($isdefault == true) {
 				self::_unsetFormerDefaultIP($ip->server_id);
 			}
-			$changed = true;
 		}
 
-		if ($changed) {
+		if ($ip->isTainted()) {
 			Database::store($ip);
 		}
 		$ip_array = Database::load('ipaddress', $iid)->export();
