@@ -100,12 +100,7 @@ class Server extends FroxlorModule implements iServer {
 
 		// check permissions
 		$user = self::getParam('_userinfo');
-		$api_response = Froxlor::getApi()->apiCall(
-				'Permissions.statusUserPermission',
-				array('userid' => $user->id, 'ident' => 'Server.addServer')
-		);
-
-		if ($api_response->getResponseCode() != 200) {
+		if (!self::isAllowed($user, 'Server.addServer')) {
 			throw new ApiException(403, 'You are not allowed to access this function');
 		}
 
@@ -168,6 +163,12 @@ class Server extends FroxlorModule implements iServer {
 		$serverid = self::getIntParam('serverid');
 		$isdefault = self::getParam('isdefault', true, false);
 
+		// check permissions
+		$user = self::getParam('_userinfo');
+		if (!self::isAllowed($user, 'Server.addServerIP')) {
+			throw new ApiException(403, 'You are not allowed to access this function');
+		}
+
 		// look for duplicate
 		$ip_check = Database::findOne('ipaddress', ' ip = ?', array($ipaddress));
 		if ($ip_check !== null) {
@@ -209,6 +210,12 @@ class Server extends FroxlorModule implements iServer {
 		$name = self::getParam('name', true, null);
 		$desc = self::getParam('desc', true, null);
 		$owners = self::getParam('owners', true, null);
+
+		// check permissions
+		$user = self::getParam('_userinfo');
+		if (!self::isAllowed($user, 'Server.modifyServer')) {
+			throw new ApiException(403, 'You are not allowed to access this function');
+		}
 
 		$server = Database::load('server', $serverid);
 
@@ -254,6 +261,12 @@ class Server extends FroxlorModule implements iServer {
 		$iid = self::getIntParam('ipid');
 		$ipaddress = self::getParam('ipaddress', true, '');
 		$isdefault = self::getParam('isdefault', true, null);
+
+		// check permissions
+		$user = self::getParam('_userinfo');
+		if (!self::isAllowed($user, 'Server.modifyServerIP')) {
+			throw new ApiException(403, 'You are not allowed to access this function');
+		}
 
 		// get the bean
 		$ip = Database::load('ipaddress', $iid);
@@ -310,6 +323,12 @@ class Server extends FroxlorModule implements iServer {
 		$ipid = self::getIntParam('ipid');
 		$serverid = self::getIntParam('serverid');
 
+		// check permissions
+		$user = self::getParam('_userinfo');
+		if (!self::isAllowed($user, 'Server.setServerDefaultIP')) {
+			throw new ApiException(403, 'You are not allowed to access this function');
+		}
+
 		// get beans
 		$server = Database::load('server', $serverid);
 		$ip = Database::load('ipaddress', $ipid);
@@ -343,6 +362,11 @@ class Server extends FroxlorModule implements iServer {
 	 */
 	public static function deleteServer() {
 		$serverid = self::getIntParam('serverid');
+		// check permissions
+		$user = self::getParam('_userinfo');
+		if (!self::isAllowed($user, 'Server.deleteServer')) {
+			throw new ApiException(403, 'You are not allowed to access this function');
+		}
 		$server = Database::load('server', $serverid);
 		if ($server->id) {
 			Database::trash($server);
@@ -363,6 +387,12 @@ class Server extends FroxlorModule implements iServer {
 	public static function deleteServerIP() {
 		$serverid = self::getIntParam('serverid');
 		$ipid = self::getIntParam('ipid');
+
+		// check permissions
+		$user = self::getParam('_userinfo');
+		if (!self::isAllowed($user, 'Server.deleteServerIP')) {
+			throw new ApiException(403, 'You are not allowed to access this function');
+		}
 
 		$server = Database::load('server', $serverid);
 		$ip = Database::load('ipaddress', $ipid);
@@ -440,15 +470,48 @@ class Server extends FroxlorModule implements iServer {
 		$srvid = Database::store($srv);
 
 		// TODO permission / resources
+		$permids = array();
 		$perm = Database::dispense('permissions');
 		$perm->module = 'Server';
 		$perm->name = 'addServer';
-		$permid = Database::store($perm);
+		$permids[] = Database::store($perm);
+
+		$perm = Database::dispense('permissions');
+		$perm->module = 'Server';
+		$perm->name = 'modifyServer';
+		$permids[] = Database::store($perm);
+
+		$perm = Database::dispense('permissions');
+		$perm->module = 'Server';
+		$perm->name = 'deleteServer';
+		$permids[] = Database::store($perm);
+
+		$perm = Database::dispense('permissions');
+		$perm->module = 'Server';
+		$perm->name = 'addServerIP';
+		$permids[] = Database::store($perm);
+
+		$perm = Database::dispense('permissions');
+		$perm->module = 'Server';
+		$perm->name = 'modifyServerIP';
+		$permids[] = Database::store($perm);
+
+		$perm = Database::dispense('permissions');
+		$perm->module = 'Server';
+		$perm->name = 'deleteServerIP';
+		$permids[] = Database::store($perm);
+
+		$perm = Database::dispense('permissions');
+		$perm->module = 'Server';
+		$perm->name = 'setServerDefaultIP';
+		$permids[] = Database::store($perm);
 
 		// load superadmin group and add permissions
 		$sagroup = Database::findOne('groups', ' groupname = :grp', array(':grp' => '@superadmin'));
 		if ($sagroup !== null) {
-			$sagroup->sharedPermissions[] = Database::load('permissions', $permid);
+			$newperms = Database::batch('permissions', $permids);
+			$existing = $sagroup->sharedPermissions;
+			$sagroup->sharedPermissions = array_merge($existing, $newperms);
 			Database::store($sagroup);
 		}
 	}

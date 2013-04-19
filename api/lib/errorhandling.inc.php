@@ -63,5 +63,6 @@ function __froxlor_error($type, $message, $file, $line) {
  */
 function __froxlor_exception($e) {
 	// this might not always be working out good
-	throw new ApiException(500, $e->getMessage);
+	throw new ApiException(500, $e->getMessage());
+	//var_dump($e);
 }

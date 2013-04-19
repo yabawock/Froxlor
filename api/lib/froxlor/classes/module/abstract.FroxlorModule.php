@@ -51,7 +51,7 @@ abstract class FroxlorModule implements iFroxlorModule {
 
 	/**
 	 * @see iFroxlorModule::setParamList()
-	 */
+	*/
 	public static function setParamList(array $params = null) {
 		self::$parameters = $params;
 	}
@@ -163,5 +163,25 @@ abstract class FroxlorModule implements iFroxlorModule {
 		}
 		// give it back
 		return (int)$intparam;
+	}
+
+	/**
+	 * wrapper function to check for permission in a module
+	 *
+	 * @param object $user user-database-object (bean)
+	 * @param string $perm_ident
+	 *
+	 * @return boolean
+	 */
+	protected static function isAllowed($user = null, $perm_ident = null) {
+		// check permissions
+		$api_response = Froxlor::getApi()->apiCall(
+				'Permissions.statusUserPermission',
+				array('userid' => $user->id, 'ident' => $perm_ident)
+		);
+		if ($api_response->getResponseCode() != 200) {
+			return false;
+		}
+		return true;
 	}
 }
