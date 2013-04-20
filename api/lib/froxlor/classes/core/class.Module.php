@@ -58,6 +58,8 @@ class Module implements iModule {
 					// can we use the class?
 					if (class_exists($module)) {
 						continue;
+					} else {
+						throw new ApiException(404, 'The required class "'.$module."' could not be found but the module-file exists");
 					}
 				} catch (CoreException $e) {
 					// The autoloader will throw a CoreException
@@ -120,42 +122,15 @@ class Module implements iModule {
 		$a = explode(".", rtrim($a, ".0"));
 		$b = explode(".", rtrim($b, ".0"));
 
-		// -svn or -dev or -rc ?
-		if (stripos($a[count($a)-1], '-') !== false) {
-			$x = explode("-", $a[count($a)-1]);
-			$a[count($a)-1] = $x[0];
-			if (stripos($x[1], 'rc') !== false) {
-				$a[] = '1'; // rc > dev
-				// number of rc
-				$a[] = substr($x[1], 2);
+		self::_parseVersionArray($a);
+		self::_parseVersionArray($b);
+
+		while (count($a) != count($b)) {
+			if (count($a) < count($b)) {
+				$a[] = '0';
 			}
-			else if (stripos($x[1], 'dev') !== false) {
-				$a[] = '0'; // dev < rc
-				// number of dev
-				$a[] = substr($x[1], 3);
-			}
-			else {
-				// unknown version string
-				return 0;
-			}
-		}
-		// same with $b
-		if (stripos($b[count($b)-1], '-') !== false) {
-			$x = explode("-", $b[count($b)-1]);
-			$b[count($b)-1] = $x[0];
-			if (stripos($x[1], 'rc') !== false) {
-				$b[] = '1'; // rc > dev
-				// number of rc
-				$b[] = substr($x[1], 2);
-			}
-			else if (stripos($x[1], 'dev') !== false) {
-				$b[] = '0'; // dev < rc
-				// number of dev
-				$b[] = substr($x[1], 3);
-			}
-			else {
-				// unknown version string
-				return 0;
+			elseif (count($b) < count($a)) {
+				$b[] = '0';
 			}
 		}
 
@@ -178,6 +153,33 @@ class Module implements iModule {
 		// at this point, we know that to the depth that A and B extend to, they are equivalent.
 		// either the loop ended because A is shorter than B, or both are equal.
 		return (count($a) < count($b)) ? -1 : 0;
+	}
+
+	private static function _parseVersionArray(&$arr = null) {
+		// -svn or -dev or -rc ?
+		if (stripos($arr[count($arr)-1], '-') !== false) {
+			$x = explode("-", $arr[count($arr)-1]);
+			$arr[count($arr)-1] = $x[0];
+			if (stripos($x[1], 'rc') !== false) {
+				$arr[] = '-1';
+				$arr[] = '2'; // rc > dev > svn
+				// number of rc
+				$arr[] = substr($x[1], 2);
+			}
+			else if (stripos($x[1], 'dev') !== false) {
+				$arr[] = '-1';
+				$arr[] = '1'; // svn < dev < rc
+				// number of dev
+				$arr[] = substr($x[1], 3);
+			}
+			// -svn version are deprecated
+			else if (stripos($x[1], 'svn') !== false) {
+				$arr[] = '-1';
+				$arr[] = '0'; // svn < dev < rc
+				// number of svn
+				$arr[] = substr($x[1], 3);
+			}
+		}
 	}
 
 }

@@ -58,9 +58,11 @@ class FroxlorCliInterface {
 			return;
 		}
 
-		// FIXME: not if in " " or { }
-		$tokens = explode(" ", $input);
-		$main_command = array_shift($tokens);
+		if (strpos($input, " ") !== false) {
+			$main_command = substr($input, 0, strpos($input, " "));
+		} else {
+			$main_command = $input;
+		}
 
 		if (substr($main_command, 0, 1) == '.' && !in_array($main_command, self::$_commands)) {
 			$this->_unknownCommand($main_command);
@@ -81,7 +83,11 @@ class FroxlorCliInterface {
 				echo "Goodbye!\n";
 				exit;
 			default:
-				$this->parseApiCommand($main_command, $tokens);
+				$inputparam = null;
+				if (strlen($input) > strlen($main_command)) {
+					$inputparam = substr($input, strlen($main_command)+1);
+				}
+				$this->parseApiCommand($main_command, $inputparam);
 				break;
 		}
 	}
@@ -185,17 +191,11 @@ class FroxlorCliInterface {
 	public function parseApiCommand($function, $params) {
 
 		// build up parameter array
-		$request_params = array();
-		foreach ($params as $_pp) {
-			$_p = explode("=", $_pp);
-			// check for array parameter
-			// FIXME: no spaces allowed for now, use {1,2,3} or {abc,abc,abc}
-			if (substr($_p[1], 0, 1) == '{' && substr($_p[1], -1) == '}') {
-				$_p[1] = explode(',', substr($_p[1], 1, -1));
-				//array_walk($_p[1], array($this, '_trimValue'));
-			}
-			$request_params[$_p[0]] = $_p[1];
+		$request_params = null;
+		if ($params !== null) {
+			$request_params = $this->_parseParams($params);
 		}
+
 		try {
 			$req = ApiRequest::createRequest(
 					$function,
@@ -236,4 +236,40 @@ class FroxlorCliInterface {
 		return trim($val);
 	}
 
+	private function _parseParams($inputline = null) {
+		$result = array();
+		$p = "/ (?=[\w]+\s*=)/";
+		$fulltokens = preg_split($p, $inputline, 0, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
+		foreach ($fulltokens as $assign) {
+			$ass_arr = explode("=", $assign);
+			$val = trim($ass_arr[1]);
+			if ((substr($val, 0, 1) == '"' && substr($val, -1) == '"')
+					|| (substr($val, 0, 1) == "'" && substr($val, -1) == "'")
+			) {
+				$val = substr($val, 1, -1);
+			}
+			// array
+			if (substr($val, 0, 1) == '{' && substr($val, -1) == '}') {
+				$val = substr($val, 1, -1);
+				$val = $this->_parseArray($val);
+			}
+			$result[$ass_arr[0]] = $val;
+		}
+		return $result;
+	}
+
+	/*
+	 * TODO allow sub-arrays
+	*
+	* call parseParams recursivly when it calls us...yo dawg
+	*/
+	private function _parseArray($arrstring) {
+		$parmarr = explode(",", $arrstring);
+		$output = array();
+		foreach ($parmarr as $name => $value) {
+			$value = trim($value);
+			$output = array_merge($output, $this->_parseParams($name.'='.$value));
+		}
+		return $output;
+	}
 }

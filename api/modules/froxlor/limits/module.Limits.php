@@ -169,7 +169,7 @@ class Limits extends FroxlorModule implements iLimits {
 				$elimit->limit = ($limit == -1 ? $resource->default : $limit);
 				$elimit->inuse = 0;
 				$ulid = Database::store($elimit);
-				$entity->ownLimits[] = $elimit;
+				$entity->ownLimits[] = Database::load('limits', $ulid);
 				Database::store($entity);
 				return ApiResponse::createResponse(200, null, $elimit->export());
 			}

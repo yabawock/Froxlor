@@ -128,13 +128,9 @@ class Core extends FroxlorModule implements iCore {
 	 */
 	public static function statusSystem() {
 
+		// check permissions
 		$user = self::getParam('_userinfo');
-		$resp = Froxlor::getApi()->apiCall(
-				'Permissions.statusUserPermission',
-				array('userid' => $user->id, 'ident' => 'Core.view_statusSystem')
-		);
-
-		if ($resp->getResponseCode() != 200) {
+		if (!self::isAllowed($user, 'Core.statusSystem')) {
 			throw new ApiException(403, 'You are not allowed to access this function');
 		}
 
@@ -256,7 +252,12 @@ class Core extends FroxlorModule implements iCore {
 					$matches = array();
 					if (preg_match("/^module\.(.+)\.php$/i", $it->getFilename(), $matches)) {
 						// check for existence
-						Module::requireModules($matches[1]);
+						try {
+							Module::requireModules($matches[1]);
+						} catch (ApiException $e) {
+							ApiLogger::warn($e->getMessage());
+							continue;
+						}
 						// now get all static functions
 						$reflection = new ReflectionClass($matches[1]);
 						$_functions = $reflection->getMethods(ReflectionMethod::IS_STATIC | ReflectionMethod::IS_PUBLIC);
