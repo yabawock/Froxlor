@@ -228,9 +228,9 @@ class Core extends FroxlorModule implements iCore {
 			Module::requireModules($module);
 			// now get all static functions
 			$reflection = new ReflectionClass($module);
-			$_functions = $reflection->getMethods(ReflectionMethod::IS_STATIC | ReflectionMethod::IS_PUBLIC);
+			$_functions = $reflection->getMethods(ReflectionMethod::IS_STATIC);
 			foreach ($_functions as $func) {
-				if ($func->class == $module) {
+				if ($func->class == $module && $func->isPublic()) {
 					array_push($functions, array(
 					'function' => $func->name,
 					'module' => $func->class
@@ -260,9 +260,9 @@ class Core extends FroxlorModule implements iCore {
 						}
 						// now get all static functions
 						$reflection = new ReflectionClass($matches[1]);
-						$_functions = $reflection->getMethods(ReflectionMethod::IS_STATIC | ReflectionMethod::IS_PUBLIC);
+						$_functions = $reflection->getMethods(ReflectionMethod::IS_STATIC);
 						foreach ($_functions as $func) {
-							if ($func->class == $matches[1]) {
+							if ($func->class == $matches[1] && $func->isPublic()) {
 								array_push($functions, array(
 								'function' => $func->name,
 								'module' => $func->class
