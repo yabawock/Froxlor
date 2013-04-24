@@ -87,7 +87,7 @@ class Resources extends FroxlorModule implements iResources {
 	 * @param mixed $default a default value for the resources, if empty -1 is used
 	 *
 	 * @throws ResourcesException if an equal resource exists
-	 * @return int id of the new resource-entry
+	 * @return array exported resource-bean of the new resource-entry
 	 */
 	public static function addResource() {
 
@@ -95,12 +95,9 @@ class Resources extends FroxlorModule implements iResources {
 		$default = self::getParam('default', true, -1);
 
 		// check if it already exists
-		try {
-			$res_check = Froxlor::getApi()->apiCall('Resources.statusResource', array('ident' => implode('.', $ident)));
+		$res_check = Froxlor::getApi()->apiCall('Resources.statusResource', array('ident' => implode('.', $ident)));
+		if ($res_check->getResponseCode() == 200) {
 			throw new ResourcesException(406, 'The resource "'.implode('.', $ident).'" does already exist');
-		} catch (ResourcesException $e) {
-			// all good, the resource does not exist
-			// we just go on with our work
 		}
 
 		// create new bean
@@ -110,8 +107,83 @@ class Resources extends FroxlorModule implements iResources {
 		$res->default = $default;
 		$resid = Database::store($res);
 
+		$res = Database::load('resources', $resid);
 		// return success and the id
-		return ApiResponse::createResponse(200, null, array('id' => $resid));
+		return ApiResponse::createResponse(200, null, $res->export());
+	}
+
+	/**
+	 * modifies a resource's default value, ident cannot be changed
+	 *
+	 * @param string $ident e.g. Core.maxloginattempts
+	 * @param mixed $default a default value for the resources
+	 *
+	 * @throws ResourcesException if resource does not exists
+	 * @return array exported resource-bean of the updated resource-entry
+	 */
+	public static function modifyResource() {
+
+		$ident = self::getParamIdent('ident', 2);
+		$default = self::getParam('default', true, null);
+
+		// get resource
+		$res_check = Froxlor::getApi()->apiCall('Resources.statusResource', array('ident' => implode('.', $ident)));
+		// check responsecode
+		if ($res_check->getResponseCode() != 200) {
+			// return non-success message
+			return $res_check->getResponse();
+		}
+		// get id from response
+		$resid = $res_check->getData()['id'];
+		// load bean
+		$res = Database::load('resources', $resid);
+		// check for changes
+		if ($default !== null) {
+			$res->default = $default;
+			// did the value change?
+			if ($res->isTainted()) {
+				// update
+				Database::store($res);
+				$res = Database::load('resources', $resid);
+			}
+		}
+		// return bean as array
+		return ApiResponse::createResponse(200, null, $res->export());
+	}
+
+	/**
+	 * deletes a resources from the database (only if not in use)
+	 *
+	 * @param string $ident e.g. Core.maxloginattempts
+	 *
+	 * @throws ResourcesException if still in use or not found
+	 * @return bool success = true
+	 */
+	public static function deleteResource() {
+
+		$ident = self::getParamIdent('ident', 2);
+
+		// get resource
+		$res_check = Froxlor::getApi()->apiCall('Resources.statusResource', array('ident' => implode('.', $ident)));
+		// check responsecode
+		if ($res_check->getResponseCode() != 200) {
+			// return non-success message
+			return $res_check->getResponse();
+		}
+		// get id from response
+		$resid = $res_check->getData()['id'];
+		// load bean
+		$res = Database::load('resources', $resid);
+		// check if in use (limits)
+		$inuse = Database::find('limits', ' resourceid = ? ', array($resid));
+		if (is_array($inuse) && count($inuse) > 0) {
+			throw new ResourcesException(403, 'The resource "'.implode('.', $ident).'" cannot be deleted as it is in use');
+		}
+		// delete it
+		Database::trash($res);
+		// return bean as array
+		return ApiResponse::createResponse(200, null, array('success' => true));
+
 	}
 
 	/**

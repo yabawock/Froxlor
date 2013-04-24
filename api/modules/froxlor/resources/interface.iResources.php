@@ -46,7 +46,7 @@ interface iResources {
 	 *
 	 * @throws ResourcesException
 	 * @return array the resource-bean-data
-	 */
+	*/
 	public static function statusResource();
 
 	/**
@@ -56,8 +56,29 @@ interface iResources {
 	 * @param mixed $default a default value for the resources, if empty -1 is used
 	 *
 	 * @throws ResourcesException if an equal resource exists
-	 * @return int id of the new resource-entry
+	 * @return array exported resource-bean of the new resource-entry
 	*/
 	public static function addResource();
+
+	/**
+	 * modifies a resource's default value, ident cannot be changed
+	 *
+	 * @param string $ident e.g. Core.maxloginattempts
+	 * @param mixed $default a default value for the resources
+	 *
+	 * @throws ResourcesException if resource does not exists
+	 * @return array exported resource-bean of the updated resource-entry
+	*/
+	public static function modifyResource();
+
+	/**
+	 * deletes a resources from the database (only if not in use)
+	 *
+	 * @param string $ident e.g. Core.maxloginattempts
+	 *
+	 * @throws ResourcesException if still in use or not found
+	 * @return bool success = true
+	*/
+	public static function deleteResource();
 
 }
