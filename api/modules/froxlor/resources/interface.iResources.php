@@ -33,6 +33,13 @@
 interface iResources {
 
 	/**
+	 * List all stored resources
+	 *
+	 * @return array the resources-bean-data as array
+	 */
+	public static function listResources();
+
+	/**
 	 * returns a resource by given ident
 	 *
 	 * @param string $ident e.g. Core.maxloginattempts

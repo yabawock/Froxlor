@@ -33,6 +33,24 @@
 class Resources extends FroxlorModule implements iResources {
 
 	/**
+	 * @see iResources::listResources()
+	 *
+	 * @return array the resources-bean-data as array
+	 */
+	public static function listResources() {
+		// get all resources
+		$resources = Database::findAll('resources', ' ORDER BY module ASC, resource ASC');
+		// create array from beans
+		$res_array = Database::exportAll($resources, false);
+		// return all the servers as array (api)
+		return ApiResponse::createResponse(
+				200,
+				null,
+				$res_array
+		);
+	}
+
+	/**
 	 * @see iResources::statusResource()
 	 *
 	 * @param string $ident e.g. Core.maxloginattempts

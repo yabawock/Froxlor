@@ -58,15 +58,45 @@ interface iLimits {
 
 	/**
 	 * connects a resource to a given entity identified by ident and id, e.g.
-	 * {'type' => 0, 'fid' => 1, 'ident' => 'Core.maxloginattempts' [, 'limit' => '3'] }
+	 * {'type' => 0, 'id' => 1, 'ident' => 'Core.maxloginattempts' [, 'limit' => '3'] }
 	 *
 	 * @param int $type 0 = user, 1 = server (default is 0)
 	 * @param int $id id of the entity (user or server)
 	 * @param string $ident e.g. Core.maxloginattempts
-	 * @param mixed $limit default is -1
+	 * @param int $limit default is -1
 	 *
 	 * @throws LimitsException if the entity does not exist
 	 * @return array|mixed limits-bean if successful otherwise a non-success-apiresponse
 	*/
 	public static function addLimit();
+
+	/**
+	 * Modify an entity limit (user|server) identified by id and a
+	 * limit to modify identified by limitid. Sets new inuse and/or new limit value
+	 *
+	 * {'type' => 0, 'id' => 1, 'limitid' => 2 [, 'inuse' => x [, 'limit' => y]] }
+	 *
+	 * @param int $type 0 = user, 1 = server (default is 0)
+	 * @param int $id id of the entity (user or server)
+	 * @param int $limitid id of the limit to modify
+	 * @param int $inuse optional
+	 * @param int $limit optional
+	 *
+	 * @throws LimitsException if the entity does not exist
+	 * @return array|mixed limits-bean if successful otherwise a non-success-apiresponse
+	*/
+	public static function modifyLimit();
+
+	/**
+	 * delete a limit identified by limitid from a given resource identified by type and id
+	 * {'type' => 0, 'id' => 1, 'limitid' => 2}
+	 *
+	 * @param int $type 0 = user, 1 = server (default is 0)
+	 * @param int $id id of the entity (user or server)
+	 * @param int $limitid id of the limit to delete
+	 *
+	 * @throws LimitsException if the entity does not exist
+	 * @return bool success = true
+	*/
+	public static function deleteLimit();
 }

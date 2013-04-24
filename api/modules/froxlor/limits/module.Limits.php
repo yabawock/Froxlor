@@ -121,7 +121,7 @@ class Limits extends FroxlorModule implements iLimits {
 	 * @param int $type 0 = user, 1 = server (default is 0)
 	 * @param int $id id of the entity (user or server)
 	 * @param string $ident e.g. Core.maxloginattempts
-	 * @param mixed $limit default is -1
+	 * @param int $limit default is -1
 	 *
 	 * @throws LimitsException if the entity does not exist
 	 * @return array|mixed limits-bean if successful otherwise a non-success-apiresponse
@@ -180,6 +180,117 @@ class Limits extends FroxlorModule implements iLimits {
 
 		// return the response which is != 200
 		return $res_resp->getResponse();
+	}
+
+	/**
+	 * @see iLimits::modifyLimit()
+	 *
+	 * @param int $type 0 = user, 1 = server (default is 0)
+	 * @param int $id id of the entity (user or server)
+	 * @param int $limitid id of the limit to modify
+	 * @param int $inuse optional
+	 * @param int $limit optional
+	 *
+	 * @throws LimitsException if the entity does not exist
+	 * @return array|mixed limits-bean if successful otherwise a non-success-apiresponse
+	 */
+	public static function modifyLimit() {
+
+		$type = self::getIntParam('type', true, 0);
+		$fid = self::getIntParam('id');
+		$limitid = self::getIntParam('limitid');
+		$inuse = self::getIntParam('inuse', true, null);
+		$limit = self::getIntParam('limit', true, null);
+
+		if ($type == 0) {
+			$entity = Database::load('users', $fid);
+		} elseif ($type == 1) {
+			$entity = Database::load('servers', $fid);
+		} else {
+			throw new LimitsException(406, 'Invalid type number #'.$type);
+		}
+
+		// valid entity?
+		if ($entity->id) {
+			// check if the entity has this limit
+			if (!isset($entity->ownLimits[$limitid])) {
+				throw new LimitsException(404, 'The given limit could not be found in the entity ');
+			}
+			// get entities limits
+			$mylimit = $entity->ownLimits[$limitid];
+			if ($limit !== null) {
+				if ($limit < $mylimit->inuse) {
+					throw new LimitsException(
+							406,
+							'You cannot set the limit to a lower value than the entity already has in use (used '.$mylimit->inuse.' of '.$mylimit->limit.')'
+					);
+				}
+				$mylimit->limit = $limit;
+			}
+			if ($inuse !== null) {
+				if ($inuse > $mylimit->limit) {
+					// get resource
+					$res = Database::load('resources', $mylimit->resourceid);
+					throw new LimitsException(
+							406,
+							'You cannot use more of resource "'.$res->module.'.'.$res->resource.'" as your limit is "'.$mylimit->limit.'"'
+					);
+				}
+				$mylimit->inuse = $inuse;
+			}
+			// update if changed
+			if ($mylimit->isTainted()) {
+				Database::store($mylimit);
+				$mylimit = Database::load('limits', $limitid);
+			}
+			$limit_array = $mylimit->export();
+			return ApiResponse::createResponse(200, null, $limit_array);
+		}
+		throw new ServerException(404, "Limit with id #".$limitid." could not be found");
+	}
+
+	/**
+	 * @see iLimits::deleteLimit()
+	 *
+	 * @param int $type 0 = user, 1 = server (default is 0)
+	 * @param int $id id of the entity (user or server)
+	 * @param int $limitid id of the limit to delete
+	 *
+	 * @throws LimitsException if the entity does not exist
+	 * @return bool success = true
+	 */
+	public static function deleteLimit() {
+
+		$type = self::getIntParam('type', true, 0);
+		$fid = self::getIntParam('id');
+		$limitid = self::getIntParam('limitid');
+
+		if ($type == 0) {
+			$entity = Database::load('users', $fid);
+		} elseif ($type == 1) {
+			$entity = Database::load('servers', $fid);
+		} else {
+			throw new LimitsException(406, 'Invalid type number #'.$type);
+		}
+
+		// valid entity?
+		if ($entity->id) {
+			// check if the entity has this limit
+			if (!isset($entity->ownLimits[$limitid])) {
+				throw new LimitsException(404, 'The given limit could not be found in the entity ');
+			}
+			// get entities limits
+			$mylimit = $entity->ownLimits[$limitid];
+			// remove connection from entity
+			unset($entity->ownLimits[$limitid]);
+			// save entity
+			Database::store($entity);
+			// remove limit
+			Database::trash($mylimit);
+			// return success
+			return ApiResponse::createResponse(200, null, array('success' => true));
+		}
+		throw new ServerException(404, "Limit with id #".$limitid." could not be found");
 	}
 
 	/**
