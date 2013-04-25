@@ -117,12 +117,11 @@ class FroxlorCliInterface {
 			return $this->_functionlist;
 		}
 
-		/*
-		// This should be param-completion, but I seem to hit a limitation in readline_completion_function - it will always do a file-completion
+		// Get the commandname at the beginning of the line
 		$commandname = trim(strtok($full_input, " "));
-		if (!array_key_exists($commandname, $this->_paramlist))
+		if (!in_array($commandname, $this->_paramlist))
 		{
-			
+			// Try to fetch the needed parameters
 			try {
 				$req = ApiRequest::createRequest("Core.listParams", array('ident' => $commandname));
 				$this->_api->sendRequest($req);
@@ -142,18 +141,19 @@ class FroxlorCliInterface {
 			// No harm done if we don't get a successful response
 			if ($response->getResponseCode() == 200)
 			{
-				foreach ($rarr['body']['params'] as $function)
+				// Build a list with all parameters
+				foreach ($rarr['body']['params'] as $param)
 				{
-					$this->_paramlist[$commandname][] = $function['module'] . '.' . $function['function'];
+					$this->_paramlist[$commandname][] = $param['parameter'];
 				}
 			}
+			
 			$matches = $this->_paramlist[$commandname];
 		}
 		else
 		{
 			$matches = $this->_paramlist[$commandname];
 		}
-		*/
 		return $matches;
 	}
 
