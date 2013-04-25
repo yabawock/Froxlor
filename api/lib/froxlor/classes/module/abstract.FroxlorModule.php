@@ -145,7 +145,7 @@ abstract class FroxlorModule implements iFroxlorModule {
 	 * @param bool $negative_allowed disallowed all negative values (except for -1 which is "unlimited")
 	 *
 	 * @throws FroxlorModuleException
-	 * @return integer|null Only null if default value is null so we can be sure 
+	 * @return integer|null Only null if default value is null so we can be sure
 	 *                      nothing changes on optional values
 	 */
 	protected static function getIntParam($param = null, $optional = false, $default = 0, $negative_allowed = false) {

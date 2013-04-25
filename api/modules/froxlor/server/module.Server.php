@@ -85,8 +85,7 @@ class Server extends FroxlorModule implements iServer {
 	 * @param string $name name of server
 	 * @param string $desc description
 	 * @param string $ipaddress initial default IP of that server
-	 * @param array $owners optional, array of user-id's;
-	 *                      in any case, the user who adds the server is added as owner
+	 * @param int $owner optional user-id of owner or the user who adds the server is added as owner
 	 *
 	 * @throws ServerException
 	 * @return array exported newly added server bean
@@ -96,7 +95,7 @@ class Server extends FroxlorModule implements iServer {
 		$name = self::getParam('name');
 		$desc = self::getParam('desc', true, "");
 		$ipaddress = self::getParam('ipaddress');
-		$owners = self::getParam('owners', true, null);
+		$owner = self::getIntParam('owner', true, null);
 
 		// check permissions
 		$user = self::getParam('_userinfo');
@@ -109,20 +108,18 @@ class Server extends FroxlorModule implements iServer {
 		$server->name = $name;
 		$server->desc = $desc;
 
-		// check for owners
-		$owners = array();
-		// the creater is always an owner
-		$owners[] = Database::load('user', $user->id);
-		if (is_array($owners) && count($owners > 0)) {
-			// iterate and check
-			foreach ($owners as $owner) {
-				$o = Database::load('user', $owner);
-				if ($o->id) {
-					$owners[] = $o;
-				}
+		// check for owner
+		$sowner = $user;
+		if ($owner !== null) {
+			$o = Database::load('user', $owner);
+			if ($o->id) {
+				$newowner = $o;
+			} else {
+				throw new ServerException(404, 'Specified owner with id #'.$owner.' does not exist');
 			}
 		}
-		$server->sharedUser = $owners;
+
+		$server->serverowner = $owner;
 		$server_id = Database::store($server);
 		// load server bean
 		$serverbean = Database::load('server', $server_id);
@@ -199,7 +196,7 @@ class Server extends FroxlorModule implements iServer {
 	 * @param int $id id of the server
 	 * @param string $name optional name of server
 	 * @param string $desc optional description
-	 * @param array $owners optional, array of user-id's
+	 * @param array $owner optional, user-id of the server-owner
 	 *
 	 * @throws ServerException
 	 * @return array exported updated Server bean
@@ -209,7 +206,7 @@ class Server extends FroxlorModule implements iServer {
 		$serverid = self::getIntParam('id');
 		$name = self::getParam('name', true, null);
 		$desc = self::getParam('desc', true, null);
-		$owners = self::getParam('owners', true, null);
+		$owner = self::getIntParam('owner', true, null);
 
 		// check permissions
 		$user = self::getParam('_userinfo');
@@ -226,15 +223,20 @@ class Server extends FroxlorModule implements iServer {
 			if ($desc !== null) {
 				$server->desc = trim($desc);
 			}
-			if ($owners != null && is_array($owners)) {
-				// empty owner-array -> add current user (there must be an owner)
-				if (count($owners) <= 0
-						|| (count($owners) == 1 && $owners[0] == '')
-				) {
+			if ($owner != null) {
+				// owner = 0 -> remove old owner (which implicitly sets the current user as owner)
+				if ($owner == 0) {
 					$user = self::getParam('_userinfo');
-					$owners = array(Database::load('user', $user->id));
+					$newowner =$user;
+				} else {
+					$o = Database::load('user', $owner);
+					if ($o->id) {
+						$newowner = $o;
+					} else {
+						throw new ServerException(404, 'Specified owner with id #'.$owner.' does not exist');
+					}
 				}
-				$server->sharedUser = $owners;
+				$server->serverowner = $newowner;
 			}
 			if ($server->isTainted()) {
 				Database::store($server);
@@ -369,6 +371,12 @@ class Server extends FroxlorModule implements iServer {
 		}
 		$server = Database::load('server', $serverid);
 		if ($server->id) {
+
+			// call the beforeDelete hook so other modules
+			// can check if they still need this thing (throw an exception
+			// to avoid this server being removed in your hook-function)
+			Hooks::callHooks('deleteServer_beforeDelete', $server->export());
+
 			Database::trash($server);
 			return ApiResponse::createResponse(200, null, array('success' => true));
 		}

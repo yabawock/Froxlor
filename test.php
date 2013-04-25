@@ -6,11 +6,15 @@
 
 include_once dirname(__FILE__).'/api/froxlor-api.php';
 
-$apikey = "mysupersecretkey";
+$apikey = null; // "mysupersecretkey";
+
+$username = 'superadmin';
+$password = 'omgsomethingcrypted';
 
 try {
 
 	$froxlor = Froxlor::getInstance($apikey);
+	$froxlor->apiCall('Core.doLogin', array('username' => $username, 'password' => $password));
 	$cli = new FroxlorCliInterface($froxlor);
 
 } catch (Exception $e) {

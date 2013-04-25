@@ -192,6 +192,16 @@ class Froxlor implements iFroxlor {
 
 				ApiLogger::debug('Calling '.$mod.'::'.$fun);
 
+				// allow only Core.doLogin without a valid api-key
+				$apikey_required = true;
+				if ($mod == 'Core' && $fun == 'doLogin') {
+					$apikey_required = false;
+				}
+
+				if ($apikey_required) {
+					$this->_checkApiKey();
+				}
+
 				// check if required module exists
 				Module::requireModules($mod);
 
@@ -249,29 +259,34 @@ class Froxlor implements iFroxlor {
 	}
 
 	/**
-	 * check the api key against the admins-table
+	 * set the api key to use
 	 *
-	 * @return boolean
+	 * @param string $apikey
+	 *
+	 * @return null
 	 */
-	private function _validateApiKey() {
+	public function setApiKey($apikey = null) {
+		$this->_apikey = $apikey;
+	}
 
-		$user = Database::findOne('users', ' apikey = ? ', array($this->_apikey));
-		if ($user !== null) {
+	/**
+	 * set currently active user
+	 *
+	 * @param array $user user-bean-array
+	 *
+	 * @return null
+	 */
+	public function setUser($user = null) {
+		$this->_userinfo = $user;
+	}
 
-			$api_response = $this->apiCall(
-					'Permissions.statusUserPermission',
-					array('userid' => $user->id, 'ident' => 'Core.useAPI')
-			);
-
-			if ($api_response->getResponseCode() == 200) {
-				$this->_userinfo = $user;
-				// don't include password and api-key
-				$this->_userinfo->apikey = null;
-				$this->_userinfo->password = null;
-				return true;
-			}
-		}
-		return false;
+	/**
+	 * get currently active user
+	 *
+	 * @return Model_User
+	 */
+	public function getUser() {
+		return $this->_userinfo;
 	}
 
 	/**
@@ -310,13 +325,12 @@ class Froxlor implements iFroxlor {
 		if (!in_array($ext, PDO::getAvailableDrivers())) {
 			throw new ApiException(503, 'Froxlor api requires PDO compiled with '.$ext.' support');
 		}
+	}
 
-		// api key
+	private function _checkApiKey() {
+		// api key set?
 		if ($this->_apikey == null || $this->_apikey == '') {
-			throw new ApiException(403, 'No API key set');
-		}
-		if (!$this->_validateApiKey()) {
-			throw new ApiException(403, 'No valid API user. Check your API key');
+			throw new ApiException(403, 'No API key set. You might want to use "Core.doLogin"');
 		}
 	}
 

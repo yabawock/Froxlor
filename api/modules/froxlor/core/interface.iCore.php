@@ -76,6 +76,18 @@ interface iCore {
 	public static function listApiFunctions();
 
 	/**
+	 * Checks given user/password against stored user
+	 * in the database and initialized the system
+	 * with the corresponding api-key
+	 *
+	 * @param string $username
+	 * @param string $password
+	 *
+	 * @return array user-bean as array
+	*/
+	public static function doLogin();
+
+	/**
 	 * function that calls Core_moduleSetup() in
 	 * all modules via Hook. Mandatory for all modules,
 	 * even if the method is empty.
@@ -85,4 +97,15 @@ interface iCore {
 	 * @return null
 	*/
 	public static function doSetup();
+
+	/**
+	 * generate an api-response to list all parameters and the return-value of
+	 * a given module.function-combination
+	 *
+	 * @param string $ident a module.function ident
+	 *
+	 * @throws CoreException
+	 * @return array all parameters and the return-type of the given module-function
+	*/
+	public static function listParams();
 }

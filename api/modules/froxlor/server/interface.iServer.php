@@ -65,8 +65,7 @@ interface iServer {
 	 * @param string $name name of server
 	 * @param string $desc description
 	 * @param string $ipaddress initial default IP of that server
-	 * @param array $owners optional, array of user-id's;
-	 *                      in any case, the user who adds the server is added as owner
+	 * @param int $owner optional user-id of owner or the user who adds the server is added as owner
 	 *
 	 * @throws ServerException
 	 * @return array exported newly added server bean
@@ -129,6 +128,8 @@ interface iServer {
 
 	/**
 	 * removes a server from the database
+	 * Hooks that are being called:
+	 * - deleteServer_beforeDelete
 	 *
 	 * @param int $serverid id of the server
 	 *

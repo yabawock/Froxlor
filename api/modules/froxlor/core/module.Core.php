@@ -282,6 +282,65 @@ class Core extends FroxlorModule implements iCore {
 	}
 
 	/**
+	 * @see iCore::doLogin()
+	 *
+	 * @param string $username
+	 * @param string $password encrypted password
+	 *
+	 * @return array user-bean as array
+	 */
+	public static function doLogin() {
+
+		$username = self::getParam('username');
+		$password = self::getParam('password');
+
+		$user = Database::findOne('users', ' name = :name AND password = :cryptedpasswd ',
+				array(
+						':name' => $username,
+						':cryptedpasswd' => $password
+				)
+		);
+		if ($user !== null) {
+			// set the api key
+			Froxlor::getApi()->setApiKey($user->apikey);
+			// hide important data
+			$user->apikey = null;
+			$user->password = null;
+
+			if (!self::_validateApiKey($user)) {
+				throw new CoreException(406, 'Sorry, you are not allowed to access the API');
+			}
+			// return the user bean
+			return ApiResponse::createResponse(200, null, $user->export());
+		}
+		// too bad :/
+		throw new CoreException(406, 'Sorry, your login was unsuccessfull');
+	}
+
+	/**
+	 * check if a user is allowed to use the api
+	 *
+	 * @param $user user-bean-array
+	 *
+	 * @return boolean
+	 */
+	private static function _validateApiKey($user) {
+
+		if ($user !== null) {
+
+			$api_response = Froxlor::getApi()->apiCall(
+					'Permissions.statusUserPermission',
+					array('userid' => $user->id, 'ident' => 'Core.useAPI')
+			);
+
+			if ($api_response->getResponseCode() == 200) {
+				Froxlor::getApi()->setUser($user);
+				return true;
+			}
+		}
+		return false;
+	}
+	/**
 	 * @see iCore::doSetup();
 	 *
 	 * @return null
@@ -290,6 +349,68 @@ class Core extends FroxlorModule implements iCore {
 		// call the hook to run Core_moduleSetup on all modules
 		Hooks::callHooks('Core_moduleSetup');
 		return ApiResponse::createResponse(200, 'Setup finished without errors');
+	}
+
+	/**
+	 * @see iCore::listParams()
+	 *
+	 * @param string $ident a module.function ident
+	 *
+	 * @throws CoreException
+	 * @return array all parameters and the return-type of the given module-function
+	 */
+	public static function listParams() {
+		$ident = self::getParamIdent('ident', 2);
+		$result = self::_getParamListFromDoc($ident[0], $ident[1]);
+
+		if ($result === false) {
+			throw new CoreException(404, 'No parameter list found for "'.implode('.', $ident).'". The function might not exist though');
+		}
+		return $result;
+	}
+
+	/**
+	 * generate an api-response to list all parameters and the return-value of
+	 * a given module.function-combination
+	 *
+	 * @param string $module
+	 * @param string $function
+	 *
+	 * @throws FroxlorModuleException
+	 * @return array|bool
+	 */
+	private static function _getParamListFromDoc($module = null, $function = null) {
+		try {
+			$cls = new ReflectionMethod($module, $function);
+			$comment = $cls->getDocComment();
+			if ($comment == false) {
+				throw new FroxlorModuleException(404, 'There is no comment-block for "'.$module.'.'.$function.'"');
+			}
+			$clines = explode("\n", $comment);
+			$result = array();
+			$result['params'] = array();
+			foreach ($clines as $c) {
+				$c = trim($c);
+				// check param-section
+				if (strpos($c, '@param')) {
+					preg_match('/^\*\s\@param\s(\w+)\s(\$\w+)(\s.*)?/', $c, $r);
+					// cut $ off the parameter-name as it is not wanted in the api-request
+					$result['params'][] = array('parameter' => substr($r[2], 1), 'type' => $r[1], 'desc' => (isset($r[3]) ? trim($r['3']) : ''));
+				}
+				// check return-section
+				elseif (strpos($c, '@return')) {
+					preg_match('/^\*\s\@return\s(\w+)(\s.*)?/', $c, $r);
+					if (!isset($r[0]) || empty($r[0])) {
+						$r[1] = 'null';
+						$r[2] = 'This function has no return value given';
+					}
+					$result['return'] = array('type' => $r[1], 'desc' => (isset($r[2]) ? trim($r[2]) : ''));
+				}
+			}
+			return ApiResponse::createResponse(200, null, $result);
+		} catch (ReflectionException $e) {
+			return false;
+		}
 	}
 
 	/**
