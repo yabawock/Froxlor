@@ -194,7 +194,7 @@ class Froxlor implements iFroxlor {
 
 				// allow only Core.doLogin without a valid api-key
 				$apikey_required = true;
-				if ($mod == 'Core' && $fun == 'doLogin') {
+				if ($mod == 'Core' && in_array($fun, array('doLogin', 'listApiFunctions', 'listParams'))) {
 					$apikey_required = false;
 				}
 

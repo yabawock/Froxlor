@@ -23,6 +23,27 @@ class FroxlorCliInterface {
 	 * @var Froxlor
 	 */
 	private $_api = null;
+	
+	/**
+	 * List of all Functions in Froxlor
+	 *
+	 * @var array
+	 */
+	private $_functionlist = array();
+
+	/**
+	 * Cache of all Functionparams in Froxlor
+	 *
+	 * @var array
+	 */
+	private $_paramlist = array();
+	
+	/**
+	 * Where the history is found
+	 *
+	 * @var string
+	 */
+	private $_historyfile = 'froxlor.history';
 
 	/**
 	 * main constructor of CLISystem class
@@ -41,7 +62,99 @@ class FroxlorCliInterface {
 		);
 
 		$this->_api = $api;
+		
+		// Initialize the history
+		$this->_historyfile = dirname(__FILE__) . '/froxlor.history';
+		if (is_file($this->_historyfile)) {
+			readline_read_history($this->_historyfile);
+		}
+
+		// Get a list with all API - functions
+		try {
+			$req = ApiRequest::createRequest("Core.listApiFunctions", array());
+			$this->_api->sendRequest($req);
+			$response = $this->_api->getLastResponse();
+		} catch (ApiException $e) {
+			$response = new ApiResponse(null);
+			$_response = unserialize((string)$e);
+			$response->addResponse($_response);
+		}
+
+		$rarr = $response->getResponse();
+		
+		// We don't need a fallback - if it doesn't work, simply nothing will be completed
+		if ($response->getResponseCode() == 200)
+		{
+			// Build an array holding all functions as string
+			foreach ($rarr['body'] as $function)
+			{
+				$this->_functionlist[] = $function['module'] . '.' . $function['function'];
+			}
+		}
+
+		// Initialize the shell - completion
+		readline_completion_function(array($this, 'readlineCompletion'));
+		
 		$this->startShell();
+	}
+	
+	public function __destruct() {
+		readline_write_history($this->_historyfile);
+	}
+	
+	private function readlineCompletion($string, $index) {
+		$matches = array();
+		// Get info about the current buffer
+		$rl_info = readline_info();
+
+		// Figure out what the entire input is
+		$full_input = substr($rl_info['line_buffer'], 0, $rl_info['end']);
+
+		// Let's see if we have a space in the complete string (indicates param-completion)
+		if (strpos($full_input, " ") === false)
+		{
+			// No string, just return all available functions, readline will do the matching internaly
+			return $this->_functionlist;
+		}
+
+		/*
+		// This should be param-completion, but I seem to hit a limitation in readline_completion_function - it will always do a file-completion
+		$commandname = trim(strtok($full_input, " "));
+		if (!array_key_exists($commandname, $this->_paramlist))
+		{
+			
+			try {
+				$req = ApiRequest::createRequest("Core.listParams", array('ident' => $commandname));
+				$this->_api->sendRequest($req);
+				$response = $this->_api->getLastResponse();
+
+			} catch (ApiException $e) {
+				$response = new ApiResponse(null);
+				$_response = unserialize((string)$e);
+				$response->addResponse($_response);
+			}
+
+			$rarr = $response->getResponse();
+
+			// We initialize the commandname in every case to reduce multiple lookups later
+			$this->_paramlist[$commandname] = array();
+			
+			// No harm done if we don't get a successful response
+			if ($response->getResponseCode() == 200)
+			{
+				foreach ($rarr['body']['params'] as $function)
+				{
+					$this->_paramlist[$commandname][] = $function['module'] . '.' . $function['function'];
+				}
+			}
+			$matches = $this->_paramlist[$commandname];
+		}
+		else
+		{
+			$matches = $this->_paramlist[$commandname];
+		}
+		*/
+		return $matches;
 	}
 
 	/**
@@ -122,17 +235,12 @@ class FroxlorCliInterface {
 	 */
 	public function showPrompt() {
 		while (true) {
-			echo "froxlor> ";
-			$in = $this->_getInput();
+			// Get the next input from the user
+			$in = trim(readline("froxlor> "));
+			// Add the response to our history to enable up/down/ctrl-r - search
+			readline_add_history($in);
 			$this->_parseInput($in);
 		}
-	}
-
-	/**
-	 * function to get input from shell
-	 */
-	private function _getInput() {
-		return trim(fgets(STDIN));
 	}
 
 	/**
