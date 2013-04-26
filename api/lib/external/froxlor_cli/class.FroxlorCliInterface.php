@@ -23,7 +23,7 @@ class FroxlorCliInterface {
 	 * @var Froxlor
 	 */
 	private $_api = null;
-	
+
 	/**
 	 * List of all Functions in Froxlor
 	 *
@@ -35,14 +35,14 @@ class FroxlorCliInterface {
 	 * Cache of all Functionparams in Froxlor
 	 *
 	 * @var array
-	 */
+	*/
 	private $_paramlist = array();
-	
+
 	/**
 	 * Where the history is found
 	 *
 	 * @var string
-	 */
+	*/
 	private $_historyfile = 'froxlor.history';
 
 	/**
@@ -62,7 +62,12 @@ class FroxlorCliInterface {
 		);
 
 		$this->_api = $api;
-		
+
+		// check php readline extension
+		if (!extension_loaded('readline')) {
+			die('Froxlor Cli-interface requires PHP compiled with "readline" support');
+		}
+
 		// Initialize the history
 		$this->_historyfile = dirname(__FILE__) . '/froxlor.history';
 		if (is_file($this->_historyfile)) {
@@ -81,27 +86,25 @@ class FroxlorCliInterface {
 		}
 
 		$rarr = $response->getResponse();
-		
+
 		// We don't need a fallback - if it doesn't work, simply nothing will be completed
-		if ($response->getResponseCode() == 200)
-		{
+		if ($response->getResponseCode() == 200) {
 			// Build an array holding all functions as string
-			foreach ($rarr['body'] as $function)
-			{
+			foreach ($rarr['body'] as $function) {
 				$this->_functionlist[] = $function['module'] . '.' . $function['function'];
 			}
 		}
 
 		// Initialize the shell - completion
 		readline_completion_function(array($this, 'readlineCompletion'));
-		
+
 		$this->startShell();
 	}
-	
+
 	public function __destruct() {
 		readline_write_history($this->_historyfile);
 	}
-	
+
 	private function readlineCompletion($string, $index) {
 		$matches = array();
 		// Get info about the current buffer
@@ -111,16 +114,14 @@ class FroxlorCliInterface {
 		$full_input = substr($rl_info['line_buffer'], 0, $rl_info['end']);
 
 		// Let's see if we have a space in the complete string (indicates param-completion)
-		if (strpos($full_input, " ") === false)
-		{
+		if (strpos($full_input, " ") === false) {
 			// No string, just return all available functions, readline will do the matching internaly
 			return $this->_functionlist;
 		}
 
 		// Get the commandname at the beginning of the line
 		$commandname = trim(strtok($full_input, " "));
-		if (!in_array($commandname, $this->_paramlist))
-		{
+		if (!in_array($commandname, $this->_paramlist)) {
 			// Try to fetch the needed parameters
 			try {
 				$req = ApiRequest::createRequest("Core.listParams", array('ident' => $commandname));
@@ -137,21 +138,16 @@ class FroxlorCliInterface {
 
 			// We initialize the commandname in every case to reduce multiple lookups later
 			$this->_paramlist[$commandname] = array();
-			
+
 			// No harm done if we don't get a successful response
-			if ($response->getResponseCode() == 200)
-			{
+			if ($response->getResponseCode() == 200) {
 				// Build a list with all parameters
-				foreach ($rarr['body']['params'] as $param)
-				{
+				foreach ($rarr['body']['params'] as $param) {
 					$this->_paramlist[$commandname][] = $param['parameter'];
 				}
 			}
-			
 			$matches = $this->_paramlist[$commandname];
-		}
-		else
-		{
+		} else {
 			$matches = $this->_paramlist[$commandname];
 		}
 		return $matches;

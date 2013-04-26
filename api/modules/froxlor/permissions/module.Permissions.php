@@ -33,6 +33,130 @@
 class Permissions extends FroxlorModule implements iPermissions {
 
 	/**
+	 * @see iPermissions::listPermissions()
+	 *
+	 * @param string $module optional return only permissions defined by given module
+	 *
+	 * @return array an array of all available permission-beans as array
+	 */
+	public static function listPermissions() {
+
+		$module = self::getParam('module', true, null);
+
+		$permissions = array();
+		if ($module != null) {
+			$perms = Database::find('permissions', ' module = :mod ', array(':mod' => $module));
+		} else {
+			// get all
+			$perms = Database::findAll('permissions',' ORDER BY module');
+		}
+
+		// create array from beans
+		foreach ($perms as $sbean) {
+			$permissions[] = $sbean->export();
+		}
+
+		// return all the settings as array (api)
+		return ApiResponse::createResponse(
+				200,
+				null,
+				$permissions
+		);
+	}
+
+	/**
+	 * @see iPermissions::statusPermission()
+	 *
+	 * @param string $ident e.g. Module.name
+	 *
+	 * @throws PermissionsException
+	 * @return array the permissions-bean-data
+	 */
+	public static function statusPermission() {
+
+		$ident = self::getParamIdent('ident', 2);
+
+		// set database-parameter
+		$dbparam = array(
+				':mod' => $ident[0],
+				':perm' => $ident[1]
+		);
+
+		// go find the permission
+		$permission = Database::findOne('permissions', 'module = :mod AND name = :perm', $dbparam);
+
+		// if null, no permission was found
+		if ($permission === null) {
+			throw new PermissionsException(404, 'Permission "'.implode('.', $ident).'" not found');
+		}
+
+		// return it as array
+		return ApiResponse::createResponse(200, null, $permission->export());
+	}
+
+	/**
+	 * @see iPermissions::addPermission()
+	 *
+	 * @param string $ident identifier for the permission, Module.name
+	 *
+	 * @throws PermissionsException in case the permission already exists
+	 * @return array permission-bean as array
+	 */
+	public static function addPermission() {
+
+		$ident = self::getParamIdent('ident', 2);
+
+		// check if it already exists
+		$res_check = Froxlor::getApi()->apiCall('Permissions.statusPermission', array('ident' => implode('.', $ident)));
+		if ($res_check->getResponseCode() == 200) {
+			throw new ResourcesException(406, 'The permission "'.implode('.', $ident).'" does already exist');
+		}
+
+		// create new bean
+		$perm = Database::dispense('permissions');
+		$perm->module = $ident[0];
+		$perm->name = $ident[1];
+		$permid = Database::store($perm);
+
+		$perm = Database::load('permissions', $permid);
+		// return success and the bean
+		return ApiResponse::createResponse(200, null, $perm->export());
+	}
+
+	/**
+	 * @see iPermissions::deletePermission()
+	 *
+	 * @param string $ident identifier for the permission, Module.permname
+	 *
+	 * @throws PermissionsException in case the permission does not exist or is in use
+	 * @return bool success = true
+	 */
+	public static function deletePermission() {
+
+		$ident = self::getParamIdent('ident', 2);
+
+		// get permission
+		$perm_check = Froxlor::getApi()->apiCall('Permissions.statusPermission', array('ident' => implode('.', $ident)));
+		// check responsecode
+		if ($perm_check->getResponseCode() != 200) {
+			// return non-success message
+			return $perm_check->getResponse();
+		}
+		// get id from response
+		$permid = $perm_check->getData()['id'];
+		// check if in use (groups)
+		$inuse = Database::find('groups_permissions', ' permissions_id = ? ', array($permid));
+		if (is_array($inuse) && count($inuse) > 0) {
+			throw new PermissionsException(403, 'The permission "'.implode('.', $ident).'" cannot be deleted as it is in use');
+		}
+		// delete it
+		$perm = Database::load('permissions', $permid);
+		Database::trash($perm);
+		// return bean as array
+		return ApiResponse::createResponse(200, null, array('success' => true));
+	}
+
+	/**
 	 * @see iPermissions::statusUserPermission()
 	 *
 	 * @param int $userid

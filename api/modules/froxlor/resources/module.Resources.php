@@ -71,7 +71,7 @@ class Resources extends FroxlorModule implements iResources {
 		// go find the resource
 		$resource = Database::findOne('resources', 'module = :mod AND resource = :res', $dbparam);
 
-		// if null, no setting was found
+		// if null, no resource was found
 		if ($resource === null) {
 			throw new ResourcesException(404, 'Resource "'.implode('.', $ident).'" not found');
 		}

@@ -33,7 +33,46 @@
 interface iPermissions {
 
 	/**
-	 * checks if a given user (id) has a given permission (ident) 
+	 * returns an array of all available permissions
+	 *
+	 * @param string $module optional return only permissions defined by given module
+	 *
+	 * @return array an array of all available permission-beans as array
+	 */
+	public static function listPermissions();
+
+	/**
+	 * returns a permission by given ident
+	 *
+	 * @param string $ident e.g. Module.permission
+	 *
+	 * @throws PermissionsException
+	 * @return array the permissions-bean-data
+	*/
+	public static function statusPermission();
+
+	/**
+	 * adds a new permission to the database
+	 *
+	 * @param string $ident identifier for the permission, Module.permname
+	 *
+	 * @throws PermissionsException in case the permission already exists
+	 * @return array permission-bean as array
+	*/
+	public static function addPermission();
+
+	/**
+	 * removes an existing permission from the database (if unused)
+	 *
+	 * @param string $ident identifier for the permission, Module.permname
+	 *
+	 * @throws PermissionsException in case the permission does not exist or is in use
+	 * @return bool success = true
+	*/
+	public static function deletePermission();
+
+	/**
+	 * checks if a given user (id) has a given permission (ident)
 	 * by searching the users groups for this permission
 	 *
 	 * @param int $userid
@@ -41,7 +80,7 @@ interface iPermissions {
 	 *
 	 * @throws PermissionsException
 	 * @return bool allowed=true if user has permission
-	 */
+	*/
 	public static function statusUserPermission();
 
 }
