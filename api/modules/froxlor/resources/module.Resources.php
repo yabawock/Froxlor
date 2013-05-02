@@ -42,7 +42,7 @@ class Resources extends FroxlorModule implements iResources {
 		$resources = Database::findAll('resources', ' ORDER BY module ASC, resource ASC');
 		// create array from beans
 		$res_array = Database::exportAll($resources, false);
-		// return all the servers as array (api)
+		// return all the resources as array (api)
 		return ApiResponse::createResponse(
 				200,
 				null,
@@ -108,7 +108,7 @@ class Resources extends FroxlorModule implements iResources {
 		$resid = Database::store($res);
 
 		$res = Database::load('resources', $resid);
-		// return success and the id
+		// return the bean as array
 		return ApiResponse::createResponse(200, null, $res->export());
 	}
 

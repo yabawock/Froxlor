@@ -222,7 +222,7 @@ class FroxlorCliInterface {
 	 */
 	public function startShell() {
 		echo "Starting Froxlor-CLI version ".self::$_version."...\n\n";
-		echo "Type '.help' for a list of commands\n\n";
+		echo "Type '.help' for a list of commands. To see API-functions, just use tab-completion.\n\n";
 		$this->showPrompt();
 	}
 

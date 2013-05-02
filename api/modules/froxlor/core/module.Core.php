@@ -322,7 +322,7 @@ class Core extends FroxlorModule implements iCore {
 	 *
 	 * @param $user user-bean-array
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	private static function _validateApiKey($user) {
 
