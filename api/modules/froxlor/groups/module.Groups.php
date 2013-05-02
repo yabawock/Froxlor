@@ -75,11 +75,7 @@ class Groups extends FroxlorModule implements iGroups {
 	 */
 	public static function statusGroup() {
 
-		$name = self::getParam('name');
-
-		if (substr($name, 0, 1) != '@') {
-			$name = '@'.$name;
-		}
+		$name = self::_correctGroup(self::getParam('name'));
 
 		$group = Database::findOne('groups', 'groupname = :grp', array(':grp' => $name));
 
@@ -89,7 +85,7 @@ class Groups extends FroxlorModule implements iGroups {
 		}
 
 		// return it as array
-		return ApiResponse::createResponse(200, null, $group->export());
+		return ApiResponse::createResponse(200, null, Database::exportAll($group));
 	}
 
 	/**
@@ -102,11 +98,7 @@ class Groups extends FroxlorModule implements iGroups {
 	 */
 	public static function addGroup() {
 
-		$name = self::getParam('name');
-
-		if (substr($name, 0, 1) != '@') {
-			$name = '@'.$name;
-		}
+		$name = self::_correctGroup(self::getParam('name'));
 
 		// check if it already exists
 		$grp_check = Froxlor::getApi()->apiCall('Groups.statusGroup', array('name' => $name));
@@ -121,7 +113,7 @@ class Groups extends FroxlorModule implements iGroups {
 
 		$grp = Database::load('groups', $grpid);
 		// return the bean as array
-		return ApiResponse::createResponse(200, null, $grp->export());
+		return ApiResponse::createResponse(200, null, Database::exportAll($grp));
 	}
 
 	/**
@@ -134,7 +126,86 @@ class Groups extends FroxlorModule implements iGroups {
 	 * @return array groups-bean array of the new group
 	 */
 	public static function copyGroup() {
-		
+
+		$name = self::_correctGroup(self::getParam('name'));
+		$copyfrom = self::_correctGroup(self::getParam('copyfrom'));
+
+		// check if the group which is to copy exists
+		$grp_check = Froxlor::getApi()->apiCall('Groups.statusGroup', array('name' => $copyfrom));
+		if ($grp_check->getResponseCode() != 200) {
+			throw new GroupsException(404, 'The group you want to copy from ("'.$copyfrom.'") does not exist');
+		}
+
+		// add the new group (if possible
+		$newgrp_check = Froxlor::getApi()->apiCall('Groups.addGroup', array('name' => $name));
+		if ($newgrp_check->getResponseCode() != 200) {
+			// that did not work out as expected
+			return $newgrp_check->getResponse();
+		}
+
+		// get new group
+		$newgrp = Database::load('groups', $newgrp_check->getData()[0]['id']);
+		// get group to copy from
+		$cpygrp = Database::load('groups', $grp_check->getData()[0]['id']);
+
+		$newgrp->sharedPermissions = $cpygrp->sharedPermissions;
+		$newgrp->sharedGroups = $cpygrp->sharedGroups;
+		Database::store($newgrp);
+
+		$grp = Database::load('groups', $newgrp->id);
+		// return the bean as array
+		return ApiResponse::createResponse(200, null, Database::exportAll($grp));
+	}
+
+	/**
+	 * @see iGroups::nestGroup()
+	 *
+	 * @param string $name name of the group to add
+	 * @param string $with_group name of the group to add to
+	 *
+	 * @throws GroupsException if the group already is subgroup of the given group
+	 *                         or either of the groups does not exist
+	 * @return array groups-bean array of the group given by name
+	 */
+	public static function nestGroup() {
+
+		$name = self::_correctGroup(self::getParam('name'));
+		$with_group = self::_correctGroup(self::getParam('with_group'));
+
+		// check if the group which to nest into exists
+		$grp_check = Froxlor::getApi()->apiCall('Groups.statusGroup', array('name' => $name));
+		if ($grp_check->getResponseCode() != 200) {
+			throw new GroupsException(404, 'The group you want to nest ("'.$name.'") does not exist');
+		}
+
+		// check if the group which is to be nested exists
+		$wgrp_check = Froxlor::getApi()->apiCall('Groups.statusGroup', array('name' => $with_group));
+		if ($wgrp_check->getResponseCode() != 200) {
+			throw new GroupsException(404, 'The group you want to nest with ("'.$with_group.'") does not exist');
+		}
+
+		// get group to nest into
+		$withgrp = Database::load('groups', $wgrp_check->getData()[0]['id']);
+		// get group to be nested
+		$grp = Database::load('groups', $grp_check->getData()[0]['id']);
+
+		// check if already nested
+		$groups = $withgrp->sharedGroups;
+		foreach ($groups as $group) {
+			if ($group->id == $grp->id) {
+				throw new GroupsException(406, 'The group "'.$name.'" is already nested with group "'.$with_group.'"');
+			}
+		}
+
+		// add to with_group's sharedGroups array
+		$withgrp->sharedGroups[] = $grp;
+		// save
+		Database::store($withgrp);
+
+		// load stored data
+		$grp = Database::load('groups', $grp->id);
+		// return the bean as array
+		return ApiResponse::createResponse(200, null, Database::exportAll($grp));
 	}
 
 	/**
@@ -160,11 +231,7 @@ class Groups extends FroxlorModule implements iGroups {
 	 */
 	public static function deleteGroup() {
 
-		$name = self::getParam('name');
-
-		if (substr($name, 0, 1) != '@') {
-			$name = '@'.$name;
-		}
+		$name = self::_correctGroup(self::getParam('name'));
 
 		// get group
 		$grp_check = Froxlor::getApi()->apiCall('Groups.statusGroup', array('name' => $name));
@@ -174,7 +241,7 @@ class Groups extends FroxlorModule implements iGroups {
 			return $grp_check->getResponse();
 		}
 		// get id from response
-		$grpid = $grp_check->getData()['id'];
+		$grpid = $grp_check->getData()[0]['id'];
 		// load bean
 		$grp = Database::load('groups', $grpid);
 		// check if in use (users)
@@ -187,6 +254,20 @@ class Groups extends FroxlorModule implements iGroups {
 		// return bean as array
 		return ApiResponse::createResponse(200, null, array('success' => true));
 
+	}
+
+	/**
+	 * checks for the prefixed @-sign and adds it if neccessary
+	 *
+	 * @param string $group group name to correct
+	 *
+	 * @return string corrected groupname
+	 */
+	private static function _correctGroup($group = null) {
+		if (substr($group, 0, 1) != '@') {
+			$group = '@'.$group;
+		}
+		return $group;
 	}
 
 	/**

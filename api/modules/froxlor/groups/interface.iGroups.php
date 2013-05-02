@@ -63,6 +63,18 @@ interface iGroups {
 	public static function addGroup();
 
 	/**
+	 * nests a group into another group
+	 *
+	 * @param string $name name of the group to add
+	 * @param string $with_group name of the group to add to
+	 *
+	 * @throws GroupsException if the group already is subgroup of the given group
+	 *                         or either of the groups does not exist
+	 * @return array groups-bean array of the group given by name
+	*/
+	public static function nestGroup();
+
+	/**
 	 * adds a new group but copys the permissions and possible
 	 * existing child-group (sharedGroups) from another group
 	 * so they don't have to be added again
