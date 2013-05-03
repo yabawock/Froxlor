@@ -158,7 +158,7 @@ class Groups extends FroxlorModule implements iGroups {
 	}
 
 	/**
-	 * @see iGroups::nestGroup()
+	 * @see iGroups::nestGroups()
 	 *
 	 * @param string $name name of group to add to
 	 * @param string|array $with_group name (string or array) of the group(s) to add
@@ -167,7 +167,7 @@ class Groups extends FroxlorModule implements iGroups {
 	 *                         or either of the groups does not exist
 	 * @return array groups-bean array of the group given by name
 	 */
-	public static function nestGroup() {
+	public static function nestGroups() {
 
 		$name = self::_correctGroup(self::getParam('name'));
 		$with_group = self::_correctGroup(self::getParam('with_group'));

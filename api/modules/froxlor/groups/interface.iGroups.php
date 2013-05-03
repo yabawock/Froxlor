@@ -87,7 +87,7 @@ interface iGroups {
 	 *                         or either of the groups does not exist
 	 * @return array groups-bean array of the group given by name
 	*/
-	public static function nestGroup();
+	public static function nestGroups();
 
 	/**
 	 * modifies a group's name
