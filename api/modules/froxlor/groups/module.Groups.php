@@ -160,8 +160,8 @@ class Groups extends FroxlorModule implements iGroups {
 	/**
 	 * @see iGroups::nestGroup()
 	 *
-	 * @param string $name name of the group to add
-	 * @param string $with_group name of the group to add to
+	 * @param string $name name of group to add to
+	 * @param string|array $with_group name (string or array) of the group(s) to add
 	 *
 	 * @throws GroupsException if the group already is subgroup of the given group
 	 *                         or either of the groups does not exist
@@ -172,40 +172,52 @@ class Groups extends FroxlorModule implements iGroups {
 		$name = self::_correctGroup(self::getParam('name'));
 		$with_group = self::_correctGroup(self::getParam('with_group'));
 
-		// check if the group which to nest into exists
-		$grp_check = Froxlor::getApi()->apiCall('Groups.statusGroup', array('name' => $name));
-		if ($grp_check->getResponseCode() != 200) {
-			throw new GroupsException(404, 'The group you want to nest ("'.$name.'") does not exist');
+		if (!is_array($with_group)) {
+			$with_group = array($with_group);
 		}
 
-		// check if the group which is to be nested exists
-		$wgrp_check = Froxlor::getApi()->apiCall('Groups.statusGroup', array('name' => $with_group));
-		if ($wgrp_check->getResponseCode() != 200) {
-			throw new GroupsException(404, 'The group you want to nest with ("'.$with_group.'") does not exist');
-		}
+		if (is_array($with_group) && count($with_group) > 0) {
 
-		// get group to nest into
-		$withgrp = Database::load('groups', $wgrp_check->getData()[0]['id']);
-		// get group to be nested
-		$grp = Database::load('groups', $grp_check->getData()[0]['id']);
-
-		// check if already nested
-		$groups = $withgrp->sharedGroups;
-		foreach ($groups as $group) {
-			if ($group->id == $grp->id) {
-				throw new GroupsException(406, 'The group "'.$name.'" is already nested with group "'.$with_group.'"');
+			// check if the group which to nest into exists
+			$grp_check = Froxlor::getApi()->apiCall('Groups.statusGroup', array('name' => $name));
+			if ($grp_check->getResponseCode() != 200) {
+				throw new GroupsException(404, 'The group you want to nest ("'.$name.'") does not exist');
 			}
+			// get group to be nested
+			$grp = Database::load('groups', $grp_check->getData()[0]['id']);
+
+			foreach ($with_group as $_group) {
+
+				// check if they are not the same!
+				if ($grp->groupname == $_group) {
+					throw new GroupsException(406, 'You cannot nest a group with itself. That\'s just wrong dude...');
+				}
+
+				// check if the group which is to be nested exists
+				$wgrp_check = Froxlor::getApi()->apiCall('Groups.statusGroup', array('name' => $_group));
+				if ($wgrp_check->getResponseCode() != 200) {
+					throw new GroupsException(404, 'The group you want to nest with ("'.$_group.'") does not exist');
+				}
+				// get group to nest into
+				$withgrp = Database::load('groups', $wgrp_check->getData()[0]['id']);
+
+				// check if already nested
+				$groups = $withgrp->sharedGroups;
+				foreach ($groups as $group) {
+					if ($group->id == $grp->id) {
+						throw new GroupsException(406, 'The group "'.$name.'" is already nested with group "'.$with_group.'"');
+					}
+				}
+				// set
+				$withgrp->sharedGroups[] = $grp;
+				Database::store($withgrp);
+			}
+			// load stored data
+			$grp = Database::load('groups', $grp->id);
+			// return the bean as array
+			return ApiResponse::createResponse(200, null, Database::exportAll($grp));
 		}
-
-		// add to with_group's sharedGroups array
-		$withgrp->sharedGroups[] = $grp;
-		// save
-		Database::store($withgrp);
-
-		// load stored data
-		$grp = Database::load('groups', $grp->id);
-		// return the bean as array
-		return ApiResponse::createResponse(200, null, Database::exportAll($grp));
+		throw new GroupsException(500, 'Parameter "name" given but somehow not converted to array which is impossible');
 	}
 
 	/**
@@ -259,13 +271,29 @@ class Groups extends FroxlorModule implements iGroups {
 	/**
 	 * checks for the prefixed @-sign and adds it if neccessary
 	 *
-	 * @param string $group group name to correct
+	 * @param string|array $group group name(s) to correct
 	 *
 	 * @return string corrected groupname
 	 */
 	private static function _correctGroup($group = null) {
-		if (substr($group, 0, 1) != '@') {
-			$group = '@'.$group;
+		$noarray = false;
+		if (!is_array($group)) {
+			$noarray = true;
+			$group = array($group);
+		}
+		$newgroups = array();
+		if (is_array($group) && count($group) > 0) {
+			foreach ($group as $g) {
+				if (substr($g, 0, 1) != '@') {
+					$newgroups[] = '@'.$g;
+				} else {
+					$newgroups[] = $g;
+				}
+			}
+			$group = $newgroups;
+		}
+		if ($noarray) {
+			$group = $group[0];
 		}
 		return $group;
 	}

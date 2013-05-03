@@ -393,7 +393,7 @@ class Core extends FroxlorModule implements iCore {
 				$c = trim($c);
 				// check param-section
 				if (strpos($c, '@param')) {
-					preg_match('/^\*\s\@param\s(\w+)\s(\$\w+)(\s.*)?/', $c, $r);
+					preg_match('/^\*\s\@param\s(.+)\s(\$\w+)(\s.*)?/', $c, $r);
 					// cut $ off the parameter-name as it is not wanted in the api-request
 					$result['params'][] = array('parameter' => substr($r[2], 1), 'type' => $r[1], 'desc' => (isset($r[3]) ? trim($r['3']) : ''));
 				}
