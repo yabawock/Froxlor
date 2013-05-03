@@ -84,8 +84,21 @@ class Groups extends FroxlorModule implements iGroups {
 			throw new GroupsException(404, 'Group "'.$name.'" not found');
 		}
 
+		// create array from beans and
+		$clean_group = Database::exportAll($group, false);
+		// clean sharedUsers so we don't output password/apikey
+		if (isset($clean_group[0]['sharedUsers'])) {
+			$gusers = $clean_group[0]['sharedUsers'];
+			$gusers_clean = array();
+			foreach ($gusers as $user) {
+				unset($user['apikey']);
+				unset($user['password']);
+				$gusers_clean[] = $user;
+			}
+			$clean_group[0]['sharedUsers'] = $gusers_clean;
+		}
 		// return it as array
-		return ApiResponse::createResponse(200, null, Database::exportAll($group));
+		return ApiResponse::createResponse(200, null, $clean_group);
 	}
 
 	/**
@@ -218,6 +231,63 @@ class Groups extends FroxlorModule implements iGroups {
 			return ApiResponse::createResponse(200, null, Database::exportAll($grp));
 		}
 		throw new GroupsException(500, 'Parameter "name" given but somehow not converted to array which is impossible');
+	}
+
+	/**
+	 * @see iGroups::addGroupsToUser();
+	 *
+	 * @param name|array $groups name or list of names of groups to put the user in
+	 * @param string $user name of the user
+	 *
+	 * @throwsGroupsException
+	 * @return bool success = true
+	 */
+	public static function addGroupsToUser() {
+		// id's
+		$groups = self::getParam('groups');
+		// name
+		$user = self::getParam('user');
+
+		if (!is_array($groups)) {
+			$groups = array($groups);
+		}
+
+		$usr_check = Froxlor::getApi()->apiCall('User.statusUser', array('name' => $user));
+		// check responsecode
+		if ($usr_check->getResponseCode() != 200) {
+			throw new PermissionsException(404, 'User "'.$name.'" could not be found');
+		}
+
+		$usr = Database::load('users', $usr_check->getData()[0]['id']);
+		if ($usr->id) {
+			foreach ($groups as $g) {
+				$grp_check = Froxlor::getApi()->apiCall('Groups.statusGroup', array('name' => $g));
+				// check responsecode
+				if ($grp_check->getResponseCode() != 200) {
+					// just skip if not exists but log warning
+					ApiLogger::warn('Group "'.$g.'" could not be found');
+				} else {
+					$group = Database::load('groups', $grp_check->getData()[0]['id']);
+					if ($group->id) {
+						// check which of these groups are already connected to the user
+						$do_add = true;
+						foreach ($usr->sharedGroups as $g) {
+							if ($g->id == $group->id) {
+								ApiLogger::info('User "'.$usr->name.'" already is in group "'.$group->groupname.'". Skipping it.');
+								$do_add = false;
+								break;
+							}
+						}
+						if ($do_add) {
+							$usr->sharedGroups[] = $group;
+						}
+					}
+				}
+			}
+			Database::store($usr);
+			return ApiResponse::createResponse(200, null, array('success' => true));
+		}
+		throw new PermissionsException(404, 'User "'.$name.'" could not be found');
 	}
 
 	/**

@@ -201,6 +201,48 @@ class Permissions extends FroxlorModule implements iPermissions {
 	}
 
 	/**
+	 * @see iPermissions::addPermissionsToGroup();
+	 *
+	 * @param int|array $permissions id or list of id's of permissions to give the group
+	 * @param string $group name of the group
+	 *
+	 * @throws PermissionsException
+	 * @return bool success = true
+	 */
+	public static function addPermissionsToGroup() {
+		// id's
+		$perms = self::getParam('permissions');
+		// name
+		$group = self::getParam('group');
+
+		if (!is_array($perms)) {
+			$perms = array($perms);
+		}
+
+		$grp_check = Froxlor::getApi()->apiCall('Groups.statusGroup', array('name' => $group));
+		// check responsecode
+		if ($grp_check->getResponseCode() != 200) {
+			throw new PermissionsException(404, 'Group "'.$group.'" could not be found');
+		}
+
+		$grp = Database::load('groups', $grp_check->getData()[0]['id']);
+		if ($grp->id) {
+			// TODO: check which of these permission are already connected to the group
+			foreach ($perms as $p) {
+				$permission = Database::load('permissions', $p);
+				if ($permission->id) {
+					$grp->sharedPermissions[] = $permission;
+				}
+				// just skip if not exists but log warning
+				ApiLogger::warn('Permission with id #'.$p.' could not be found');
+			}
+			Database::store($grp);
+			return ApiResponse::createResponse(200, null, array('success' => true));
+		}
+		throw new PermissionsException(404, 'Group "'.$group.'" could not be found');
+	}
+
+	/**
 	 * (non-PHPdoc)
 	 * @see FroxlorModule::Core_moduleSetup()
 	 */

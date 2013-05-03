@@ -90,6 +90,17 @@ interface iGroups {
 	public static function nestGroups();
 
 	/**
+	 * connects one or more groups to a user
+	 *
+	 * @param name|array $groups name or list of names of groups to put the user in
+	 * @param string $user name of the user
+	 *
+	 * @throwsGroupsException
+	 * @return bool success = true
+	*/
+	public static function addGroupsToUser();
+
+	/**
 	 * modifies a group's name
 	 *
 	 * @param int $id id of the group

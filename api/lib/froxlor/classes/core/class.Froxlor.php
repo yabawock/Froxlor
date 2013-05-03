@@ -114,14 +114,15 @@ class Froxlor implements iFroxlor {
 	 *
 	 * @param string $api_key     user api key
 	 * @param string $api_version API-version that should be used
+	 * @param bool $force_newobject if true we ignore singleton pattern and create a new instance
 	 *
 	 * @return Froxlor
 	 */
-	public static function getInstance($api_key = null, $api_version = null) {
+	public static function getInstance($api_key = null, $api_version = null, $force_newobject = false) {
 		if ($api_version == null) {
 			$api_version = self::API_VERSION;
 		}
-		if (!isset(self::$_frx)) {
+		if (!isset(self::$_frx) || $force_newobject) {
 			self::$_frx = new Froxlor($api_key, $api_version);
 		}
 		return self::$_frx;
@@ -301,8 +302,8 @@ class Froxlor implements iFroxlor {
 		@date_default_timezone_set('Europe/Berlin');
 
 		// check php version
-		if (PHP_VERSION_ID < 50300) {
-			throw new ApiException(503, 'Froxlor api requires PHP-5.3 or newer');
+		if (PHP_VERSION_ID < 50400) {
+			throw new ApiException(503, 'Froxlor api requires PHP-5.4 or newer');
 		}
 		// php pdo extension
 		if (!extension_loaded('PDO')) {

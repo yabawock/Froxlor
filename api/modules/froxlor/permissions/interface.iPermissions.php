@@ -83,4 +83,15 @@ interface iPermissions {
 	*/
 	public static function statusUserPermission();
 
+	/**
+	 * connects one or more permissions to a given group
+	 *
+	 * @param int|array $permissions id or list of id's of permissions to give the group
+	 * @param string $group name of the group
+	 *
+	 * @throws PermissionsException
+	 * @return bool success = true
+	*/
+	public static function addPermissionsToGroup();
+
 }

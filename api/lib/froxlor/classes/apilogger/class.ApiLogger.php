@@ -90,7 +90,7 @@ class ApiLogger implements iLogger {
 		$this->_readLogConf();
 
 		// get calling class/funtion from backtrace
-		$trace_from = 3;
+		$trace_from = 2;
 		while($trace_from >= 0) {
 			$this->_source = $this->_getSourceFromBacktrace($trace_from);
 			if (self::$_errException !== null) {
