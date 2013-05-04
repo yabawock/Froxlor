@@ -82,6 +82,7 @@ class SyslogLogger implements iAbstractLogger {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iAbstractLogger::getInstance()
 	 *
 	 * @return SyslogLogger object of SyslogLogger class
@@ -98,6 +99,7 @@ class SyslogLogger implements iAbstractLogger {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iAbstractLogger::log()
 	 *
 	 * @param string $text log-message

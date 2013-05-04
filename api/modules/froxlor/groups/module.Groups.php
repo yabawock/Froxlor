@@ -33,6 +33,7 @@
 class Groups extends FroxlorModule implements iGroups {
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iGroups::listGroups()
 	 *
 	 * @return array the groups-bean-data as array
@@ -66,6 +67,7 @@ class Groups extends FroxlorModule implements iGroups {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iGroups::statusGroup();
 	 *
 	 * @param string $name name of the group
@@ -102,6 +104,7 @@ class Groups extends FroxlorModule implements iGroups {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iGroups::addGroup()
 	 *
 	 * @param string $name name of the group
@@ -130,6 +133,7 @@ class Groups extends FroxlorModule implements iGroups {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iGroups::copyGroup()
 	 *
 	 * @param string $name name of the group
@@ -171,6 +175,7 @@ class Groups extends FroxlorModule implements iGroups {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iGroups::nestGroups()
 	 *
 	 * @param string $name name of group to add to
@@ -234,6 +239,7 @@ class Groups extends FroxlorModule implements iGroups {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iGroups::addGroupsToUser();
 	 *
 	 * @param name|array $groups name or list of names of groups to put the user in
@@ -291,6 +297,7 @@ class Groups extends FroxlorModule implements iGroups {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iGroups::modifyGroup()
 	 *
 	 * @param int $id id of the group
@@ -304,6 +311,7 @@ class Groups extends FroxlorModule implements iGroups {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iGroups::deleteGroup()
 	 *
 	 * @param string $name e.g. @customer

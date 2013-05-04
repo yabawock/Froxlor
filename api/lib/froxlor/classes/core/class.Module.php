@@ -39,6 +39,7 @@
 class Module implements iModule {
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iModule::requireModules()
 	 *
 	 * @param string|array $modules
@@ -72,6 +73,7 @@ class Module implements iModule {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iModule::requireVersion()
 	 *
 	 * @param string $min_version at least this version
@@ -98,6 +100,7 @@ class Module implements iModule {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iModule::cmpFroxlorVersions()
 	 *
 	 * @param string $a
@@ -155,6 +158,12 @@ class Module implements iModule {
 		return (count($a) < count($b)) ? -1 : 0;
 	}
 
+	/**
+	 * helperfunction to parse version-numbers and respect
+	 * -dev, -rc strings in it
+	 *
+	 * @param string $arr
+	 */
 	private static function _parseVersionArray(&$arr = null) {
 		// -svn or -dev or -rc ?
 		if (stripos($arr[count($arr)-1], '-') !== false) {

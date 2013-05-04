@@ -70,6 +70,12 @@ class ApiLogger implements iLogger {
 	 */
 	private static $_errException = null;
 
+	/**
+	 * if an exception is set via this function, this exception
+	 * is being used for loggin instead of debug_backtrace()
+	 *
+	 * @param Exception $e
+	 */
 	public static function setErrorException($e = null) {
 		self::$_errException = $e;
 	}
@@ -146,19 +152,19 @@ class ApiLogger implements iLogger {
 		$fh = @fopen($sf, 'w');
 		if ($fh) {
 			$defaults = '<?xml version="1.0" encoding="UTF-8"?>
-<froxlorlog>
-	<enabled>true</enabled>
-	<level>4</level>
-	<facilities>
-		<syslog>
-			<enabled>false</enabled>
-		</syslog>
-		<file>
-			<enabled>true</enabled>
-			<filename>logs/froxlor.log</filename>
-		</file>
-	</facilities>
-</froxlorlog>'."\n";
+					<froxlorlog>
+					<enabled>true</enabled>
+					<level>4</level>
+					<facilities>
+					<syslog>
+					<enabled>false</enabled>
+					</syslog>
+					<file>
+					<enabled>true</enabled>
+					<filename>logs/froxlor.log</filename>
+					</file>
+					</facilities>
+					</froxlorlog>'."\n";
 			fwrite($fh, $defaults);
 			fclose($fh);
 			@chmod($sf, 0655);
@@ -179,7 +185,7 @@ class ApiLogger implements iLogger {
 	 */
 	private function _write($text, $loglevel) {
 		// i can do better than this, we should
-		// iterate through all facilities so we 
+		// iterate through all facilities so we
 		// don't have the same log-line more than once
 		if (isset($this->_logconf->facilities->file)
 				&& (string)$this->_logconf->facilities->file->enabled == 'true'
@@ -236,6 +242,7 @@ class ApiLogger implements iLogger {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iLogger::debug()
 	 *
 	 * @param string $text debug message
@@ -248,6 +255,7 @@ class ApiLogger implements iLogger {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iLogger::info()
 	 *
 	 * @param string $text info message
@@ -260,6 +268,7 @@ class ApiLogger implements iLogger {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iLogger::warn()
 	 *
 	 * @param string $text warning message
@@ -272,6 +281,7 @@ class ApiLogger implements iLogger {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iLogger::error()
 	 *
 	 * @param string $text error message
@@ -284,6 +294,7 @@ class ApiLogger implements iLogger {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iLogger::fatal()
 	 *
 	 * @param string $text fatal message

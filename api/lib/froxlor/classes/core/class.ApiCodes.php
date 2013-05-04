@@ -64,6 +64,7 @@ class APICodes implements iApiCodes {
 	);
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iApiCodes::getCodeDescription()
 	 *
 	 * @internal for internal use only

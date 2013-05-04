@@ -33,6 +33,7 @@
 class Settings extends FroxlorModule implements iSettings {
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iSettings::listSettings()
 	 *
 	 * @return array
@@ -91,6 +92,7 @@ class Settings extends FroxlorModule implements iSettings {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iSettings::statusSetting()
 	 *
 	 * @return mixed settings value

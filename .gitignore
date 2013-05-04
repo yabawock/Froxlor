@@ -4,3 +4,5 @@ logs/*.log
 .settings/
 *.diff
 *~
+api/lib/external/froxlor_cli/froxlor.history
+api/lib/froxlor/classes/hooks/~*

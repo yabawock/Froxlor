@@ -34,23 +34,34 @@
  * @package    API
  * @since      0.99.0
  */
-class ApiException extends Exception implements iException
-{
-	// Exception message
-	protected $_message = 'No detail information given';
-	// User-defined exception code
-	protected $_code = 0;
-	// Source filename of exception
-	protected $_file;
-	// Source line of exception
-	protected $_line;
-
-	// Unknown
-	private $_string;
-	// Unknown
-	private $_trace;
+class ApiException extends Exception implements iException {
 
 	/**
+	 * Exception message
+	 * @var string
+	 */
+	protected $_message = 'No detail information given';
+
+	/**
+	 * User-defined exception code
+	 * @var int
+	 */
+	protected $_code = 0;
+
+	/**
+	 * Source filename of exception
+	 * @var string
+	 */
+	protected $_file;
+
+	/**
+	 * Source line of exception
+	 * @var string
+	 */
+	protected $_line;
+
+	/**
+	 * (non-PHPdoc)
 	 * @see iException::__construct()
 	 *
 	 * @param int    $code    custom error code (default = -1, unkown exception)
@@ -66,10 +77,10 @@ class ApiException extends Exception implements iException
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iException::__toString()
 	 *
 	 * @return array in api php-array structure
-	 * @TODO need API protocol layout to output correct response
 	 */
 	public function __toString() {
 		try {

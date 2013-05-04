@@ -103,6 +103,7 @@ class ApiFileLogger implements iAbstractLogger {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iAbstractLogger::getInstance()
 	 *
 	 * @param object $lc SimpleXML object with the log-conf content
@@ -121,6 +122,7 @@ class ApiFileLogger implements iAbstractLogger {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iAbstractLogger::log()
 	 *
 	 * @param string $text log-message

@@ -69,6 +69,7 @@ class ApiResponse implements iApiResponse {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iApiResponse::createResponse()
 	 *
 	 * @param int          $code    general return code
@@ -121,6 +122,7 @@ class ApiResponse implements iApiResponse {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iApiResponse::addResponse()
 	 *
 	 * @internal only used in Froxlor()
@@ -144,6 +146,7 @@ class ApiResponse implements iApiResponse {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iApiResponse::getResponseCode()
 	 *
 	 * @return int status-code
@@ -154,6 +157,7 @@ class ApiResponse implements iApiResponse {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iApiResponse::getResponse()
 	 *
 	 * @return array
@@ -163,6 +167,7 @@ class ApiResponse implements iApiResponse {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iApiResponse::getData()
 	 *
 	 * @return array|null

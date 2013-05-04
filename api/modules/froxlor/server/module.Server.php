@@ -33,6 +33,7 @@
 class Server extends FroxlorModule implements iServer {
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iServer::statusServer()
 	 *
 	 * @param int $id id of the server
@@ -50,6 +51,7 @@ class Server extends FroxlorModule implements iServer {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iServer::listServer()
 	 *
 	 * @param int $owner optional id of the owner-user
@@ -80,6 +82,7 @@ class Server extends FroxlorModule implements iServer {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iServer::addServer()
 	 *
 	 * @param string $name name of server
@@ -145,6 +148,7 @@ class Server extends FroxlorModule implements iServer {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iServer::addServerIP()
 	 *
 	 * @param string $ipadress the IP adress (v4 or v6)
@@ -191,6 +195,7 @@ class Server extends FroxlorModule implements iServer {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iServer::modifyServer()
 	 *
 	 * @param int $id id of the server
@@ -249,6 +254,7 @@ class Server extends FroxlorModule implements iServer {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iServer::modifyServerIP()
 	 *
 	 * @param int $ipid id of the ip-address
@@ -311,6 +317,7 @@ class Server extends FroxlorModule implements iServer {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iServer::setServerDefaultIP()
 	 *
 	 * @param int $ipid id of the ip-address
@@ -353,6 +360,7 @@ class Server extends FroxlorModule implements iServer {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iServer::deleteServer()
 	 *
 	 * @param int $serverid id of the server

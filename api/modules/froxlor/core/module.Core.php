@@ -33,6 +33,7 @@
 class Core extends FroxlorModule implements iCore {
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iCore::statusVersion()
 	 *
 	 * @return string version
@@ -46,6 +47,7 @@ class Core extends FroxlorModule implements iCore {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iCore::statusApiVersion()
 	 *
 	 * @return string version
@@ -59,6 +61,7 @@ class Core extends FroxlorModule implements iCore {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iCore::statusUpdate()
 	 *
 	 * @return string
@@ -122,6 +125,7 @@ class Core extends FroxlorModule implements iCore {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iCore::statusSystem()
 	 *
 	 * @return array
@@ -211,6 +215,7 @@ class Core extends FroxlorModule implements iCore {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iCore::listApiFunctions()
 	 *
 	 * @param string $module optional only list functions of specific module
@@ -282,6 +287,7 @@ class Core extends FroxlorModule implements iCore {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iCore::doLogin()
 	 *
 	 * @param string $username
@@ -340,7 +346,9 @@ class Core extends FroxlorModule implements iCore {
 		}
 		return false;
 	}
+
 	/**
+	 * (non-PHPdoc)
 	 * @see iCore::doSetup();
 	 *
 	 * @return null
@@ -352,6 +360,7 @@ class Core extends FroxlorModule implements iCore {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iCore::listParams()
 	 *
 	 * @param string $ident a module.function ident

@@ -129,6 +129,7 @@ class Froxlor implements iFroxlor {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iFroxlor::getApi()
 	 *
 	 * @throws ApiException
@@ -143,6 +144,7 @@ class Froxlor implements iFroxlor {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iFroxlor::getApiVersion()
 	 *
 	 * @return string currently used API version
@@ -167,6 +169,7 @@ class Froxlor implements iFroxlor {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iFroxlor::sendRequest()
 	 *
 	 * @param ApiRequest $api_req object of the ApiRequest class
@@ -251,6 +254,7 @@ class Froxlor implements iFroxlor {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iFroxlor::getLastResponse()
 	 *
 	 * @return ApiResponse object of ApiResponse class
@@ -328,6 +332,11 @@ class Froxlor implements iFroxlor {
 		}
 	}
 
+	/**
+	 * checks whether an apikey is set or empty
+	 *
+	 * @throws ApiException
+	 */
 	private function _checkApiKey() {
 		// api key set?
 		if ($this->_apikey == null || $this->_apikey == '') {

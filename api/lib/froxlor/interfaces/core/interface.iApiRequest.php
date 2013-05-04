@@ -56,6 +56,14 @@ interface iApiRequest {
 	public function setModule($mod = null);
 
 	/**
+	 * Returns the module which is related to that request
+	 * For example: Core
+	 *
+	 * @return string
+	*/
+	public function getModule();
+
+	/**
 	 * The function which is to be called.
 	 * For example: getApiVersion
 	 *
@@ -66,6 +74,14 @@ interface iApiRequest {
 	 * @return bool
 	*/
 	public function setFunction($func = null);
+
+	/**
+	 * Returns the function which is to be called in that request
+	 * For example: statusVersion
+	 *
+	 * @return string
+	*/
+	public function getFunction();
 
 	/**
 	 * Use this function to set several parameters
@@ -83,7 +99,7 @@ interface iApiRequest {
 	 *
 	 * @internal only for internal use
 	 *
-	 * @param string $params parameter-name (optionally with grouping)
+	 * @param string $param parameter-name (optionally with grouping)
 	 * @param mixed  $value  value for the parameter
 	 *
 	 * @return bool

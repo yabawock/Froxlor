@@ -33,6 +33,7 @@
 class Limits extends FroxlorModule implements iLimits {
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iLimits::statusLimit()
 	 *
 	 * @param int $type 0 = user, 1 = server (default is 0)
@@ -78,6 +79,7 @@ class Limits extends FroxlorModule implements iLimits {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iLimits::listLimits()
 	 *
 	 * @param int $type 0 = user, 1 = server (default is 0)
@@ -116,6 +118,7 @@ class Limits extends FroxlorModule implements iLimits {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iLimits::addLimit()
 	 *
 	 * @param int $type 0 = user, 1 = server (default is 0)
@@ -183,6 +186,7 @@ class Limits extends FroxlorModule implements iLimits {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iLimits::modifyLimit()
 	 *
 	 * @param int $type 0 = user, 1 = server (default is 0)
@@ -250,6 +254,7 @@ class Limits extends FroxlorModule implements iLimits {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iLimits::deleteLimit()
 	 *
 	 * @param int $type 0 = user, 1 = server (default is 0)

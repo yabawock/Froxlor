@@ -32,21 +32,52 @@
  */
 interface iException {
 
-	/* Protected methods inherited from Exception class */
-	// Exception message
+	// Protected methods inherited from Exception class
+
+	/**
+	 * returns the error message
+	 *
+	 * @return string
+	 */
 	public function getMessage();
-	// User-defined Exception code
+
+	/**
+	 * returns the error code
+	 *
+	 * @return int
+	*/
 	public function getCode();
-	// Source filename
+
+	/**
+	 * returns the error source-file
+	 *
+	 * @return string
+	*/
 	public function getFile();
-	// Source line
+
+	/**
+	 * returns the line in the file causing the error
+	 *
+	 * @return int
+	*/
 	public function getLine();
-	// An array of the backtrace()
+
+	/**
+	 * returns the error-backtrace as array
+	 *
+	 * @return array
+	*/
 	public function getTrace();
-	// Formated string of trace
+
+	/**
+	 * returns the backtrace as string
+	 *
+	 * @return string
+	*/
 	public function getTraceAsString();
 
-	/* Overrideable methods inherited from Exception class */
+	// Overrideable methods inherited from Exception class
+
 	/**
 	 * format output string in api-protocol style
 	 *
@@ -57,8 +88,8 @@ interface iException {
 	/**
 	 * default constructor
 	 *
-	 * @param int    $code    custom error code
 	 * @param string $message error-message
+	 * @param int    $code    custom error code
 	 *
 	 * @throws ApiException
 	*/

@@ -1,5 +1,35 @@
 <?php
 
+/**
+ * Froxlor API Cli-Interface class
+ *
+ * PHP version 5
+ *
+ * This file is part of the Froxlor project.
+ * Copyright (c) 2010- the Froxlor Team (see authors).
+ *
+ * For the full copyright and license information, please view the COPYING
+ * file that was distributed with this source code. You can also view the
+ * COPYING file online at http://files.froxlor.org/misc/COPYING.txt
+ *
+ * @copyright  (c) the authors
+ * @author     Froxlor team <team@froxlor.org> (2010-)
+ * @license    GPLv2 http://files.froxlor.org/misc/COPYING.txt
+ * @category   Modules
+ * @package    API
+ * @since      0.99.0
+ */
+
+/**
+ * Class FroxlorCliInterface
+ *
+ * @copyright  (c) the authors
+ * @author     Froxlor team <team@froxlor.org> (2010-)
+ * @license    GPLv2 http://files.froxlor.org/misc/COPYING.txt
+ * @category   Modules
+ * @package    API
+ * @since      0.99.0
+ */
 class FroxlorCliInterface {
 
 	/**
@@ -101,10 +131,22 @@ class FroxlorCliInterface {
 		$this->startShell();
 	}
 
+	/**
+	 * write the shell-history the the history file
+	 */
 	public function __destruct() {
 		readline_write_history($this->_historyfile);
 	}
 
+	/**
+	 * Reads input from the shell and auto-completes function-names
+	 * and if given their parameters
+	 *
+	 * @param string $string
+	 * @param int $index
+	 *
+	 * @return string
+	 */
 	private function readlineCompletion($string, $index) {
 		$matches = array();
 		// Get info about the current buffer
@@ -292,6 +334,14 @@ class FroxlorCliInterface {
 		);
 	}
 
+	/**
+	 * creates an API request and sends it to the syste
+	 *
+	 * @param string $function e.g. Core.statusVersion
+	 * @param array $params optional array of paraeters
+	 *
+	 * @return string output of the api-response
+	 */
 	public function parseApiCommand($function, $params) {
 
 		// build up parameter array
@@ -336,10 +386,13 @@ class FroxlorCliInterface {
 		}
 	}
 
-	private function _trimValue(&$val = null) {
-		return trim($val);
-	}
-
+	/**
+	 * parses a string of parameters in the format varname=value or
+	 * varname="value" or varname={value,value,value} (array).
+	 *
+	 * @param string $inputline
+	 * @return array
+	 */
 	private function _parseParams($inputline = null) {
 		$result = array();
 		$p = "/ (?=[\w]+\s*=)/";
@@ -362,11 +415,15 @@ class FroxlorCliInterface {
 		return $result;
 	}
 
-	/*
+	/**
+	 * parses a parameter-array, e.g. varname={a,b,c}
+	 * call parseParams recursivly when it calls us...yo dawg
 	 * TODO allow sub-arrays
-	*
-	* call parseParams recursivly when it calls us...yo dawg
-	*/
+	 *
+	 * @param string $arrstring
+	 *
+	 * @return array
+	 */
 	private function _parseArray($arrstring) {
 		$parmarr = explode(",", $arrstring);
 		$output = array();

@@ -33,6 +33,7 @@
 class Permissions extends FroxlorModule implements iPermissions {
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iPermissions::listPermissions()
 	 *
 	 * @param string $module optional return only permissions defined by given module
@@ -65,6 +66,7 @@ class Permissions extends FroxlorModule implements iPermissions {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iPermissions::statusPermission()
 	 *
 	 * @param string $ident e.g. Module.name
@@ -95,6 +97,7 @@ class Permissions extends FroxlorModule implements iPermissions {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iPermissions::addPermission()
 	 *
 	 * @param string $ident identifier for the permission, Module.name
@@ -124,6 +127,7 @@ class Permissions extends FroxlorModule implements iPermissions {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iPermissions::deletePermission()
 	 *
 	 * @param string $ident identifier for the permission, Module.permname
@@ -157,6 +161,7 @@ class Permissions extends FroxlorModule implements iPermissions {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iPermissions::statusUserPermission()
 	 *
 	 * @param int $userid
@@ -201,6 +206,7 @@ class Permissions extends FroxlorModule implements iPermissions {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iPermissions::addPermissionsToGroup();
 	 *
 	 * @param int|array $permissions id or list of id's of permissions to give the group

@@ -50,13 +50,18 @@ abstract class FroxlorModule implements iFroxlorModule {
 	abstract public function Core_moduleSetup();
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iFroxlorModule::setParamList()
+	 *
+	 * @param array $params array of parameters to set
+	 * @internal
 	*/
 	public static function setParamList(array $params = null) {
 		self::$parameters = $params;
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iFroxlorModule::getParamList()
 	 */
 	public static function getParamList() {

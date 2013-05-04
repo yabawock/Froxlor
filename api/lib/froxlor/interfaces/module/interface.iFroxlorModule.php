@@ -43,7 +43,7 @@ interface iFroxlorModule {
 	/**
 	 * setter for $parameters
 	 *
-	 * @param array $params
+	 * @param array $params array of parameters to set
 	 * @internal
 	 */
 	public static function setParamList(array $params = null);

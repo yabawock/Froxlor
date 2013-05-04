@@ -33,6 +33,7 @@
 class User extends FroxlorModule implements iUser {
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iUser::listUser()
 	 *
 	 * @param int $ownerid optional select only users of this owner
@@ -85,6 +86,7 @@ class User extends FroxlorModule implements iUser {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iUser::statusUser()
 	 *
 	 * @param string $name name of the user
@@ -109,6 +111,7 @@ class User extends FroxlorModule implements iUser {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iUser::deleteUser()
 	 *
 	 * @param int $id user-id of the user entity to remove

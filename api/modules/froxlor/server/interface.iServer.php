@@ -87,7 +87,7 @@ interface iServer {
 	public static function addServerIP();
 
 	/**
-	 * @see iServer::modifyServer()
+	 * modify name, description and owner of the server
 	 *
 	 * @param int $id id of the server
 	 * @param string $name optional name of server

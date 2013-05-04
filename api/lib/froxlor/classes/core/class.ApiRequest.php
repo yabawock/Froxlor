@@ -24,7 +24,6 @@
  * @since      0.99.0
  */
 
-
 /**
  * Class ApiRequest
  *
@@ -76,6 +75,7 @@ class ApiRequest implements iApiRequest {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iApiRequest::createRequest()
 	 *
 	 * @param string $function function-name
@@ -114,6 +114,7 @@ class ApiRequest implements iApiRequest {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iApiRequest::setModule()
 	 *
 	 * @internal only for internal use
@@ -131,11 +132,18 @@ class ApiRequest implements iApiRequest {
 		return true;
 	}
 
+	/**
+	 * (non-PHPdoc)
+	 * @see iApiRequest::getModule()
+	 *
+	 * @return string
+	 */
 	public function getModule() {
 		return (isset($this->_data['request_module']) ? $this->_data['request_module'] : '');
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iApiRequest::setFunction()
 	 *
 	 * @internal only for internal use
@@ -158,6 +166,12 @@ class ApiRequest implements iApiRequest {
 		return true;
 	}
 
+	/**
+	 * (non-PHPdoc)
+	 * @see iApiRequest::getFunction()
+	 *
+	 * @return string
+	 */
 	public function getFunction() {
 		if (!isset($this->_data['request_function'])
 				|| $this->_data['request_function'] == ''
@@ -168,11 +182,12 @@ class ApiRequest implements iApiRequest {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iApiRequest::setParam()
 	 *
 	 * @internal only for internal use
 	 *
-	 * @param string $params parameter-name (optionally with grouping)
+	 * @param string $param parameter-name (optionally with grouping)
 	 * @param mixed  $value  value for the parameter
 	 *
 	 * @return bool
@@ -188,6 +203,7 @@ class ApiRequest implements iApiRequest {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iApiRequest::getRequest()
 	 *
 	 * @internal only for internal use
@@ -208,6 +224,7 @@ class ApiRequest implements iApiRequest {
 	}
 
 	/**
+	 * (non-PHPdoc)
 	 * @see iApiRequest::getTransId()
 	 *
 	 * @internal only for internal use
@@ -275,7 +292,9 @@ class ApiRequest implements iApiRequest {
 	}
 
 	/**
+	 * creates an array for given parameters
 	 *
+	 * @return array
 	 */
 	private function _buildApiBodyParameters() {
 		$result = array();
