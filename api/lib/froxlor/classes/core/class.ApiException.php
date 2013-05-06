@@ -34,7 +34,7 @@
  * @package    API
  * @since      0.99.0
  */
-class ApiException extends Exception implements iException {
+class ApiException extends Exception {
 
 	/**
 	 * Exception message
@@ -61,8 +61,7 @@ class ApiException extends Exception implements iException {
 	protected $_line;
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iException::__construct()
+	 * default constructor
 	 *
 	 * @param int    $code    custom error code (default = -1, unkown exception)
 	 * @param string $message error-message (optional)
@@ -77,8 +76,7 @@ class ApiException extends Exception implements iException {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iException::__toString()
+	 * format output string in api-protocol style
 	 *
 	 * @return array in api php-array structure
 	 */

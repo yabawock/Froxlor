@@ -30,11 +30,10 @@
  * @package    API
  * @since      0.99.0
  */
-class Resources extends FroxlorModule implements iResources {
+class Resources extends FroxlorModule {
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iResources::listResources()
+	 * List all stored resources
 	 *
 	 * @return array the resources-bean-data as array
 	 */
@@ -52,8 +51,7 @@ class Resources extends FroxlorModule implements iResources {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iResources::statusResource()
+	 * returns a resource by given ident
 	 *
 	 * @param string $ident e.g. Core.maxloginattempts
 	 *
@@ -83,8 +81,7 @@ class Resources extends FroxlorModule implements iResources {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iResources::addResource()
+	 * adds a new resources to the database
 	 *
 	 * @param string $ident e.g. Core.maxloginattempts
 	 * @param mixed $default a default value for the resources, if empty -1 is used
@@ -116,8 +113,7 @@ class Resources extends FroxlorModule implements iResources {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iResources::modifyResource()
+	 * modifies a resource's default value, ident cannot be changed
 	 *
 	 * @param string $ident e.g. Core.maxloginattempts
 	 * @param mixed $default a default value for the resources
@@ -156,8 +152,7 @@ class Resources extends FroxlorModule implements iResources {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iResources::deleteResource()
+	 * deletes a resources from the database (only if not in use)
 	 *
 	 * @param string $ident e.g. Core.maxloginattempts
 	 *

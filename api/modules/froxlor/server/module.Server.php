@@ -30,29 +30,11 @@
  * @package    API
  * @since      0.99.0
  */
-class Server extends FroxlorModule implements iServer {
+class Server extends FroxlorModule {
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iServer::statusServer()
-	 *
-	 * @param int $id id of the server
-	 *
-	 * @throws ServerException
-	 * @return array
-	 */
-	public static function statusServer() {
-		$sid = self::getIntParam('id');
-		$server = Database::load('server', $sid);
-		if ($server->id) {
-			return ApiResponse::createResponse(200, null, Database::exportAll($server));
-		}
-		throw new ServerException(404, 'Server with id #'.$sid.' could not be found');
-	}
-
-	/**
-	 * (non-PHPdoc)
-	 * @see iServer::listServer()
+	 * returns all servers, optionally only servers
+	 * owned by given $owner
 	 *
 	 * @param int $owner optional id of the owner-user
 	 *
@@ -82,8 +64,30 @@ class Server extends FroxlorModule implements iServer {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iServer::addServer()
+	 * returns a server by given id
+	 *
+	 * @param int $id id of the server
+	 *
+	 * @throws ServerException
+	 * @return array
+	 */
+	public static function statusServer() {
+		$sid = self::getIntParam('id');
+		$server = Database::load('server', $sid);
+		if ($server->id) {
+			return ApiResponse::createResponse(200, null, Database::exportAll($server));
+		}
+		throw new ServerException(404, 'Server with id #'.$sid.' could not be found');
+	}
+
+	/**
+	 * adds a new server to the database, additionally
+	 * @see Server::addServerIP() is used to assign
+	 * the default ip to the server (editable if > one IP)
+	 * via @see Server::modifyServerIP()
+	 * Hooks that are being called:
+	 * - addServer_afterStore
+	 * - addServer_beforeReturn
 	 *
 	 * @param string $name name of server
 	 * @param string $desc description
@@ -148,8 +152,10 @@ class Server extends FroxlorModule implements iServer {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iServer::addServerIP()
+	 * adds and assigns a new ipaddress to a server
+	 * Hooks that are being called:
+	 * - addServerIP_afterStore
+	 * - addServerIP_beforeReturn
 	 *
 	 * @param string $ipadress the IP adress (v4 or v6)
 	 * @param int $serverid the id of the server to add the IP to
@@ -195,8 +201,7 @@ class Server extends FroxlorModule implements iServer {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iServer::modifyServer()
+	 * modify name, description and owner of the server
 	 *
 	 * @param int $id id of the server
 	 * @param string $name optional name of server
@@ -254,8 +259,10 @@ class Server extends FroxlorModule implements iServer {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iServer::modifyServerIP()
+	 * update a servers IP address, if $isdefault is set
+	 * the former default IP will be set isdefault=false
+	 * Hooks that are being called:
+	 * - modifyServerIP_beforeReturn
 	 *
 	 * @param int $ipid id of the ip-address
 	 * @param string $ipaddress optional new IP address value
@@ -317,8 +324,8 @@ class Server extends FroxlorModule implements iServer {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iServer::setServerDefaultIP()
+	 * sets a new server default-IP and updates the former
+	 * default IP to be non-default
 	 *
 	 * @param int $ipid id of the ip-address
 	 * @param int $serverid the id of the server to add the IP to
@@ -360,8 +367,9 @@ class Server extends FroxlorModule implements iServer {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iServer::deleteServer()
+	 * removes a server from the database
+	 * Hooks that are being called:
+	 * - deleteServer_beforeDelete
 	 *
 	 * @param int $serverid id of the server
 	 *
@@ -392,7 +400,8 @@ class Server extends FroxlorModule implements iServer {
 	}
 
 	/**
-	 * @see iServer::deleteServerIP()
+	 * removes an IP address from a give server; if given IP is the
+	 * server's default IP address, it will not be removed
 	 *
 	 * @param int $serverid id of the server
 	 * @param int $ipid id of the ip

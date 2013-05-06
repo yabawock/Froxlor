@@ -34,7 +34,7 @@
  * @package    API
  * @since      0.99.0
  */
-abstract class FroxlorModule implements iFroxlorModule {
+abstract class FroxlorModule {
 
 	/**
 	 * ApiRequest-Body passed to the module
@@ -50,8 +50,7 @@ abstract class FroxlorModule implements iFroxlorModule {
 	abstract public function Core_moduleSetup();
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iFroxlorModule::setParamList()
+	 * setter for $parameters
 	 *
 	 * @param array $params array of parameters to set
 	 * @internal
@@ -61,8 +60,9 @@ abstract class FroxlorModule implements iFroxlorModule {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iFroxlorModule::getParamList()
+	 * getter for $parameters
+	 *
+	 * @return array
 	 */
 	public static function getParamList() {
 		return self::$parameters;

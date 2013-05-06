@@ -30,11 +30,10 @@
  * @package    API
  * @since      0.99.0
  */
-class Permissions extends FroxlorModule implements iPermissions {
+class Permissions extends FroxlorModule {
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iPermissions::listPermissions()
+	 * returns an array of all available permissions
 	 *
 	 * @param string $module optional return only permissions defined by given module
 	 *
@@ -66,8 +65,7 @@ class Permissions extends FroxlorModule implements iPermissions {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iPermissions::statusPermission()
+	 * returns a permission by given ident
 	 *
 	 * @param string $ident e.g. Module.name
 	 *
@@ -97,8 +95,7 @@ class Permissions extends FroxlorModule implements iPermissions {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iPermissions::addPermission()
+	 * adds a new permission to the database
 	 *
 	 * @param string $ident identifier for the permission, Module.name
 	 *
@@ -127,8 +124,7 @@ class Permissions extends FroxlorModule implements iPermissions {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iPermissions::deletePermission()
+	 * removes an existing permission from the database (if unused)
 	 *
 	 * @param string $ident identifier for the permission, Module.permname
 	 *
@@ -161,8 +157,8 @@ class Permissions extends FroxlorModule implements iPermissions {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iPermissions::statusUserPermission()
+	 * checks if a given user (id) has a given permission (ident)
+	 * by searching the users groups for this permission
 	 *
 	 * @param int $userid
 	 * @param string $ident e.g. Core.useAPI
@@ -206,8 +202,7 @@ class Permissions extends FroxlorModule implements iPermissions {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iPermissions::addPermissionsToGroup();
+	 * connects one or more permissions to a given group
 	 *
 	 * @param int|array $permissions id or list of id's of permissions to give the group
 	 * @param string $group name of the group

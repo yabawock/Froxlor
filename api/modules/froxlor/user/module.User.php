@@ -30,11 +30,11 @@
  * @package    API
  * @since      0.99.0
  */
-class User extends FroxlorModule implements iUser {
+class User extends FroxlorModule {
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iUser::listUser()
+	 * List all stored users. Please remember that the password
+	 * and the apikey will *never* be output.
 	 *
 	 * @param int $ownerid optional select only users of this owner
 	 * @param bool $show_all optional also return all connected data to this user (e.g. server)
@@ -86,8 +86,7 @@ class User extends FroxlorModule implements iUser {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iUser::statusUser()
+	 * returns a user by given name
 	 *
 	 * @param string $name name of the user
 	 *
@@ -106,13 +105,17 @@ class User extends FroxlorModule implements iUser {
 			throw new UserException(404, 'User "'.$name.'" not found');
 		}
 
+		// hide important data
+		$user->apikey = null;
+		$user->password = null;
+
 		// return it as array
 		return ApiResponse::createResponse(200, null, Database::exportAll($user));
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iUser::deleteUser()
+	 * deletes a given user but only if the user is not owner of
+	 * other users or if it's yourself - in that case a UserException is thrown
 	 *
 	 * @param int $id user-id of the user entity to remove
 	 *

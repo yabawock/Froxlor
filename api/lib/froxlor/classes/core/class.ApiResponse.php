@@ -38,7 +38,7 @@
  * @package    API
  * @since      0.99.0
  */
-class ApiResponse implements iApiResponse {
+class ApiResponse {
 
 	/**
 	 * internal storage of the response-data
@@ -69,8 +69,8 @@ class ApiResponse implements iApiResponse {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iApiResponse::createResponse()
+	 * this function is a wrapper for module-developers
+	 * to create a valid response for their functions
 	 *
 	 * @param int          $code    general return code
 	 * @param string|array $message additional error-messages (optional)
@@ -122,8 +122,8 @@ class ApiResponse implements iApiResponse {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iApiResponse::addResponse()
+	 * add an api-response to the internal array
+	 * (output of function createResponse() is expected)
 	 *
 	 * @internal only used in Froxlor()
 	 *
@@ -157,8 +157,8 @@ class ApiResponse implements iApiResponse {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iApiResponse::getResponse()
+	 * returns API response status of a request
+	 * which is either 200 (success) or an error code
 	 *
 	 * @return array
 	 */
@@ -167,8 +167,7 @@ class ApiResponse implements iApiResponse {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iApiResponse::getData()
+	 * returns the response data-body as php-array
 	 *
 	 * @return array|null
 	 */

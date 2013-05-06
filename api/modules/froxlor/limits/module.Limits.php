@@ -30,11 +30,11 @@
  * @package    API
  * @since      0.99.0
  */
-class Limits extends FroxlorModule implements iLimits {
+class Limits extends FroxlorModule {
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iLimits::statusLimit()
+	 * returns a limit by given id and ident, e.g.
+	 * {'fid' => 1, 'ident' => 'Core.maxloginattempts' }
 	 *
 	 * @param int $type 0 = user, 1 = server (default is 0)
 	 * @param int $id id of the entity (user or server)
@@ -79,8 +79,7 @@ class Limits extends FroxlorModule implements iLimits {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iLimits::listLimits()
+	 * returns all limits added to a given user|server
 	 *
 	 * @param int $type 0 = user, 1 = server (default is 0)
 	 * @param int $id id of the entity (user or server)
@@ -118,8 +117,8 @@ class Limits extends FroxlorModule implements iLimits {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iLimits::addLimit()
+	 * connects a resource to a given entity identified by ident and id, e.g.
+	 * {'type' => 0, 'id' => 1, 'ident' => 'Core.maxloginattempts' [, 'limit' => '3'] }
 	 *
 	 * @param int $type 0 = user, 1 = server (default is 0)
 	 * @param int $id id of the entity (user or server)
@@ -186,8 +185,10 @@ class Limits extends FroxlorModule implements iLimits {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iLimits::modifyLimit()
+	 * Modify an entity limit (user|server) identified by id and a
+	 * limit to modify identified by limitid. Sets new inuse and/or new limit value
+	 *
+	 * {'type' => 0, 'id' => 1, 'limitid' => 2 [, 'inuse' => x [, 'limit' => y]] }
 	 *
 	 * @param int $type 0 = user, 1 = server (default is 0)
 	 * @param int $id id of the entity (user or server)
@@ -254,8 +255,8 @@ class Limits extends FroxlorModule implements iLimits {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iLimits::deleteLimit()
+	 * delete a limit identified by limitid from a given resource identified by type and id
+	 * {'type' => 0, 'id' => 1, 'limitid' => 2}
 	 *
 	 * @param int $type 0 = user, 1 = server (default is 0)
 	 * @param int $id id of the entity (user or server)

@@ -30,11 +30,10 @@
  * @package    API
  * @since      0.99.0
  */
-class Core extends FroxlorModule implements iCore {
+class Core extends FroxlorModule {
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iCore::statusVersion()
+	 * return the current release version
 	 *
 	 * @return string version
 	 */
@@ -47,8 +46,7 @@ class Core extends FroxlorModule implements iCore {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iCore::statusApiVersion()
+	 * return the current API version
 	 *
 	 * @return string version
 	 */
@@ -61,8 +59,9 @@ class Core extends FroxlorModule implements iCore {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iCore::statusUpdate()
+	 * return whether a newer version is available.
+	 * Hooks that are being called:
+	 * - statusUpdate_beforeReturn
 	 *
 	 * @return string
 	 */
@@ -125,8 +124,9 @@ class Core extends FroxlorModule implements iCore {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iCore::statusSystem()
+	 * returns various system information.
+	 * Hooks that are being called:
+	 * - statusSystem_beforeReturn
 	 *
 	 * @return array
 	 */
@@ -215,8 +215,8 @@ class Core extends FroxlorModule implements iCore {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iCore::listApiFunctions()
+	 * list all available api-functions (possible
+	 * restrictions due permissions are not checked)
 	 *
 	 * @param string $module optional only list functions of specific module
 	 *
@@ -287,8 +287,9 @@ class Core extends FroxlorModule implements iCore {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iCore::doLogin()
+	 * Checks given user/password against stored user
+	 * in the database and initialized the system
+	 * with the corresponding api-key
 	 *
 	 * @param string $username
 	 * @param string $password encrypted password
@@ -324,6 +325,40 @@ class Core extends FroxlorModule implements iCore {
 	}
 
 	/**
+	 * function that calls Core_moduleSetup() in
+	 * all modules via Hook. Mandatory for all modules,
+	 * even if the method is empty.
+	 * Hooks that are being called:
+	 * - Core_moduleSetup
+	 *
+	 * @return null
+	 */
+	public static function doSetup() {
+		// call the hook to run Core_moduleSetup on all modules
+		Hooks::callHooks('Core_moduleSetup');
+		return ApiResponse::createResponse(200, 'Setup finished without errors');
+	}
+
+	/**
+	 * generate an api-response to list all parameters and the return-value of
+	 * a given module.function-combination
+	 *
+	 * @param string $ident a module.function ident
+	 *
+	 * @throws CoreException
+	 * @return array all parameters and the return-type of the given module-function
+	 */
+	public static function listParams() {
+		$ident = self::getParamIdent('ident', 2);
+		$result = self::_getParamListFromDoc($ident[0], $ident[1]);
+
+		if ($result === false) {
+			throw new CoreException(404, 'No parameter list found for "'.implode('.', $ident).'". The function might not exist though');
+		}
+		return $result;
+	}
+
+	/**
 	 * check if a user is allowed to use the api
 	 *
 	 * @param $user user-bean-array
@@ -345,37 +380,6 @@ class Core extends FroxlorModule implements iCore {
 			}
 		}
 		return false;
-	}
-
-	/**
-	 * (non-PHPdoc)
-	 * @see iCore::doSetup();
-	 *
-	 * @return null
-	 */
-	public static function doSetup() {
-		// call the hook to run Core_moduleSetup on all modules
-		Hooks::callHooks('Core_moduleSetup');
-		return ApiResponse::createResponse(200, 'Setup finished without errors');
-	}
-
-	/**
-	 * (non-PHPdoc)
-	 * @see iCore::listParams()
-	 *
-	 * @param string $ident a module.function ident
-	 *
-	 * @throws CoreException
-	 * @return array all parameters and the return-type of the given module-function
-	 */
-	public static function listParams() {
-		$ident = self::getParamIdent('ident', 2);
-		$result = self::_getParamListFromDoc($ident[0], $ident[1]);
-
-		if ($result === false) {
-			throw new CoreException(404, 'No parameter list found for "'.implode('.', $ident).'". The function might not exist though');
-		}
-		return $result;
 	}
 
 	/**

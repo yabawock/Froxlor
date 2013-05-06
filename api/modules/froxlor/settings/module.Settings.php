@@ -30,11 +30,15 @@
  * @package    API
  * @since      0.99.0
  */
-class Settings extends FroxlorModule implements iSettings {
+class Settings extends FroxlorModule {
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iSettings::listSettings()
+	 * list all available settings, optionally
+	 * limited by given 'module' and 'section'
+	 * (separated by a dot, e.g. 'limit' => 'Core[.system]')
+	 * In case you need to list all settings of a
+	 * specific section, you can use an asterisk,
+	 * e.g. 'limit' => '*.domain'
 	 *
 	 * @return array
 	 */
@@ -92,8 +96,9 @@ class Settings extends FroxlorModule implements iSettings {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iSettings::statusSetting()
+	 * return a specific setting by given
+	 * 'module', 'section' and 'var'
+	 * (separated by a dot, e.g. 'ident' => 'Core.system.something')
 	 *
 	 * @return mixed settings value
 	 */

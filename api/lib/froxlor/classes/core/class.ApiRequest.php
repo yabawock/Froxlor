@@ -38,7 +38,7 @@
  * @package    API
  * @since      0.99.0
  */
-class ApiRequest implements iApiRequest {
+class ApiRequest {
 
 	/**
 	 * internal storage of the request-data
@@ -75,8 +75,8 @@ class ApiRequest implements iApiRequest {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iApiRequest::createRequest()
+	 * this function is a wrapper for developers
+	 * to create a valid request to send to the api
 	 *
 	 * @param string $function function-name
 	 * @param array  $params   parameter-array (optional)
@@ -114,8 +114,8 @@ class ApiRequest implements iApiRequest {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iApiRequest::setModule()
+	 * The module where the function can be found
+	 * For example: Core
 	 *
 	 * @internal only for internal use
 	 *
@@ -133,8 +133,8 @@ class ApiRequest implements iApiRequest {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iApiRequest::getModule()
+	 * Returns the module which is related to that request
+	 * For example: Core
 	 *
 	 * @return string
 	 */
@@ -143,8 +143,8 @@ class ApiRequest implements iApiRequest {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iApiRequest::setFunction()
+	 * The function which is to be called.
+	 * For example: getApiVersion
 	 *
 	 * @internal only for internal use
 	 *
@@ -167,8 +167,8 @@ class ApiRequest implements iApiRequest {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iApiRequest::getFunction()
+	 * Returns the function which is to be called in that request
+	 * For example: statusVersion
 	 *
 	 * @return string
 	 */
@@ -182,8 +182,18 @@ class ApiRequest implements iApiRequest {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iApiRequest::setParam()
+	 * Use this function to set several parameters
+	 * for the given function you want to call.
+	 *
+	 * The setFucntion()-call can be followed by an
+	 * unspecified amount of setParam()-calls.
+	 *
+	 * The parameters can be passed in the following
+	 * structure:
+	 * - name
+	 * - group.name
+	 * - group.subgroup.name
+	 * - etc.
 	 *
 	 * @internal only for internal use
 	 *
@@ -203,8 +213,8 @@ class ApiRequest implements iApiRequest {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iApiRequest::getRequest()
+	 * This function returns a valid API-request for
+	 * the API-object in PHP-array format.
 	 *
 	 * @internal only for internal use
 	 *
@@ -224,8 +234,8 @@ class ApiRequest implements iApiRequest {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iApiRequest::getTransId()
+	 * returns, if set, the client transmission id of
+	 * the current request
 	 *
 	 * @internal only for internal use
 	 *

@@ -36,11 +36,12 @@
  * @package    API
  * @since      0.99.0
  */
-class Module implements iModule {
+class Module {
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iModule::requireModules()
+	 * this functions is used to check the availability
+	 * of a given list of modules. If either one of
+	 * them are not found, throw an ApiException
 	 *
 	 * @param string|array $modules
 	 *
@@ -73,8 +74,9 @@ class Module implements iModule {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iModule::requireVersion()
+	 * this function is used in modules to check
+	 * for specfic Froxlor-version requirements.
+	 * You can specify either min or max or both.
 	 *
 	 * @param string $min_version at least this version
 	 * @param string $max_version at most this version
@@ -100,8 +102,7 @@ class Module implements iModule {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iModule::cmpFroxlorVersions()
+	 * Version compare for update-check and more
 	 *
 	 * @param string $a
 	 * @param string $b

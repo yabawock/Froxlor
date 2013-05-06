@@ -34,7 +34,7 @@
  * @package    API
  * @since      0.99.0
  */
-class Froxlor implements iFroxlor {
+class Froxlor implements iApiVersion {
 
 	/**
 	 * static object holder
@@ -129,8 +129,8 @@ class Froxlor implements iFroxlor {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iFroxlor::getApi()
+	 * return the instanciated Froxlor-object
+	 * only used to place api-calls "internally"
 	 *
 	 * @throws ApiException
 	 * @return Froxlor
@@ -144,8 +144,9 @@ class Froxlor implements iFroxlor {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iFroxlor::getApiVersion()
+	 * return the currently used API version.
+	 * The API version can be overwritten in
+	 * the constructor of the Froxlor-class
 	 *
 	 * @return string currently used API version
 	 */
@@ -169,8 +170,7 @@ class Froxlor implements iFroxlor {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iFroxlor::sendRequest()
+	 * sends an API-request to the request-handler
 	 *
 	 * @param ApiRequest $api_req object of the ApiRequest class
 	 *
@@ -254,8 +254,8 @@ class Froxlor implements iFroxlor {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iFroxlor::getLastResponse()
+	 * this function returns an ApiResponse object
+	 * of the last request.
 	 *
 	 * @return ApiResponse object of ApiResponse class
 	 */

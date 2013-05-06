@@ -23,7 +23,7 @@
 /**
  * Froxlor API Codes class
  *
- * This class defines the API return codes 
+ * This class defines the API return codes
  *
  * @copyright  (c) the authors
  * @author     Froxlor team <team@froxlor.org> (2013-)
@@ -32,7 +32,7 @@
  * @package    API
  * @since      0.99.0
  */
-class APICodes implements iApiCodes {
+class APICodes {
 
 	/**
 	 * global return-code array
@@ -40,12 +40,12 @@ class APICodes implements iApiCodes {
 	protected static $_API_RETURN_CODES = array(
 			/*
 			 * standard success messages
-			 */
+	*/
 			200 => 'Command executed successfully',
 
 			/*
 			 * failure messages
-			 */
+	*/
 			400 => 'Invalid API structure',
 			403 => 'Not allowed',
 			404 => 'Not found',
@@ -53,19 +53,19 @@ class APICodes implements iApiCodes {
 
 			/*
 			 * internal failure messages
-			 */
+	*/
 			500 => 'Internal API error',
 			503 => 'Service unavailable',
 
 			/*
 			 * bohoo
-			 */
+	*/
 			900 => 'Unknown result'
 	);
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iApiCodes::getCodeDescription()
+	 * return the corresponding code-description
+	 * for a given API return-code
 	 *
 	 * @internal for internal use only
 	 *

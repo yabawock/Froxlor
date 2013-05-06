@@ -30,11 +30,12 @@
  * @package    API
  * @since      0.99.0
  */
-class Groups extends FroxlorModule implements iGroups {
+class Groups extends FroxlorModule {
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iGroups::listGroups()
+	 * Output all available groups with all their information.
+	 * Please note tha passwords and apikeys of the group-users
+	 * are *not* output of course.
 	 *
 	 * @return array the groups-bean-data as array
 	 */
@@ -67,8 +68,7 @@ class Groups extends FroxlorModule implements iGroups {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iGroups::statusGroup();
+	 * output information about a specific group, given by name
 	 *
 	 * @param string $name name of the group
 	 *
@@ -104,8 +104,8 @@ class Groups extends FroxlorModule implements iGroups {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iGroups::addGroup()
+	 * adds a new group to the system. Groupnames start with
+	 * an @-sign. If no @-sign is given it will be prefixed
 	 *
 	 * @param string $name name of the group
 	 *
@@ -133,8 +133,9 @@ class Groups extends FroxlorModule implements iGroups {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iGroups::copyGroup()
+	 * adds a new group but copies the permissions and possible
+	 * existing child-group (sharedGroups) from another group
+	 * so they don't have to be added again
 	 *
 	 * @param string $name name of the group
 	 * @param string $copyfrom name of the group which is copied
@@ -175,8 +176,9 @@ class Groups extends FroxlorModule implements iGroups {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iGroups::nestGroups()
+	 * nests one or more groups into another group. Means: group given via $name will be
+	 * connected to group(s) given via $with_group - but *not* vice versa.
+	 * (simply said: you put $with_group in $name and $name is then a parent of the given groups)
 	 *
 	 * @param string $name name of group to add to
 	 * @param string|array $with_group name (string or array) of the group(s) to add
@@ -239,8 +241,7 @@ class Groups extends FroxlorModule implements iGroups {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iGroups::addGroupsToUser();
+	 * connects one or more groups to a user
 	 *
 	 * @param name|array $groups name or list of names of groups to put the user in
 	 * @param string $user name of the user
@@ -297,8 +298,7 @@ class Groups extends FroxlorModule implements iGroups {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iGroups::modifyGroup()
+	 * modifies a group's name
 	 *
 	 * @param int $id id of the group
 	 * @param sting $name new group name
@@ -311,8 +311,7 @@ class Groups extends FroxlorModule implements iGroups {
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see iGroups::deleteGroup()
+	 * deletes a group from the database (only if not in use)
 	 *
 	 * @param string $name e.g. @customer
 	 *
