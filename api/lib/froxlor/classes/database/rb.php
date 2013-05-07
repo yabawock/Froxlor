@@ -1774,7 +1774,7 @@ abstract class RedBean_QueryWriter_AQueryWriter {
 	 */
 	protected function check($struct) {
 		if (!preg_match('/^[a-zA-Z0-9_]+$/', $struct)) {
-		  throw new Redbean_Exception_Security('Identifier does not conform to RedBeanPHP security policies.');
+		  throw new RedBean_Exception_Security('Identifier does not conform to RedBeanPHP security policies.');
 	    }
 		return $struct;
 	}
@@ -3355,6 +3355,11 @@ class RedBean_OODB extends RedBean_Observable {
 	 * @var array
 	 */
 	protected $stash = NULL;
+	/*
+	 * @var integer
+	 * Keeps track of the nesting level of the OODB object
+	 */
+	protected $nesting = 0;
 	/**
 	 * @var RedBean_Adapter_DBAdapter
 	 */
@@ -3912,8 +3917,8 @@ class RedBean_OODB extends RedBean_Observable {
 	 */
 	public function load($type, $id) {
 		$bean = $this->dispense($type);
-		if ($this->stash && isset($this->stash[$id])) {
-			$row = $this->stash[$id];
+		if (isset($this->stash[$this->nesting][$id])) {
+			$row = $this->stash[$this->nesting][$id];
 		} else {
 			try {
 				$rows = $this->writer->selectRecord($type, array('id' => array($id)));
@@ -3936,7 +3941,9 @@ class RedBean_OODB extends RedBean_Observable {
 		foreach($row as $p => $v) {
 			$bean->$p = $v;
 		}
+		$this->nesting ++;
 		$this->signal('open', $bean);
+		$this->nesting --;
 		$bean->setMeta('tainted', false);
 		return $bean;
 	}
@@ -4006,15 +4013,15 @@ class RedBean_OODB extends RedBean_Observable {
 			)) throw $e;
 			$rows = false;
 		}
-		$this->stash = array();
+		$this->stash[$this->nesting] = array();
 		if (!$rows) return array();
 		foreach($rows as $row) {
-			$this->stash[$row['id']] = $row;
+			$this->stash[$this->nesting][$row['id']] = $row;
 		}
 		foreach($ids as $id) {
 			$collection[$id] = $this->load($type, $id);
 		}
-		$this->stash = NULL;
+		$this->stash[$this->nesting] = NULL;
 		return $collection;
 	}
 	/**
@@ -4030,13 +4037,13 @@ class RedBean_OODB extends RedBean_Observable {
 	 */
 	public function convertToBeans($type, $rows) {
 		$collection = array();
-		$this->stash = array();
+		$this->stash[$this->nesting] = array();
 		foreach($rows as $row) {
 			$id = $row['id'];
-			$this->stash[$id] = $row;
+			$this->stash[$this->nesting][$id] = $row;
 			$collection[$id] = $this->load($type, $id);
 		}
-		$this->stash = NULL;
+		$this->stash[$this->nesting] = NULL;
 		return $collection;
 	}
 	/**
@@ -5551,7 +5558,7 @@ class RedBean_Facade {
 	 * @return string
 	 */
 	public static function getVersion() {
-		return '3.4.1';
+		return '3.4.3';
 	}
 	/**
 	 * Kickstarts redbean for you. This method should be called before you start using
