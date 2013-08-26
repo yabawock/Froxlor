@@ -191,7 +191,9 @@ class RedBean_Driver_PDO implements RedBean_Driver {
 			$this->pdo->setAttribute(PDO::ATTR_STRINGIFY_FETCHES, true);
 			$this->isConnected = true;
 		} catch(PDOException $e) {
-			throw new PDOException('Could not connect to database.');
+			$matches = array();
+			$dbname = (preg_match('/dbname=(\w+)/', $this->dsn, $matches)) ? $matches[1] : '?';
+			throw new PDOException('Could not connect to database ('.$dbname.').', $e->getCode());
 		}
 	}
 	/**
@@ -421,6 +423,7 @@ class RedBean_Driver_PDO implements RedBean_Driver {
 		return true;
 	}
 }
+
 
 class RedBean_OODBBean implements IteratorAggregate, ArrayAccess, Countable {
 	/**
@@ -754,8 +757,19 @@ class RedBean_OODBBean implements IteratorAggregate, ArrayAccess, Countable {
 	 * @return RedBean_OODBBean 
 	 */
 	public function alias($aliasName) {
+		if (self::$flagUseBeautyfulColumnnames ) {
+			$aliasName = $this->beau($aliasName);
+		}
 		$this->aliasName = $aliasName;
 		return $this;
+	}
+	/**
+	* Returns properties of bean as an array.
+	*
+	* @return array
+	*/
+	public function getProperties() { 
+		return $this->properties; 
 	}
 	/**
 	* Turns a camelcase property name into an underscored property name.
@@ -1155,9 +1169,9 @@ class RedBean_OODBBean implements IteratorAggregate, ArrayAccess, Countable {
 	 * 
 	 * @return boolean 
 	 */
-	public function hasChanged($property) {
-		if (!isset($this->properties[$property])) return false;
-		return ($this->old($property) != $this->properties[$property]);
+	public function hasChanged($property){
+		return (array_key_exists($property, $this->properties)) ? 
+			$this->old($property) != $this->properties[$property] : false;
 	}
 	/**
 	 * Creates a N-M relation by linking an intermediate bean.
@@ -1201,6 +1215,7 @@ class RedBean_OODBBean implements IteratorAggregate, ArrayAccess, Countable {
 		return $bean;
 	}
 }
+
 
 abstract class RedBean_Observable {
 	/**
@@ -1453,7 +1468,7 @@ class RedBean_Adapter_DBAdapter extends RedBean_Observable implements RedBean_Ad
 		$this->sql = $sql;
 		if (!$noSignal) $this->signal('sql_exec', $this);
 		$arr = $this->db->getCol($sql, $aValues);
-		if ($arr && is_array($arr))	return ($arr[0]); else return false;
+		if ($arr && is_array($arr) && isset($arr[0])) return ($arr[0]); else return null;
 	}
 	/**
 	 * @see RedBean_Adapter::getInsertID
@@ -5558,7 +5573,7 @@ class RedBean_Facade {
 	 * @return string
 	 */
 	public static function getVersion() {
-		return '3.4.3';
+		return '3.4.7';
 	}
 	/**
 	 * Kickstarts redbean for you. This method should be called before you start using
@@ -6064,7 +6079,7 @@ class RedBean_Facade {
 				RedBean_QueryWriter::C_SQLSTATE_NO_SUCH_COLUMN,
 				RedBean_QueryWriter::C_SQLSTATE_NO_SUCH_TABLE)
 				)) {
-					return array();
+					return ($method === 'getCell') ? null : array();
 				} else {
 					throw $e;
 				}
@@ -6549,6 +6564,7 @@ if (!function_exists('lcfirst')) {
 	function lcfirst($str){ return (string)(strtolower(substr($str, 0, 1)).substr($str, 1)); }
 }
 
+
 interface RedBean_Plugin { }; 
 
 class RedBean_Plugin_BeanCan implements RedBean_Plugin {
@@ -6867,7 +6883,18 @@ class RedBean_Plugin_Cooker implements RedBean_Plugin {
 	public function setUseNullFlag($yesNo) {
 		self::$useNULLForEmptyString = (boolean) $yesNo;
 	}
+
+	/**
+	* Static version of setUseNullFlag.
+	*
+	* @param boolean $yesNo
+	*/
+	public static function setUseNullFlagSt($yesNo){
+		self::$useNULLForEmptyString = (boolean) $yesNo;
+	}
+
 }
+
 
 
 class RedBean_Plugin_Cache extends RedBean_OODB implements RedBean_Plugin {
