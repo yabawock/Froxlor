@@ -218,6 +218,11 @@ if (isset($s)
 	$userinfo_stmt = Database::prepare($query);
 	$userinfo = Database::pexecute_first($userinfo_stmt, $userinfo_data);
 
+	/* Adjust the document root for chrooted environment */
+	if($settings['phpfpm']['enabled_chroot']) {
+		$userinfo['documentroot'] .= 'websites/';
+	}
+
 	if ((($userinfo['adminsession'] == '1' && AREA == 'admin' && isset($userinfo['adminid']))
 		|| ($userinfo['adminsession'] == '0' && (AREA == 'customer' || AREA == 'login') && isset($userinfo['customerid'])))
 		&& (!isset($userinfo['deactivated']) || $userinfo['deactivated'] != '1')
@@ -258,7 +263,7 @@ while ($row = $result_stmt->fetch(PDO::FETCH_ASSOC)) {
 	// versions didn't have that and it will
 	// lead to a lot of undfined variables
 	// before the admin can even update
-	if (isset($row['iso'])) { 
+	if (isset($row['iso'])) {
 		$iso[$row['iso']] = $row['language'];
 	}
 }

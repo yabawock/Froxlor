@@ -330,6 +330,10 @@ if ($page == 'domains'
 				}
 				$customer = Database::pexecute_first($customer_stmt, $params);
 
+				/* Adjust the document root for chrooted environment */
+				if($settings['phpfpm']['enabled_chroot']) {
+					$customer['documentroot'] .= 'websites/';
+				}
 				if (empty($customer)
 					|| $customer['customerid'] != $customerid
 				) {
@@ -395,7 +399,7 @@ if ($page == 'domains'
 							$documentroot = $_POST['documentroot'];
 						}
 					} elseif (isset($_POST['documentroot'])
-						&& ($_POST['documentroot'] == '') 
+						&& ($_POST['documentroot'] == '')
 						&& ($settings['system']['documentroot_use_default_value'] == 1)
 					) {
 						$documentroot = makeCorrectDir($customer['documentroot'] . '/' . $domain);
@@ -1085,6 +1089,11 @@ if ($page == 'domains'
 					$customerid = $result['customerid'];
 				}
 
+				/* Adjust the document root for chrooted environment */
+				if($settings['phpfpm']['enabled_chroot']) {
+					$customer['documentroot'] .= 'websites/';
+				}
+
 				$customer_stmt = Database::prepare("
 					SELECT * FROM " . TABLE_PANEL_ADMINS . " WHERE `adminid` = :adminid
 				");
@@ -1632,7 +1641,7 @@ if ($page == 'domains'
 					`phpsettingid` = :phpsettingid,
 					`mod_fcgid_starter` = :mod_fcgid_starter,
 					`mod_fcgid_maxrequests` = :mod_fcgid_maxrequests
-					" . $upd_specialsettings . $updatechildren . " 
+					" . $upd_specialsettings . $updatechildren . "
 					WHERE `parentdomainid` = :parentdomainid
 				");
 				Database::pexecute($_update_stmt, $_update_data);
