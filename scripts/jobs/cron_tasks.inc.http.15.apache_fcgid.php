@@ -34,12 +34,8 @@ class apache_fcgid extends apache
 				if ($domain['ssl'] == 1 && $ssl_vhost) {
 					$srvName = 'ssl-fpm.external';
 				}
-				// #1317 - perl is executed via apache and therefore, when using fpm, does not know the user
-				// which perl is supposed to run as, hence the need for Suexec need
-				if (customerHasPerlEnabled($domain['customerid'])) {
-					$php_options_text.= '  SuexecUserGroup "' . $domain['loginname'] . '" "' . $domain['loginname'] . '"' . "\n";
-				}
-				$php_options_text.= '  FastCgiExternalServer ' . $php->getInterface()->getAliasConfigDir() . $srvName . ' -socket ' . $php->getInterface()->getSocketFile()  . ' -idle-timeout ' . Settings::Get('phpfpm.idle_timeout') . "\n";
+				$php_options_text.= '  SuexecUserGroup "' . $domain['loginname'] . '" "' . $domain['loginname'] . '"' . "\n";
+				$php_options_text.= '  FastCgiExternalServer ' . $php->getInterface()->getAliasConfigDir() . $srvName . ' -socket ' . $php->getInterface()->getSocketFile() . ' -idle-timeout ' . Settings::Get('phpfpm.idle_timeout') . ' -user ' . $domain['loginname'] . ' -group ' . $domain['loginname'] . " -pass-header Authorization\n";
 				$php_options_text.= '  <Directory "' . makeCorrectDir($domain['documentroot']) . '">' . "\n";
 				$php_options_text.= '    <FilesMatch "\.php$">' . "\n";
 				$php_options_text.= '      SetHandler php5-fastcgi'. "\n";

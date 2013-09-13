@@ -259,7 +259,7 @@ class apache {
 					if ($row_ipsandports['ssl']) {
 						$srvName = substr(md5($ipport),0,4).'.ssl-fpm.external';
 					}
-					$this->virtualhosts_data[$vhosts_filename] .= '  FastCgiExternalServer ' . $php->getInterface()->getAliasConfigDir() . $srvName .' -socket ' . $php->getInterface()->getSocketFile() . ' -idle-timeout ' . Settings::Get('phpfpm.idle_timeout') . "\n";
+					$this->virtualhosts_data[$vhosts_filename] .= '  FastCgiExternalServer ' . $php->getInterface()->getAliasConfigDir() . $srvName .' -socket ' . $php->getInterface()->getSocketFile() . ' -user ' . Settings::Get('phpfpm.vhost_httpuser') . ' -group ' . Settings::Get('phpfpm.vhost_httpgroup') . ' -idle-timeout ' . Settings::Get('phpfpm.idle_timeout') . " -pass-header Authorization\n";
 					$this->virtualhosts_data[$vhosts_filename] .= '  <Directory "' . $mypath . '">' . "\n";
 					$file_extensions = explode(' ', $phpconfig['file_extensions']);
 					$this->virtualhosts_data[$vhosts_filename] .= '   <FilesMatch "\.(' . implode('|', $file_extensions) . ')$">' . "\n";
@@ -278,7 +278,7 @@ class apache {
 					$this->virtualhosts_data[$vhosts_filename] .= '  Alias /fastcgiphp ' . $php->getInterface()->getAliasConfigDir() . $srvName . "\n";
 
 					// create starter-file | config-file
-					$php->getInterface()->createConfig(array());
+					$php->getInterface()->createConfig(array('phpsettings' => ''));
 				}
 
 				/**
