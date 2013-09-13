@@ -281,6 +281,9 @@ class apache
 					}
 					$this->virtualhosts_data[$vhosts_filename] .= '  </Directory>' . "\n";
 					$this->virtualhosts_data[$vhosts_filename] .= '  Alias /fastcgiphp ' . $php->getInterface()->getAliasConfigDir() . $srvName . "\n";
+
+					// create starter-file | config-file
+					$php->getInterface()->createConfig(array());
 				}
 
 				/**
