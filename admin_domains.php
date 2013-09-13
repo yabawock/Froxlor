@@ -347,6 +347,10 @@ if ($page == 'domains'
 				}
 				$customer = Database::pexecute_first($customer_stmt, $params);
 
+				/* Adjust the document root for chrooted environment */
+				if($settings['phpfpm']['enabled_chroot']) {
+					$customer['documentroot'] .= 'websites/';
+				}
 				if (empty($customer)
 					|| $customer['customerid'] != $customerid
 				) {
@@ -1148,6 +1152,11 @@ if ($page == 'domains'
 					}
 				} else {
 					$customerid = $result['customerid'];
+				}
+
+				/* Adjust the document root for chrooted environment */
+				if($settings['phpfpm']['enabled_chroot']) {
+					$customer['documentroot'] .= 'websites/';
 				}
 
 				$customer_stmt = Database::prepare("
