@@ -256,7 +256,7 @@ class apache
 					if ($row_ipsandports['ssl']) {
 						$srvName = 'ssl-fpm.external';
 					}
-					$this->virtualhosts_data[$vhosts_filename] .= '  FastCgiExternalServer ' . $php->getInterface()->getAliasConfigDir() . $srvName .' -socket ' . $php->getInterface()->getSocketFile() . ' -user ' . $this->settings['phpfpm']['vhost_httpuser'] . ' -group ' . $this->settings['phpfpm']['vhost_httpgroup'] . " -idle-timeout " . $this->settings['phpfpm']['idle_timeout'] . "\n";
+					$this->virtualhosts_data[$vhosts_filename] .= '  FastCgiExternalServer ' . $php->getInterface()->getAliasConfigDir() . $srvName .' -socket ' . $php->getInterface()->getSocketFile() . ' -user ' . $this->settings['phpfpm']['vhost_httpuser'] . ' -group ' . $this->settings['phpfpm']['vhost_httpgroup'] . " -pass-header Authorization\n";
 					$this->virtualhosts_data[$vhosts_filename] .= '  <Directory "' . $mypath . '">' . "\n";
 					$this->virtualhosts_data[$vhosts_filename] .= '    AddHandler php5-fastcgi .php'. "\n";
 					$this->virtualhosts_data[$vhosts_filename] .= '    Action php5-fastcgi /fastcgiphp' . "\n";
@@ -272,7 +272,7 @@ class apache
 					$this->virtualhosts_data[$vhosts_filename] .= '  Alias /fastcgiphp ' . $php->getInterface()->getAliasConfigDir() . $srvName . "\n";
 
 					// create starter-file | config-file
-					$php->getInterface()->createConfig(array());
+					$php->getInterface()->createConfig(array('phpsettings' => ''));
 				}
 
 				/**
