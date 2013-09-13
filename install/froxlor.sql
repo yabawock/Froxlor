@@ -553,7 +553,9 @@ INSERT INTO `panel_settings` (`settinggroup`, `varname`, `value`) VALUES
 	('panel', 'phpconfigs_hidestdsubdomain', '0'),
 	('panel', 'allow_theme_change_admin', '1'),
 	('panel', 'allow_theme_change_customer', '1'),
+  ('phpfpm', 'enabled_chroot', '0'),
 	('panel', 'version', '0.9.31.2');
+
 
 
 DROP TABLE IF EXISTS `panel_tasks`;
@@ -868,7 +870,7 @@ CREATE TABLE IF NOT EXISTS `ftp_quotalimits` (
 
 
 
-INSERT INTO `ftp_quotalimits` (`name`, `quota_type`, `per_session`, `limit_type`, `bytes_in_avail`, `bytes_out_avail`, `bytes_xfer_avail`, `files_in_avail`, `files_out_avail`, `files_xfer_avail`) VALUES 
+INSERT INTO `ftp_quotalimits` (`name`, `quota_type`, `per_session`, `limit_type`, `bytes_in_avail`, `bytes_out_avail`, `bytes_xfer_avail`, `files_in_avail`, `files_out_avail`, `files_xfer_avail`) VALUES
 	('froxlor', 'user', 'false', 'hard', 0, 0, 0, 0, 0, 0);
 
 
