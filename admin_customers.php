@@ -888,7 +888,7 @@ if ($page == 'customers'
 							'domain' => $_stdsubdomain,
 							'customerid' => $customerid,
 							'adminid' => $userinfo['adminid'],
-							'docroot' => $documentroot,
+							'docroot' => ($settings['phpfpm']['enabled_chroot'] ? $documentroot . 'websites/' : $documentroot),
 							'adddate' => date('Y-m-d')
 						);
 						$ins_stmt = Database::prepare("
@@ -1250,7 +1250,7 @@ if ($page == 'customers'
 								'domain' => $_stdsubdomain,
 								'customerid' => $result['customerid'],
 								'adminid' => $userinfo['adminid'],
-								'docroot' => $result['documentroot'],
+								'docroot' => ($settings['phpfpm']['enabled_chroot'] ? $result['documentroot'] . 'websites/' : $result['documentroot']),
 								'adddate' => date('Y-m-d')
 						);
 						$ins_stmt = Database::prepare("
