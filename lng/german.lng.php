@@ -1460,6 +1460,7 @@ $lng['domains']['serveraliasoption_none'] = 'Kein Alias';
 $lng['error']['givendirnotallowed'] = 'Das angegebene Verzeichnis im Feld %s ist nicht erlaubt.';
 $lng['serversettings']['ssl']['ssl_cipher_list']['title'] = 'Erlaubte SSL Ciphers festlegen';
 $lng['serversettings']['ssl']['ssl_cipher_list']['description'] = 'Dies ist eine Liste von Ciphers die genutzt werden sollen (oder auch nicht genutzt werden sollen) wenn eine SSL Verbindung besteht. Eine Liste aller Ciphers und wie diese hinzugefügt/ausgeschlossen werden ist in den Abschnitten "CIPHER LIST FORMAT" und "CIPHER STRINGS" in <a href="http://openssl.org/docs/apps/ciphers.html">der man-page für Ciphers</a> zu finden.<br /><br /><b>Standard-Wert ist:</b><pre>ECDHE-RSA-AES128-SHA256:AES128-GCM-SHA256:RC4:HIGH:!MD5:!aNULL:!EDH</pre>';
+$lng['serversettings']['phpfpm_settings']['enabled_chroot'] = 'Chroot für PHP-FPM Pools aktivieren';
 
 // Added in Froxlor 0.9.31
 $lng['panel']['dashboard'] = 'Dashboard';
