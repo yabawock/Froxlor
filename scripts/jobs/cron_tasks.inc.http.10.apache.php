@@ -264,7 +264,7 @@ class apache
 					if ($row_ipsandports['ssl']) {
 						$srvName = substr(md5($ipport),0,4).'.ssl-fpm.external';
 					}
-					$this->virtualhosts_data[$vhosts_filename] .= '  FastCgiExternalServer ' . $php->getInterface()->getAliasConfigDir() . $srvName .' -socket ' . $php->getInterface()->getSocketFile() . ' -idle-timeout ' . $this->settings['phpfpm']['idle_timeout'] . "\n";
+					$this->virtualhosts_data[$vhosts_filename] .= '  FastCgiExternalServer ' . $php->getInterface()->getAliasConfigDir() . $srvName .' -socket ' . $php->getInterface()->getSocketFile() . ' -user ' . $this->settings['phpfpm']['vhost_httpuser'] . ' -group ' . $this->settings['phpfpm']['vhost_httpgroup'] . " -pass-header Authorization\n";
 					$this->virtualhosts_data[$vhosts_filename] .= '  <Directory "' . $mypath . '">' . "\n";
 					$file_extensions = explode(' ', $phpconfig['file_extensions']);
 					$this->virtualhosts_data[$vhosts_filename] .= '   <FilesMatch "\.(' . implode('|', $file_extensions) . ')$">' . "\n";
@@ -283,7 +283,7 @@ class apache
 					$this->virtualhosts_data[$vhosts_filename] .= '  Alias /fastcgiphp ' . $php->getInterface()->getAliasConfigDir() . $srvName . "\n";
 
 					// create starter-file | config-file
-					$php->getInterface()->createConfig(array());
+					$php->getInterface()->createConfig(array('phpsettings' => ''));
 				}
 
 				/**
@@ -365,7 +365,7 @@ class apache
 
 	/**
 	 * We put together the needed php options in the virtualhost entries
-	 * 
+	 *
 	 * @param array $domain
 	 * @param bool $ssl_vhost
 	 *
@@ -609,13 +609,13 @@ class apache
 	protected function getVhostContent($domain, $ssl_vhost = false)
 	{
 		if ($ssl_vhost === true
-		    && ($domain['ssl_redirect'] != '1' 
+		    && ($domain['ssl_redirect'] != '1'
 		    && $domain['ssl'] != '1')
 		) {
 			return '';
 		}
 
-		$query = "SELECT * FROM `".TABLE_PANEL_IPSANDPORTS."` `i`, `".TABLE_DOMAINTOIP."` `dip` 
+		$query = "SELECT * FROM `".TABLE_PANEL_IPSANDPORTS."` `i`, `".TABLE_DOMAINTOIP."` `dip`
 			WHERE dip.id_domain = :domainid AND i.id = dip.id_ipandports ";
 
 		if ($ssl_vhost === true
