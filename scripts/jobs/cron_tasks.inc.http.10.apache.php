@@ -265,7 +265,7 @@ class apache extends HttpConfigBase {
 					if ($row_ipsandports['ssl']) {
 						$srvName = substr(md5($ipport),0,4).'.ssl-fpm.external';
 					}
-					
+
 					// mod_proxy stuff for apache-2.4
 					if (Settings::Get('system.apache24') == '1'
 							&& Settings::Get('phpfpm.use_mod_proxy') == '1'
@@ -273,7 +273,7 @@ class apache extends HttpConfigBase {
 						$this->virtualhosts_data[$vhosts_filename] .= '  <FilesMatch \.php$>'. "\n";
 						$this->virtualhosts_data[$vhosts_filename] .= '  SetHandler proxy:unix:' . $php->getInterface()->getSocketFile()  . '|fcgi://localhost'. "\n";
 						$this->virtualhosts_data[$vhosts_filename] .= '  </FilesMatch>' . "\n";
-					
+
 					} else {
 						$this->virtualhosts_data[$vhosts_filename] .= '  FastCgiExternalServer ' . $php->getInterface()->getAliasConfigDir() . $srvName .' -socket ' . $php->getInterface()->getSocketFile() . ' -idle-timeout ' . Settings::Get('phpfpm.idle_timeout') . "\n";
 						$this->virtualhosts_data[$vhosts_filename] .= '  <Directory "' . $mypath . '">' . "\n";
@@ -298,6 +298,9 @@ class apache extends HttpConfigBase {
 						$this->virtualhosts_data[$vhosts_filename] .= '  </Directory>' . "\n";
 						$this->virtualhosts_data[$vhosts_filename] .= '  Alias /fastcgiphp ' . $php->getInterface()->getAliasConfigDir() . $srvName . "\n";
 					}
+
+					// create starter-file | config-file
+					$php->getInterface()->createConfig(array());
 				}
                 else
                 {
