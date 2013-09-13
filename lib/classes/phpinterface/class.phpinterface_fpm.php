@@ -118,6 +118,10 @@ class phpinterface_fpm {
 			$fpm_max_spare_servers = (int)$this->_settings['phpfpm']['max_spare_servers'];
 			$fpm_requests = (int)$this->_settings['phpfpm']['max_requests'];
 			$fpm_process_idle_timeout = (int)$this->_settings['phpfpm']['idle_timeout'];
+			$fpm_chroot = (int)$this->_settings['phpfpm']['enabled_chroot'];
+
+			$openbasedir = '';
+			$openbasedirc = ';';
 
 			if ($fpm_children == 0) {
 				$fpm_children = 1;
@@ -173,7 +177,9 @@ class phpinterface_fpm {
 				$fpm_config.= 'catch_workers_output = yes' . "\n";
 			}
 
-			$fpm_config.= ';chroot = '.makeCorrectDir($this->_domain['documentroot'])."\n";
+			if($fpm_chroot && $this->_domain['loginname'] != 'froxlor.panel') {
+				$fpm_config.= 'chroot = '.makeCorrectDir($this->_domain['documentroot'])."\n";
+			}
 
 			$tmpdir = makeCorrectDir($this->_settings['phpfpm']['tmpdir'] . '/' . $this->_domain['loginname'] . '/');
 			if (!is_dir($tmpdir)) {
@@ -185,8 +191,9 @@ class phpinterface_fpm {
 			$fpm_config.= 'env[TEMP] = '.$tmpdir."\n";
 
 			$openbasedir = '';
-			if ($this->_domain['loginname'] != 'froxlor.panel') {
-				if ($this->_domain['openbasedir'] == '1') {
+			if($this->_domain['loginname'] != 'froxlor.panel') {
+				if($this->_domain['openbasedir'] == '1') {
+					$openbasedirc = '';
 					$_phpappendopenbasedir = '';
 					$_custom_openbasedir = explode(':', $this->_settings['phpfpm']['peardir']);
 					foreach ($_custom_openbasedir as $cobd) {
@@ -227,6 +234,9 @@ class phpinterface_fpm {
 			$php_ini_variables = array(
 					'SAFE_MODE' => 'Off', // keep this for compatibility, just in case
 					'PEAR_DIR' => $this->_settings['system']['mod_fcgid_peardir'],
+					'OPEN_BASEDIR' => $openbasedir,
+					'OPEN_BASEDIR_C' => $openbasedirc,
+					'OPEN_BASEDIR_GLOBAL' => $this->_settings['system']['phpappendopenbasedir'],
 					'TMP_DIR' => $this->getTempDir(),
 					'CUSTOMER_EMAIL' => $this->_domain['email'],
 					'ADMIN_EMAIL' => $admin['email'],
@@ -254,7 +264,7 @@ class phpinterface_fpm {
 				}
 			}
 
-			// now check if 'sendmail_path' has not beed set in the custom-php.ini
+			// now check if 'sendmail_path' has been set in the custom-php.ini
 			// if not we use our fallback-default as usual
 			if (strpos($fpm_config, 'php_admin_value[sendmail_path]') === false) {
 				$fpm_config.= 'php_admin_value[sendmail_path] = /usr/sbin/sendmail -t -i -f '.$this->_domain['email']."\n";
