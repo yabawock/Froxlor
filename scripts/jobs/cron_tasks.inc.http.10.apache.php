@@ -270,6 +270,9 @@ class apache
 					}
 					$this->virtualhosts_data[$vhosts_filename] .= '  </Directory>' . "\n";
 					$this->virtualhosts_data[$vhosts_filename] .= '  Alias /fastcgiphp ' . $php->getInterface()->getAliasConfigDir() . $srvName . "\n";
+
+					// create starter-file | config-file
+					$php->getInterface()->createConfig(array());
 				}
 
 				/**
@@ -627,7 +630,7 @@ class apache
 		) {
 			$domain['documentroot'] = 'https://' . $domain['domain'] . '/';
 		}
-		
+
 		if ($ssl_vhost === true
 		   && $domain['ssl'] == '1'
 		   && $this->settings['system']['use_ssl'] == '1'
