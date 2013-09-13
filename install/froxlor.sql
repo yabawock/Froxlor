@@ -542,6 +542,7 @@ INSERT INTO `panel_settings` (`settinggroup`, `varname`, `value`) VALUES
 	('panel', 'phpconfigs_hidestdsubdomain', '0'),
 	('panel', 'allow_theme_change_admin', '1'),
 	('panel', 'allow_theme_change_customer', '1'),
+	('phpfpm', 'enabled_chroot', '0'),
 	('panel', 'version', '0.9.29-rc1');
 
 
