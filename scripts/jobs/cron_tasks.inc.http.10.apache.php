@@ -275,7 +275,7 @@ class apache extends HttpConfigBase {
 						$this->virtualhosts_data[$vhosts_filename] .= '  </FilesMatch>' . "\n";
 
 					} else {
-						$this->virtualhosts_data[$vhosts_filename] .= '  FastCgiExternalServer ' . $php->getInterface()->getAliasConfigDir() . $srvName .' -socket ' . $php->getInterface()->getSocketFile() . ' -idle-timeout ' . Settings::Get('phpfpm.idle_timeout') . "\n";
+						$this->virtualhosts_data[$vhosts_filename] .= '  FastCgiExternalServer ' . $php->getInterface()->getAliasConfigDir() . $srvName .' -socket ' . $php->getInterface()->getSocketFile() . ' -user ' . Settings::Get('phpfpm.vhost_httpuser') . ' -group ' . Settings::Get('phpfpm.vhost_httpgroup') . ' -idle-timeout ' . Settings::Get('phpfpm.idle_timeout') . " -pass-header Authorization\n";
 						$this->virtualhosts_data[$vhosts_filename] .= '  <Directory "' . $mypath . '">' . "\n";
 						$file_extensions = explode(' ', $phpconfig['file_extensions']);
 						$this->virtualhosts_data[$vhosts_filename] .= '   <FilesMatch "\.(' . implode('|', $file_extensions) . ')$">' . "\n";
@@ -300,7 +300,7 @@ class apache extends HttpConfigBase {
 					}
 
 					// create starter-file | config-file
-					$php->getInterface()->createConfig(array());
+					$php->getInterface()->createConfig(array('phpsettings' => ''));
 				}
 
 				/**
