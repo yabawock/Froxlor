@@ -252,6 +252,11 @@ if($page == 'domains'
 				$customerid = intval($_POST['customerid']);
 				$customer = $db->query_first("SELECT * FROM `" . TABLE_PANEL_CUSTOMERS . "` WHERE `customerid`='" . (int)$customerid . "' " . ($userinfo['customers_see_all'] ? '' : " AND `adminid` = '" . (int)$userinfo['adminid'] . "' ") . " ");
 
+				/* Adjust the document root for chrooted environment */
+				if($settings['phpfpm']['enabled_chroot']) {
+					$customer['documentroot'] .= 'websites/';
+				}
+
 				if(empty($customer)
 				   || $customer['customerid'] != $customerid)
 				{
@@ -774,6 +779,11 @@ if($page == 'domains'
 				else
 				{
 					$customerid = $result['customerid'];
+				}
+
+				/* Adjust the document root for chrooted environment */
+				if($settings['phpfpm']['enabled_chroot']) {
+					$customer['documentroot'] .= 'websites/';
 				}
 
 				$admin = $admin_old = $db->query_first("SELECT * FROM `" . TABLE_PANEL_ADMINS . "` WHERE `adminid`='" . (int)$result['adminid'] . "' ");

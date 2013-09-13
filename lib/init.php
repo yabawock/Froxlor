@@ -246,6 +246,11 @@ if(isset($s)
 	$query.= 'WHERE `s`.`hash`="' . $db->escape($s) . '" AND `s`.`ipaddress`="' . $db->escape($remote_addr) . '" AND `s`.`useragent`="' . $db->escape($http_user_agent) . '" AND `s`.`lastactivity` > "' . (int)$timediff . '" AND `s`.`adminsession` = "' . $db->escape($adminsession) . '"';
 	$userinfo = $db->query_first($query);
 
+	/* Adjust the document root for chrooted environment */
+	if($settings['phpfpm']['enabled_chroot']) {
+		$userinfo['documentroot'] .= 'websites/';
+	}
+
 	if((($userinfo['adminsession'] == '1' && AREA == 'admin' && isset($userinfo['adminid'])) || ($userinfo['adminsession'] == '0' && (AREA == 'customer' || AREA == 'login') && isset($userinfo['customerid'])))
 	   && (!isset($userinfo['deactivated']) || $userinfo['deactivated'] != '1'))
 	{

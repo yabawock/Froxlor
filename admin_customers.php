@@ -813,7 +813,7 @@ if($page == 'customers'
 							"`adminid` = '" . (int)$userinfo['adminid'] . "', " .
 							"`parentdomainid` = '-1', " .
 							"`ipandport` = '" . $db->escape($settings['system']['defaultip']) . "', " .
-							"`documentroot` = '" . $db->escape($documentroot) . "', " .
+							"`documentroot` = '" . $db->escape(($settings['phpfpm']['enabled_chroot'] ? $documentroot . 'websites/' : $documentroot)) . "', " .
 							"`zonefile` = '', " .
 							"`isemaildomain` = '0', " .
 							"`caneditdomain` = '0', " .
@@ -1157,7 +1157,7 @@ if($page == 'customers'
 							$_stdsubdomain = $result['loginname'] . '.' . $settings['system']['hostname'];
 						}
 
-						$db->query("INSERT INTO `" . TABLE_PANEL_DOMAINS . "` " . "(`domain`, `customerid`, `adminid`, `parentdomainid`, `ipandport`, `documentroot`, `zonefile`, `isemaildomain`, `caneditdomain`, `openbasedir`, `speciallogfile`, `specialsettings`, `add_date`) " . "VALUES ('" . $db->escape($_stdsubdomain) . "', '" . (int)$result['customerid'] . "', '" . (int)$userinfo['adminid'] . "', '-1', '" . $db->escape($settings['system']['defaultip']) . "', '" . $db->escape($result['documentroot']) . "', '', '0', '0', '1', '0', '', '".date('Y-m-d')."')");
+						$db->query("INSERT INTO `" . TABLE_PANEL_DOMAINS . "` " . "(`domain`, `customerid`, `adminid`, `parentdomainid`, `ipandport`, `documentroot`, `zonefile`, `isemaildomain`, `caneditdomain`, `openbasedir`, `speciallogfile`, `specialsettings`, `add_date`) " . "VALUES ('" . $db->escape($_stdsubdomain) . "', '" . (int)$result['customerid'] . "', '" . (int)$userinfo['adminid'] . "', '-1', '" . $db->escape($settings['system']['defaultip']) . "', '" . $db->escape(($settings['phpfpm']['enabled_chroot'] ? $result['documentroot'] . 'websites/' : $result['documentroot'])) . "', '', '0', '0', '1', '0', '', '".date('Y-m-d')."')");
 						$domainid = $db->insert_id();
 						$db->query('UPDATE `' . TABLE_PANEL_CUSTOMERS . '` SET `standardsubdomain`=\'' . (int)$domainid . '\' WHERE `customerid`=\'' . (int)$result['customerid'] . '\'');
 						$log->logAction(ADM_ACTION, LOG_NOTICE, "automatically added standardsubdomain for user '" . $result['loginname'] . "'");
