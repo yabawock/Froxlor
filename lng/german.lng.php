@@ -227,6 +227,8 @@ $lng['error']['destinationalreadyexistasmail'] = 'Die Weiterleitung zu "%s" exis
 $lng['error']['destinationalreadyexist'] = 'Es existiert bereits eine Weiterleitung nach "%s".';
 $lng['error']['destinationiswrong'] = 'Die Weiterleitungsadresse "%s" enthält ungültige Zeichen oder ist nicht vollständig.';
 $lng['error']['ticketnotaccessible'] = 'Sie können sich das Ticket nicht ansehen.';
+$lng['error']['wildcardaddressmustbecatchall'] = '*@domain.com Adressen müssen Catchall aktiviert haben.';
+$lng['error']['wildcardaddresscanonlyforward'] = 'Sie können nur Weiterleitungen zu einer *@domain.com Adresse hinzufügen.';
 
 /**
  * Questions

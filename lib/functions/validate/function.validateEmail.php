@@ -27,8 +27,15 @@
  * @changes Backported regex from SysCP 1.3 (lib/classes/Syscp/Handler/Validation.class.php)
  */
 
-function validateEmail($email)
+function validateEmail($email, $iscatchall = 0)
 {
 	$email = strtolower($email);
+	if((int)$iscatchall == 1 && preg_match('/^\*?@/', $email))
+	{
+		if(substr($email, 0, 1) === '@')
+		{
+			$email = '*' . $email;
+		}
+	}
 	return filter_var($email, FILTER_VALIDATE_EMAIL);
 }
