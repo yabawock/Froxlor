@@ -27,6 +27,7 @@ require_once(makeCorrectFile(dirname(__FILE__) . '/cron_tasks.inc.http.20.lightt
 require_once(makeCorrectFile(dirname(__FILE__) . '/cron_tasks.inc.http.25.lighttpd_fcgid.php'));
 require_once(makeCorrectFile(dirname(__FILE__) . '/cron_tasks.inc.http.30.nginx.php'));
 require_once(makeCorrectFile(dirname(__FILE__) . '/cron_tasks.inc.http.35.nginx_phpfpm.php'));
+require_once(makeCorrectFile(dirname(__FILE__) . '/cron_tasks.inc.system.50.customer.php'));
 
 /**
  * LOOK INTO TASKS TABLE TO SEE IF THERE ARE ANY UNDONE JOBS
@@ -94,43 +95,9 @@ while ($row = $db->fetch_array($result_tasks)) {
 	 */
 	elseif ($row['type'] == '2')
 	{
-		fwrite($debugHandler, '  cron_tasks: Task2 started - create new home' . "\n");
-		$cronlog->logAction(CRON_ACTION, LOG_INFO, 'Task2 started - create new home');
-
-		if(is_array($row['data']))
-		{
-			// define paths
-			$userhomedir = makeCorrectDir($settings['system']['documentroot_prefix'] . '/' . $row['data']['loginname'] . '/');
-			$usermaildir = makeCorrectDir($settings['system']['vmail_homedir'] . '/' . $row['data']['loginname'] . '/');
-
-			// stats directory
-			if($settings['system']['awstats_enabled'] == '1')
-			{
-				$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'Running: mkdir -p ' . escapeshellarg($userhomedir . 'awstats'));
-				safe_exec('mkdir -p ' . escapeshellarg($userhomedir . 'awstats'));
-			} else {
-				$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'Running: mkdir -p ' . escapeshellarg($userhomedir . 'webalizer'));
-				safe_exec('mkdir -p ' . escapeshellarg($userhomedir . 'webalizer'));
-			}
-
-			// maildir
-			$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'Running: mkdir -p ' . escapeshellarg($usermaildir));
-			safe_exec('mkdir -p ' . escapeshellarg($usermaildir));
-
-			//check if admin of customer has added template for new customer directories
-			if((int)$row['data']['store_defaultindex'] == 1)
-			{
-				storeDefaultIndex($row['data']['loginname'], $userhomedir, $cronlog, true);
-			}
-
-			// strip of last slash of paths to have correct chown results
-			$userhomedir = (substr($userhomedir, 0, -1) == '/') ? substr($userhomedir, 0, -1) : $userhomedir;
-			$usermaildir = (substr($usermaildir, 0, -1) == '/') ? substr($usermaildir, 0, -1) : $usermaildir;
-
-			$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'Running: chown -R ' . (int)$row['data']['uid'] . ':' . (int)$row['data']['gid'] . ' ' . escapeshellarg($userhomedir));
-			safe_exec('chown -R ' . (int)$row['data']['uid'] . ':' . (int)$row['data']['gid'] . ' ' . escapeshellarg($userhomedir));
-			$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'Running: chown -R ' . (int)$settings['system']['vmail_uid'] . ':' . (int)$settings['system']['vmail_gid'] . ' ' . escapeshellarg($usermaildir));
-			safe_exec('chown -R ' . (int)$settings['system']['vmail_uid'] . ':' . (int)$settings['system']['vmail_gid'] . ' ' . escapeshellarg($usermaildir));
+		$customer = new customer($db, $cronlog, $debugHandler, $settings, $row['data']);
+		if (isset($customer)) {
+			$customer->createHomeDir()
 		}
 	}
 
