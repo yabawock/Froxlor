@@ -228,6 +228,8 @@ $lng['error']['destinationalreadyexistasmail'] = 'The forwarder to %s already ex
 $lng['error']['destinationalreadyexist'] = 'You have already defined a forwarder to %s .';
 $lng['error']['destinationiswrong'] = 'The forwarder %s contains invalid character(s) or is incomplete.';
 $lng['error']['ticketnotaccessible'] = 'You cannot access this ticket.';
+$lng['error']['wildcardaddressmustbecatchall'] = '*@domain.com addresses are required to have catchall enabled.';
+$lng['error']['wildcardaddresscanonlyforward'] = 'You cannot only add forwarders to *@domain.com addresses.';
 
 /**
  * Questions
