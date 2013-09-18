@@ -233,17 +233,12 @@ class phpinterface_fpm {
 			}
 
 			if($fpm_chroot && $this->_domain['loginname'] != 'froxlor.panel') {
-				$fpm_config.= 'chroot = '.makeCorrectDir($this->_domain['documentroot'])."\n";
+				$fpm_config.= 'chroot = '.makeCorrectDir($this->_domain['customerroot'])."\n";
 			}
 
-			$tmpdir = makeCorrectDir(Settings::Get('phpfpm.tmpdir') . '/' . $this->_domain['loginname'] . '/');
-			if (!is_dir($tmpdir)) {
-				$this->getTempDir();
-			}
-
-			$fpm_config.= 'env[TMP] = '.$tmpdir."\n";
-			$fpm_config.= 'env[TMPDIR] = '.$tmpdir."\n";
-			$fpm_config.= 'env[TEMP] = '.$tmpdir."\n";
+			$fpm_config.= 'env[TMP] = '.$this->getTempDir()."\n";
+			$fpm_config.= 'env[TMPDIR] = '.$this->getTempDir()."\n";
+			$fpm_config.= 'env[TEMP] = '.$this->getTempDir()."\n";
 
 			$openbasedir = '';
 			if($this->_domain['loginname'] != 'froxlor.panel') {
@@ -260,12 +255,18 @@ class phpinterface_fpm {
 						$_phpappendopenbasedir .= appendOpenBasedirPath($cobd);
 					}
 
-					if ($this->_domain['openbasedir_path'] == '0'
-							&& strstr($this->_domain['documentroot'], ":") === false
-					) {
-						$openbasedir = appendOpenBasedirPath($this->_domain['documentroot'], true);
+					if($this->_domain['openbasedir_path'] == '0' && strstr($this->_domain['documentroot'], ":") === false) {
+						if($fpm_chroot == 1 && $this->_domain['documentroot'] === $this->_domain['customerroot']) {
+						  $openbasedir = appendOpenBasedirPath($this->_domain['documentroot'] . '/websites', true);
+						} else {
+				$openbasedir = appendOpenBasedirPath($this->_domain['documentroot'], true);
+						}
 					} else {
-						$openbasedir = appendOpenBasedirPath($this->_domain['customerroot'], true);
+						if($fpm_chroot == 1) {
+				      $openbasedir = appendOpenBasedirPath($this->_domain['customerroot'] . '/websites', true);
+						} else {
+						  $openbasedir = appendOpenBasedirPath($this->_domain['customerroot'], true);
+						}
 					}
 
 					$openbasedir .= appendOpenBasedirPath($this->getTempDir());
@@ -281,8 +282,8 @@ class phpinterface_fpm {
 					$openbasedir = implode(':', $clean_openbasedir);
 				}
 			}
-			$fpm_config.= 'php_admin_value[session.save_path] = ' . makeCorrectDir(Settings::Get('phpfpm.tmpdir') . '/' . $this->_domain['loginname'] . '/') . "\n";
-			$fpm_config.= 'php_admin_value[upload_tmp_dir] = ' . makeCorrectDir(Settings::Get('phpfpm.tmpdir') . '/' . $this->_domain['loginname'] . '/') . "\n";
+			$fpm_config.= 'php_admin_value[session.save_path] = ' . $this->getTempDir() . "\n";
+			$fpm_config.= 'php_admin_value[upload_tmp_dir] = ' . $this->getTempDir() . "\n";
 
 			$admin = $this->_getAdminData($this->_domain['adminid']);
 			$php_ini_variables = array(
@@ -388,8 +389,11 @@ class phpinterface_fpm {
 	 * @return string the directory
 	 */
 	public function getTempDir($createifnotexists = true) {
-
-		$tmpdir = makeCorrectDir(Settings::Get('phpfpm.tmpdir') . '/' . $this->_domain['loginname'] . '/');
+		if((int)Settings::Get('phpfpm.enabled_chroot') == 1) {
+			$tmpdir = makeCorrectDir('/tmp');
+		} else {
+			$tmpdir = makeCorrectDir(Settings::Get('phpfpm.tmpdir') . '/' . $this->_domain['loginname'] . '/');
+		}
 
 		if (!is_dir($tmpdir) && $createifnotexists) {
 			safe_exec('mkdir -p ' . escapeshellarg($tmpdir));

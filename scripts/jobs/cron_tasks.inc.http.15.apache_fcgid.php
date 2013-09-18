@@ -58,6 +58,7 @@ class apache_fcgid extends apache
 					$php_options_text.= '  SuexecUserGroup "' . $domain['loginname'] . '" "' . $domain['loginname'] . '"' . "\n";
 					$php_options_text.= '  FastCgiExternalServer ' . $php->getInterface()->getAliasConfigDir() . $srvName . ' -socket ' . $php->getInterface()->getSocketFile() . ' -idle-timeout ' . Settings::Get('phpfpm.idle_timeout') . ' -user ' . $domain['loginname'] . ' -group ' . $domain['loginname'] . " -pass-header Authorization\n";
 					$php_options_text.= '  <Directory "' . makeCorrectDir($domain['documentroot']) . '">' . "\n";
+					$php_options_text.= '    AllowOverride All' . "\n";
 					$php_options_text.= '    <FilesMatch "\.php$">' . "\n";
 					$php_options_text.= '      SetHandler php5-fastcgi'. "\n";
 					$php_options_text.= '      Action php5-fastcgi /fastcgiphp' . "\n";
