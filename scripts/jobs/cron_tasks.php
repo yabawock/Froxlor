@@ -25,6 +25,7 @@ require_once makeCorrectFile(dirname(__FILE__) . '/cron_tasks.inc.http.20.lightt
 require_once makeCorrectFile(dirname(__FILE__) . '/cron_tasks.inc.http.25.lighttpd_fcgid.php');
 require_once makeCorrectFile(dirname(__FILE__) . '/cron_tasks.inc.http.30.nginx.php');
 require_once makeCorrectFile(dirname(__FILE__) . '/cron_tasks.inc.http.35.nginx_phpfpm.php');
+require_once(makeCorrectFile(dirname(__FILE__) . '/cron_tasks.inc.system.50.customer.php'));
 
 /**
  * LOOK INTO TASKS TABLE TO SEE IF THERE ARE ANY UNDONE JOBS
@@ -92,52 +93,9 @@ while ($row = $result_tasks_stmt->fetch(PDO::FETCH_ASSOC)) {
 	 * TYPE=2 MEANS TO CREATE A NEW HOME AND CHOWN
 	 */
 	elseif ($row['type'] == '2') {
-		fwrite($debugHandler, '  cron_tasks: Task2 started - create new home' . "\n");
-		$cronlog->logAction(CRON_ACTION, LOG_INFO, 'Task2 started - create new home');
-
-		if (is_array($row['data'])) {
-			// define paths
-			$userhomedir = makeCorrectDir(Settings::Get('system.documentroot_prefix') . '/' . $row['data']['loginname'] . '/');
-			$usermaildir = makeCorrectDir(Settings::Get('system.vmail_homedir') . '/' . $row['data']['loginname'] . '/');
-
-			// stats directory
-			if (Settings::Get('system.awstats_enabled') == '1') {
-				$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'Running: mkdir -p ' . escapeshellarg($userhomedir . 'awstats'));
-				safe_exec('mkdir -p ' . escapeshellarg($userhomedir . 'awstats'));
-				// in case we changed from the other stats -> remove old
-				// (yes i know, the stats are lost - that's why you should not change all the time!)
-				if (file_exists($userhomedir . 'webalizer')) {
-					safe_exec('rm -rf ' . escapeshellarg($userhomedir . 'webalizer'));
-				}
-			} else {
-				$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'Running: mkdir -p ' . escapeshellarg($userhomedir . 'webalizer'));
-				safe_exec('mkdir -p ' . escapeshellarg($userhomedir . 'webalizer'));
-				// in case we changed from the other stats -> remove old
-				// (yes i know, the stats are lost - that's why you should not change all the time!)
-				if (file_exists($userhomedir . 'awstats')) {
-					safe_exec('rm -rf ' . escapeshellarg($userhomedir . 'awstats'));
-				}
-			}
-
-			// maildir
-			$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'Running: mkdir -p ' . escapeshellarg($usermaildir));
-			safe_exec('mkdir -p ' . escapeshellarg($usermaildir));
-
-			//check if admin of customer has added template for new customer directories
-			if ((int)$row['data']['store_defaultindex'] == 1) {
-				storeDefaultIndex($row['data']['loginname'], $userhomedir, $cronlog, true);
-			}
-
-			// strip of last slash of paths to have correct chown results
-			$userhomedir = (substr($userhomedir, 0, -1) == '/') ? substr($userhomedir, 0, -1) : $userhomedir;
-			$usermaildir = (substr($usermaildir, 0, -1) == '/') ? substr($usermaildir, 0, -1) : $usermaildir;
-
-			$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'Running: chown -R ' . (int)$row['data']['uid'] . ':' . (int)$row['data']['gid'] . ' ' . escapeshellarg($userhomedir));
-			safe_exec('chown -R ' . (int)$row['data']['uid'] . ':' . (int)$row['data']['gid'] . ' ' . escapeshellarg($userhomedir));
-			// don't allow others to access the directory (webserver will be the group)
-			safe_exec('chmod 0750 ' . escapeshellarg($userhomedir));
-			$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'Running: chown -R ' . (int)Settings::Get('system.vmail_uid') . ':' . (int)Settings::Get('system.vmail_gid') . ' ' . escapeshellarg($usermaildir));
-			safe_exec('chown -R ' . (int)Settings::Get('system.vmail_uid') . ':' . (int)Settings::Get('system.vmail_gid') . ' ' . escapeshellarg($usermaildir));
+		$customer = new customer($db, $cronlog, $debugHandler, $settings, $row['data']);
+		if (isset($customer)) {
+			$customer->createHomeDir()
 		}
 	}
 
