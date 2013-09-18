@@ -25,6 +25,7 @@ require_once makeCorrectFile(dirname(__FILE__) . '/cron_tasks.inc.http.20.lightt
 require_once makeCorrectFile(dirname(__FILE__) . '/cron_tasks.inc.http.25.lighttpd_fcgid.php');
 require_once makeCorrectFile(dirname(__FILE__) . '/cron_tasks.inc.http.30.nginx.php');
 require_once makeCorrectFile(dirname(__FILE__) . '/cron_tasks.inc.http.35.nginx_phpfpm.php');
+require_once(makeCorrectFile(dirname(__FILE__) . '/cron_tasks.inc.system.50.customer.php'));
 
 /**
  * LOOK INTO TASKS TABLE TO SEE IF THERE ARE ANY UNDONE JOBS
@@ -101,50 +102,9 @@ while ($row = $result_tasks_stmt->fetch(PDO::FETCH_ASSOC)) {
 	 */
 	elseif ($row['type'] == '2')
 	{
-		fwrite($debugHandler, '  cron_tasks: Task2 started - create new home' . "\n");
-		$cronlog->logAction(CRON_ACTION, LOG_INFO, 'Task2 started - create new home');
-
-		if (is_array($row['data'])) {
-			// define paths
-			$userhomedir = makeCorrectDir($settings['system']['documentroot_prefix'] . '/' . $row['data']['loginname'] . '/');
-			$usermaildir = makeCorrectDir($settings['system']['vmail_homedir'] . '/' . $row['data']['loginname'] . '/');
-
-			// stats directory
-			if ($settings['system']['awstats_enabled'] == '1') {
-				$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'Running: mkdir -p ' . escapeshellarg($userhomedir . 'awstats'));
-				safe_exec('mkdir -p ' . escapeshellarg($userhomedir . 'awstats'));
-				// in case we changed from the other stats -> remove old
-				// (yes i know, the stats are lost - that's why you should not change all the time!)
-				if (file_exists($userhomedir . 'webalizer')) {
-					safe_exec('rm -rf ' . escapeshellarg($userhomedir . 'webalizer'));
-				}
-			} else {
-				$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'Running: mkdir -p ' . escapeshellarg($userhomedir . 'webalizer'));
-				safe_exec('mkdir -p ' . escapeshellarg($userhomedir . 'webalizer'));
-				// in case we changed from the other stats -> remove old
-				// (yes i know, the stats are lost - that's why you should not change all the time!)
-				if (file_exists($userhomedir . 'awstats')) {
-					safe_exec('rm -rf ' . escapeshellarg($userhomedir . 'awstats'));
-				}
-			}
-
-			// maildir
-			$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'Running: mkdir -p ' . escapeshellarg($usermaildir));
-			safe_exec('mkdir -p ' . escapeshellarg($usermaildir));
-
-			//check if admin of customer has added template for new customer directories
-			if ((int)$row['data']['store_defaultindex'] == 1) {
-				storeDefaultIndex($row['data']['loginname'], $userhomedir, $cronlog, true);
-			}
-
-			// strip of last slash of paths to have correct chown results
-			$userhomedir = (substr($userhomedir, 0, -1) == '/') ? substr($userhomedir, 0, -1) : $userhomedir;
-			$usermaildir = (substr($usermaildir, 0, -1) == '/') ? substr($usermaildir, 0, -1) : $usermaildir;
-
-			$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'Running: chown -R ' . (int)$row['data']['uid'] . ':' . (int)$row['data']['gid'] . ' ' . escapeshellarg($userhomedir));
-			safe_exec('chown -R ' . (int)$row['data']['uid'] . ':' . (int)$row['data']['gid'] . ' ' . escapeshellarg($userhomedir));
-			$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'Running: chown -R ' . (int)$settings['system']['vmail_uid'] . ':' . (int)$settings['system']['vmail_gid'] . ' ' . escapeshellarg($usermaildir));
-			safe_exec('chown -R ' . (int)$settings['system']['vmail_uid'] . ':' . (int)$settings['system']['vmail_gid'] . ' ' . escapeshellarg($usermaildir));
+		$customer = new customer($db, $cronlog, $debugHandler, $settings, $row['data']);
+		if (isset($customer)) {
+			$customer->createHomeDir()
 		}
 	}
 
@@ -200,7 +160,7 @@ while ($row = $result_tasks_stmt->fetch(PDO::FETCH_ASSOC)) {
 					$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'Running: rm -rf ' . escapeshellarg($homedir));
 					safe_exec('rm -rf '.escapeshellarg($homedir));
 				}
-				
+
 				// remove backup dir
 				// FIXME remove when backup-feature has been removed
 				$backupdir = makeCorrectDir($settings['system']['backup_dir'] . $row['data']['loginname']);
@@ -213,7 +173,7 @@ while ($row = $result_tasks_stmt->fetch(PDO::FETCH_ASSOC)) {
 					$cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'Running: rm -rf ' . escapeshellarg($backupdir));
 					safe_exec('rm -rf '.escapeshellarg($backupdir));
 				}
-				
+
 				// remove maildir
 				$maildir = makeCorrectDir($settings['system']['vmail_homedir'] . '/' . $row['data']['loginname']);
 
@@ -364,14 +324,14 @@ while ($row = $result_tasks_stmt->fetch(PDO::FETCH_ASSOC)) {
 			// We do not want to set a quota for root by accident
 			if ($row['guid'] != 0) {
 				// The user has no quota in Froxlor, but on the filesystem
-				if (($row['diskspace'] == 0 || $row['diskspace'] == -1024) 
+				if (($row['diskspace'] == 0 || $row['diskspace'] == -1024)
 						&& $usedquota[$row['guid']]['block']['hard'] != 0
 				) {
 					$cronlog->logAction(CRON_ACTION, LOG_NOTICE, "Disabling quota for " . $row['loginname']);
 					safe_exec($settings['system']['diskquota_quotatool_path'] . " -u " . $row['guid'] . " -bl 0 -q 0 " . escapeshellarg($settings['system']['diskquota_customer_partition']));
 				}
 				// The user quota in Froxlor is different than on the filesystem
-				elseif ($row['diskspace'] != $usedquota[$row['guid']]['block']['hard'] 
+				elseif ($row['diskspace'] != $usedquota[$row['guid']]['block']['hard']
 						&& $row['diskspace'] != -1024
 				) {
 					$cronlog->logAction(CRON_ACTION, LOG_NOTICE, "Setting quota for " . $row['loginname'] . " from " . $usedquota[$row['guid']]['block']['hard'] . " to " . $row['diskspace']);
