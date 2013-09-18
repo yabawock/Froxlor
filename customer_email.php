@@ -226,13 +226,19 @@ elseif($page == 'emails')
 				}
 				else
 				{
-					$iscatchall = '0';
-					$email = $email_part . '@' . $domain;
+					if($email_part === '*')
+					{
+						$iscatchall = '1';
+						$email = '@' . $domain;
+					} else {
+						$iscatchall = '0';
+						$email = $email_part . '@' . $domain;
+					}
 				}
 
 				$email_full = $email_part . '@' . $domain;
 
-				if(!validateEmail($email_full))
+				if(!validateEmail($email_full, $iscatchall))
 				{
 					standard_error('emailiswrong', $email_full);
 				}
@@ -360,6 +366,11 @@ elseif($page == 'emails')
 			if(isset($result['email'])
 			   && $result['email'] != '')
 			{
+				if(preg_match('/^\*@/', $result['email_full']))
+				{
+					standard_error('wildcardaddressmustbecatchall');
+					exit;
+				}
 				if($result['iscatchall'] == '1')
 				{
 					$db->query("UPDATE `" . TABLE_MAIL_VIRTUAL . "` SET `email` = '" . $db->escape($result['email_full']) . "', `iscatchall` = '0' WHERE `customerid`='" . (int)$userinfo['customerid'] . "' AND `id`='" . (int)$result['id'] . "'");
@@ -412,6 +423,12 @@ elseif($page == 'accounts')
 			   && $result['email'] != ''
 			   && $result['popaccountid'] == '0')
 			{
+				if(preg_match('/^\*@/', $result['email_full']))
+				{
+					standard_error('wildcardaddresscanonlyforward');
+					exit;
+				}
+
 				if(isset($_POST['send'])
 				   && $_POST['send'] == 'send')
 				{
@@ -732,6 +749,7 @@ elseif($page == 'forwarders')
 				if(isset($_POST['send'])
 				   && $_POST['send'] == 'send')
 				{
+					$destination = preg_replace('/^\*@/', '@', $destination);
 					$destination = $idna_convert->encode($_POST['destination']);
 					$result['destination_array'] = explode(' ', $result['destination']);
 
@@ -739,7 +757,7 @@ elseif($page == 'forwarders')
 					{
 						standard_error('destinationnonexist');
 					}
-					elseif(!validateEmail($destination))
+					elseif(!validateEmail($destination, $result['iscatchall']))
 					{
 						standard_error('destinationiswrong', $destination);
 					}
