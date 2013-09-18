@@ -60,15 +60,22 @@ class customer
    */
   public function createHomeDir()
   {
-    fwrite($debugHandler, '  cron_tasks: Task2 started - create new home' . "\n");
-    $cronlog->logAction(CRON_ACTION, LOG_INFO, 'Task2 started - create new home');
+    fwrite($this->debugHandler, '  cron_tasks: Task2 started - create new home' . "\n");
+    $this->logger->logAction(CRON_ACTION, LOG_INFO, 'Task2 started - create new home');
 
     if(is_array($this->customerData) && !empty($this->customerData))
     {
-      $this->createStatsDir();
+      $this->definePaths();
       $this->createMailDir();
-      $this->copyDefaultIndex();
-      $this->chownHomeDir();
+      if((int)$this->settings['phpfpm']['enabled_chroot'] == 1)
+      {
+        $this->createStatsDir();
+        $this->copyDefaultIndex();
+        $this->chownHomeDir();
+      } else {
+        $this->initializeChroot();
+        $this->prepareChroot();
+      }
     }
   }
 
@@ -79,8 +86,8 @@ class customer
   protected function definePaths()
   {
   // define paths
-    $this->userHomeDir = makeCorrectDir($this->settings['system']['documentroot_prefix'] . '/' . $this->customerData['loginname'] . '/');
-    $this->userMailDir = makeCorrectDir($this->settings['system']['vmail_homedir'] . '/' . $this->customerData['loginname'] . '/');
+    $this->userHomeDir = makeCorrectDir($this->settings['system']['documentroot_prefix'] . '/' . $this->customerData['loginname']);
+    $this->userMailDir = makeCorrectDir($this->settings['system']['vmail_homedir'] . '/' . $this->customerData['loginname']);
   }
 
   /**
@@ -92,10 +99,10 @@ class customer
     // stats directory
     if($this->settings['system']['awstats_enabled'] == '1')
     {
-      $cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'Running: mkdir -p ' . escapeshellarg($this->userHomeDir . 'awstats'));
+      $this->logger->logAction(CRON_ACTION, LOG_NOTICE, 'Running: mkdir -p ' . escapeshellarg($this->userHomeDir . '/awstats'));
       safe_exec('mkdir -p ' . escapeshellarg($this->userHomeDir . 'awstats'));
     } else {
-      $cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'Running: mkdir -p ' . escapeshellarg($this->userHomeDir . 'webalizer'));
+      $this->logger->logAction(CRON_ACTION, LOG_NOTICE, 'Running: mkdir -p ' . escapeshellarg($this->userHomeDir . '/webalizer'));
       safe_exec('mkdir -p ' . escapeshellarg($this->userHomeDir . 'webalizer'));
     }
   }
@@ -107,8 +114,7 @@ class customer
   protected function createMailDir()
   {
     // maildir
-    $cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'Running: mkdir -p ' . escapeshellarg($this->userMailDir));
-
+    $this->logger->logAction(CRON_ACTION, LOG_NOTICE, 'Running: mkdir -p ' . escapeshellarg($this->userMailDir));
     safe_exec('mkdir -p ' . escapeshellarg($this->userMailDir));
   }
 
@@ -121,7 +127,7 @@ class customer
     //check if admin of customer has added template for new customer directories
     if((int)$this->customerData['store_defaultindex'] == 1)
     {
-      storeDefaultIndex($this->customerData['loginname'], $this->userHomeDir, $cronlog, true);
+      storeDefaultIndex($this->customerData['loginname'], $this->userHomeDir, $this->logger, true);
     }
   }
 
@@ -131,13 +137,59 @@ class customer
    */
   protected function chownHomeDir()
   {
-    // strip of last slash of paths to have correct chown results
-    $this->userHomeDir = (substr($this->userHomeDir, 0, -1) == '/') ? substr($this->userHomeDir, 0, -1) : $this->userHomeDir;
-    $this->userMailDir = (substr($this->userMailDir, 0, -1) == '/') ? substr($this->userMailDir, 0, -1) : $this->userMailDir;
-
-    $cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'Running: chown -R ' . (int)$this->customerData['uid'] . ':' . (int)$this->customerData['gid'] . ' ' . escapeshellarg($this->userHomeDir));
+    $this->logger->logAction(CRON_ACTION, LOG_NOTICE, 'Running: chown -R ' . (int)$this->customerData['uid'] . ':' . (int)$this->customerData['gid'] . ' ' . escapeshellarg($this->userHomeDir));
     safe_exec('chown -R ' . (int)$this->customerData['uid'] . ':' . (int)$this->customerData['gid'] . ' ' . escapeshellarg($this->userHomeDir));
-    $cronlog->logAction(CRON_ACTION, LOG_NOTICE, 'Running: chown -R ' . (int)$this->settings['system']['vmail_uid'] . ':' . (int)$this->settings['system']['vmail_gid'] . ' ' . escapeshellarg($this->userMailDir));
+    $this->logger->logAction(CRON_ACTION, LOG_NOTICE, 'Running: chown -R ' . (int)$this->settings['system']['vmail_uid'] . ':' . (int)$this->settings['system']['vmail_gid'] . ' ' . escapeshellarg($this->userMailDir));
     safe_exec('chown -R ' . (int)$this->settings['system']['vmail_uid'] . ':' . (int)$this->settings['system']['vmail_gid'] . ' ' . escapeshellarg($this->userMailDir));
+  }
+
+  protected function initializeChroot()
+  {
+    $baseChrootDir = realpath($this->settings['system']['documentroot_prefix'] . '/../basechroot');
+
+    $this->logger->logAction(CRON_ACTION, LOG_NOTICE, 'Running: rm -rf ' . escapeshellarg($this->userHomeDir));
+    if(strpos($this->userHomeDir, $this->settings['system']['documentroot_prefix']) === 0)
+    {
+      safe_exec('rm -rf ' . escapeshellarg($this->userHomeDir));
+    }
+
+    # Copy the chroot structure
+    $this->logger->logAction(CRON_ACTION, LOG_NOTICE, 'Running: cp -R ' . escapeshellarg($baseChrootDir) . ' ' . escapeshellarg($this->userHomeDir));
+    safe_exec('cp -R ' . escapeshellarg($baseChrootDir) . ' ' . escapeshellarg($this->userHomeDir));
+
+    # Creating the customer homedir in the chroot
+    $this->logger->logAction(CRON_ACTION, LOG_NOTICE, 'Running: mkdir -p ' . escapeshellarg($this->userHomeDir . '/' . $this->userHomeDir));
+    safe_exec('mkdir -p ' . escapeshellarg($this->userHomeDir . '/' . $this->userHomeDir));
+
+    # Creating the websites folder in the chroot
+    $this->logger->logAction(CRON_ACTION, LOG_NOTICE, 'Running: mkdir -p ' . escapeshellarg($this->userHomeDir . '/websites'));
+    safe_exec('mkdir -p ' . escapeshellarg($this->userHomeDir . '/websites'));
+
+    # Linking the websites folder
+    $this->logger->logAction(CRON_ACTION, LOG_NOTICE, 'Running: ln -s /websites ' . escapeshellarg($this->userHomeDir . '/' . $this->userHomeDir . '/websites'));
+    safe_exec('ln -s /websites ' . escapeshellarg($this->userHomeDir . '/' . $this->userHomeDir . '/websites'));
+
+    # Make sure all files belong to root initially
+    $this->logger->logAction(CRON_ACTION, LOG_NOTICE, 'Running: chown -R 0:0 ' . escapeshellarg($this->userHomeDir));
+    safe_exec('chown -R 0:0 ' . escapeshellarg($this->userHomeDir));
+  }
+
+  protected function prepareChroot()
+  {
+    # Fix permissions on temp dirs
+    $this->logger->logAction(CRON_ACTION, LOG_NOTICE, 'Running: chmod 1777 ' . escapeshellarg($this->userHomeDir . '/tmp'));
+    safe_exec('chmod 1777 ' . escapeshellarg($this->userHomeDir . '/tmp'));
+
+    # Fix permissions on websites folder
+    $this->logger->logAction(CRON_ACTION, LOG_NOTICE, 'Running: chown -R ' . (int)$this->customerData['uid'] . ':' . (int)$this->customerData['gid'] . ' ' . escapeshellarg($this->userHomeDir . '/websites'));
+    safe_exec('chown -R ' . (int)$this->customerData['uid'] . ':' . (int)$this->customerData['gid'] . ' ' . escapeshellarg($this->userHomeDir . '/websites'));
+    $this->logger->logAction(CRON_ACTION, LOG_NOTICE, 'Running: chmod 0775 ' . escapeshellarg($this->userHomeDir . '/websites'));
+    safe_exec('chmod 0775 ' . escapeshellarg($this->userHomeDir . '/websites'));
+
+    //check if admin of customer has added template for new customer directories
+    if((int)$this->customerData['store_defaultindex'] == 1)
+    {
+      storeDefaultIndex($this->customerData['loginname'], $this->userHomeDir . '/websites', $this->logger, true);
+    }
   }
 }
