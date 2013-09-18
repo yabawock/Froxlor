@@ -25,7 +25,7 @@ require_once makeCorrectFile(dirname(__FILE__) . '/cron_tasks.inc.http.20.lightt
 require_once makeCorrectFile(dirname(__FILE__) . '/cron_tasks.inc.http.25.lighttpd_fcgid.php');
 require_once makeCorrectFile(dirname(__FILE__) . '/cron_tasks.inc.http.30.nginx.php');
 require_once makeCorrectFile(dirname(__FILE__) . '/cron_tasks.inc.http.35.nginx_phpfpm.php');
-require_once(makeCorrectFile(dirname(__FILE__) . '/cron_tasks.inc.system.50.customer.php'));
+require_once(makeCorrectFile(dirname(__FILE__) . '/cron_tasks.inc.sys.50.customer.php'));
 
 /**
  * LOOK INTO TASKS TABLE TO SEE IF THERE ARE ANY UNDONE JOBS
@@ -113,9 +113,9 @@ while ($row = $result_tasks_stmt->fetch(PDO::FETCH_ASSOC)) {
 	 * TYPE=2 MEANS TO CREATE A NEW HOME AND CHOWN
 	 */
 	elseif ($row['type'] == '2') {
-		$customer = new customer($db, $cronlog, $debugHandler, $settings, $row['data']);
+		$customer = new customer($cronlog, $debugHandler, $row['data']);
 		if (isset($customer)) {
-			$customer->createHomeDir()
+			$customer->createHomeDir();
 		}
 	}
 
