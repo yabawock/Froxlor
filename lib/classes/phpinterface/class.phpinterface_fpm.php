@@ -181,14 +181,9 @@ class phpinterface_fpm {
 				$fpm_config.= 'chroot = '.makeCorrectDir($this->_domain['documentroot'])."\n";
 			}
 
-			$tmpdir = makeCorrectDir($this->_settings['phpfpm']['tmpdir'] . '/' . $this->_domain['loginname'] . '/');
-			if (!is_dir($tmpdir)) {
-				$this->getTempDir();
-			}
-
-			$fpm_config.= 'env[TMP] = '.$tmpdir."\n";
-			$fpm_config.= 'env[TMPDIR] = '.$tmpdir."\n";
-			$fpm_config.= 'env[TEMP] = '.$tmpdir."\n";
+			$fpm_config.= 'env[TMP] = '.$this->getTempDir()."\n";
+			$fpm_config.= 'env[TMPDIR] = '.$this->getTempDir()."\n";
+			$fpm_config.= 'env[TEMP] = '.$this->getTempDir()."\n";
 
 			$openbasedir = '';
 			if($this->_domain['loginname'] != 'froxlor.panel') {
@@ -334,8 +329,11 @@ class phpinterface_fpm {
 	 * @return string the directory
 	 */
 	public function getTempDir($createifnotexists = true) {
-
-		$tmpdir = makeCorrectDir($this->_settings['phpfpm']['tmpdir'] . '/' . $this->_domain['loginname'] . '/');
+		if((int)$this->_settings['phpfpm']['enabled_chroot'] == 1) {
+			$tmpdir = makeCorrectDir('/tmp');
+		} else {
+			$tmpdir = makeCorrectDir($this->_settings['phpfpm']['tmpdir'] . '/' . $this->_domain['loginname'] . '/');
+		}
 
 		if (!is_dir($tmpdir) && $createifnotexists) {
 			safe_exec('mkdir -p ' . escapeshellarg($tmpdir));
