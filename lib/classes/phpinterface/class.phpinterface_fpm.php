@@ -169,19 +169,12 @@ class phpinterface_fpm
 
 			if($fpm_chroot && $this->_domain['loginname'] != 'froxlor.panel')
 			{
-				$fpm_config.= 'chroot = '.makeCorrectDir($this->_domain['documentroot'])."\n";
+				$fpm_config.= 'chroot = '.makeCorrectDir($this->_domain['customerroot'])."\n";
 			}
 
-			$tmpdir = makeCorrectDir($this->_settings['phpfpm']['tmpdir'] . '/' . $this->_domain['loginname'] . '/');
-			if(!is_dir($tmpdir))
-			{
-				$this->getTempDir();
-			}
-			//$slowlog = makeCorrectFile($this->_settings['system']['logfiles_directory'] . $this->_domain['loginname'] . '/php-fpm_slow.log');
-
-			$fpm_config.= 'env[TMP] = '.$tmpdir."\n";
-			$fpm_config.= 'env[TMPDIR] = '.$tmpdir."\n";
-			$fpm_config.= 'env[TEMP] = '.$tmpdir."\n";
+			$fpm_config.= 'env[TMP] = '.$this->getTempDir()."\n";
+			$fpm_config.= 'env[TMPDIR] = '.$this->getTempDir()."\n";
+			$fpm_config.= 'env[TEMP] = '.$this->getTempDir()."\n";
 
 			$fpm_config.= 'php_admin_value[sendmail_path] = /usr/sbin/sendmail -t -i -f '.$this->_domain['email']."\n";
 			if($this->_domain['loginname'] != 'froxlor.panel')
@@ -228,8 +221,8 @@ class phpinterface_fpm
 					$fpm_config.= 'php_admin_value[open_basedir] = ' . $openbasedir . "\n";
 				}
 			}
-			$fpm_config.= 'php_admin_value[session.save_path] = ' . makeCorrectDir($this->_settings['phpfpm']['tmpdir'] . '/' . $this->_domain['loginname'] . '/') . "\n";
-			$fpm_config.= 'php_admin_value[upload_tmp_dir] = ' . makeCorrectDir($this->_settings['phpfpm']['tmpdir'] . '/' . $this->_domain['loginname'] . '/') . "\n";
+			$fpm_config.= 'php_admin_value[session.save_path] = ' . $this->getTempDir() . "\n";
+			$fpm_config.= 'php_admin_value[upload_tmp_dir] = ' . $this->getTempDir() . "\n";
 
 			$admin = $this->_getAdminData($this->_domain['adminid']);
 			$php_ini_variables = array(
@@ -325,7 +318,12 @@ class phpinterface_fpm
 	 */
 	public function getTempDir($createifnotexists = true)
 	{
-		$tmpdir = makeCorrectDir($this->_settings['phpfpm']['tmpdir'] . '/' . $this->_domain['loginname'] . '/');
+		if((int)$this->_settings['phpfpm']['enabled_chroot'] == 1)
+		{
+			$tmpdir = makeCorrectDir('/tmp');
+		} else {
+			$tmpdir = makeCorrectDir($this->_settings['phpfpm']['tmpdir'] . '/' . $this->_domain['loginname'] . '/');
+		}
 
 		if(!is_dir($tmpdir) && $createifnotexists)
 		{
