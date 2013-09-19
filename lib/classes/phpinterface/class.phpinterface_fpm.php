@@ -220,8 +220,8 @@ class phpinterface_fpm {
 					$openbasedir = implode(':', $clean_openbasedir);
 				}
 			}
-			$fpm_config.= 'php_admin_value[session.save_path] = ' . makeCorrectDir(Settings::Get('phpfpm.tmpdir') . '/' . $this->_domain['loginname'] . '/') . "\n";
-			$fpm_config.= 'php_admin_value[upload_tmp_dir] = ' . makeCorrectDir(Settings::Get('phpfpm.tmpdir') . '/' . $this->_domain['loginname'] . '/') . "\n";
+			$fpm_config.= 'php_admin_value[session.save_path] = ' . $this->getTempDir() . "\n";
+			$fpm_config.= 'php_admin_value[upload_tmp_dir] = ' . $this->getTempDir() . "\n";
 
 			$admin = $this->_getAdminData($this->_domain['adminid']);
 
