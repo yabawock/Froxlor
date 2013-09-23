@@ -193,12 +193,18 @@ class phpinterface_fpm {
 						$_phpappendopenbasedir .= appendOpenBasedirPath($cobd);
 					}
 
-					if ($this->_domain['openbasedir_path'] == '0'
-							&& strstr($this->_domain['documentroot'], ":") === false
-					) {
-						$openbasedir = appendOpenBasedirPath($this->_domain['documentroot'], true);
+					if($this->_domain['openbasedir_path'] == '0' && strstr($this->_domain['documentroot'], ":") === false) {
+						if($fpm_chroot == 1 && $this->_domain['documentroot'] === $this->_domain['customerroot']) {
+						  $openbasedir = appendOpenBasedirPath($this->_domain['documentroot'] . '/websites', true);
+						} else {
+				$openbasedir = appendOpenBasedirPath($this->_domain['documentroot'], true);
+						}
 					} else {
-						$openbasedir = appendOpenBasedirPath($this->_domain['customerroot'], true);
+						if($fpm_chroot == 1) {
+				      $openbasedir = appendOpenBasedirPath($this->_domain['customerroot'] . '/websites', true);
+						} else {
+						  $openbasedir = appendOpenBasedirPath($this->_domain['customerroot'], true);
+						}
 					}
 
 					$openbasedir .= appendOpenBasedirPath($this->getTempDir());
