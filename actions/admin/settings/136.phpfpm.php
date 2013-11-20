@@ -30,6 +30,14 @@ return array(
 					'plausibility_check_method' => 'checkFcgidPhpFpm',
 					'overview_option' => true
 					),
+				'system_phpfpm_enabled_chroot' => array(
+					'label' => $lng['serversettings']['phpfpm_settings']['enabled_chroot'],
+					'settinggroup' => 'phpfpm',
+					'varname' => 'enabled_chroot',
+					'type' => 'bool',
+					'default' => false,
+					'save_method' => 'storeSettingField',
+					),
 				'system_phpfpm_enabled_ownvhost' => array(
 					'label' => $lng['phpfpm']['ownvhost'],
 					'settinggroup' => 'phpfpm',

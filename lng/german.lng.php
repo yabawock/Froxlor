@@ -1676,6 +1676,9 @@ $lng['serversettings']['customerssl_directory']['description'] = 'Wo sollen kund
 $lng['admin']['note'] = 'Bitte beachten';
 $lng['admin']['phpfpm.ininote'] = 'Nicht alle gewünschten Werte können in der php-fpm pool Konfiguration verwendet werden';
 
+// Added in Froxlor 0.9.29-rc1
+$lng['serversettings']['phpfpm_settings']['enabled_chroot'] = 'Chroot für PHP-FPM Pools aktivieren';
+
 // Added in Froxlor 0.9.30
 $lng['crondesc']['cron_mailboxsize'] = 'Berechnung der Mailbox-Größen';
 $lng['domains']['ipandport_multi']['title'] = 'IP Adresse(n)';

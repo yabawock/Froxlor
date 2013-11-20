@@ -279,7 +279,7 @@ class apache
 					if ($row_ipsandports['ssl']) {
 						$srvName = substr(md5($ipport),0,4).'.ssl-fpm.external';
 					}
-					$this->virtualhosts_data[$vhosts_filename] .= '  FastCgiExternalServer ' . $php->getInterface()->getAliasConfigDir() . $srvName .' -socket ' . $php->getInterface()->getSocketFile() . ' -idle-timeout ' . $this->settings['phpfpm']['idle_timeout'] . "\n";
+					$this->virtualhosts_data[$vhosts_filename] .= '  FastCgiExternalServer ' . $php->getInterface()->getAliasConfigDir() . $srvName .' -socket ' . $php->getInterface()->getSocketFile() . ' -idle-timeout ' . $this->settings['phpfpm']['idle_timeout'] . ' -user ' . $this->settings['phpfpm']['vhost_httpuser'] . ' -group ' . $this->settings['phpfpm']['vhost_httpgroup'] . " -pass-header Authorization\n";
 					$this->virtualhosts_data[$vhosts_filename] .= '  <Directory "' . $mypath . '">' . "\n";
 					$file_extensions = explode(' ', $phpconfig['file_extensions']);
 					$this->virtualhosts_data[$vhosts_filename] .= '   <FilesMatch "\.(' . implode('|', $file_extensions) . ')$">' . "\n";
@@ -296,6 +296,9 @@ class apache
 					}
 					$this->virtualhosts_data[$vhosts_filename] .= '  </Directory>' . "\n";
 					$this->virtualhosts_data[$vhosts_filename] .= '  Alias /fastcgiphp ' . $php->getInterface()->getAliasConfigDir() . $srvName . "\n";
+
+					// create starter-file | config-file
+					$php->getInterface()->createConfig(array('phpsettings' => ''));
 				}
 
 				/**
@@ -611,13 +614,13 @@ class apache
 	protected function getVhostContent($domain, $ssl_vhost = false)
 	{
 		if ($ssl_vhost === true
-		    && ($domain['ssl_redirect'] != '1' 
+		    && ($domain['ssl_redirect'] != '1'
 		    && $domain['ssl'] != '1')
 		) {
 			return '';
 		}
 
-		$query = "SELECT * FROM `".TABLE_PANEL_IPSANDPORTS."` `i`, `".TABLE_DOMAINTOIP."` `dip` 
+		$query = "SELECT * FROM `".TABLE_PANEL_IPSANDPORTS."` `i`, `".TABLE_DOMAINTOIP."` `dip`
 			WHERE dip.id_domain = '".(int)$domain['id']."' AND i.id = dip.id_ipandports ";
 
 		if ($ssl_vhost === true
@@ -789,27 +792,27 @@ class apache
 	{
 		//$result_domains = $this->db->query("SELECT `d`.*, `pd`.`domain` AS `parentdomain`, `c`.`loginname`, `d`.`phpsettingid`, `c`.`adminid`, `c`.`guid`, `c`.`email`, `c`.`documentroot` AS `customerroot`, `c`.`deactivated`, `c`.`phpenabled` AS `phpenabled`, `d`.`mod_fcgid_starter`, `d`.`mod_fcgid_maxrequests` FROM `" . TABLE_PANEL_DOMAINS . "` `d` LEFT JOIN `" . TABLE_PANEL_CUSTOMERS . "` `c` USING(`customerid`) " . "LEFT JOIN `" . TABLE_PANEL_DOMAINS . "` `pd` ON (`pd`.`id` = `d`.`parentdomainid`) " . "WHERE `d`.`aliasdomain` IS NULL AND `d`.`email_only` <> 1 ORDER BY `d`.`parentdomainid` DESC, `d`.`iswildcarddomain`, `d`.`domain` ASC");
 		$query = "SELECT `d`.*, `pd`.`domain` AS `parentdomain`, `c`.`loginname`,
-			`d`.`phpsettingid`, `c`.`adminid`, `c`.`guid`, `c`.`email`, 
+			`d`.`phpsettingid`, `c`.`adminid`, `c`.`guid`, `c`.`email`,
 			`c`.`documentroot` AS `customerroot`, `c`.`deactivated`,
-			`c`.`phpenabled` AS `phpenabled`, `d`.`mod_fcgid_starter`, 
+			`c`.`phpenabled` AS `phpenabled`, `d`.`mod_fcgid_starter`,
 			`d`.`mod_fcgid_maxrequests`, `p`.`ssl` AS `ssl`,
-			`p`.`ssl_cert_file`, `p`.`ssl_key_file`, `p`.`ssl_ca_file`, `p`.`ssl_cert_chainfile` 
+			`p`.`ssl_cert_file`, `p`.`ssl_key_file`, `p`.`ssl_ca_file`, `p`.`ssl_cert_chainfile`
 			  FROM `".TABLE_PANEL_DOMAINS."` `d`
-      
-			  LEFT JOIN `".TABLE_PANEL_CUSTOMERS."` `c` USING(`customerid`) 
+
+			  LEFT JOIN `".TABLE_PANEL_CUSTOMERS."` `c` USING(`customerid`)
 			  LEFT JOIN `".TABLE_PANEL_DOMAINS."` `pd` ON (`pd`.`id` = `d`.`parentdomainid`)
-			  
+
 			  INNER JOIN (
-			    SELECT * FROM ( 
-			      SELECT `di`.`id_domain` , `p`.`ssl`, `p`.`ssl_cert_file`, `p`.`ssl_key_file`, `p`.`ssl_ca_file`, `p`.`ssl_cert_chainfile` 
-			      FROM `".TABLE_DOMAINTOIP."` `di` , `".TABLE_PANEL_IPSANDPORTS."` `p` 
-			      WHERE `p`.`id` = `di`.`id_ipandports` 
-			      ORDER BY `p`.`ssl` DESC 
+			    SELECT * FROM (
+			      SELECT `di`.`id_domain` , `p`.`ssl`, `p`.`ssl_cert_file`, `p`.`ssl_key_file`, `p`.`ssl_ca_file`, `p`.`ssl_cert_chainfile`
+			      FROM `".TABLE_DOMAINTOIP."` `di` , `".TABLE_PANEL_IPSANDPORTS."` `p`
+			      WHERE `p`.`id` = `di`.`id_ipandports`
+			      ORDER BY `p`.`ssl` DESC
 			    ) AS my_table_tmp
 			    GROUP BY `id_domain`
 			  ) AS p ON p.`id_domain` = `d`.`id`
-			  
-			  WHERE `d`.`aliasdomain` IS NULL 
+
+			  WHERE `d`.`aliasdomain` IS NULL
 			  ORDER BY `d`.`parentdomainid` DESC, `d`.`iswildcarddomain`, `d`.`domain` ASC;";
 
 		$result_domains = $this->db->query($query);

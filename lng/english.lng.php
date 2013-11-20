@@ -1955,6 +1955,9 @@ $lng['serversettings']['customerssl_directory']['description'] = 'Where should c
 $lng['admin']['note'] = 'Please note';
 $lng['admin']['phpfpm.ininote'] = 'Not all values you may want to define can be used in the php-fpm pool configuration';
 
+// Added in Froxlor 0.9.29-rc1
+$lng['serversettings']['phpfpm_settings']['enabled_chroot'] = 'Enable chroot for PHP-FPM pools';
+
 // Added in Froxlor 0.9.30
 $lng['crondesc']['cron_mailboxsize'] = 'Calculating of mailbox-sizes';
 $lng['domains']['ipandport_multi']['title'] = 'IP address(es)';

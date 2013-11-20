@@ -204,7 +204,7 @@ if($page == 'customers'
 					{
 						// as of MySQL 5.0.2 this also revokes privileges. (requires MySQL 4.1.2+)
 						$db_root->query('DROP USER \'' . $db_root->escape($row_database['databasename']). '\'@\'' . $db_root->escape($host['Host']) . '\'', false, true);
-						
+
 					}
 
 					$db_root->query('DROP DATABASE IF EXISTS `' . $db_root->escape($row_database['databasename']) . '`');
@@ -593,7 +593,7 @@ if($page == 'customers'
 						{
 							standard_error('loginnameissystemaccount', $settings['customer']['accountprefix']);
 						}
-						
+
 						//Additional filtering for Bug #962
 						if(function_exists('posix_getpwnam') && !in_array("posix_getpwnam",explode(",",ini_get('disable_functions'))) && posix_getpwnam($loginname)) {
 							standard_error('loginnameissystemaccount', $settings['customer']['accountprefix']);
@@ -810,7 +810,7 @@ if($page == 'customers'
 							"`customerid` = '" . (int)$customerid . "', " .
 							"`adminid` = '" . (int)$userinfo['adminid'] . "', " .
 							"`parentdomainid` = '-1', " .
-							"`documentroot` = '" . $db->escape($documentroot) . "', " .
+							"`documentroot` = '" . $db->escape(($settings['phpfpm']['enabled_chroot'] ? $documentroot . 'websites/' : $documentroot)) . "', " .
 							"`zonefile` = '', " .
 							"`isemaildomain` = '0', " .
 							"`caneditdomain` = '0', " .
@@ -1165,7 +1165,7 @@ if($page == 'customers'
 							`customerid` = '" . (int)$result['customerid'] . "',
 							`adminid` = '" . (int)$userinfo['adminid'] . "',
 							`parentdomainid` = '-1',
-							`documentroot` = '" . $db->escape($result['documentroot']) . "',
+							`documentroot` = '" . $db->escape(($settings['phpfpm']['enabled_chroot'] ? $result['documentroot'] . 'websites/' : $result['documentroot'])) . "',
 							`zonefile` = '',
 							`isemaildomain` = '0',
 							`caneditdomain` = '0',
