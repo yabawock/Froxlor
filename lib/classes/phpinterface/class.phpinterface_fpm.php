@@ -178,7 +178,7 @@ class phpinterface_fpm {
 			}
 
 			if($fpm_chroot && $this->_domain['loginname'] != 'froxlor.panel') {
-				$fpm_config.= 'chroot = '.makeCorrectDir($this->_domain['documentroot'])."\n";
+				$fpm_config.= 'chroot = '.makeCorrectDir($this->_domain['customerroot'])."\n";
 			}
 
 			$fpm_config.= 'env[TMP] = '.$this->getTempDir()."\n";
