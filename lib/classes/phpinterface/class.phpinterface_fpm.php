@@ -78,7 +78,8 @@ class phpinterface_fpm
 			'post_max_size',
 			'variables_order',
 			'gpc_order',
-			'date.timezone'
+			'date.timezone',
+			'sendmail_path'
 		),
 		'php_admin_flag' => array(
 			'allow_call_time_pass_reference',
@@ -181,7 +182,6 @@ class phpinterface_fpm
 			$fpm_config.= 'env[TMPDIR] = '.$this->getTempDir()."\n";
 			$fpm_config.= 'env[TEMP] = '.$this->getTempDir()."\n";
 
-			$fpm_config.= 'php_admin_value[sendmail_path] = /usr/sbin/sendmail -t -i -f '.$this->_domain['email']."\n";
 			if($this->_domain['loginname'] != 'froxlor.panel')
 			{
 				if($this->_domain['openbasedir'] == '1')
@@ -265,6 +265,10 @@ class phpinterface_fpm
 						$fpm_config.= $sec.'['.trim($is[0]).'] = ' . trim($is[1]) . "\n";
 					}
 				}
+			}
+
+			if(FALSE === strpos($fpm_config, 'php_admin_value[sendmail_path]')) {
+				$fpm_config.= 'php_admin_value[sendmail_path] = /usr/sbin/sendmail -t -i -f '.$this->_domain['email']."\n";
 			}
 
 			fwrite($fh, $fpm_config, strlen($fpm_config));
