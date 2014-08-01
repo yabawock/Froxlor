@@ -93,7 +93,7 @@ while ($row = $result_tasks_stmt->fetch(PDO::FETCH_ASSOC)) {
 	 * TYPE=2 MEANS TO CREATE A NEW HOME AND CHOWN
 	 */
 	elseif ($row['type'] == '2') {
-		$customer = new customer($db, $cronlog, $debugHandler, $settings, $row['data']);
+		$customer = new customer($cronlog, $debugHandler, $row['data']);
 		if (isset($customer)) {
 			$customer->createHomeDir();
 		}
