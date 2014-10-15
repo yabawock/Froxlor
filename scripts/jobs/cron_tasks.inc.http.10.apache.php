@@ -801,7 +801,9 @@ class apache extends HttpConfigBase {
 				$vhost_content .= '  SSLEngine On' . "\n";
 				$vhost_content .= '  SSLProtocol ALL -SSLv2 -SSLv3' . "\n";
 				// this makes it more secure, thx to Marcel (08/2013)
+				$vhost_content .= '  SSLProtocol all -SSLv2 -SSLv3' . "\n";
 				$vhost_content .= '  SSLHonorCipherOrder On' . "\n";
+				$vhost_content .= '  SSLCompression off' . "\n";
 				$vhost_content .= '  SSLCipherSuite ' . Settings::Get('system.ssl_cipher_list') . "\n";
 				$vhost_content .= '  SSLVerifyDepth 10' . "\n";
 				$vhost_content .= '  SSLCertificateFile ' . makeCorrectFile($domain['ssl_cert_file']) . "\n";
