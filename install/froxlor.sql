@@ -23,7 +23,7 @@ CREATE TABLE `ftp_users` (
   `shell` varchar(255) NOT NULL default '/bin/false',
   `login_enabled` enum('N','Y') NOT NULL default 'N',
   `login_count` int(15) NOT NULL default '0',
-  `last_login` datetime NOT NULL default '0000-00-00 00:00:00',
+  `last_login` datetime,
   `up_count` int(15) NOT NULL default '0',
   `up_bytes` bigint(30) NOT NULL default '0',
   `down_count` int(15) NOT NULL default '0',
@@ -568,7 +568,7 @@ CREATE TABLE `panel_tasks` (
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM CHARSET=utf8 COLLATE=utf8_general_ci;
 
-INSERT INTO `panel_tasks` (`type`) VALUES ('99');
+INSERT INTO `panel_tasks` (`type`,`data`) VALUES ('99', '');
 
 
 DROP TABLE IF EXISTS `panel_templates`;
